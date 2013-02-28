@@ -1,0 +1,7 @@
+*.class
+nbproject/private/
+
+# Package Files #
+*.jar
+*.war
+*.ear
