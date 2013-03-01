@@ -10,6 +10,7 @@
  */
 
 
+import tutoring.util.HibernateUtil;
 import tutoring.entity.Actor;
 import java.util.List;
 import java.util.Vector;
