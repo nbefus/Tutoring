@@ -34,7 +34,7 @@ public class Database {
             // connect way #1
             String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
             String user = "nbefus_me";
-            String password = "deathnow10";
+            String password = "heythere";
  
             connect = DriverManager.getConnection(url1, user, password);
             
@@ -105,7 +105,7 @@ public class Database {
           // also possible to get the columns via the column number
           // which starts at 1
           // e.g. resultSet.getSTring(2);
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+          SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
             
           String user = resultSet.getString("myuser");
           String website = resultSet.getString("webpage");
@@ -140,7 +140,7 @@ public class Database {
           }
         } catch (Exception e) {
 
-        }
+        }    
       }
 }
 

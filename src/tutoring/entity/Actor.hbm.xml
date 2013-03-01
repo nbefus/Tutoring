@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 17, 2009 11:42:48 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="tutoring.entity.Actor" table="Actor" catalog="nbefus_tms">
+        <id name="actorId" type="java.lang.Short">
+            <column name="actorId" />
+            <generator class="identity" />
+        </id>
+        <property name="firstName" type="string">
+            <column name="firstName" length="45" not-null="true" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="lastName" length="45" not-null="true" />
+        </property>
+        <property name="lastUpdate" type="timestamp">
+            <column name="lastUpdate" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
