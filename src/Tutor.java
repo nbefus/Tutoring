@@ -15,12 +15,14 @@ public class Tutor
     private int id;
     private String lName, fName;
     private Timestamp hireDate;
+    private boolean isIn;
 
-    public Tutor(int id, String lName, String fName, String phone, String notes, Timestamp hireDate) {
+    public Tutor(int id, String lName, String fName, Timestamp hireDate, boolean isIn) {
         this.id = id;
         this.lName = lName;
         this.fName = fName;
         this.hireDate = hireDate;
+        this.isIn = isIn;
     }
 
     public void insertTutor(Tutor tutor)
@@ -89,6 +91,13 @@ public class Tutor
      */
     public void setHireDate(Timestamp hireDate) {
         this.hireDate = hireDate;
+    }
+
+    /**
+     * @return the isIn
+     */
+    public boolean isIsIn() {
+        return isIn;
     }
 
     

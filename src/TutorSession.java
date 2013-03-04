@@ -19,9 +19,9 @@ public class TutorSession {
     private Timestamp sessionEnd;
     private Timestamp future;
     private boolean grammerCheck;
-    private String Notes;
+    private String notes;
 
-    public TutorSession(int tutorSessionID, String fName, String lName, int tutorID, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, Timestamp future, boolean grammerCheck, String Notes) {
+    public TutorSession(int tutorSessionID, String fName, String lName, int tutorID, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, Timestamp future, boolean grammerCheck, String notes) {
         this.tutorSessionID = tutorSessionID;
         this.fName = fName;
         this.lName = lName;
@@ -31,7 +31,7 @@ public class TutorSession {
         this.sessionEnd = sessionEnd;
         this.future = future;
         this.grammerCheck = grammerCheck;
-        this.Notes = Notes;
+        this.notes = notes;
     }
 
     /**
@@ -164,13 +164,13 @@ public class TutorSession {
      * @return the Notes
      */
     public String getNotes() {
-        return Notes;
+        return notes;
     }
 
     /**
      * @param Notes the Notes to set
      */
     public void setNotes(String Notes) {
-        this.Notes = Notes;
+        this.notes = Notes;
     }
 }
