@@ -26,8 +26,10 @@ public class Tutor
     }
 
     
-    public void insertTutor()
-    {/*
+    public void insertTutor(Tutor tutor)
+    {
+        
+        /*
         preparedStatement = connect.prepareStatement("insert into  FEEDBACK.COMMENTS values (default, ?, ?, ?, ? , ?, ?)");
         // "myuser, webpage, datum, summery, COMMENTS from FEEDBACK.COMMENTS");
         // Parameters start with 1

@@ -53,7 +53,7 @@ public class ScrapingLol {
               {
                   //System.out.println(line.substring(line.indexOf(">")+1,line.lastIndexOf("<")));
                   String value = line.substring(line.indexOf(">")+1,line.lastIndexOf("<"));
-                  //System.out.println(value);
+                  System.out.println(value);
                   if(value != null && !value.contains("DO NOT USE") && !value.equals(""))
                   {     writer.write(value);
                         writer.newLine();
