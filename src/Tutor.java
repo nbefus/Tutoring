@@ -13,19 +13,16 @@ import java.sql.Timestamp;
 public class Tutor 
 {
     private int id;
-    private String lName, fName, phone, notes;
+    private String lName, fName;
     private Timestamp hireDate;
 
     public Tutor(int id, String lName, String fName, String phone, String notes, Timestamp hireDate) {
         this.id = id;
         this.lName = lName;
         this.fName = fName;
-        this.phone = phone;
-        this.notes = notes;
         this.hireDate = hireDate;
     }
 
-    
     public void insertTutor(Tutor tutor)
     {
         
@@ -44,13 +41,6 @@ public class Tutor
      String query = "insert into Tutors values(default,"+fName+", "+lName+", "+phone+", "+hireDate.toString()+", "+notes+")";
     */
      }
-    
-    
-    
-    
-    
-    
-    
     
     /**
      * @return the id
@@ -85,34 +75,6 @@ public class Tutor
      */
     public void setfName(String fName) {
         this.fName = fName;
-    }
-
-    /**
-     * @return the phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     * @return the notes
-     */
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * @param notes the notes to set
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
     }
 
     /**
