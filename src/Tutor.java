@@ -13,16 +13,16 @@ import java.sql.Timestamp;
 public class Tutor 
 {
     private int id;
-    private String lName, fName, phone, notes;
+    private String lName, fName;
     private Timestamp hireDate;
+    private boolean isIn;
 
-    public Tutor(int id, String lName, String fName, String phone, String notes, Timestamp hireDate) {
+    public Tutor(int id, String lName, String fName, Timestamp hireDate, boolean isIn) {
         this.id = id;
         this.lName = lName;
         this.fName = fName;
-        this.phone = phone;
-        this.notes = notes;
         this.hireDate = hireDate;
+        this.isIn = isIn;
     }
 
     
@@ -42,13 +42,6 @@ public class Tutor
      String query = "insert into Tutors values(default,"+fName+", "+lName+", "+phone+", "+hireDate.toString()+", "+notes+")";
     */
      }
-    
-    
-    
-    
-    
-    
-    
     
     /**
      * @return the id
@@ -86,34 +79,6 @@ public class Tutor
     }
 
     /**
-     * @return the phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     * @return the notes
-     */
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * @param notes the notes to set
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    /**
      * @return the hireDate
      */
     public Timestamp getHireDate() {
@@ -125,6 +90,13 @@ public class Tutor
      */
     public void setHireDate(Timestamp hireDate) {
         this.hireDate = hireDate;
+    }
+
+    /**
+     * @return the isIn
+     */
+    public boolean isIsIn() {
+        return isIn;
     }
 
     
