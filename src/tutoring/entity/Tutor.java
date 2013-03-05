@@ -16,16 +16,16 @@ public class Tutor
 {
     private int id;
     private String lName, fName;
-    private Timestamp hireDate;
-    private boolean isIn;
+    private boolean isClockedIn;
 
-    public Tutor(int id, String lName, String fName, Timestamp hireDate, boolean isIn) {
+    public Tutor(int id, String fName, String lName, boolean isClockedIn) {
         this.id = id;
         this.lName = lName;
         this.fName = fName;
-        this.hireDate = hireDate;
-        this.isIn = isIn;
+        this.isClockedIn = isClockedIn;
     }
+
+    
 
     
     public void insertTutor()
@@ -44,12 +44,19 @@ public class Tutor
      String query = "insert into Tutors values(default,"+fName+", "+lName+", "+phone+", "+hireDate.toString()+", "+notes+")";
     */
      }
-    
+
     /**
      * @return the id
      */
     public int getId() {
         return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -81,25 +88,19 @@ public class Tutor
     }
 
     /**
-     * @return the hireDate
+     * @return the isClockedIn
      */
-    public Timestamp getHireDate() {
-        return hireDate;
+    public boolean isIsClockedIn() {
+        return isClockedIn;
     }
 
     /**
-     * @param hireDate the hireDate to set
+     * @param isClockedIn the isClockedIn to set
      */
-    public void setHireDate(Timestamp hireDate) {
-        this.hireDate = hireDate;
+    public void setIsClockedIn(boolean isClockedIn) {
+        this.isClockedIn = isClockedIn;
     }
-
-    /**
-     * @return the isIn
-     */
-    public boolean isIsIn() {
-        return isIn;
-    }
-
+    
+    
     
 }

@@ -14,11 +14,13 @@ public class Subject
     private int subjectID;
     private String abbrevName;
     private String fullName;
+    private SubjectCategory category;
 
-    public Subject(int subjectID, String abbrevName, String fullName) {
+    public Subject(int subjectID, String abbrevName, String fullName, SubjectCategory category) {
         this.subjectID = subjectID;
         this.abbrevName = abbrevName;
         this.fullName = fullName;
+        this.category = category;
     }
 
     /**
@@ -62,5 +64,21 @@ public class Subject
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
+    /**
+     * @return the category
+     */
+    public SubjectCategory getCategory() {
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(SubjectCategory category) {
+        this.category = category;
+    }
+
+    
     
 }

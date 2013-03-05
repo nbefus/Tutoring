@@ -26,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 public class AutoComplete implements KeyListener, ListSelectionListener, MouseListener
 {
-    private static String[] keywords = {"hey", "How are you","howdy","hinting","hinter","hunter"};
+    private String[] keywords;// = {"hey", "How are you","howdy","hinting","hinter","hunter"};
     private String entry = "";
     private boolean isUpdating = false;
     private boolean zeroIndexSel = false;
@@ -35,8 +35,9 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
     private JScrollPane jScrollPane1;
     private String originalText = "";
     
-    public AutoComplete(JList jl, JTextField jtf, JScrollPane jsp)
+    public AutoComplete(JList jl, JTextField jtf, JScrollPane jsp, String[] keywords)
     {
+        this.keywords = keywords;
         Arrays.sort(keywords);
         jTextField1 = jtf;
         jScrollPane1 = jsp;
@@ -55,14 +56,14 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
         
     }
     
-    public static void updatelist(JList l, JTextField t)
+    public void updatelist(JList l, JTextField t)
     {
         String text = t.getText();
         ArrayList<String> matches = new ArrayList<String>();
         //vect = new Vector<String>();
         for(int i=0; i<keywords.length; i++)
         {
-            if(keywords[i].contains(text))
+            if(keywords[i].toUpperCase().contains(text.toUpperCase()))
             {
                 matches.add(keywords[i]);
             }
@@ -101,7 +102,7 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
                 jScrollPane1.setVisible(true);
                 jList1.setVisible(true);
                 jScrollPane1.setBorder(BorderFactory.createCompoundBorder());
-                AutoComplete.updatelist(jList1, jTextField1);
+                updatelist(jList1, jTextField1);
                 int size = jList1.getModel().getSize();
                 if(size == 0)
                 {

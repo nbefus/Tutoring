@@ -71,7 +71,8 @@ final class MainWindow extends JFrame {
           SwingUtilities.updateComponentTreeUI(owner);
           label.setText(lookAndFeel);
           JFileChooser jf = new JFileChooser();
-          jf.showSaveDialog(owner);
+          jf.showSaveDialog(jf);
+          
         } catch (final Exception e) {
           e.printStackTrace();
         }

@@ -11,42 +11,42 @@ package tutoring.entity;
  */
 public class TeacherSubject
 {
-    private int teacherID;
-    private int subjectID;
+    private Teacher teacher;
+    private Subject subject;
     private int level;
 
-    public TeacherSubject(int teacherID, int subjectID, int level) {
-        this.teacherID = teacherID;
-        this.subjectID = subjectID;
+    public TeacherSubject(Teacher teacher, Subject subject, int level) {
+        this.teacher = teacher;
+        this.subject = subject;
         this.level = level;
     }
 
     /**
-     * @return the teacherID
+     * @return the teacher
      */
-    public int getTeacherID() {
-        return teacherID;
+    public Teacher getTeacher() {
+        return teacher;
     }
 
     /**
-     * @param teacherID the teacherID to set
+     * @param teacher the teacher to set
      */
-    public void setTeacherID(int teacherID) {
-        this.teacherID = teacherID;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     /**
-     * @return the subjectID
+     * @return the subject
      */
-    public int getSubjectID() {
-        return subjectID;
+    public Subject getSubject() {
+        return subject;
     }
 
     /**
-     * @param subjectID the subjectID to set
+     * @param subject the subject to set
      */
-    public void setSubjectID(int subjectID) {
-        this.subjectID = subjectID;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
     /**
@@ -62,5 +62,7 @@ public class TeacherSubject
     public void setLevel(int level) {
         this.level = level;
     }
+
+    
     
 }
