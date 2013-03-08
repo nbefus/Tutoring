@@ -3,6 +3,8 @@ package tutoring.helper;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
+import javax.swing.DefaultCellEditor;
 import javax.swing.table.AbstractTableModel;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
@@ -18,7 +20,7 @@ import tutoring.entity.TutorSession;
  */
 public class SessionTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"sessionID","fname","lname","course","level","teacher","notes","tutor","future","gc"};
+    private String[] columnNames = {"sessionID","fname","lname","course","level","teacher","notes","tutor","future","gc", "date"};
     private  TutorSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<TutorSession> tutorSessions = new ArrayList();
@@ -44,6 +46,13 @@ public class SessionTableModel extends AbstractTableModel {
         tutorSessions.add(ts);
         fireTableDataChanged();
     }
+    
+    @Override
+    public void setValueAt(Object o, int r, int c)
+    {
+        System.out.println("EDITED: "+o.toString());
+    }
+    
     /*
     public void addRow(String fname, String lname, String subjectAbbrevName, int level, String teacherLName, String notes, Tutor tutor, boolean future, boolean gc)
     {
@@ -53,6 +62,12 @@ public class SessionTableModel extends AbstractTableModel {
         tutorSessions.add(tutorSession);
     }*/
 
+    @Override
+    public boolean isCellEditable(int i, int j)
+    {
+        return true;
+    }
+    
     @Override
     public String getColumnName(int columnIndex){
          return columnNames[columnIndex];
@@ -92,7 +107,8 @@ public class SessionTableModel extends AbstractTableModel {
                 return ts.isFuture();
             case 9:
                 return ts.isGrammerCheck();
-            
+            case 10:
+                return ts.getTimeAndDateEntered();
            }
            return null;
    }
@@ -120,10 +136,15 @@ public class SessionTableModel extends AbstractTableModel {
                return Boolean.class;
              case 9:
                return Boolean.class;
+             case 10:
+               return Timestamp.class;
                  
              }
              return null;
       }
+   
+   
+      
  }
       
    

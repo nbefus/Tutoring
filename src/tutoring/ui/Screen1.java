@@ -1,8 +1,11 @@
 package tutoring.ui;
 
 
+import java.awt.FontMetrics;
+import java.sql.Timestamp;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.table.TableColumnModel;
 import tutoring.entity.Subject;
@@ -10,8 +13,11 @@ import tutoring.entity.SubjectCategory;
 import tutoring.entity.Teacher;
 import tutoring.entity.Tutor;
 import tutoring.helper.AutoComplete;
+import tutoring.helper.AutoCompleteComboBox;
 import tutoring.helper.FakeValues;
 import tutoring.helper.SessionTableModel;
+import tutoring.helper.TimestampCellEditor;
+import tutoring.helper.TimestampCellRenderer;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -33,6 +39,17 @@ public class Screen1 extends javax.swing.JFrame {
         FakeValues fv = new FakeValues();
         
        jTable1.setModel(new SessionTableModel());
+       jTable1.setAutoCreateRowSorter(true);
+       jTable1.setFillsViewportHeight(true);
+      // jTable1.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
+       jTable1.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer());
+       jTable1.getColumnModel().getColumn(10).setCellEditor(new TimestampCellEditor(new JTextField()));
+       
+       FontMetrics fm = jTable1.getFontMetrics(jTable1.getFont());
+       int fontHeight = fm.getHeight();
+       jTable1.setRowHeight(fontHeight+8);
+       
+       
        for(int i=0; i<fv.getTutorSessions().size(); i++)
         ((SessionTableModel) jTable1.getModel()).addRow(fv.getTutorSessions().get(i));
        
@@ -51,7 +68,23 @@ public class Screen1 extends javax.swing.JFrame {
        String[] teachers = new String[fv.getTeachers().size()];
        for(int i=0; i<teachers.length; i++)
            teachers[i]=fv.getTeachers().get(i).getfName()+" "+fv.getTeachers().get(i).getlName();
-       AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb = new AutoCompleteComboBox(jComboBoxTeacher, teachers);
+       
+       
+       
+        String[] tutors = new String[fv.getTutors().size()];
+       for(int i=0; i<tutors.length; i++)
+           tutors[i]=fv.getTutors().get(i).getfName()+" "+fv.getTutors().get(i).getlName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutors);
+       
+       
+        String[] subjects = new String[fv.getSubjects().size()];
+       for(int i=0; i<subjects.length; i++)
+           subjects[i]=fv.getSubjects().get(i).getAbbrevName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb3 = new AutoCompleteComboBox(jComboBoxCourse, subjects);
     }
 
     /**
@@ -76,7 +109,6 @@ public class Screen1 extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jTextFieldLevel = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextFieldTeacher = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldNotes = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -85,8 +117,7 @@ public class Screen1 extends javax.swing.JFrame {
         jCheckBoxGC = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jScrollPaneTeacher = new javax.swing.JScrollPane();
-        jListTeacher = new javax.swing.JList();
+        jComboBoxTeacher = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,8 +173,6 @@ public class Screen1 extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jScrollPaneTeacher.setViewportView(jListTeacher);
-
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -154,9 +183,6 @@ public class Screen1 extends javax.swing.JFrame {
                 .add(18, 18, 18))
             .add(jPanel2Layout.createSequentialGroup()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(38, 38, 38)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1004, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .add(jLabel1)
@@ -177,9 +203,7 @@ public class Screen1 extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel5)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(jScrollPaneTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .add(jTextFieldTeacher, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE))
+                        .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel6)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -195,8 +219,11 @@ public class Screen1 extends javax.swing.JFrame {
                         .add(18, 18, 18)
                         .add(jButton1)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jButton2)))
-                .addContainerGap(201, Short.MAX_VALUE))
+                        .add(jButton2))
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(19, 19, 19)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1004, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(190, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -212,7 +239,6 @@ public class Screen1 extends javax.swing.JFrame {
                     .add(jLabel4)
                     .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel5)
-                    .add(jTextFieldTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel6)
                     .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel7)
@@ -220,12 +246,11 @@ public class Screen1 extends javax.swing.JFrame {
                     .add(jCheckBoxFuture)
                     .add(jCheckBoxGC)
                     .add(jButton1)
-                    .add(jButton2))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPaneTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 128, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jButton2)
+                    .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 132, Short.MAX_VALUE)
                 .add(jButton3)
                 .addContainerGap())
         );
@@ -256,7 +281,7 @@ public class Screen1 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         Tutor t = new Tutor(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
-        Teacher teach = new Teacher(count, jTextFieldTeacher.getText(), "TestFirstName");
+        Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
         Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new SubjectCategory(count, "MABS"));
 
         ((SessionTableModel) jTable1.getModel()).addRow(jTextFieldFName.getText(), jTextFieldLName.getText(), sub, Integer.parseInt(jTextFieldLevel.getText()), teach, jTextFieldNotes.getText(), t, jCheckBoxFuture.isSelected(), jCheckBoxGC.isSelected());
@@ -307,6 +332,7 @@ public class Screen1 extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBoxFuture;
     private javax.swing.JCheckBox jCheckBoxGC;
     private javax.swing.JComboBox jComboBoxCourse;
+    private javax.swing.JComboBox jComboBoxTeacher;
     private javax.swing.JComboBox jComboBoxTutor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -315,15 +341,12 @@ public class Screen1 extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList jListTeacher;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPaneTeacher;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldFName;
     private javax.swing.JTextField jTextFieldLName;
     private javax.swing.JTextField jTextFieldLevel;
     private javax.swing.JTextField jTextFieldNotes;
-    private javax.swing.JTextField jTextFieldTeacher;
     // End of variables declaration//GEN-END:variables
 }
