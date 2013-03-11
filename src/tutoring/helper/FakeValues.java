@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import tutoring.entity.Subject;
 import tutoring.entity.Category;
 import tutoring.entity.Teacher;
-import tutoring.entity.TeacherSubject;
-import tutoring.entity.Tutor;
-import tutoring.entity.TutorCategory;
-import tutoring.entity.TutorSession;
+import tutoring.entity.Course;
+import tutoring.entity.Paraprofessional;
+import tutoring.entity.ParaprofessionalCategory;
+import tutoring.entity.ParaprofessionalSession;
 import tutoring.entity.User;
 
 /**
@@ -21,13 +21,13 @@ import tutoring.entity.User;
  */
 public class FakeValues 
 {
-    private ArrayList<Tutor> tutors = new ArrayList<Tutor>();
+    private ArrayList<Paraprofessional> tutors = new ArrayList<Paraprofessional>();
     private ArrayList<Subject> subjects = new ArrayList<Subject>();
     private ArrayList<Teacher> teachers = new ArrayList<Teacher>();
     private ArrayList<Category> subjectCategories = new ArrayList<Category>();
-    private ArrayList<TutorCategory> tutorCategories = new ArrayList<TutorCategory>();
-    private ArrayList<TeacherSubject> teacherSubjects = new ArrayList<TeacherSubject>();
-    private ArrayList<TutorSession> tutorSessions = new ArrayList<TutorSession>();
+    private ArrayList<ParaprofessionalCategory> tutorCategories = new ArrayList<ParaprofessionalCategory>();
+    private ArrayList<Course> teacherSubjects = new ArrayList<Course>();
+    private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList<ParaprofessionalSession>();
     private ArrayList<User> users = new ArrayList<User>();
      
     
@@ -66,49 +66,49 @@ public class FakeValues
     
     public void tutorSessions()
     {
-        TutorSession ts = new TutorSession(getTutorSessions().size(), "sPrecious", "sBinas", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 1500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, false, "Notes!!!");
+        ParaprofessionalSession ts = new ParaprofessionalSession(getTutorSessions().size(), "sPrecious", "sBinas", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 1500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, false, "Notes!!!");
         getTutorSessions().add(ts);
-        TutorSession ts1 = new TutorSession(getTutorSessions().size(), "sNathaniel", "sBefus", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 2500, new Timestamp(System.currentTimeMillis()-1500000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, false, "Notes!!!");
+        ParaprofessionalSession ts1 = new ParaprofessionalSession(getTutorSessions().size(), "sNathaniel", "sBefus", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 2500, new Timestamp(System.currentTimeMillis()-1500000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, false, "Notes!!!");
         getTutorSessions().add(ts1);
-        TutorSession ts2 = new TutorSession(getTutorSessions().size(), "sSho", "sShohei", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 3500, new Timestamp(System.currentTimeMillis()-800000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, true, "Notes!!!");
+        ParaprofessionalSession ts2 = new ParaprofessionalSession(getTutorSessions().size(), "sSho", "sShohei", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 3500, new Timestamp(System.currentTimeMillis()-800000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, true, "Notes!!!");
         getTutorSessions().add(ts2);
-        TutorSession ts3 = new TutorSession(getTutorSessions().size(), "sCurt", "sPowley", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 4500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, true, "Notes!!!");
+        ParaprofessionalSession ts3 = new ParaprofessionalSession(getTutorSessions().size(), "sCurt", "sPowley", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 4500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, true, "Notes!!!");
         getTutorSessions().add(ts3);
-        TutorSession ts4 = new TutorSession(getTutorSessions().size(), "sAbe", "sPinada", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 5500, new Timestamp(System.currentTimeMillis()-1000000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, false, "Notes!!!");
+        ParaprofessionalSession ts4 = new ParaprofessionalSession(getTutorSessions().size(), "sAbe", "sPinada", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 5500, new Timestamp(System.currentTimeMillis()-1000000000), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), true, false, "Notes!!!");
         getTutorSessions().add(ts4);
-        TutorSession ts5 = new TutorSession(getTutorSessions().size(), "sMark", "sEvangelist", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 6500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, true, "Notes!!!");
+        ParaprofessionalSession ts5 = new ParaprofessionalSession(getTutorSessions().size(), "sMark", "sEvangelist", getTutors().get(getTutorSessions().size()), getSubjects().get(getTutorSessions().size()), getTeachers().get(getTutorSessions().size()), 6500, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis()), false, true, "Notes!!!");
         getTutorSessions().add(ts5);
     }
     
     public void teacherSubjects()
     {
-        TeacherSubject ts = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 1000);
+        Course ts = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 1000);
         getTeacherSubjects().add(ts);
-        TeacherSubject ts1 = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 2000);
+        Course ts1 = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 2000);
         getTeacherSubjects().add(ts1);
-        TeacherSubject ts2 = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 3000);
+        Course ts2 = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 3000);
         getTeacherSubjects().add(ts2);
-        TeacherSubject ts3 = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 4000);
+        Course ts3 = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 4000);
         getTeacherSubjects().add(ts3);
-        TeacherSubject ts4 = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 5000);
+        Course ts4 = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 5000);
         getTeacherSubjects().add(ts4);
-        TeacherSubject ts5 = new TeacherSubject(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 6000);
+        Course ts5 = new Course(getTeachers().get(getTeacherSubjects().size()), getSubjects().get(getTeacherSubjects().size()), 6000);
         getTeacherSubjects().add(ts5);
     }
     
     public void tutorCategories()
     {
-        TutorCategory tc = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc);
-        TutorCategory tc1 = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc1 = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc1);
-        TutorCategory tc2 = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc2 = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc2);
-        TutorCategory tc3 = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc3 = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc3);
-        TutorCategory tc4 = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc4 = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc4);
-        TutorCategory tc5 = new TutorCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
+        ParaprofessionalCategory tc5 = new ParaprofessionalCategory(getTutors().get(getTutorCategories().size()), getSubjectCategories().get(getTutorCategories().size()));
         getTutorCategories().add(tc5);
     }   
     
@@ -147,17 +147,17 @@ public class FakeValues
     
     public void tutors()
     {
-        Tutor t = new Tutor(getTutors().size(), "Precious", "Binas", true);
+        Paraprofessional t = new Paraprofessional(getTutors().size(), "Precious", "Binas", true);
         getTutors().add(t);
-        Tutor t1 = new Tutor(getTutors().size(), "Nathaniel", "Befus", true);
+        Paraprofessional t1 = new Paraprofessional(getTutors().size(), "Nathaniel", "Befus", true);
         getTutors().add(t1);
-        Tutor t2 = new Tutor(getTutors().size(), "Sho", "Shohei", true);
+        Paraprofessional t2 = new Paraprofessional(getTutors().size(), "Sho", "Shohei", true);
          getTutors().add(t2);
-        Tutor t3 = new Tutor(getTutors().size(), "Curt", "Powley", false);
+        Paraprofessional t3 = new Paraprofessional(getTutors().size(), "Curt", "Powley", false);
         getTutors().add(t3);
-        Tutor t4 = new Tutor(getTutors().size(), "Abe", "Pinada", false);
+        Paraprofessional t4 = new Paraprofessional(getTutors().size(), "Abe", "Pinada", false);
         getTutors().add(t4);
-        Tutor t5 = new Tutor(getTutors().size(), "Mark", "Evangelist", false);
+        Paraprofessional t5 = new Paraprofessional(getTutors().size(), "Mark", "Evangelist", false);
         getTutors().add(t5);
     }
     
@@ -181,7 +181,7 @@ public class FakeValues
     /**
      * @return the tutors
      */
-    public ArrayList<Tutor> getTutors() {
+    public ArrayList<Paraprofessional> getTutors() {
         return tutors;
     }
 
@@ -209,21 +209,21 @@ public class FakeValues
     /**
      * @return the tutorCategories
      */
-    public ArrayList<TutorCategory> getTutorCategories() {
+    public ArrayList<ParaprofessionalCategory> getTutorCategories() {
         return tutorCategories;
     }
 
     /**
      * @return the teacherSubjects
      */
-    public ArrayList<TeacherSubject> getTeacherSubjects() {
+    public ArrayList<Course> getTeacherSubjects() {
         return teacherSubjects;
     }
 
     /**
      * @return the tutorSessions
      */
-    public ArrayList<TutorSession> getTutorSessions() {
+    public ArrayList<ParaprofessionalSession> getTutorSessions() {
         return tutorSessions;
     }
 

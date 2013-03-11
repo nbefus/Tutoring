@@ -8,8 +8,8 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.table.AbstractTableModel;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
-import tutoring.entity.Tutor;
-import tutoring.entity.TutorSession;
+import tutoring.entity.Paraprofessional;
+import tutoring.entity.ParaprofessionalSession;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -21,27 +21,27 @@ import tutoring.entity.TutorSession;
 public class SessionTableModel extends AbstractTableModel {
 
     private String[] columnNames = {"sessionID","fname","lname","course","level","teacher","notes","tutor","future","gc", "date"};
-    private  TutorSession[] data;// = {{null,null,null,null,null,null,null,null}};
+    private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
-    private ArrayList<TutorSession> tutorSessions = new ArrayList();
+    private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
 
-    public SessionTableModel(ArrayList<TutorSession> list){
+    public SessionTableModel(ArrayList<ParaprofessionalSession> list){
          this.tutorSessions = list;
     }
     public SessionTableModel(){
         
     }
     
-    public void addRow(String fname, String lname, Subject subject, int level, Teacher teacher, String notes, Tutor tutor, boolean future, boolean gc)
+    public void addRow(String fname, String lname, Subject subject, int level, Teacher teacher, String notes, Paraprofessional tutor, boolean future, boolean gc)
     {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         System.out.println(ts.toString());
-        TutorSession tutorSession = new TutorSession(tutorSessions.size(),fname, lname, tutor, subject, teacher, level, ts, ts, null,future, gc, notes);
+        ParaprofessionalSession tutorSession = new ParaprofessionalSession(tutorSessions.size(),fname, lname, tutor, subject, teacher, level, ts, ts, null,future, gc, notes);
         tutorSessions.add(tutorSession);
         fireTableDataChanged();
     }
     
-    public void addRow(TutorSession ts)
+    public void addRow(ParaprofessionalSession ts)
     {
         tutorSessions.add(ts);
         fireTableDataChanged();
@@ -54,11 +54,11 @@ public class SessionTableModel extends AbstractTableModel {
     }
     
     /*
-    public void addRow(String fname, String lname, String subjectAbbrevName, int level, String teacherLName, String notes, Tutor tutor, boolean future, boolean gc)
+    public void addRow(String fname, String lname, String subjectAbbrevName, int level, String teacherLName, String notes, Paraprofessional tutor, boolean future, boolean gc)
     {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         System.out.println(ts.toString());
-        TutorSession tutorSession = new TutorSession(tutorSessions.size(),fname, lname, tutor, subject, teacher, level, ts, ts, null,future, gc, notes);
+        ParaprofessionalSession tutorSession = new ParaprofessionalSession(tutorSessions.size(),fname, lname, tutor, subject, teacher, level, ts, ts, null,future, gc, notes);
         tutorSessions.add(tutorSession);
     }*/
 
@@ -85,7 +85,7 @@ public class SessionTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        TutorSession ts = tutorSessions.get(rowIndex);
+        ParaprofessionalSession ts = tutorSessions.get(rowIndex);
         switch (columnIndex) {
             case 0: 
                 return rowIndex;

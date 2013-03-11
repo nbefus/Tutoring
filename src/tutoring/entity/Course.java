@@ -9,13 +9,14 @@ package tutoring.entity;
  *
  * @author shohe_i
  */
-public class TeacherSubject
+public class Course
 {
-    private Teacher teacher;
-    private Subject subject;
+    private int courseID;       // primary key
+    private Teacher teacher;    // foreign key
+    private Subject subject;    // foreign key
     private int level;
 
-    public TeacherSubject(Teacher teacher, Subject subject, int level) {
+    public Course(Teacher teacher, Subject subject, int level) {
         this.teacher = teacher;
         this.subject = subject;
         this.level = level;

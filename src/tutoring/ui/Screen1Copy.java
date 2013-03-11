@@ -8,7 +8,7 @@ import javax.swing.table.TableColumnModel;
 import tutoring.entity.Subject;
 import tutoring.entity.SubjectCategory;
 import tutoring.entity.Teacher;
-import tutoring.entity.Tutor;
+import tutoring.entity.Paraprofessional;
 import tutoring.helper.AutoComplete;
 import tutoring.helper.FakeValues;
 import tutoring.helper.SessionTableModel;
@@ -258,7 +258,7 @@ public class Screen1Copy extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-        Tutor t = new Tutor(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
+        Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
         Teacher teach = new Teacher(count, jTextFieldTeacher.getText(), "TestFirstName");
         Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new SubjectCategory(count, "MABS"));
         

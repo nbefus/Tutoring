@@ -11,11 +11,11 @@ package tutoring.entity;
  */
 public class Teacher
 {
-    private int id;
+    private int teacherID;
     private String lName, fName;
 
     public Teacher(int id, String lName, String fName) {
-        this.id = id;
+        this.teacherID = id;
         this.lName = lName;
         this.fName = fName;
     }
@@ -24,14 +24,14 @@ public class Teacher
      * @return the id
      */
     public int getId() {
-        return id;
+        return teacherID;
     }
 
     /**
      * @param id the id to set
      */
     public void setId(int id) {
-        this.id = id;
+        this.teacherID = id;
     }
 
     /**
