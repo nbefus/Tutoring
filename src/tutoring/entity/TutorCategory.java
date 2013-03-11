@@ -11,9 +11,9 @@ package tutoring.entity;
 public class TutorCategory {
     
     private Tutor tutor;
-    private SubjectCategory category;
+    private Category category;
 
-    public TutorCategory(Tutor tutor, SubjectCategory category) {
+    public TutorCategory(Tutor tutor, Category category) {
         this.tutor = tutor;
         this.category = category;
     }
@@ -35,14 +35,14 @@ public class TutorCategory {
     /**
      * @return the category
      */
-    public SubjectCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
     /**
      * @param category the category to set
      */
-    public void setCategory(SubjectCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
     

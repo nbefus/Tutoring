@@ -11,13 +11,15 @@ package tutoring.entity;
  */
 public class Subject
 {
-    private int subjectID;
+    private int subjectID;  // primary key
+    private int categoryID; // foreign key
     private String abbrevName;
     private String fullName;
-    private SubjectCategory category;
+    private Category category;
 
-    public Subject(int subjectID, String abbrevName, String fullName, SubjectCategory category) {
+    public Subject(int subjectID, int categoryID, String abbrevName, String fullName, Category category) {
         this.subjectID = subjectID;
+        this.categoryID = categoryID;
         this.abbrevName = abbrevName;
         this.fullName = fullName;
         this.category = category;
@@ -35,6 +37,20 @@ public class Subject
      */
     public void setSubjectID(int subjectID) {
         this.subjectID = subjectID;
+    }
+
+    /**
+     * @return the categoryID
+     */
+    public int getCategoryID() {
+        return categoryID;
+    }
+
+    /**
+     * @param categoryID the categoryID to set
+     */
+    public void setCategoryID(int categoryID) {
+        this.categoryID = categoryID;
     }
 
     /**
@@ -68,17 +84,15 @@ public class Subject
     /**
      * @return the category
      */
-    public SubjectCategory getCategory() {
+    public Category getCategory() {
         return category;
     }
 
     /**
      * @param category the category to set
      */
-    public void setCategory(SubjectCategory category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
-
-    
     
 }

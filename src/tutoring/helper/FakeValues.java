@@ -7,7 +7,7 @@ package tutoring.helper;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import tutoring.entity.Subject;
-import tutoring.entity.SubjectCategory;
+import tutoring.entity.Category;
 import tutoring.entity.Teacher;
 import tutoring.entity.TeacherSubject;
 import tutoring.entity.Tutor;
@@ -24,7 +24,7 @@ public class FakeValues
     private ArrayList<Tutor> tutors = new ArrayList<Tutor>();
     private ArrayList<Subject> subjects = new ArrayList<Subject>();
     private ArrayList<Teacher> teachers = new ArrayList<Teacher>();
-    private ArrayList<SubjectCategory> subjectCategories = new ArrayList<SubjectCategory>();
+    private ArrayList<Category> subjectCategories = new ArrayList<Category>();
     private ArrayList<TutorCategory> tutorCategories = new ArrayList<TutorCategory>();
     private ArrayList<TeacherSubject> teacherSubjects = new ArrayList<TeacherSubject>();
     private ArrayList<TutorSession> tutorSessions = new ArrayList<TutorSession>();
@@ -131,17 +131,17 @@ public class FakeValues
     
     public void subjectCategories()
     {
-        SubjectCategory sc = new SubjectCategory(getSubjectCategories().size(), "MABS");
+        Category sc = new Category(getSubjectCategories().size(), "MABS");
         getSubjectCategories().add(sc);
-        SubjectCategory sc1 = new SubjectCategory(getSubjectCategories().size(), "ENG");
+        Category sc1 = new Category(getSubjectCategories().size(), "ENG");
         getSubjectCategories().add(sc1);
-        SubjectCategory sc2 = new SubjectCategory(getSubjectCategories().size(), "LANG");
+        Category sc2 = new Category(getSubjectCategories().size(), "LANG");
         getSubjectCategories().add(sc2);
-        SubjectCategory sc3 = new SubjectCategory(getSubjectCategories().size(), "SSM");
+        Category sc3 = new Category(getSubjectCategories().size(), "SSM");
         getSubjectCategories().add(sc3);
-        SubjectCategory sc4 = new SubjectCategory(getSubjectCategories().size(), "OTHER");
+        Category sc4 = new Category(getSubjectCategories().size(), "OTHER");
         getSubjectCategories().add(sc4);
-        SubjectCategory sc5 = new SubjectCategory(getSubjectCategories().size(), "IDK");
+        Category sc5 = new Category(getSubjectCategories().size(), "IDK");
         getSubjectCategories().add(sc5);
     }
     
@@ -202,7 +202,7 @@ public class FakeValues
     /**
      * @return the subjectCategories
      */
-    public ArrayList<SubjectCategory> getSubjectCategories() {
+    public ArrayList<Category> getSubjectCategories() {
         return subjectCategories;
     }
 
