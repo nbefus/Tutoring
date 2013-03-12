@@ -10,13 +10,18 @@ package tutoring.entity;
  */
 public class Location {
     private int locationID; // primary key
-    private String locationName;
+    private String name;
 
     public Location(int locationID, String locationName) {
         this.locationID = locationID;
-        this.locationName = locationName;
+        this.name = locationName;
     }
 
+      public Location()
+    {
+        
+    }
+      
     /**
      * @return the locationID
      */
@@ -32,17 +37,17 @@ public class Location {
     }
 
     /**
-     * @return the locationName
+     * @return the name
      */
-    public String getLocationName() {
-        return locationName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param locationName the locationName to set
+     * @param name the name to set
      */
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

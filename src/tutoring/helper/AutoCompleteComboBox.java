@@ -47,11 +47,13 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         this.jcb = jcb;
         jcb.setEditable(true);
         updatelist();
+        
 
         jcb.getEditor().getEditorComponent().addKeyListener(AutoCompleteComboBox.this);
         jcb.getEditor().getEditorComponent().addMouseListener(AutoCompleteComboBox.this);
         jcb.addActionListener(AutoCompleteComboBox.this);
 
+        jcb.setMaximumRowCount(5);
         
     }
     
@@ -80,7 +82,6 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         
         for(int i=0; i<keywords.length; i++)
         {
-            
             if(keywords[i].toUpperCase().contains(text.toUpperCase()))
             {
                 matches.add(keywords[i]);
@@ -93,6 +94,7 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         jcb.setMaximumRowCount(mcbm.getSize());
         if(!firstClick)
             jcb.setSelectedIndex(0);
+        jcb.setMaximumRowCount(5);
         
     }
 

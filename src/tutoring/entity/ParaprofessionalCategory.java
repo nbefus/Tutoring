@@ -4,46 +4,53 @@
  */
 package tutoring.entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author dabeefinator
  */
-public class ParaprofessionalCategory {
+public class ParaprofessionalCategory implements Serializable{
     
-    private Paraprofessional paraprofessional;  // primary key
-    private Category category;                  // primary key
+    private Paraprofessional paraprofessionalID;  // primary key
+    private Category categoryID;                  // primary key
 
     public ParaprofessionalCategory(Paraprofessional paraprofessional, Category category) {
-        this.paraprofessional = paraprofessional;
-        this.category = category;
+        this.paraprofessionalID = paraprofessional;
+        this.categoryID = category;
+    }
+      public ParaprofessionalCategory()
+    {
+        
+    }
+    
+
+    /**
+     * @return the paraprofessionalID
+     */
+    public Paraprofessional getParaprofessionalID() {
+        return paraprofessionalID;
     }
 
     /**
-     * @return the paraprofessional
+     * @param paraprofessionalID the paraprofessionalID to set
      */
-    public Paraprofessional getParaprofessional() {
-        return paraprofessional;
+    public void setParaprofessionalID(Paraprofessional paraprofessionalID) {
+        this.paraprofessionalID = paraprofessionalID;
     }
 
     /**
-     * @param paraprofessional the paraprofessional to set
+     * @return the categoryID
      */
-    public void setParaprofessional(Paraprofessional paraprofessional) {
-        this.paraprofessional = paraprofessional;
+    public Category getCategoryID() {
+        return categoryID;
     }
 
     /**
-     * @return the category
+     * @param categoryID the categoryID to set
      */
-    public Category getCategory() {
-        return category;
-    }
-
-    /**
-     * @param category the category to set
-     */
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryID(Category categoryID) {
+        this.categoryID = categoryID;
     }
     
 }

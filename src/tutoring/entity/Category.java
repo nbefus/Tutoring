@@ -17,6 +17,11 @@ public class Category {
         this.categoryID = categoryID;
         this.name = name;
     }
+    
+      public Category()
+    {
+        
+    }
 
     /**
      * @return the categoryID

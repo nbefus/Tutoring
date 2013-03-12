@@ -3,13 +3,15 @@ package tutoring.ui;
 
 import java.awt.FontMetrics;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.table.TableColumnModel;
+import tutoring.entity.Category;
+import tutoring.entity.HibernateTest;
 import tutoring.entity.Subject;
-import tutoring.entity.SubjectCategory;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
 import tutoring.helper.AutoComplete;
@@ -36,9 +38,10 @@ public class Screen1 extends javax.swing.JFrame {
      */
     public Screen1() {
         initComponents();
-        FakeValues fv = new FakeValues();
+       // FakeValues fv = new FakeValues();
         
        jTable1.setModel(new SessionTableModel());
+       
        jTable1.setAutoCreateRowSorter(true);
        jTable1.setFillsViewportHeight(true);
       // jTable1.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
@@ -50,41 +53,51 @@ public class Screen1 extends javax.swing.JFrame {
        jTable1.setRowHeight(fontHeight+8);
        
        
-       for(int i=0; i<fv.getTutorSessions().size(); i++)
-        ((SessionTableModel) jTable1.getModel()).addRow(fv.getTutorSessions().get(i));
+     //  for(int i=0; i<fv.getTutorSessions().size(); i++)
+     //   ((SessionTableModel) jTable1.getModel()).addRow(fv.getTutorSessions().get(i));
+       
        
        MutableComboBoxModel mcbm = (MutableComboBoxModel)jComboBoxCourse.getModel();
        
-       for(int i=0; i<fv.getSubjects().size(); i++)
-           mcbm.addElement(fv.getSubjects().get(i).getAbbrevName());
+       ArrayList<Subject> subjects = (ArrayList<Subject>)HibernateTest.select("from Subject");
+       for(int i=0; i<subjects.size(); i++)
+           mcbm.addElement(subjects.get(i).getAbbrevName());
        
        
        MutableComboBoxModel mcbm2 = (MutableComboBoxModel)jComboBoxTutor.getModel();
        
-       for(int i=0; i<fv.getSubjects().size(); i++)
-           mcbm2.addElement(fv.getTutors().get(i).getfName()+" "+fv.getTutors().get(i).getlName());
+       ArrayList<Paraprofessional> tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional");
+       for(int i=0; i<tutors.size(); i++)
+           mcbm2.addElement(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
        
+    ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
+       String[] teacherslist = new String[teachers.size()];
+              
+
+       for(int i=0; i<teachers.size(); i++)
+           teacherslist[i]=teachers.get(i).getfName()+" "+teachers.get(i).getlName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb = new AutoCompleteComboBox(jComboBoxTeacher, teacherslist);
+       
+       
+       
+        String[] tutorslist = new String[tutors.size()];
+       for(int i=0; i<tutors.size(); i++)
+           tutorslist[i]=tutors.get(i).getfName()+" "+tutors.get(i).getlName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutorslist);
+       
+       
+        String[] subjectslist = new String[subjects.size()];
+       for(int i=0; i<subjects.size(); i++)
+           subjectslist[i]=subjects.get(i).getAbbrevName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb3 = new AutoCompleteComboBox(jComboBoxCourse, subjectslist);
+       
+     // jComboBoxTutor.setMaximumRowCount(5);
+     //  jComboBoxTeacher.setMaximumRowCount(5);
+     //  jComboBoxCourse.setMaximumRowCount(5);
     
-       String[] teachers = new String[fv.getTeachers().size()];
-       for(int i=0; i<teachers.length; i++)
-           teachers[i]=fv.getTeachers().get(i).getfName()+" "+fv.getTeachers().get(i).getlName();
-       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
-       AutoCompleteComboBox accb = new AutoCompleteComboBox(jComboBoxTeacher, teachers);
-       
-       
-       
-        String[] tutors = new String[fv.getTutors().size()];
-       for(int i=0; i<tutors.length; i++)
-           tutors[i]=fv.getTutors().get(i).getfName()+" "+fv.getTutors().get(i).getlName();
-       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
-       AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutors);
-       
-       
-        String[] subjects = new String[fv.getSubjects().size()];
-       for(int i=0; i<subjects.length; i++)
-           subjects[i]=fv.getSubjects().get(i).getAbbrevName();
-       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
-       AutoCompleteComboBox accb3 = new AutoCompleteComboBox(jComboBoxCourse, subjects);
     }
 
     /**
@@ -280,11 +293,11 @@ public class Screen1 extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
+        //Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
         Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
-        Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new SubjectCategory(count, "MABS"));
+        Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
 
-        ((SessionTableModel) jTable1.getModel()).addRow(jTextFieldFName.getText(), jTextFieldLName.getText(), sub, Integer.parseInt(jTextFieldLevel.getText()), teach, jTextFieldNotes.getText(), t, jCheckBoxFuture.isSelected(), jCheckBoxGC.isSelected());
+        //((SessionTableModel) jTable1.getModel()).addRow(jTextFieldFName.getText(), jTextFieldLName.getText(), sub, Integer.parseInt(jTextFieldLevel.getText()), teach, jTextFieldNotes.getText(), t, jCheckBoxFuture.isSelected(), jCheckBoxGC.isSelected());
         jTable1.repaint();
         count++;
 

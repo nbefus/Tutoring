@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 11, 2013 11:55:02 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="tutoring.entity.Course" table="Course" catalog="nbefus_tms">
+        <id name="courseID" type="java.lang.Integer">
+            <column name="courseId" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="teacherID" class="tutoring.entity.Teacher" fetch="select">
+            <column name="teacherID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="subjectID" class="tutoring.entity.Subject" fetch="select">
+            <column name="subjectID" not-null="true" />
+        </many-to-one>
+        <property name="level" type="int">
+            <column name="level" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

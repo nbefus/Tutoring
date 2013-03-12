@@ -20,46 +20,40 @@ public class Teacher
         this.fName = fName;
     }
 
-    /**
-     * @return the id
-     */
-    public int getId() {
+      public Teacher()
+    {
+        
+    }
+    public int getTeacherID() {
         return teacherID;
     }
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.teacherID = id;
+    public void setTeacherID(int teacherID) {
+        this.teacherID = teacherID;
     }
 
-    /**
-     * @return the lName
-     */
     public String getlName() {
         return lName;
     }
 
-    /**
-     * @param lName the lName to set
-     */
     public void setlName(String lName) {
         this.lName = lName;
     }
 
-    /**
-     * @return the fName
-     */
     public String getfName() {
         return fName;
     }
 
-    /**
-     * @param fName the fName to set
-     */
     public void setfName(String fName) {
         this.fName = fName;
+    }
+    
+    public boolean equals(Teacher t)
+    {
+        if(this.fName.equals(t.fName) && this.lName.equals(t.lName))
+            return true;
+        else
+            return false;
     }
 
 }

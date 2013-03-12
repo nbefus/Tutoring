@@ -10,11 +10,16 @@ package tutoring.entity;
  */
 public class Role {
     private int roleID; // primary key
-    private String roleType;
+    private String type;
 
     public Role(int roleID, String roleType) {
         this.roleID = roleID;
-        this.roleType = roleType;
+        this.type = roleType;
+    }
+    
+    public Role()
+    {
+        
     }
 
     /**
@@ -32,17 +37,17 @@ public class Role {
     }
 
     /**
-     * @return the roleType
+     * @return the type
      */
-    public String getRoleType() {
-        return roleType;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @param roleType the roleType to set
+     * @param type the type to set
      */
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+    public void setType(String type) {
+        this.type = type;
     }
     
 }

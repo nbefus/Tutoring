@@ -10,12 +10,17 @@ package tutoring.entity;
  */
 public class Term {
     private int termID; // primary key
-    private String termName;
+    private String name;
 
     public Term(int termID, String termName) {
         this.termID = termID;
-        this.termName = termName;
+        this.name = termName;
     }
+      public Term()
+    {
+        
+    }
+    
 
     /**
      * @return the termID
@@ -32,17 +37,17 @@ public class Term {
     }
 
     /**
-     * @return the termName
+     * @return the name
      */
-    public String getTermName() {
-        return termName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param termName the termName to set
+     * @param name the name to set
      */
-    public void setTermName(String termName) {
-        this.termName = termName;
+    public void setName(String name) {
+        this.name = name;
     }
    
 }

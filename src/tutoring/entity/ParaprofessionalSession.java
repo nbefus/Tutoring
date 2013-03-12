@@ -16,11 +16,11 @@ public class ParaprofessionalSession {
     private int paraprofessionalSessionID;      // primary key
     
     private Paraprofessional paraprofessionalID;        // foreign key
-    private Client client;                              // foreign key
-    private Course course;                              // foreign key
-    private Term term;                                  // foreign key
-    private Location location;                          // foreign key
-    private Paraprofessional paraprofessionalCreator;   // foreign key
+    private Client clientID;                              // foreign key
+    private Course courseID;                              // foreign key
+    private Term termID;                                  // foreign key
+    private Location locationID;                          // foreign key
+    private Paraprofessional paraprofessionalCreatorID;   // foreign key
     
     private Timestamp timeAndDateEntered;
     private Timestamp sessionStart;
@@ -28,14 +28,19 @@ public class ParaprofessionalSession {
     private boolean grammarCheck;
     private String notes;
 
+      public ParaprofessionalSession()
+    {
+        
+    }
+      
     public ParaprofessionalSession(int paraprofessionalSessionID, Paraprofessional paraprofessionalID, Client client, Course course, Term term, Location location, Paraprofessional paraprofessionalCreator, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, boolean grammarCheck, String notes) {
         this.paraprofessionalSessionID = paraprofessionalSessionID;
         this.paraprofessionalID = paraprofessionalID;
-        this.client = client;
-        this.course = course;
-        this.term = term;
-        this.location = location;
-        this.paraprofessionalCreator = paraprofessionalCreator;
+        this.clientID = client;
+        this.courseID = course;
+        this.termID = term;
+        this.locationID = location;
+        this.paraprofessionalCreatorID = paraprofessionalCreator;
         this.timeAndDateEntered = timeAndDateEntered;
         this.sessionStart = sessionStart;
         this.sessionEnd = sessionEnd;
@@ -72,73 +77,73 @@ public class ParaprofessionalSession {
     }
 
     /**
-     * @return the client
+     * @return the clientID
      */
-    public Client getClient() {
-        return client;
+    public Client getClientID() {
+        return clientID;
     }
 
     /**
-     * @param client the client to set
+     * @param clientID the clientID to set
      */
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientID(Client clientID) {
+        this.clientID = clientID;
     }
 
     /**
-     * @return the course
+     * @return the courseID
      */
-    public Course getCourse() {
-        return course;
+    public Course getCourseID() {
+        return courseID;
     }
 
     /**
-     * @param course the course to set
+     * @param courseID the courseID to set
      */
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseID(Course courseID) {
+        this.courseID = courseID;
     }
 
     /**
-     * @return the term
+     * @return the termID
      */
-    public Term getTerm() {
-        return term;
+    public Term getTermID() {
+        return termID;
     }
 
     /**
-     * @param term the term to set
+     * @param termID the termID to set
      */
-    public void setTerm(Term term) {
-        this.term = term;
+    public void setTermID(Term termID) {
+        this.termID = termID;
     }
 
     /**
-     * @return the location
+     * @return the locationID
      */
-    public Location getLocation() {
-        return location;
+    public Location getLocationID() {
+        return locationID;
     }
 
     /**
-     * @param location the location to set
+     * @param locationID the locationID to set
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocationID(Location locationID) {
+        this.locationID = locationID;
     }
 
     /**
-     * @return the paraprofessionalCreator
+     * @return the paraprofessionalCreatorID
      */
-    public Paraprofessional getParaprofessionalCreator() {
-        return paraprofessionalCreator;
+    public Paraprofessional getParaprofessionalCreatorID() {
+        return paraprofessionalCreatorID;
     }
 
     /**
-     * @param paraprofessionalCreator the paraprofessionalCreator to set
+     * @param paraprofessionalCreatorID the paraprofessionalCreatorID to set
      */
-    public void setParaprofessionalCreator(Paraprofessional paraprofessionalCreator) {
-        this.paraprofessionalCreator = paraprofessionalCreator;
+    public void setParaprofessionalCreatorID(Paraprofessional paraprofessionalCreatorID) {
+        this.paraprofessionalCreatorID = paraprofessionalCreatorID;
     }
 
     /**

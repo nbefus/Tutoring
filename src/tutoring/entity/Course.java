@@ -12,42 +12,47 @@ package tutoring.entity;
 public class Course
 {
     private int courseID;       // primary key
-    private Teacher teacher;    // foreign key
-    private Subject subject;    // foreign key
+    private Teacher teacherID;    // foreign key
+    private Subject subjectID;    // foreign key
     private int level;
 
     public Course(Teacher teacher, Subject subject, int level) {
-        this.teacher = teacher;
-        this.subject = subject;
+        this.teacherID = teacher;
+        this.subjectID = subject;
         this.level = level;
     }
+      public Course()
+    {
+        
+    }
+    
 
     /**
-     * @return the teacher
+     * @return the teacherID
      */
-    public Teacher getTeacher() {
-        return teacher;
+    public Teacher getTeacherID() {
+        return teacherID;
     }
 
     /**
-     * @param teacher the teacher to set
+     * @param teacherID the teacherID to set
      */
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacherID(Teacher teacherID) {
+        this.teacherID = teacherID;
     }
 
     /**
-     * @return the subject
+     * @return the subjectID
      */
-    public Subject getSubject() {
-        return subject;
+    public Subject getSubjectID() {
+        return subjectID;
     }
 
     /**
-     * @param subject the subject to set
+     * @param subjectID the subjectID to set
      */
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjectID(Subject subjectID) {
+        this.subjectID = subjectID;
     }
 
     /**
@@ -64,6 +69,21 @@ public class Course
         this.level = level;
     }
 
+    public int getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(int courseID) {
+        this.courseID = courseID;
+    }
+
+    public boolean equals(Course c)
+    {
+        if(this.level == c.getLevel() && this.subjectID.equals(c.getSubjectID()) && this.teacherID.equals(c.getTeacherID()))
+            return true;
+        else
+            return false;
+    }
     
     
 }

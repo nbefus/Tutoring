@@ -14,13 +14,18 @@ public class Subject
     private int subjectID;  // primary key
     private String abbrevName;
     private String fullName;
-    private Category category;  // foreign key
+    private Category categoryID;  // foreign key
 
-    public Subject(int subjectID, int categoryID, String abbrevName, String fullName, Category category) {
+    public Subject()
+    {
+        
+    }
+      
+    public Subject(int subjectID, String abbrevName, String fullName, Category category) {
         this.subjectID = subjectID;
         this.abbrevName = abbrevName;
         this.fullName = fullName;
-        this.category = category;
+        this.categoryID = category;
     }
 
     /**
@@ -70,17 +75,24 @@ public class Subject
     }
 
     /**
-     * @return the category
+     * @return the categoryID
      */
-    public Category getCategory() {
-        return category;
+    public Category getCategoryID() {
+        return categoryID;
     }
 
     /**
-     * @param category the category to set
+     * @param categoryID the categoryID to set
      */
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryID(Category categoryID) {
+        this.categoryID = categoryID;
+    }
+    
+    public boolean equals(Subject s)
+    {
+        if(this.abbrevName.equals(s.getAbbrevName()) && this.fullName.equals(s.getFullName()))
+            return true;
+        return false;
     }
     
 }

@@ -15,15 +15,19 @@ import java.sql.Timestamp;
 public class Paraprofessional 
 {
     private int paraprofessionalID;         // primary key
-    private Role role;                      // foreign key
+    private Role roleID;                      // foreign key
     private String lName, fName;
     private Timestamp hireDate;
     private Timestamp terminationDate;
     private boolean isClockedIn;
 
+      public Paraprofessional()
+    {
+        
+    }
     public Paraprofessional(int paraprofessionalID, Role role, String lName, String fName, Timestamp hireDate, Timestamp terminationDate, boolean isClockedIn) {
         this.paraprofessionalID = paraprofessionalID;
-        this.role = role;
+        this.roleID = role;
         this.lName = lName;
         this.fName = fName;
         this.hireDate = hireDate;
@@ -46,17 +50,17 @@ public class Paraprofessional
     }
 
     /**
-     * @return the role
+     * @return the roleID
      */
-    public Role getRole() {
-        return role;
+    public Role getRoleID() {
+        return roleID;
     }
 
     /**
-     * @param role the role to set
+     * @param roleID the roleID to set
      */
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleID(Role roleID) {
+        this.roleID = roleID;
     }
 
     /**

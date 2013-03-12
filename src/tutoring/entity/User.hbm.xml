@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 11, 2013 11:55:02 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="tutoring.entity.User" table="User" catalog="nbefus_tms">
+        <id name="userName" type="string">
+            <column name="userName" />
+            <generator class="identity" />
+        </id>
+        <property name="fName" type="string">
+            <column name="fName" length="100" not-null="true" />
+        </property>
+        <property name="lName" type="string">
+            <column name="lName" length="100" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="50" not-null="true" />
+        </property>
+        <many-to-one name="roleID" class="tutoring.entity.Role" fetch="select">
+            <column name="roleID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>
