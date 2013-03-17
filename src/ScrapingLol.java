@@ -1,5 +1,5 @@
 
-import tutoring.entity.HibernateTest;
+import tutoring.helper.HibernateTest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -140,7 +140,8 @@ public class ScrapingLol {
     public static void updateCourses(String[] termCodes) throws Exception
     {
         
-        
+        int autoIncValSub = 1;
+        int autoIncValTeach = 1;
         
         ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject");
         ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
@@ -152,55 +153,20 @@ public class ScrapingLol {
         ArrayList<Course> newcourses = new ArrayList<Course>();
         //ArrayList<Category> newcategories = (ArrayList<Category>)HibernateTest.select("from Category");
         
+        if(teachers.size() > 0)
+        {
+            autoIncValTeach = teachers.get(teachers.size()-1).getTeacherID();
+            System.out.println("AUTO INC Teachers: "+autoIncValTeach);
+        }
+        
+        if(subjects.size() > 0)
+        {
+            autoIncValSub = subjects.get(subjects.size()-1).getSubjectID();
+            System.out.println("AUTO INC SUBJECTS: "+autoIncValSub);
+        }
+        
         for(int i=0; i<termCodes.length; i++)
         {
-            
-            
-            
-            /*
-            try{
-            //File fXmlFile = new File("/Users/mkyong/staff.xml");
-            
-             URL url = new URL("http://apps.hpu.edu/cis/web/index.php/search/search?term="+termCodes[i]);
-	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-	Document doc = dBuilder.parse(url.openStream());
- 
-	//optional, but recommended
-	//read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
-	doc.getDocumentElement().normalize();
- 
-	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
- 
-	NodeList nList = doc.getElementsByTagName("td");
-      
-	System.out.println("----------------------------");
- 
-	for (int temp = 0; temp < nList.getLength(); temp++) {
- 
-		Node nNode = nList.item(temp);
- 
-		System.out.println("\nCurrent Element :" + nNode.getNodeName());
- 
-		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
- 
-			Element e = (Element) nNode;
-                        System.out.println("Element:"+e.getTextContent());
-			//System.out.println("Staff id : " + eElement.getAttribute("id"));
-			//System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-			//System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-			//System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-			//System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
- 
-		}
-	}
-    } catch (Exception e) {
-	e.printStackTrace();
-    }
-            
-            */
-            
-            
              URL url = new URL("http://apps.hpu.edu/cis/web/index.php/search/search?term="+termCodes[i]);
              BufferedReader reader = new BufferedReader
              (new InputStreamReader(url.openStream()));
@@ -208,10 +174,13 @@ public class ScrapingLol {
              String line;      
              boolean concat = false;
              boolean read = false;
+             
+             
              String content = "";
              int count =0;
              String lname="", fname="", abbrev="";
              int level=0;
+             
              while ((line = reader.readLine()) != null) {
                 // ArrayList<String> als = new ArrayList<String>();
                  
@@ -237,6 +206,7 @@ public class ScrapingLol {
                  {
                      content+=line;
                  }
+                 
                  if(read)
                  {
                      String value = content.substring(content.indexOf(">")+1,content.lastIndexOf("<")).trim();
@@ -245,63 +215,111 @@ public class ScrapingLol {
                      read=false;
                      content="";
                      count++;
-                     System.out.println(count);
+                     //System.out.println(count);
                      if(count %5 == 2)
                      {
                          String[] values = value.split(" ");
-                         abbrev=values[0];
-                         level = Integer.parseInt(values[1]);
+                         abbrev=values[0].trim();
+                         level = Integer.parseInt(values[1].trim());
                      }
                      else if(count%5 == 4)
                      {
                          String[] values = value.split(" ");
-                         fname=values[0];
-                         lname=values[1];
+                         fname=values[0].trim();
+                         lname=values[1].trim();
+                         
+                         System.out.println("Count: "+count);
+                 
+                        System.out.println(autoIncValTeach+ lname +" "+fname + " "+abbrev + " "+level + " "+autoIncValSub);
+
+                        Teacher t = new Teacher(autoIncValTeach++, lname, fname);
+                        Subject s = new Subject(autoIncValSub++, abbrev.trim(), "", categories.get(categories.size()-1));
+
+                        Course course = new Course(t, s, level);
+
+                       int hasSubject = containsSubject(subjects, s);
+                       int hasTeacher = containsTeacher(teachers, t);
+                       int hasCourse = containsCourse(courses, course);
+
+                       if(hasCourse == -1)
+                       {
+                          if(hasTeacher == -1)
+                          {
+                              //HibernateTest.create(t);
+                              
+                             // System.out.println("NEW TEACHER: "+fname+ "  "+lname);
+                              if(teachers.size() < 1)
+                              {
+                                  HibernateTest.create(t);
+                                  System.out.println("AUTO INC Teachers inside before: "+autoIncValTeach);
+                                  autoIncValTeach = ((Teacher)(HibernateTest.select("from Teacher as t where t.fName='"+fname+"' and t.lName='"+lname+"'")).get(0)).getTeacherID();
+
+                                  t.setTeacherID(autoIncValTeach);
+                                  autoIncValTeach++;
+                                  System.out.println("AUTO INC Teachers inside: "+autoIncValTeach);
+
+                              }
+                              else
+                              {
+                                  newteachers.add(t);
+                                  System.out.println("NEW TEACHER: "+t.getTeacherID()+fname+ "  "+lname);
+                              }
+
+                              teachers.add(t);
+                              //System.out.println("Inserted teacher: "+t.getfName() + " "+t.getlName());
+                          }
+                          else
+                          {
+                              t.setTeacherID(teachers.get(hasTeacher).getTeacherID());
+                              autoIncValTeach--;
+                              System.out.println("SAME TEACHER "+autoIncValTeach);
+                          }
+
+                          if(hasSubject == -1)
+                          {
+                             // HibernateTest.create(s);
+
+                              System.out.println("NEW Subject: *"+abbrev+ "*");
+                              if(subjects.size() < 1)
+                              {
+                                  HibernateTest.create(s);
+                                  System.out.println("AUTO INC SUBJECTS inside before: "+autoIncValSub);
+                                  autoIncValSub = ((Subject)(HibernateTest.select("from Subject as s where s.abbrevName='"+abbrev+"'")).get(0)).getSubjectID();
+                                  s.setSubjectID(autoIncValSub);
+                                  autoIncValSub++;
+                                  System.out.println("AUTO INC SUBJECTS inside: "+autoIncValSub);
+                                  
+
+                              }
+                              else
+                              {
+                                  System.out.println("NEW Subject: "+s.getSubjectID()+abbrev);
+
+                                  newsubjects.add(s);
+                              }
+
+                              subjects.add(s);
+                              if(subjects.size() >= 1)
+                                newsubjects.add(s);
+                              //System.out.println("Inserted subject: "+s.getAbbrevName());
+                          }
+                          else
+                          {
+                              s.setSubjectID(subjects.get(hasSubject).getSubjectID());
+                              autoIncValSub--;
+                              System.out.println("SAME Subject "+autoIncValSub);
+                          }
+
+                          //HibernateTest.create(course);
+                          courses.add(course);
+                          newcourses.add(course);
+                          //System.out.println("Inserted course: "+course.getLevel());
+                       }
                      }
                  }
                  
-                 if(count%5 == 4)
-                 {
-                      Teacher t = new Teacher(-1, lname, fname);
-                      Subject s = new Subject(-1, abbrev, "", categories.get(categories.size()-1));
-                      Course course = new Course(t, s, level);
-                      
-                     int hasSubject = containsSubject(subjects, s);
-                     int hasTeacher = containsTeacher(teachers, t);
-                     int hasCourse = containsCourse(courses, course);
-                     
-                     if(hasCourse == -1)
-                     {
-                        if(hasTeacher == -1)
-                        {
-                            //HibernateTest.create(t);
-                            teachers.add(t);
-                            newteachers.add(t);
-                            System.out.println("Inserted teacher: "+t.getfName() + " "+t.getlName());
-                        }
-                        else
-                        {
-                            t.setTeacherID(teachers.get(hasTeacher).getTeacherID());
-                        }
-                        
-                        if(hasSubject == -1)
-                        {
-                           // HibernateTest.create(s);
-                            subjects.add(s);
-                            newsubjects.add(s);
-                            System.out.println("Inserted subject: "+s.getAbbrevName());
-                        }
-                        else
-                        {
-                            s.setSubjectID(subjects.get(hasSubject).getSubjectID());
-                        }
-                        
-                        //HibernateTest.create(course);
-                        courses.add(course);
-                        newcourses.add(course);
-                        System.out.println("Inserted course: "+course.getLevel());
-                     }
-                 }
+                 
+                 
              }
              
              HibernateTest.batchCreate(newsubjects.toArray());

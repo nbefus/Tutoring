@@ -1,4 +1,4 @@
-package tutoring.entity;
+package tutoring.helper;
 
 
 import java.util.Iterator;

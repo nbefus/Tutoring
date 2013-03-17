@@ -20,7 +20,7 @@ import tutoring.entity.ParaprofessionalSession;
  */
 public class SessionTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"sessionID","fname","lname","course","level","teacher","notes","tutor","future","gc", "date"};
+    private String[] columnNames = {"SessionID","fname","lname","course","level","teacher","notes","tutor","gc", "date","start","stop", "location", "term","creator" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
@@ -32,6 +32,7 @@ public class SessionTableModel extends AbstractTableModel {
         
     }
     
+    /*
     public void addRow(String fname, String lname, Subject subject, int level, Teacher teacher, String notes, Paraprofessional tutor, boolean future, boolean gc)
     {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -39,14 +40,14 @@ public class SessionTableModel extends AbstractTableModel {
         ParaprofessionalSession tutorSession = new ParaprofessionalSession(tutorSessions.size(),fname, lname, tutor, subject, teacher, level, ts, ts, null,future, gc, notes);
         tutorSessions.add(tutorSession);
         fireTableDataChanged();
-    }
+    }*/
     
     public void addRow(ParaprofessionalSession ts)
     {
         tutorSessions.add(ts);
         fireTableDataChanged();
     }
-    
+        
     @Override
     public void setValueAt(Object o, int r, int c)
     {
@@ -90,25 +91,34 @@ public class SessionTableModel extends AbstractTableModel {
             case 0: 
                 return rowIndex;
             case 1:
-                return ts.getfName();
+                return ts.getClientID().getfName();
             case 2:
-                return ts.getlName();
+                return ts.getClientID().getlName();
             case 3:
-                return ts.getSubject().getAbbrevName();
+                return ts.getCourseID().getSubjectID().getAbbrevName();
             case 4:
-                return ts.getLevel();
+                return ts.getCourseID().getLevel();
             case 5:
-                return ts.getTeacher().getlName();
+                return ts.getCourseID().getTeacherID().getfName() + " "+ts.getCourseID().getTeacherID().getlName();
             case 6:
                 return ts.getNotes(); 
             case 7:
-                return ts.getTutor().getfName();
+                return ts.getParaprofessionalID().getfName() + " "+ts.getParaprofessionalID().getlName();
             case 8:
-                return ts.isFuture();
+                return ts.isGrammarCheck();
             case 9:
-                return ts.isGrammerCheck();
-            case 10:
                 return ts.getTimeAndDateEntered();
+            case 10:
+                return ts.getSessionStart();
+            case 11:
+                return ts.getSessionEnd();
+            case 12:
+                return ts.getLocationID().getName();
+            case 13:
+                return ts.getTermID().getName();
+            case 14:
+                return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
+                
            }
            return null;
    }
@@ -135,9 +145,18 @@ public class SessionTableModel extends AbstractTableModel {
              case 8:
                return Boolean.class;
              case 9:
-               return Boolean.class;
+               return Timestamp.class;
              case 10:
                return Timestamp.class;
+             case 11:
+               return Timestamp.class;
+             case 12:
+               return String.class;
+             case 13:
+               return String.class;
+             case 14:
+               return String.class;
+             
                  
              }
              return null;

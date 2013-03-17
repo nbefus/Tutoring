@@ -4,16 +4,22 @@ package tutoring.ui;
 import java.awt.FontMetrics;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.table.TableColumnModel;
 import tutoring.entity.Category;
-import tutoring.entity.HibernateTest;
+import tutoring.entity.Client;
+import tutoring.entity.Course;
+import tutoring.entity.Location;
+import tutoring.helper.HibernateTest;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
+import tutoring.entity.ParaprofessionalSession;
+import tutoring.entity.Term;
 import tutoring.helper.AutoComplete;
 import tutoring.helper.AutoCompleteComboBox;
 import tutoring.helper.FakeValues;
@@ -57,20 +63,23 @@ public class Screen1 extends javax.swing.JFrame {
      //   ((SessionTableModel) jTable1.getModel()).addRow(fv.getTutorSessions().get(i));
        
        
-       MutableComboBoxModel mcbm = (MutableComboBoxModel)jComboBoxCourse.getModel();
+      // MutableComboBoxModel mcbm = (MutableComboBoxModel)jComboBoxCourse.getModel();
        
        ArrayList<Subject> subjects = (ArrayList<Subject>)HibernateTest.select("from Subject");
-       for(int i=0; i<subjects.size(); i++)
-           mcbm.addElement(subjects.get(i).getAbbrevName());
+       //for(int i=0; i<subjects.size(); i++)
+       //    mcbm.addElement(subjects.get(i).getAbbrevName());
        
        
-       MutableComboBoxModel mcbm2 = (MutableComboBoxModel)jComboBoxTutor.getModel();
+      // MutableComboBoxModel mcbm2 = (MutableComboBoxModel)jComboBoxTutor.getModel();
        
        ArrayList<Paraprofessional> tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional");
-       for(int i=0; i<tutors.size(); i++)
-           mcbm2.addElement(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
+      // for(int i=0; i<tutors.size(); i++)
+       //    mcbm2.addElement(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
        
-    ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
+    
+       
+       
+       ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
        String[] teacherslist = new String[teachers.size()];
               
 
@@ -81,18 +90,57 @@ public class Screen1 extends javax.swing.JFrame {
        
        
        
+       ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term");
+       String[] termslist = new String[terms.size()];
+              
+
+       for(int i=0; i<terms.size(); i++)
+           termslist[i]=terms.get(i).getName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb11 = new AutoCompleteComboBox(jComboBoxTerm, termslist);
+       
+       
+       
+       ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location");
+       String[] locationslist = new String[locations.size()];
+              
+
+       for(int i=0; i<locations.size(); i++)
+           locationslist[i]=locations.get(i).getName();
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb111 = new AutoCompleteComboBox(jComboBoxLocation, locationslist);
+       
+       
+       
         String[] tutorslist = new String[tutors.size()];
        for(int i=0; i<tutors.size(); i++)
            tutorslist[i]=tutors.get(i).getfName()+" "+tutors.get(i).getlName();
        //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
        AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutorslist);
-       
+       AutoCompleteComboBox accb22 = new AutoCompleteComboBox(jComboBoxCreator, tutorslist);
        
         String[] subjectslist = new String[subjects.size()];
        for(int i=0; i<subjects.size(); i++)
            subjectslist[i]=subjects.get(i).getAbbrevName();
        //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
        AutoCompleteComboBox accb3 = new AutoCompleteComboBox(jComboBoxCourse, subjectslist);
+       
+       
+       
+       ArrayList<Client> clients = (ArrayList<Client>)HibernateTest.select("from Client");
+       String[] clientsfirst = new String[clients.size()];
+       String[] clientslast = new String[clients.size()];
+
+       for(int i=0; i<clients.size(); i++)
+       {
+           clientsfirst[i]=clients.get(i).getfName();
+           clientslast[i]=clients.get(i).getlName();
+       }
+       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
+       AutoCompleteComboBox accb4 = new AutoCompleteComboBox(jComboBoxClientFirstName, clientsfirst);
+       AutoCompleteComboBox accb5 = new AutoCompleteComboBox(jComboBoxClientLastName, clientslast);
+       
+       
        
      // jComboBoxTutor.setMaximumRowCount(5);
      //  jComboBoxTeacher.setMaximumRowCount(5);
@@ -111,12 +159,10 @@ public class Screen1 extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextFieldFName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jTextFieldLName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jComboBoxCourse = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
@@ -131,6 +177,14 @@ public class Screen1 extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jComboBoxTeacher = new javax.swing.JComboBox();
+        jComboBoxClientLastName = new javax.swing.JComboBox();
+        jComboBoxClientFirstName = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBoxCreator = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jComboBoxLocation = new javax.swing.JComboBox();
+        jComboBoxTerm = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -186,6 +240,24 @@ public class Screen1 extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jComboBoxClientLastName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxClientLastNameActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("Creator");
+
+        jLabel9.setText("Location");
+
+        jLabel10.setText("Term");
+
+        jComboBoxTerm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTermActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -197,73 +269,104 @@ public class Screen1 extends javax.swing.JFrame {
             .add(jPanel2Layout.createSequentialGroup()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(jLabel1)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextFieldFName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextFieldLName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel3)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBoxCourse, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel4)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel5)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel6)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jLabel7)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jComboBoxTutor, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jCheckBoxFuture)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jCheckBoxGC)
-                        .add(18, 18, 18)
-                        .add(jButton1)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jButton2))
-                    .add(jPanel2Layout.createSequentialGroup()
                         .add(19, 19, 19)
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1004, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(190, Short.MAX_VALUE))
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1004, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel2Layout.createSequentialGroup()
+                                .add(17, 17, 17)
+                                .add(jLabel1))
+                            .add(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .add(jComboBoxClientFirstName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel2)
+                            .add(jComboBoxClientLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel2Layout.createSequentialGroup()
+                                .add(10, 10, 10)
+                                .add(jLabel3)
+                                .add(35, 35, 35))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(jComboBoxCourse, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)))
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(jPanel2Layout.createSequentialGroup()
+                                    .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                    .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 139, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                    .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 159, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(18, 18, 18)
+                                    .add(jComboBoxTutor, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(18, 18, 18)
+                                    .add(jCheckBoxFuture)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(jCheckBoxGC)
+                                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                    .add(jComboBoxCreator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(jButton1))
+                            .add(jPanel2Layout.createSequentialGroup()
+                                .add(jLabel4)
+                                .add(39, 39, 39)
+                                .add(jLabel5)
+                                .add(101, 101, 101)
+                                .add(jLabel6)
+                                .add(141, 141, 141)
+                                .add(jLabel7)
+                                .add(248, 248, 248)
+                                .add(jLabel8)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(jComboBoxLocation, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 108, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(jButton2))
+                            .add(jLabel9))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel10)
+                            .add(jComboBoxTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .add(18, 18, 18)
+                .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
-                    .add(jTextFieldFName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel2)
-                    .add(jTextFieldLName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel3)
-                    .add(jComboBoxCourse, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel4)
-                    .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel5)
                     .add(jLabel6)
-                    .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel7)
+                    .add(jLabel8)
+                    .add(jLabel9)
+                    .add(jLabel10))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jComboBoxClientFirstName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxClientLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxCourse, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxTutor, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jCheckBoxFuture)
                     .add(jCheckBoxGC)
+                    .add(jComboBoxCreator, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxLocation, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxTerm, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(7, 7, 7)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jButton1)
-                    .add(jButton2)
-                    .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
+                    .add(jButton2))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 18, Short.MAX_VALUE)
                 .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 132, Short.MAX_VALUE)
+                .add(19, 19, 19)
                 .add(jButton3)
                 .addContainerGap())
         );
@@ -294,14 +397,71 @@ public class Screen1 extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         //Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
-        Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
-        Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
+        //Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
+        //Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
+        
+        ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='"+jComboBoxCourse.getSelectedItem().toString()+"'");
+        
+        String[] tName = jComboBoxTeacher.getSelectedItem().toString().split(" ");
+        String[] pName = jComboBoxTutor.getSelectedItem().toString().split(" ");
+        String[] cName = jComboBoxCreator.getSelectedItem().toString().split(" ");
+        String clientFName = jComboBoxClientFirstName.getSelectedItem().toString();
+        String clientLName = jComboBoxClientLastName.getSelectedItem().toString();
+        boolean GC = jCheckBoxGC.isSelected();
+        String notes = jTextFieldNotes.getText().toString();
+        String level = jTextFieldLevel.getText().toString();
+        int intLevel = Integer.parseInt(level);
+        String location = jComboBoxLocation.getSelectedItem().toString();
+        String term = jComboBoxTerm.getSelectedItem().toString();
+        
+        ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where t.fName='"+tName[0].trim()+"' and t.lName='"+tName[1].trim()+"'");
+       
+        ArrayList<Course> courses = (ArrayList<Course>)HibernateTest.select("from Course as c where c.subjectID="+subjects.get(0).getSubjectID()+" and c.teacherID="+teachers.get(0).getTeacherID() + " and c.level="+intLevel);
+        
+        ArrayList<Paraprofessional> paraprofessionals = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where p.fName='"+pName[0].trim()+"' and p.lName='"+pName[1].trim()+"'");
 
+        ArrayList<Paraprofessional> creators = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where p.fName='"+cName[0].trim()+"' and p.lName='"+cName[1].trim()+"'");
+
+        ArrayList<Client> clients = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
+
+        ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location as l where l.name='"+location.trim()+"'");
+        
+        ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term as t where t.name='"+term.trim()+"'");
+
+        
+        if(subjects.size() <= 0)
+            System.out.println("Subjects less than 1");
+        if(teachers.size() <= 0)
+            System.out.println("Teachers less than 1");
+        if(courses.size() <= 0)
+            System.out.println("Courses less than 1");
+        if(paraprofessionals.size() <= 0)
+            System.out.println("Paraprofessionals less than 1");
+        if(creators.size() <= 0)
+            System.out.println("Creators less than 1");
+        if(clients.size() <= 0)
+            System.out.println("Clients less than 1");
+        if(locations.size() <= 0)
+            System.out.println("Locations less than 1");
+        if(terms.size() <= 0)
+            System.out.println("Terms less than 1");
+        
+        ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0),terms.get(0), locations.get(0), creators.get(0), new Timestamp((new Date()).getTime()), null, null, GC, notes);
+        
+        
         //((SessionTableModel) jTable1.getModel()).addRow(jTextFieldFName.getText(), jTextFieldLName.getText(), sub, Integer.parseInt(jTextFieldLevel.getText()), teach, jTextFieldNotes.getText(), t, jCheckBoxFuture.isSelected(), jCheckBoxGC.isSelected());
         jTable1.repaint();
         count++;
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBoxClientLastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxClientLastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxClientLastNameActionPerformed
+
+    private void jComboBoxTermActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTermActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTermActionPerformed
 
     
     /**
@@ -344,21 +504,27 @@ public class Screen1 extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBoxFuture;
     private javax.swing.JCheckBox jCheckBoxGC;
+    private javax.swing.JComboBox jComboBoxClientFirstName;
+    private javax.swing.JComboBox jComboBoxClientLastName;
     private javax.swing.JComboBox jComboBoxCourse;
+    private javax.swing.JComboBox jComboBoxCreator;
+    private javax.swing.JComboBox jComboBoxLocation;
     private javax.swing.JComboBox jComboBoxTeacher;
+    private javax.swing.JComboBox jComboBoxTerm;
     private javax.swing.JComboBox jComboBoxTutor;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldFName;
-    private javax.swing.JTextField jTextFieldLName;
     private javax.swing.JTextField jTextFieldLevel;
     private javax.swing.JTextField jTextFieldNotes;
     // End of variables declaration//GEN-END:variables

@@ -3,6 +3,8 @@ package tutoring.helper;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -38,6 +40,8 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
     private boolean zeroIndexSel = false;
     private JComboBox jcb;
     private boolean firstClick = true;
+    private int lastSize=0;
+     ArrayList<String> matches = new ArrayList<String>();
     //private MutableComboBoxModel mcbm;
     
     public AutoCompleteComboBox(JComboBox jcb, String[] keywords)
@@ -66,35 +70,82 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
     
     public void updatelist()
     {
+        boolean moreChars;
+        
+        
         String text = ((JTextComponent)jcb.getEditor().getEditorComponent()).getText();
+        if(text.length() > lastSize)
+            moreChars = true;
+        else
+            moreChars = false;
+        lastSize = text.length();
         //mcbm.
         MutableComboBoxModel mcbm = (MutableComboBoxModel)jcb.getModel();
         
         System.out.println(text);
-        ArrayList<String> matches = new ArrayList<String>();
-        //vect = new Vector<String>();
         
-        for(int i=0; i<keywords.length; i++)
-            mcbm.removeElement(keywords[i]);
+       
+        //vect = new Vector<String>();
+ 
+            if(moreChars)
+            {
+                System.out.println("MORE CHARS");
+                int max = matches.size();
+                Object[] values = matches.toArray();
+                
+                //ArrayList<Integer> indexesToRemove = new ArrayList<Integer>();
+                for(int i=0; i<max; i++)
+                {
+                    if(!((String)values[i]).toUpperCase().contains(text.toUpperCase()))
+                    {
+
+                        mcbm.removeElement(((String)values[i]));
+                        //indexesToRemove.add(i);
+                        matches.remove(((String)values[i]));
+                       // System.out.println("CONTAINS: "+keywords[i]);
+                    }   
+                }
+                
+               /* System.out.println("SIZE: "+max);
+                for(int i=0; i<indexesToRemove.size(); i++)
+                    matches.remove(matches.get(indexesToRemove.get(i).intValue()));
+                System.out.println("AFTER: "+matches.size());*/
+            }
+            else
+            {
+                for(int i=0; i<keywords.length; i++)
+                {
+                
+                    if(!matches.contains(keywords[i]) && keywords[i].toUpperCase().contains(text.toUpperCase()))
+                    {
+                        
+                        //matches.add(keywords[i]);
+                        mcbm.addElement(keywords[i]);
+
+                        matches.add(keywords[i]);
+
+                       // System.out.println("CONTAINS: "+keywords[i]);
+                    }
+            
+                }
+                
+            
+            }
+            
+        
         
        // System.out.println("SIZE: "+mcbm.getSize());
+      
         
-        
-        for(int i=0; i<keywords.length; i++)
-        {
-            if(keywords[i].toUpperCase().contains(text.toUpperCase()))
-            {
-                matches.add(keywords[i]);
-                mcbm.addElement(keywords[i]);
-                
-               // System.out.println("CONTAINS: "+keywords[i]);
-            }
-        }
-        
-        jcb.setMaximumRowCount(mcbm.getSize());
-        if(!firstClick)
+        //jcb.setMaximumRowCount(mcbm.getSize());
+        if(!firstClick && mcbm.getSize()>0)
             jcb.setSelectedIndex(0);
-        jcb.setMaximumRowCount(5);
+        else
+            System.out.println("FIRST CLICK OR MCBM <=0");
+        //jcb.setMaximumRowCount(5);
+        
+        
+        
         
     }
 
@@ -109,6 +160,12 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
     @Override
     public void keyReleased(KeyEvent evt) 
     {
+        if(firstClick && evt.getKeyCode() != KeyEvent.VK_TAB)
+        {
+            firstClick=false;
+            ((JTextComponent)jcb.getEditor().getEditorComponent()).setText("");
+           
+        }
         
         String text = ((JTextComponent)jcb.getEditor().getEditorComponent()).getText();
 
@@ -130,13 +187,13 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
             jcb.setPopupVisible(true);
             ((JTextComponent)jcb.getEditor().getEditorComponent()).setText(text);
 
-
             int size = jcb.getModel().getSize();
 
             if(size == 0)
             {
 
-                        jcb.setPopupVisible(false);
+                System.out.println("SIZE 0;;");
+                jcb.setPopupVisible(false);
 
             }
 
@@ -166,6 +223,8 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
 
             jcb.setPopupVisible(false);
             updatelist();
+            
+            //jcb.requestFocusInWindow();
         }
 
         else if(evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN)
@@ -207,12 +266,7 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
 
     @Override
     public void mouseClicked(MouseEvent me) {
-        if(firstClick)
-        {
-            firstClick=false;
-            ((JTextComponent)jcb.getEditor().getEditorComponent()).setText("");
-           
-        }
+        
         jcb.setPopupVisible(true);
     }
 
