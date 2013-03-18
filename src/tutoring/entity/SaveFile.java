@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,7 +24,6 @@ public class SaveFile extends JFrame
     public SaveFile(List data)
     {
         this.data = data;
-        System.out.println(this.data.toString());
     }
     
     public SaveFile()
@@ -50,16 +50,39 @@ public class SaveFile extends JFrame
         file = dialog.getSelectedFile();
         file = file.getAbsoluteFile();
         outputFile = new PrintWriter(file);
-        outputFile.println(data.toString());
+        System.out.println("hi");
+        ArrayList<Subject> list = (ArrayList<Subject>) data;
+        
+        for (int i = 0; i < 2; i++) 
+        {
+            System.out.println("hello");
+            outputFile.println(list.get(i).getAbbrevName());
+            System.out.println(list.get(i).getAbbrevName());
+        }
+        
         outputFile.close();
+
+        System.out.println("bye");
         isSaved = true;
         
     }
     
     public static void main(String args[]) throws FileNotFoundException
     {
+        List select = HibernateTest.select("from Subject");
         SaveFile save = new SaveFile(HibernateTest.select("from Subject"));
-        save.saveFile();
+        //save.saveFile();
+        //System.exit(1);
+        String name = select.getClass().getName();
+        
+        String d = Subject.class.getName();
+        
+        System.out.println(d);
+        
+       Subject.class. 
+        
+        Object<Subject.class.> e;
+        
     }
 
 }
