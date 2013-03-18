@@ -37,6 +37,19 @@ public class ScrapingLol {
     /**
      * @param args the command line arguments
      */
+    
+    private static int autoIncValSub = 1;
+    private static int autoIncValTeach = 1;
+
+    private static ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject");
+    private static ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
+    private static ArrayList<Course> courses = (ArrayList<Course>)HibernateTest.select("from Course");
+    private static ArrayList<Category> categories = (ArrayList<Category>)HibernateTest.select("from Category");
+
+    private static ArrayList<Subject> newsubjects = new ArrayList<Subject>();
+    private static ArrayList<Teacher> newteachers = new ArrayList<Teacher>();
+    private static ArrayList<Course> newcourses = new ArrayList<Course>();
+        
     public static void main(String[] args) throws Exception {
       
         String[] terms = {"201320"};//,"201310","201295","201290","201280"};
@@ -140,17 +153,7 @@ public class ScrapingLol {
     public static void updateCourses(String[] termCodes) throws Exception
     {
         
-        int autoIncValSub = 1;
-        int autoIncValTeach = 1;
         
-        ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject");
-        ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
-        ArrayList<Course> courses = (ArrayList<Course>)HibernateTest.select("from Course");
-        ArrayList<Category> categories = (ArrayList<Category>)HibernateTest.select("from Category");
-        
-        ArrayList<Subject> newsubjects = new ArrayList<Subject>();
-        ArrayList<Teacher> newteachers = new ArrayList<Teacher>();
-        ArrayList<Course> newcourses = new ArrayList<Course>();
         //ArrayList<Category> newcategories = (ArrayList<Category>)HibernateTest.select("from Category");
         
         if(teachers.size() > 0)
@@ -200,7 +203,6 @@ public class ScrapingLol {
                      content+=line;
                      concat=false;
                      read = true;
-                    
                  }
                  if(concat)
                  {
@@ -229,97 +231,10 @@ public class ScrapingLol {
                          lname=values[1].trim();
                          
                          System.out.println("Count: "+count);
-                 
-                        System.out.println(autoIncValTeach+ lname +" "+fname + " "+abbrev + " "+level + " "+autoIncValSub);
-
-                        Teacher t = new Teacher(autoIncValTeach++, lname, fname);
-                        Subject s = new Subject(autoIncValSub++, abbrev.trim(), "", categories.get(categories.size()-1));
-
-                        Course course = new Course(t, s, level);
-
-                       int hasSubject = containsSubject(subjects, s);
-                       int hasTeacher = containsTeacher(teachers, t);
-                       int hasCourse = containsCourse(courses, course);
-
-                       if(hasCourse == -1)
-                       {
-                          if(hasTeacher == -1)
-                          {
-                              //HibernateTest.create(t);
-                              
-                             // System.out.println("NEW TEACHER: "+fname+ "  "+lname);
-                              if(teachers.size() < 1)
-                              {
-                                  HibernateTest.create(t);
-                                  System.out.println("AUTO INC Teachers inside before: "+autoIncValTeach);
-                                  autoIncValTeach = ((Teacher)(HibernateTest.select("from Teacher as t where t.fName='"+fname+"' and t.lName='"+lname+"'")).get(0)).getTeacherID();
-
-                                  t.setTeacherID(autoIncValTeach);
-                                  autoIncValTeach++;
-                                  System.out.println("AUTO INC Teachers inside: "+autoIncValTeach);
-
-                              }
-                              else
-                              {
-                                  newteachers.add(t);
-                                  System.out.println("NEW TEACHER: "+t.getTeacherID()+fname+ "  "+lname);
-                              }
-
-                              teachers.add(t);
-                              //System.out.println("Inserted teacher: "+t.getfName() + " "+t.getlName());
-                          }
-                          else
-                          {
-                              t.setTeacherID(teachers.get(hasTeacher).getTeacherID());
-                              autoIncValTeach--;
-                              System.out.println("SAME TEACHER "+autoIncValTeach);
-                          }
-
-                          if(hasSubject == -1)
-                          {
-                             // HibernateTest.create(s);
-
-                              System.out.println("NEW Subject: *"+abbrev+ "*");
-                              if(subjects.size() < 1)
-                              {
-                                  HibernateTest.create(s);
-                                  System.out.println("AUTO INC SUBJECTS inside before: "+autoIncValSub);
-                                  autoIncValSub = ((Subject)(HibernateTest.select("from Subject as s where s.abbrevName='"+abbrev+"'")).get(0)).getSubjectID();
-                                  s.setSubjectID(autoIncValSub);
-                                  autoIncValSub++;
-                                  System.out.println("AUTO INC SUBJECTS inside: "+autoIncValSub);
-                                  
-
-                              }
-                              else
-                              {
-                                  System.out.println("NEW Subject: "+s.getSubjectID()+abbrev);
-
-                                  newsubjects.add(s);
-                              }
-
-                              subjects.add(s);
-                              if(subjects.size() >= 1)
-                                newsubjects.add(s);
-                              //System.out.println("Inserted subject: "+s.getAbbrevName());
-                          }
-                          else
-                          {
-                              s.setSubjectID(subjects.get(hasSubject).getSubjectID());
-                              autoIncValSub--;
-                              System.out.println("SAME Subject "+autoIncValSub);
-                          }
-
-                          //HibernateTest.create(course);
-                          courses.add(course);
-                          newcourses.add(course);
-                          //System.out.println("Inserted course: "+course.getLevel());
-                       }
+                         
+                         insertData(lname, fname, abbrev, level);  
                      }
-                 }
-                 
-                 
-                 
+                 } 
              }
              
              HibernateTest.batchCreate(newsubjects.toArray());
@@ -338,6 +253,103 @@ public class ScrapingLol {
               System.out.println(val.get(j));
           }
       }*/
+    }
+    
+    
+    public static void insertData(String lname, String fname, String abbrev, int level)
+    {
+        System.out.println(autoIncValTeach+ lname +" "+fname + " "+abbrev + " "+level + " "+autoIncValSub);
+
+        Teacher t = new Teacher(autoIncValTeach++, lname, fname);
+        Subject s = new Subject(++autoIncValSub, abbrev.trim(), "", categories.get(categories.size()-1));
+
+        Course course = new Course(t, s, level);
+
+       int hasSubject = containsSubject(subjects, s);
+       int hasTeacher = containsTeacher(teachers, t);
+       int hasCourse = containsCourse(courses, course);
+
+       if(hasCourse == -1)
+       {
+          if(hasTeacher == -1)
+          {
+              //HibernateTest.create(t);
+
+             // System.out.println("NEW TEACHER: "+fname+ "  "+lname);
+              if(teachers.size() < 1)
+              {
+                  HibernateTest.create(t);
+                  System.out.println("AUTO INC Teachers inside before: "+autoIncValTeach);
+                  autoIncValTeach = ((Teacher)(HibernateTest.select("from Teacher as t where t.fName='"+fname+"' and t.lName='"+lname+"'")).get(0)).getTeacherID();
+
+                  t.setTeacherID(autoIncValTeach);
+                  autoIncValTeach++;
+                  System.out.println("AUTO INC Teachers inside: "+autoIncValTeach);
+
+              }
+              else
+              {
+                  newteachers.add(t);
+                  System.out.println("NEW TEACHER: "+t.getTeacherID()+fname+ "  "+lname);
+              }
+
+              teachers.add(t);
+              //System.out.println("Inserted teacher: "+t.getfName() + " "+t.getlName());
+          }
+          else
+          {
+              t.setTeacherID(teachers.get(hasTeacher).getTeacherID());
+              autoIncValTeach--;
+              System.out.println("SAME TEACHER "+autoIncValTeach);
+          }
+
+          if(hasSubject == -1)
+          {
+             // HibernateTest.create(s);
+
+              System.out.println("NEW Subject: *"+abbrev+ "*");
+              if(subjects.size() < 1)
+              {
+                  HibernateTest.create(s);
+                  System.out.println("AUTO INC SUBJECTS inside before: "+autoIncValSub);
+                  autoIncValSub = ((Subject)(HibernateTest.select("from Subject as s where s.abbrevName='"+abbrev+"'")).get(0)).getSubjectID();
+                  s.setSubjectID(autoIncValSub);
+                  autoIncValSub++;
+                  System.out.println("AUTO INC SUBJECTS inside: "+autoIncValSub);
+
+
+              }
+              else
+              {
+                  System.out.println("NEW Subject: "+s.getSubjectID()+abbrev);
+
+                  newsubjects.add(s);
+              }
+
+              subjects.add(s);
+              if(subjects.size() >= 1)
+                newsubjects.add(s);
+              //System.out.println("Inserted subject: "+s.getAbbrevName());
+          }
+          else
+          {
+              s.setSubjectID(subjects.get(hasSubject).getSubjectID());
+              autoIncValSub--;
+              System.out.println("SAME Subject "+autoIncValSub);
+          }
+
+          //HibernateTest.create(course);
+          courses.add(course);
+          newcourses.add(course);
+          
+          System.out.println("***"+t.getTeacherID()+ t.getlName() +" "+t.getfName() + " "+s.getSubjectID()+ " " + s.getAbbrevName() + " "+course.getCourseID()+" " +course.getLevel());
+          //System.out.println("Inserted course: "+course.getLevel());
+       }
+       else
+       {
+           autoIncValSub--;
+           autoIncValTeach--;
+       }
     }
 }
 

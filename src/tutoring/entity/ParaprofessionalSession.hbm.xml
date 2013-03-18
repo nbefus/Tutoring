@@ -24,10 +24,10 @@
             <column name="timeAndDateEntered" length="19" not-null="true" />
         </property>
         <property name="sessionStart" type="timestamp">
-            <column name="sessionStart" length="19" not-null="true" />
+            <column name="sessionStart" length="19" not-null="false" />
         </property>
         <property name="sessionEnd" type="timestamp">
-            <column name="sessionEnd" length="19" not-null="true" />
+            <column name="sessionEnd" length="19" not-null="false" />
         </property>
         <property name="grammarCheck" type="boolean">
             <column name="grammarCheck" not-null="true" />

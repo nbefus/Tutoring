@@ -58,6 +58,11 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         jcb.addActionListener(AutoCompleteComboBox.this);
 
         jcb.setMaximumRowCount(5);
+        //jcb.showPopup();
+        //jcb.hidePopup();
+        
+        
+        //jcb.setLightWeightPopupEnabled(false);
         
     }
     
@@ -138,12 +143,13 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
       
         
         //jcb.setMaximumRowCount(mcbm.getSize());
-        if(!firstClick && mcbm.getSize()>0)
+    if(!firstClick && mcbm.getSize()>2)
             jcb.setSelectedIndex(0);
         else
             System.out.println("FIRST CLICK OR MCBM <=0");
         //jcb.setMaximumRowCount(5);
         
+       // jcb.setLightWeightPopupEnabled(false);
         
         
         
@@ -163,7 +169,8 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         if(firstClick && evt.getKeyCode() != KeyEvent.VK_TAB)
         {
             firstClick=false;
-            ((JTextComponent)jcb.getEditor().getEditorComponent()).setText("");
+            
+            ((JTextComponent)jcb.getEditor().getEditorComponent()).setText((""+evt.getKeyChar()).trim());
            
         }
         
@@ -179,9 +186,10 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
 
             //originalText = text;
             jcb.setPopupVisible(true);
+            //jcb.showPopup();
 
         }
-        if(!isUpdating)
+        if(!isUpdating && evt.getKeyCode() != KeyEvent.VK_LEFT && evt.getKeyCode() != KeyEvent.VK_RIGHT)
         {
             updatelist();
             jcb.setPopupVisible(true);
@@ -193,8 +201,10 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
             {
 
                 System.out.println("SIZE 0;;");
-                jcb.setPopupVisible(false);
+               // jcb.setPopupVisible(false);
 
+                jcb.showPopup();
+                //jcb.hi
             }
 
         }
@@ -202,8 +212,8 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         {
             if(!isUpdating)
             {
-                jcb.setPopupVisible(false);
-
+                //jcb.setPopupVisible(false);
+                jcb.showPopup();
             }
         }
 
@@ -212,6 +222,8 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
             System.out.println("UP PRESSED and ZERO INDEX");
 
             isUpdating=false;
+            //jcb.setPopupVisible(false);
+            jcb.showPopup();
         }
         else if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
@@ -221,13 +233,14 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
 
             isUpdating=false;
 
-            jcb.setPopupVisible(false);
+            //jcb.setPopupVisible(false);
+            jcb.showPopup();
             updatelist();
             
             //jcb.requestFocusInWindow();
         }
 
-        else if(evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN)
+        else if(evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN && evt.getKeyCode() != KeyEvent.VK_LEFT && evt.getKeyCode() != KeyEvent.VK_RIGHT)
         {
             isUpdating=false;
         }
