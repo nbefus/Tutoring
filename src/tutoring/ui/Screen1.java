@@ -42,7 +42,8 @@ public class Screen1 extends javax.swing.JFrame {
     /**
      * Creates new form Screen1
      */
-    public Screen1() {
+    public Screen1() 
+    {
         initComponents();
        // FakeValues fv = new FakeValues();
         
@@ -78,7 +79,7 @@ public class Screen1 extends javax.swing.JFrame {
        
     
        
-       
+
        ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
        String[] teacherslist = new String[teachers.size()];
               
