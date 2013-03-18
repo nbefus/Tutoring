@@ -23,6 +23,7 @@ public class SaveFile extends JFrame
     public SaveFile(List data)
     {
         this.data = data;
+        System.out.println(this.data.toString());
     }
     
     public SaveFile()
@@ -49,14 +50,15 @@ public class SaveFile extends JFrame
         file = dialog.getSelectedFile();
         file = file.getAbsoluteFile();
         outputFile = new PrintWriter(file);
-        outputFile.println(data);
+        outputFile.println(data.toString());
+        outputFile.close();
         isSaved = true;
         
     }
     
     public static void main(String args[]) throws FileNotFoundException
     {
-        SaveFile save = new SaveFile((ArrayList<User>) HibernateTest.select("from Subjects"));
+        SaveFile save = new SaveFile(HibernateTest.select("from Subject"));
         save.saveFile();
     }
 
