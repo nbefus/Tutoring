@@ -132,5 +132,12 @@ public class Paraprofessional
     public void setIsClockedIn(boolean isClockedIn) {
         this.isClockedIn = isClockedIn;
     }
+    
+    public String toString()
+    {
+        return paraprofessionalID + " " + roleID.toString() + " " + lName + " " + fName + " " + hireDate.toString() + " " + terminationDate.toString() + " " + isClockedIn;
+    }
+    
+
 
 }

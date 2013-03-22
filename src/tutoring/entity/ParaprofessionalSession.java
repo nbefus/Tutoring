@@ -216,4 +216,10 @@ public class ParaprofessionalSession {
         this.notes = notes;
     }
     
+    public String toString()
+    {
+        return paraprofessionalSessionID + " " + paraprofessionalID.toString() + " " + clientID.toString() + " " + termID.toString() + " " + locationID.toString() + " " + paraprofessionalCreatorID.toString() + " " + timeAndDateEntered.toString() + " " + sessionStart.toGMTString() + " " + sessionEnd.toGMTString() + " " + grammarCheck + " " + notes;
+    }
+    
+  
 }

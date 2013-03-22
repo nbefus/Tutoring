@@ -95,4 +95,10 @@ public class Subject
         return false;
     }
     
+    @Override
+    public String toString()
+    {
+        return subjectID + " " + abbrevName + " " + fullName + " " + categoryID.getName();
+    }
+
 }

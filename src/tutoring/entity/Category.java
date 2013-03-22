@@ -51,5 +51,8 @@ public class Category {
         this.name = name;
     }
     
-    
+    public String toString()
+    {
+        return categoryID + " " + name;
+    }
 }

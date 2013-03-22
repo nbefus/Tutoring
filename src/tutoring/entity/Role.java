@@ -50,4 +50,10 @@ public class Role {
         this.type = type;
     }
     
+    public String toString()
+    {
+        return roleID + " " + type;
+    }
+    
+    
 }

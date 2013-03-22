@@ -96,4 +96,10 @@ public class Client {
         this.phone = phone;
     }
     
+    public String toString()
+    {
+        return clientID + " " + fName + " " + lName + " " + email + " " + phone;
+    }
+    
+    
 }

@@ -45,43 +45,37 @@ public class SaveFile extends JFrame
         File file = null;
         FileWriter fWriter; //ask for name
         PrintWriter outputFile;
+        
         JFileChooser dialog = new JFileChooser();
         dialog.showSaveDialog(this);
-        file = dialog.getSelectedFile();
-        file = file.getAbsoluteFile();
+        
+        file = dialog.getSelectedFile().getAbsoluteFile();
+        
         outputFile = new PrintWriter(file);
-        System.out.println("hi");
+        
         ArrayList<Subject> list = (ArrayList<Subject>) data;
         
         for (int i = 0; i < 2; i++) 
         {
-            System.out.println("hello");
-            outputFile.println(list.get(i).getAbbrevName());
-            System.out.println(list.get(i).getAbbrevName());
+            outputFile.println(list.get(i).toString());
+            System.out.println(list.get(i).toString());
         }
         
         outputFile.close();
 
-        System.out.println("bye");
         isSaved = true;
         
     }
     
-    public static void main(String args[]) throws FileNotFoundException
+    public static void main(String args[]) throws FileNotFoundException, ClassNotFoundException
     {
         List select = HibernateTest.select("from Subject");
         SaveFile save = new SaveFile(HibernateTest.select("from Subject"));
-        //save.saveFile();
-        //System.exit(1);
-        String name = select.getClass().getName();
+        save.saveFile();
+
         
-        String d = Subject.class.getName();
         
-        System.out.println(d);
         
-       Subject.class. 
-        
-        Object<Subject.class.> e;
         
     }
 
