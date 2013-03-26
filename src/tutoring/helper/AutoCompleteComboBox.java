@@ -143,7 +143,7 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
       
         
         //jcb.setMaximumRowCount(mcbm.getSize());
-    if(!firstClick && mcbm.getSize()>2)
+    if(!firstClick && mcbm.getSize()>0)
             jcb.setSelectedIndex(0);
         else
             System.out.println("FIRST CLICK OR MCBM <=0");
@@ -191,8 +191,10 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         }
         if(!isUpdating && evt.getKeyCode() != KeyEvent.VK_LEFT && evt.getKeyCode() != KeyEvent.VK_RIGHT)
         {
+            jcb.hidePopup();
             updatelist();
-            jcb.setPopupVisible(true);
+            //jcb.setPopupVisible(true);
+            jcb.showPopup();
             ((JTextComponent)jcb.getEditor().getEditorComponent()).setText(text);
 
             int size = jcb.getModel().getSize();
@@ -203,7 +205,7 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
                 System.out.println("SIZE 0;;");
                // jcb.setPopupVisible(false);
 
-                jcb.showPopup();
+                jcb.hidePopup();
                 //jcb.hi
             }
 
@@ -213,7 +215,7 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
             if(!isUpdating)
             {
                 //jcb.setPopupVisible(false);
-                jcb.showPopup();
+                jcb.hidePopup();
             }
         }
 
@@ -223,19 +225,22 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
 
             isUpdating=false;
             //jcb.setPopupVisible(false);
-            jcb.showPopup();
+            jcb.hidePopup();
         }
         else if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
+            String selected = jcb.getSelectedItem().toString();
+            updatelist();
             System.out.println("ENTER PRESSED");
             if(jcb.getSelectedIndex() >= 0)
-                ((JTextComponent)jcb.getEditor().getEditorComponent()).setText(jcb.getSelectedItem().toString());
+                ((JTextComponent)jcb.getEditor().getEditorComponent()).setText(selected);
 
             isUpdating=false;
 
+            System.out.println("LDSJLKFJSDLFJ: "+jcb.getSelectedItem().toString());
             //jcb.setPopupVisible(false);
-            jcb.showPopup();
-            updatelist();
+            jcb.hidePopup();
+            
             
             //jcb.requestFocusInWindow();
         }
