@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.security.auth.Subject;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -52,8 +53,11 @@ public class SaveFile extends JFrame
         file = dialog.getSelectedFile().getAbsoluteFile();
         
         outputFile = new PrintWriter(file);
-        
+
         ArrayList<Subject> list = (ArrayList<Subject>) data;
+        
+        System.out.println(list.getClass().toString());
+        
         
         for (int i = 0; i < 2; i++) 
         {
@@ -73,10 +77,6 @@ public class SaveFile extends JFrame
         SaveFile save = new SaveFile(HibernateTest.select("from Subject"));
         save.saveFile();
 
-        
-        
-        
-        
     }
 
 }
