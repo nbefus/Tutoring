@@ -85,5 +85,9 @@ public class Course
             return false;
     }
     
-    
+    public String toString()
+    {
+        return courseID + " " + teacherID.toString() + " " + subjectID.toString() + " " + level;
+    }
 }
+    

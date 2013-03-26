@@ -67,6 +67,10 @@ public class User {
         this.password = password;
     }
     
-    
+    public String toString()
+    {
+        return userName + " " + roleID.getType() + " " + lName + " " + fName + " " + password;
+    }
+     
     
 }

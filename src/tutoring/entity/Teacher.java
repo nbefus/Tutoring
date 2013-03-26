@@ -55,5 +55,11 @@ public class Teacher
         else
             return false;
     }
+    
+    public String toString()
+    {
+        return teacherID + " " + lName + " " + fName;
+    }
+
 
 }
