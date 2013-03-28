@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
@@ -20,7 +21,7 @@ import tutoring.entity.ParaprofessionalSession;
  */
 public class SessionTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"SessionID","fname","lname","course","level","teacher","notes","tutor","gc", "date","start","stop", "location", "term","creator" };
+    private String[] columnNames = {"SessionID","fname","lname","course","level","teacher","notes","tutor","gc", "date","start","stop", "location","creator","walkout" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
@@ -51,7 +52,56 @@ public class SessionTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object o, int r, int c)
     {
-        System.out.println("EDITED: "+o.toString());
+        System.out.println("SetValue at");
+        int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to change value "+getValueAt(r,c)+" to "+o.toString());
+        if(option == JOptionPane.YES_OPTION)
+        {
+            System.out.println("EDITED at setValueAt STM: "+o.toString());
+           // tutorSessions.get(r)
+                    
+            ParaprofessionalSession ts = tutorSessions.get(r);
+            switch (c) {
+            case 0: 
+                break;
+            case 1:
+                ts.getClientID().setfName((String)o);
+            case 2:
+                ts.getClientID().setlName((String)o);
+            case 3:
+                ts.getCourseID().getSubjectID().setAbbrevName((String)o);
+            case 4:
+                ts.getCourseID().setLevel(((Integer)o).intValue());
+            case 5:
+                //ts.getCourseID().getTeacherID().getfName() + " "+ts.getCourseID().getTeacherID().getlName();
+            case 6:
+                ts.getNotes(); 
+            case 7:
+                //ts.getParaprofessionalID().getfName() + " "+ts.getParaprofessionalID().getlName();
+            case 8:
+                ts.isGrammarCheck();
+            case 9:
+                ts.getTimeAndDateEntered();
+            case 10:
+                if(ts.getSessionStart() != null)
+                    ts.getSessionStart();
+                else
+                    Timestamp.valueOf("9999-12-31 12:00:00");
+            case 11:
+                if(ts.getSessionStart() != null)
+                    ts.getSessionEnd();
+                else
+                    Timestamp.valueOf("9999-12-31 12:00:00");
+            case 12:
+                ts.getLocationID().getName();
+            case 13:
+                //ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
+            case 14:
+                ts.isWalkout();
+           }
+           //return null;
+        }
+        else
+            System.out.println("CANCELLED");
     }
     
     /*
@@ -89,7 +139,7 @@ public class SessionTableModel extends AbstractTableModel {
         ParaprofessionalSession ts = tutorSessions.get(rowIndex);
         switch (columnIndex) {
             case 0: 
-                return rowIndex;
+                return ts.getParaprofessionalSessionID();
             case 1:
                 return ts.getClientID().getfName();
             case 2:
@@ -109,16 +159,21 @@ public class SessionTableModel extends AbstractTableModel {
             case 9:
                 return ts.getTimeAndDateEntered();
             case 10:
-                return ts.getSessionStart();
+                if(ts.getSessionStart() != null)
+                    return ts.getSessionStart();
+                else
+                    return Timestamp.valueOf("9999-12-31 12:00:00");
             case 11:
-                return ts.getSessionEnd();
+                if(ts.getSessionStart() != null)
+                    return ts.getSessionEnd();
+                else
+                    return Timestamp.valueOf("9999-12-31 12:00:00");
             case 12:
                 return ts.getLocationID().getName();
             case 13:
-                return ts.getTermID().getName();
-            case 14:
                 return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
-                
+            case 14:
+                return ts.isWalkout();
            }
            return null;
    }
@@ -155,8 +210,7 @@ public class SessionTableModel extends AbstractTableModel {
              case 13:
                return String.class;
              case 14:
-               return String.class;
-             
+               return Boolean.class;
                  
              }
              return null;

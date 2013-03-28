@@ -56,10 +56,10 @@ public class Teacher
             return false;
     }
     
+    @Override
     public String toString()
     {
         return teacherID + " " + lName + " " + fName;
     }
-
 
 }

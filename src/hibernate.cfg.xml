@@ -18,7 +18,6 @@
     <mapping resource="tutoring/entity/Teacher.hbm.xml"/>
     <mapping resource="tutoring/entity/Category.hbm.xml"/>
     <mapping resource="tutoring/entity/Role.hbm.xml"/>
-    <mapping resource="tutoring/entity/Term.hbm.xml"/>
     <mapping resource="tutoring/entity/Paraprofessional.hbm.xml"/>
     <mapping resource="tutoring/entity/Client.hbm.xml"/>
     <mapping resource="tutoring/entity/Course.hbm.xml"/>

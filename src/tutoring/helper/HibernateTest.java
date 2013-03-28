@@ -57,6 +57,8 @@ public class HibernateTest {
         Transaction tr = sess.beginTransaction();
         Query query = sess.createQuery(sqlQuery);
         List result = query.list(); 
+        //sess.close();
+        //sessFact.close();
         return result;
         /*
         Iterator it = result.iterator();
@@ -93,7 +95,7 @@ public class HibernateTest {
                      
         sess.save(obj);
         tr.commit();
-        sessFact.close();
+        //sessFact.close();
     }
       
        public static void batchCreate(Object[] obj)

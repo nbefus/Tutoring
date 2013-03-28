@@ -13,7 +13,6 @@ public class Subject
 {
     private int subjectID;  // primary key
     private String abbrevName;
-    private String fullName;
     private Category categoryID;  // foreign key
 
     public Subject()
@@ -21,10 +20,9 @@ public class Subject
         
     }
       
-    public Subject(int subjectID, String abbrevName, String fullName, Category category) {
+    public Subject(int subjectID, String abbrevName, Category category) {
         this.subjectID = subjectID;
         this.abbrevName = abbrevName;
-        this.fullName = fullName;
         this.categoryID = category;
     }
 
@@ -61,20 +59,6 @@ public class Subject
     }
 
     /**
-     * @return the fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * @param fullName the fullName to set
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
      * @return the categoryID
      */
     public Category getCategoryID() {
@@ -90,7 +74,7 @@ public class Subject
     
     public boolean equals(Subject s)
     {
-        if(this.abbrevName.equals(s.getAbbrevName()) && this.fullName.equals(s.getFullName()))
+        if(this.abbrevName.equals(s.getAbbrevName()))
             return true;
         return false;
     }
@@ -98,7 +82,7 @@ public class Subject
     @Override
     public String toString()
     {
-        return subjectID + " " + abbrevName + " " + fullName + " " + categoryID.getName();
+        return subjectID + " " + abbrevName + " " + categoryID.getName();
     }
 
 }

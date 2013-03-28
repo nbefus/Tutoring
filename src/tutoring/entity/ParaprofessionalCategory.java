@@ -53,6 +53,8 @@ public class ParaprofessionalCategory implements Serializable{
         this.categoryID = categoryID;
     }
     
+    
+    @Override
     public String toString()
     {
         return paraprofessionalID.toString() + " " + categoryID.toString();

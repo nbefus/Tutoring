@@ -32,9 +32,9 @@ import javax.swing.text.JTextComponent;
  * @author dabeefinator
  */
 
-public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseListener
+public class AutoCompleteComboBox extends JComboBox implements KeyListener, ActionListener, MouseListener
 {
-    private String[] keywords;// = {"hey", "How are you","howdy","hinting","hinter","hunter"};
+    private ArrayList<String> keywords;// = {"hey", "How are you","howdy","hinting","hinter","hunter"};
     private String entry = "";
     private boolean isUpdating = false;
     private boolean zeroIndexSel = false;
@@ -44,10 +44,10 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
      ArrayList<String> matches = new ArrayList<String>();
     //private MutableComboBoxModel mcbm;
     
-    public AutoCompleteComboBox(JComboBox jcb, String[] keywords)
+    public AutoCompleteComboBox(JComboBox jcb, ArrayList<String> keywords)
     {
         this.keywords = keywords;
-        Arrays.sort(keywords);
+        //Arrays.sort(keywords.toArray());
         this.jcb = jcb;
         jcb.setEditable(true);
         updatelist();
@@ -63,13 +63,6 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
         
         
         //jcb.setLightWeightPopupEnabled(false);
-        
-    }
-    
-    public void setList(JList l, ArrayList<String> s)
-    {
-        //s.addAll(Arrays.asList(keywords));
-        l.setListData(keywords);
         
     }
     
@@ -118,27 +111,21 @@ public class AutoCompleteComboBox implements KeyListener, ActionListener, MouseL
             }
             else
             {
-                for(int i=0; i<keywords.length; i++)
+                for(int i=0; i<keywords.size(); i++)
                 {
-                
-                    if(!matches.contains(keywords[i]) && keywords[i].toUpperCase().contains(text.toUpperCase()))
+                    if(!matches.contains(keywords.get(i)) && keywords.get(i).toUpperCase().contains(text.toUpperCase()))
                     {
-                        
                         //matches.add(keywords[i]);
-                        mcbm.addElement(keywords[i]);
+                        mcbm.addElement(keywords.get(i));
 
-                        matches.add(keywords[i]);
+                        matches.add(keywords.get(i));
 
                        // System.out.println("CONTAINS: "+keywords[i]);
                     }
             
                 }
-                
-            
             }
             
-        
-        
        // System.out.println("SIZE: "+mcbm.getSize());
       
         

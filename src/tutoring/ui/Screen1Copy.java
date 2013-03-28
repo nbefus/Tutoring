@@ -9,8 +9,8 @@ import tutoring.entity.Subject;
 import tutoring.entity.SubjectCategory;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
-import tutoring.helper.AutoComplete;
-import tutoring.helper.FakeValues;
+import tutoring.old.AutoComplete;
+import tutoring.old.FakeValues;
 import tutoring.helper.SessionTableModel;
 /*
  * To change this template, choose Tools | Templates

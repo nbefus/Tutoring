@@ -35,9 +35,12 @@
         <property name="notes" type="string">
             <column name="notes" length="65535" />
         </property>
-        <many-to-one name="termID" class="tutoring.entity.Term" fetch="select">
+        <property name="walkout" type="boolean">
+            <column name="walkout" not-null="true" />
+        </property>
+        <!--<many-to-one name="termID" class="tutoring.entity.Term" fetch="select">
             <column name="termID" not-null="true" />
-        </many-to-one>
+        </many-to-one>-->
         <many-to-one name="locationID" class="tutoring.entity.Location" fetch="select">
             <column name="locationID" not-null="true" />
         </many-to-one>

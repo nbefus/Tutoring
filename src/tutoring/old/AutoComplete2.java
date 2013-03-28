@@ -1,6 +1,8 @@
-package tutoring.helper;
+package tutoring.old;
 
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -24,8 +26,10 @@ import javax.swing.event.ListSelectionListener;
  * @author dabeefinator
  */
 
-public class AutoComplete implements KeyListener, ListSelectionListener, MouseListener
+public class AutoComplete2 implements KeyListener, ListSelectionListener, MouseListener, FocusListener
 {
+    private boolean DEBUG = false;
+    
     private String[] keywords;// = {"hey", "How are you","howdy","hinting","hinter","hunter"};
     private String entry = "";
     private boolean isUpdating = false;
@@ -35,17 +39,22 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
     private JScrollPane jScrollPane1;
     private String originalText = "";
     
-    public AutoComplete(JList jl, JTextField jtf, JScrollPane jsp, String[] keywords)
+    
+    public AutoComplete2(JList jl, JTextField jtf, JScrollPane jsp, String[] keywords)
     {
         this.keywords = keywords;
         Arrays.sort(keywords);
         jTextField1 = jtf;
         jScrollPane1 = jsp;
-        jTextField1.addKeyListener(AutoComplete.this);
+        jTextField1.addKeyListener(AutoComplete2.this);
         jList1 = jl;
-        jList1.addKeyListener(AutoComplete.this);
-        jList1.addListSelectionListener(AutoComplete.this);
-        jList1.addMouseListener(AutoComplete.this);
+        jList1.addKeyListener(AutoComplete2.this);
+        jList1.addListSelectionListener(AutoComplete2.this);
+        jList1.addMouseListener(AutoComplete2.this);
+        jList1.setFocusable(false);
+        jList1.addFocusListener(this);
+        jTextField1.addFocusListener(this);
+        updatelist();
         
     }
     
@@ -56,20 +65,20 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
         
     }
     
-    public void updatelist(JList l, JTextField t)
+    public void updatelist()
     {
-        String text = t.getText();
+        String text = jTextField1.getText();
         ArrayList<String> matches = new ArrayList<String>();
         //vect = new Vector<String>();
         for(int i=0; i<keywords.length; i++)
         {
-            if(keywords[i].toUpperCase().contains(text.toUpperCase()))
+            if(keywords[i].contains(text))
             {
                 matches.add(keywords[i]);
             }
         }
         
-        l.setListData(matches.toArray());
+        jList1.setListData(matches.toArray());
         
         
     }
@@ -78,23 +87,52 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
     {
         return entry;
     }
+    
+    
+    public void finishUpdating(boolean listVisible)
+    {
+        isUpdating = false;
+        
+        if(!listVisible)
+        {
+           jList1.setVisible(false);
+            jScrollPane1.setBorder(null);
+            jScrollPane1.setVisible(false); 
+        }
+
+        System.out.println("NOT UPDATING");
+        
+        jTextField1.requestFocusInWindow();
+       
+        
+        
+        
+    }
+    
+    public void startUpdating()
+    {
+        isUpdating = true;
+        System.out.println("IS UPDATING");
+        zeroIndexSel = true;
+
+        originalText = jTextField1.getText();
+        jList1.setFocusable(true);
+        jList1.requestFocusInWindow();
+        jList1.setSelectedIndex(0);
+    }
 
     
 
     @Override
     public void keyReleased(KeyEvent evt) 
     {
-        System.out.println("TESTING KEY RELEASED");
+        if(DEBUG)
+            System.out.println("TESTING KEY RELEASED");
         if(evt.getSource() == jTextField1)
         {
             if (evt.getKeyCode() == KeyEvent.VK_DOWN)
             {
-                isUpdating = true;
-                zeroIndexSel = true;
-
-                originalText = jTextField1.getText();
-                jList1.requestFocusInWindow();
-                jList1.setSelectedIndex(0);
+                startUpdating();
 
             }
             if(!jTextField1.getText().equals("") && !isUpdating)
@@ -102,7 +140,7 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
                 jScrollPane1.setVisible(true);
                 jList1.setVisible(true);
                 jScrollPane1.setBorder(BorderFactory.createCompoundBorder());
-                updatelist(jList1, jTextField1);
+                updatelist();
                 int size = jList1.getModel().getSize();
                 if(size == 0)
                 {
@@ -128,30 +166,27 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
             {
                 if(!isUpdating)
                 {
-                jList1.setVisible(false);
-                jScrollPane1.setBorder(null);
-                jScrollPane1.setVisible(false);
+                    updatelist();
+                    //jList1.setVisible(false);
+                    //jScrollPane1.setBorder(null);
+                    //jScrollPane1.setVisible(false);
                 }
             }
         }
-        else if(evt.getSource() == jList1)
+        else if(evt.getSource() == jList1 && isUpdating)
         {
             if (evt.getKeyCode() == KeyEvent.VK_UP && zeroIndexSel)
             {
-
                 jTextField1.setText(originalText);
-                isUpdating=false;
+                
                 jList1.clearSelection();
-                jTextField1.requestFocusInWindow();
+                finishUpdating(true);
+                
             }
             else if (evt.getKeyCode() == KeyEvent.VK_ENTER)
             {
                 jTextField1.setText(jList1.getSelectedValue().toString());
-                isUpdating=false;
-                jList1.setVisible(false);
-                jScrollPane1.setVisible(false);
-                jScrollPane1.setBorder(null);
-                jTextField1.requestFocusInWindow();
+                finishUpdating(false);
             }
             else if(evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN)
             {
@@ -163,10 +198,9 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
                 {
                     jTextField1.setText(originalText);
                 }
-
-                isUpdating=false;
+                
                 jList1.clearSelection();
-                jTextField1.requestFocusInWindow();
+                finishUpdating(true);
             }
 
             if(jList1.getSelectedIndex() == 0)
@@ -182,8 +216,9 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
 
     @Override
     public void valueChanged(ListSelectionEvent evt) {
-        System.out.println("TESTING VALUE CHANGED");
-        if(evt.getSource() == jList1)
+        if(DEBUG)
+            System.out.println("TESTING VALUE CHANGED");
+        if(evt.getSource() == jList1 && isUpdating)
         {
             if(!jList1.isSelectionEmpty() && jList1.getSelectedValue().toString() != null && !jList1.getSelectedValue().toString().equals(""))
             {
@@ -195,6 +230,7 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
 
     @Override
     public void mouseClicked(MouseEvent evt) {
+        if(DEBUG)
         System.out.println("TESTING MOUSE CLICKED");
         if(evt.getSource()==jList1)
         {
@@ -202,17 +238,11 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
             int index = list.locationToIndex(evt.getPoint());
 
             jTextField1.setText(jList1.getModel().getElementAt(index).toString());
-            isUpdating=false;
-            jList1.setVisible(false);
-            jScrollPane1.setVisible(false);
-            jScrollPane1.setBorder(null);
-            jTextField1.requestFocusInWindow();
+            finishUpdating(false);
         }
     }
 
-    
-    
-    
+
     @Override
     public void keyTyped(KeyEvent ke) {}
     
@@ -230,4 +260,37 @@ public class AutoComplete implements KeyListener, ListSelectionListener, MouseLi
 
     @Override
     public void keyPressed(KeyEvent ke) {}
+
+    @Override
+    public void focusGained(FocusEvent evt) {
+        if(DEBUG)
+            System.out.println("FOCUS GAINED");
+        if(evt.getSource()==jTextField1 && !isUpdating)
+        {
+            jScrollPane1.setVisible(true);
+            jList1.setVisible(true);
+            jScrollPane1.setBorder(BorderFactory.createCompoundBorder());
+            updatelist();
+        }
+    }
+
+    @Override
+    public void focusLost(FocusEvent evt) 
+    {
+        if(DEBUG)
+            System.out.println("FOCUS LOST");
+        if((evt.getSource()==jTextField1 && !isUpdating)) // When focus is lost to something other than the Jlist
+        {
+            System.out.println("HERE");
+            jList1.setFocusable(false);
+            jList1.setVisible(false);
+            jScrollPane1.setBorder(null);
+            jScrollPane1.setVisible(false); 
+            //finishUpdating(false);
+        } 
+        else if(evt.getSource()==jList1 && isUpdating)
+        {
+            finishUpdating(false);
+        }
+    }
 }

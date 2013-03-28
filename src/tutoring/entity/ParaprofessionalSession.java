@@ -18,7 +18,7 @@ public class ParaprofessionalSession {
     private Paraprofessional paraprofessionalID;        // foreign key
     private Client clientID;                              // foreign key
     private Course courseID;                              // foreign key
-    private Term termID;                                  // foreign key
+    //private Term termID;                                  // foreign key
     private Location locationID;                          // foreign key
     private Paraprofessional paraprofessionalCreatorID;   // foreign key
     
@@ -27,18 +27,20 @@ public class ParaprofessionalSession {
     private Timestamp sessionEnd;
     private boolean grammarCheck;
     private String notes;
+    
+    private boolean walkout;
 
       public ParaprofessionalSession()
     {
         
     }
       
-    public ParaprofessionalSession(int paraprofessionalSessionID, Paraprofessional paraprofessionalID, Client client, Course course, Term term, Location location, Paraprofessional paraprofessionalCreator, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, boolean grammarCheck, String notes) {
+    public ParaprofessionalSession(int paraprofessionalSessionID, Paraprofessional paraprofessionalID, Client client, Course course, Location location, Paraprofessional paraprofessionalCreator, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, boolean grammarCheck, String notes, boolean walkout) {
         this.paraprofessionalSessionID = paraprofessionalSessionID;
         this.paraprofessionalID = paraprofessionalID;
         this.clientID = client;
         this.courseID = course;
-        this.termID = term;
+        //this.termID = term;
         this.locationID = location;
         this.paraprofessionalCreatorID = paraprofessionalCreator;
         this.timeAndDateEntered = timeAndDateEntered;
@@ -46,6 +48,7 @@ public class ParaprofessionalSession {
         this.sessionEnd = sessionEnd;
         this.grammarCheck = grammarCheck;
         this.notes = notes;
+        this.walkout = walkout;
     }
 
     /**
@@ -104,19 +107,16 @@ public class ParaprofessionalSession {
         this.courseID = courseID;
     }
 
-    /**
-     * @return the termID
-     */
+    /*
+    
     public Term getTermID() {
         return termID;
     }
 
-    /**
-     * @param termID the termID to set
-     */
+   
     public void setTermID(Term termID) {
         this.termID = termID;
-    }
+    }*/
 
     /**
      * @return the locationID
@@ -216,10 +216,21 @@ public class ParaprofessionalSession {
         this.notes = notes;
     }
     
+    @Override
     public String toString()
     {
-        return paraprofessionalSessionID + " " + paraprofessionalID.toString() + " " + clientID.toString() + " " + termID.toString() + " " + locationID.toString() + " " + paraprofessionalCreatorID.toString() + " " + timeAndDateEntered.toString() + " " + sessionStart.toGMTString() + " " + sessionEnd.toGMTString() + " " + grammarCheck + " " + notes;
+        return paraprofessionalSessionID + " " + paraprofessionalID.toString() + " " + clientID.toString() + " " + locationID.toString() + " " + paraprofessionalCreatorID.toString() + " " + timeAndDateEntered.toString() + " " + sessionStart.toGMTString() + " " + sessionEnd.toGMTString() + " " + grammarCheck + " " + notes + " " + walkout;
     }
     
+     public boolean isWalkout() {
+        return walkout;
+    }
+
+    /**
+     * @param grammarCheck the grammarCheck to set
+     */
+    public void setWalkout(boolean walkout) {
+        this.walkout = walkout;
+    }
   
 }

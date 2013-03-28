@@ -6,8 +6,8 @@ package tutoring.ui;
  * and open the template in the editor.
  */
 
-import tutoring.helper.AutoComplete;
-import tutoring.helper.AutoComplete2;
+import tutoring.old.AutoComplete;
+import tutoring.old.AutoComplete2;
 
 /**
  *

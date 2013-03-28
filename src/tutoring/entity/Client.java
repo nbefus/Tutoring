@@ -96,6 +96,7 @@ public class Client {
         this.phone = phone;
     }
     
+    @Override
     public String toString()
     {
         return clientID + " " + fName + " " + lName + " " + email + " " + phone;

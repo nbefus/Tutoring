@@ -85,6 +85,7 @@ public class Course
             return false;
     }
     
+    @Override
     public String toString()
     {
         return courseID + " " + teacherID.toString() + " " + subjectID.toString() + " " + level;

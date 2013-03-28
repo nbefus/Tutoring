@@ -15,10 +15,10 @@
             <column name="lName" length="100" not-null="true" />
         </property>
         <property name="phone" type="int">
-            <column name="phone" not-null="true" />
+            <column name="phone" not-null="false" />
         </property>
         <property name="email" type="string">
-            <column name="email" length="100" not-null="true" />
+            <column name="email" length="100" not-null="false" />
         </property>
     </class>
 </hibernate-mapping>

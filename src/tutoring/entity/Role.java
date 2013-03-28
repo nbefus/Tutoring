@@ -50,6 +50,7 @@ public class Role {
         this.type = type;
     }
     
+    @Override
     public String toString()
     {
         return roleID + " " + type;
