@@ -41,7 +41,7 @@ public class Screen2 extends javax.swing.JFrame {
        jTable1.setModel(new SessionTableModel());
        jTable1.setAutoCreateRowSorter(true);
        jTable1.setFillsViewportHeight(true);
-      // jTable1.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
+    // jTable1.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
        jTable1.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer());
        jTable1.getColumnModel().getColumn(10).setCellEditor(new TimestampCellEditor(new JTextField()));
        

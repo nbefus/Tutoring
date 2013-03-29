@@ -29,51 +29,263 @@ public class Admin extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jTabbedPane2 = new javax.swing.JTabbedPane();
-        pPanel1 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        clearButton1 = new javax.swing.JButton();
-        addSessionbutton1 = new javax.swing.JButton();
-        walkoutCheck1 = new javax.swing.JCheckBox();
-        futureCheck1 = new javax.swing.JCheckBox();
-        gcCheck1 = new javax.swing.JCheckBox();
-        notesField1 = new javax.swing.JTextField();
-        notesLabel1 = new javax.swing.JLabel();
-        creatorField1 = new javax.swing.JTextField();
-        creatorLabel1 = new javax.swing.JLabel();
-        futureField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        locationCombo1 = new javax.swing.JComboBox();
-        locationLabel1 = new javax.swing.JLabel();
-        categoryCombo1 = new javax.swing.JComboBox();
-        categoryLabel1 = new javax.swing.JLabel();
-        teacherCombo1 = new javax.swing.JComboBox();
-        teacherLabel1 = new javax.swing.JLabel();
-        levelCombo1 = new javax.swing.JComboBox();
-        levelLabel1 = new javax.swing.JLabel();
-        courseCombo1 = new javax.swing.JComboBox();
-        courseLabel1 = new javax.swing.JLabel();
-        emailCombo2 = new javax.swing.JComboBox();
-        phoneLabel2 = new javax.swing.JLabel();
-        phoneCombo2 = new javax.swing.JComboBox();
-        emailLabel2 = new javax.swing.JLabel();
-        lnameCombo2 = new javax.swing.JComboBox();
-        lnameLabel2 = new javax.swing.JLabel();
-        fnameCombo1 = new javax.swing.JComboBox();
-        fnameLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        coursePanel = new javax.swing.JPanel();
+        pPanel = new javax.swing.JPanel();
+        fnameLabel = new javax.swing.JLabel();
+        fnameCombo = new javax.swing.JComboBox();
+        lnameLabel = new javax.swing.JLabel();
+        lnameCombo = new javax.swing.JComboBox();
+        emailLabel = new javax.swing.JLabel();
+        phoneCombo = new javax.swing.JComboBox();
+        phoneLabel = new javax.swing.JLabel();
+        emailCombo = new javax.swing.JComboBox();
+        jPanel4 = new javax.swing.JPanel();
+        courseLabel = new javax.swing.JLabel();
+        courseCombo = new javax.swing.JComboBox();
+        levelLabel = new javax.swing.JLabel();
+        levelCombo = new javax.swing.JComboBox();
+        teacherLabel = new javax.swing.JLabel();
+        teacherCombo = new javax.swing.JComboBox();
+        categoryLabel = new javax.swing.JLabel();
+        categoryCombo = new javax.swing.JComboBox();
+        locationLabel = new javax.swing.JLabel();
+        locationCombo = new javax.swing.JComboBox();
+        creatorLabel = new javax.swing.JLabel();
+        creatorField = new javax.swing.JTextField();
+        notesLabel = new javax.swing.JLabel();
+        notesField = new javax.swing.JTextField();
+        gcCheck = new javax.swing.JCheckBox();
+        walkoutCheck = new javax.swing.JCheckBox();
+        futureCheck = new javax.swing.JCheckBox();
+        jLabel1 = new javax.swing.JLabel();
+        futureField = new javax.swing.JTextField();
+        addSessionbutton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         downloadButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        fnameLabel.setText("First Name:");
+
+        fnameCombo.setEditable(true);
+
+        lnameLabel.setText("Last Name:");
+
+        lnameCombo.setEditable(true);
+
+        emailLabel.setText("Email:");
+
+        phoneCombo.setEditable(true);
+
+        phoneLabel.setText("Phone:");
+
+        emailCombo.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout pPanelLayout = new org.jdesktop.layout.GroupLayout(pPanel);
+        pPanel.setLayout(pPanelLayout);
+        pPanelLayout.setHorizontalGroup(
+            pPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(pPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(fnameLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(fnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(92, 92, 92)
+                .add(lnameLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(lnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(91, 91, 91)
+                .add(emailLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 295, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(100, 100, 100)
+                .add(phoneLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(emailCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 188, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pPanelLayout.setVerticalGroup(
+            pPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(pPanelLayout.createSequentialGroup()
+                .add(pPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(fnameLabel)
+                    .add(fnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(lnameLabel)
+                    .add(lnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(emailLabel)
+                    .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(phoneLabel)
+                    .add(emailCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(6, 6, 6))
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Other Information"));
+
+        courseLabel.setText("Course:");
+
+        courseCombo.setEditable(true);
+
+        levelLabel.setText("Course#:");
+
+        levelCombo.setEditable(true);
+
+        teacherLabel.setText("Teacher:");
+
+        teacherCombo.setEditable(true);
+        teacherCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teacherComboActionPerformed(evt);
+            }
+        });
+
+        categoryLabel.setText("Category:");
+
+        categoryCombo.setEditable(true);
+
+        locationLabel.setText("Location:");
+
+        creatorLabel.setText("Creator:");
+
+        creatorField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                creatorFieldActionPerformed(evt);
+            }
+        });
+
+        notesLabel.setText("Notes:");
+
+        gcCheck.setText("GC");
+
+        walkoutCheck.setText("Walkout");
+
+        futureCheck.setText("Future");
+
+        jLabel1.setText("Schedule:");
+
+        addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
+        addSessionbutton.setText("Add Session");
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addSessionbuttonMouseClicked(evt);
+            }
+        });
+
+        clearButton.setForeground(new java.awt.Color(153, 0, 0));
+        clearButton.setText("Clear");
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clearButtonMouseClicked(evt);
+            }
+        });
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout jPanel4Layout = new org.jdesktop.layout.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(courseLabel)
+                    .add(creatorLabel))
+                .add(27, 27, 27)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(30, 30, 30)
+                        .add(levelLabel)
+                        .add(18, 18, 18)
+                        .add(levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(creatorField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(notesLabel)
+                        .add(18, 18, 18)
+                        .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(gcCheck)
+                        .add(50, 50, 50)
+                        .add(walkoutCheck)
+                        .add(38, 38, 38)
+                        .add(futureCheck))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .add(teacherLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 203, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(20, 20, 20)))
+                .add(41, 41, 41)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jLabel1)
+                    .add(categoryLabel))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(futureField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 186, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(addSessionbutton)
+                        .add(18, 18, 18)
+                        .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jPanel4Layout.createSequentialGroup()
+                        .add(categoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(locationLabel)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(courseLabel)
+                    .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(levelLabel)
+                    .add(teacherLabel)
+                    .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(categoryLabel)
+                    .add(categoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(locationLabel))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(creatorField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(creatorLabel)
+                    .add(notesLabel)
+                    .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(gcCheck)
+                    .add(walkoutCheck)
+                    .add(futureCheck)
+                    .add(jLabel1)
+                    .add(futureField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(addSessionbutton)
+                    .add(clearButton))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -84,220 +296,72 @@ public class Admin extends javax.swing.JFrame {
                 "First", "Last", "Email", "Phone"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane4.setViewportView(jTable2);
 
-        clearButton1.setForeground(new java.awt.Color(153, 0, 0));
-        clearButton1.setText("Clear");
-        clearButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clearButton1MouseClicked(evt);
-            }
-        });
-        clearButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearButton1ActionPerformed(evt);
-            }
-        });
+        jButton2.setText("Delete Session");
 
-        addSessionbutton1.setForeground(new java.awt.Color(51, 102, 255));
-        addSessionbutton1.setText("Add Session");
-        addSessionbutton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addSessionbutton1MouseClicked(evt);
-            }
-        });
-
-        walkoutCheck1.setText("Walkout");
-
-        futureCheck1.setText("Future");
-
-        gcCheck1.setText("GC");
-
-        notesLabel1.setText("Notes:");
-
-        creatorField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                creatorField1ActionPerformed(evt);
-            }
-        });
-
-        creatorLabel1.setText("Creator:");
-
-        jLabel2.setText("Schedule:");
-
-        locationLabel1.setText("Location:");
-
-        categoryCombo1.setEditable(true);
-
-        categoryLabel1.setText("Category:");
-
-        teacherCombo1.setEditable(true);
-        teacherCombo1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                teacherCombo1ActionPerformed(evt);
-            }
-        });
-
-        teacherLabel1.setText("Teacher:");
-
-        levelCombo1.setEditable(true);
-
-        levelLabel1.setText("Course#:");
-
-        courseCombo1.setEditable(true);
-
-        courseLabel1.setText("Course:");
-
-        emailCombo2.setEditable(true);
-
-        phoneLabel2.setText("Phone:");
-
-        phoneCombo2.setEditable(true);
-
-        emailLabel2.setText("Email:");
-
-        lnameCombo2.setEditable(true);
-
-        lnameLabel2.setText("Last Name:");
-
-        fnameCombo1.setEditable(true);
-
-        fnameLabel1.setText("First Name:");
-
-        jButton1.setText("Delete Session");
-
-        org.jdesktop.layout.GroupLayout pPanel1Layout = new org.jdesktop.layout.GroupLayout(pPanel1);
-        pPanel1.setLayout(pPanel1Layout);
-        pPanel1Layout.setHorizontalGroup(
-            pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(pPanel1Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout jPanel5Layout = new org.jdesktop.layout.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5Layout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(pPanel1Layout.createSequentialGroup()
-                        .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(pPanel1Layout.createSequentialGroup()
-                                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(courseLabel1)
-                                    .add(creatorLabel1))
-                                .add(28, 28, 28)
-                                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(pPanel1Layout.createSequentialGroup()
-                                        .add(courseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(18, 18, 18)
-                                        .add(levelLabel1))
-                                    .add(pPanel1Layout.createSequentialGroup()
-                                        .add(creatorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(notesLabel1))))
-                            .add(pPanel1Layout.createSequentialGroup()
-                                .add(fnameLabel1)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(fnameCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 152, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(lnameLabel2)))
-                        .add(18, 18, 18)
-                        .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(pPanel1Layout.createSequentialGroup()
-                                .add(notesField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 242, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(gcCheck1)
-                                .add(18, 18, 18)
-                                .add(walkoutCheck1)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(futureCheck1)
-                                .add(18, 18, 18)
-                                .add(jLabel2)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(futureField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(0, 0, Short.MAX_VALUE))
-                            .add(pPanel1Layout.createSequentialGroup()
-                                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                        .add(pPanel1Layout.createSequentialGroup()
-                                            .add(lnameCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .add(20, 20, 20)
-                                            .add(emailLabel2)
-                                            .add(18, 18, 18)
-                                            .add(phoneCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 295, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                            .add(phoneLabel2))
-                                        .add(categoryLabel1))
-                                    .add(pPanel1Layout.createSequentialGroup()
-                                        .add(levelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 88, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .add(86, 86, 86)
-                                        .add(teacherLabel1)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                        .add(teacherCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 215, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(pPanel1Layout.createSequentialGroup()
-                                        .add(emailCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 188, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(420, Short.MAX_VALUE))
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, pPanel1Layout.createSequentialGroup()
-                                        .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                            .add(pPanel1Layout.createSequentialGroup()
-                                                .add(0, 0, Short.MAX_VALUE)
-                                                .add(addSessionbutton1)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                                .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                            .add(pPanel1Layout.createSequentialGroup()
-                                                .add(categoryCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .add(locationLabel1)
-                                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                                .add(locationCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                                        .add(158, 158, 158))))))
-                    .add(pPanel1Layout.createSequentialGroup()
-                        .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1365, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(0, 160, Short.MAX_VALUE))))
+                .add(jScrollPane4)
+                .addContainerGap())
         );
-        pPanel1Layout.setVerticalGroup(
-            pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(pPanel1Layout.createSequentialGroup()
-                .add(4, 4, 4)
-                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(fnameLabel1)
-                    .add(fnameCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(lnameLabel2)
-                    .add(lnameCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(emailLabel2)
-                    .add(phoneCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(phoneLabel2)
-                    .add(emailCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(courseLabel1)
-                    .add(courseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(levelLabel1)
-                    .add(levelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(teacherLabel1)
-                    .add(teacherCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(categoryLabel1)
-                    .add(categoryCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(locationLabel1)
-                    .add(locationCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(pPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(gcCheck1)
-                    .add(futureCheck1)
-                    .add(addSessionbutton1)
-                    .add(walkoutCheck1)
-                    .add(clearButton1)
-                    .add(notesField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(notesLabel1)
-                    .add(creatorField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(creatorLabel1)
-                    .add(futureField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jLabel2))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 337, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jTabbedPane2.addTab("Sessions", pPanel1);
+        org.jdesktop.layout.GroupLayout coursePanelLayout = new org.jdesktop.layout.GroupLayout(coursePanel);
+        coursePanel.setLayout(coursePanelLayout);
+        coursePanelLayout.setHorizontalGroup(
+            coursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(coursePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(coursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(pPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        coursePanelLayout.setVerticalGroup(
+            coursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(coursePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(pPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 56, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(1, 1, 1)
+                .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(coursePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 173, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(coursePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane2.addTab("Sessions", jPanel3);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -328,7 +392,7 @@ public class Admin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(462, Short.MAX_VALUE)
+                .addContainerGap(466, Short.MAX_VALUE)
                 .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 334, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
@@ -342,7 +406,7 @@ public class Admin extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                        .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(downloadButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jScrollPane2))
@@ -350,6 +414,21 @@ public class Admin extends javax.swing.JFrame {
         );
 
         jTabbedPane2.addTab("Report", jPanel1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 1535, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 585, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("Agenda", jPanel2);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -360,32 +439,32 @@ public class Admin extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 607, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .add(jTabbedPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 635, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void teacherCombo1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherCombo1ActionPerformed
+    private void teacherComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherComboActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_teacherCombo1ActionPerformed
+    }//GEN-LAST:event_teacherComboActionPerformed
 
-    private void creatorField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creatorField1ActionPerformed
+    private void creatorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creatorFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_creatorField1ActionPerformed
+    }//GEN-LAST:event_creatorFieldActionPerformed
 
-    private void addSessionbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbutton1MouseClicked
+    private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_addSessionbutton1MouseClicked
+    }//GEN-LAST:event_addSessionbuttonMouseClicked
 
-    private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
+    private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_clearButton1ActionPerformed
+    }//GEN-LAST:event_clearButtonMouseClicked
 
-    private void clearButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButton1MouseClicked
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_clearButton1MouseClicked
+    }//GEN-LAST:event_clearButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -429,47 +508,52 @@ public class Admin extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addSessionbutton1;
-    private javax.swing.JComboBox categoryCombo1;
-    private javax.swing.JLabel categoryLabel1;
-    private javax.swing.JButton clearButton1;
-    private javax.swing.JComboBox courseCombo1;
-    private javax.swing.JLabel courseLabel1;
-    private javax.swing.JTextField creatorField1;
-    private javax.swing.JLabel creatorLabel1;
+    private javax.swing.JButton addSessionbutton;
+    private javax.swing.JComboBox categoryCombo;
+    private javax.swing.JLabel categoryLabel;
+    private javax.swing.JButton clearButton;
+    private javax.swing.JComboBox courseCombo;
+    private javax.swing.JLabel courseLabel;
+    private javax.swing.JPanel coursePanel;
+    private javax.swing.JTextField creatorField;
+    private javax.swing.JLabel creatorLabel;
     private javax.swing.JButton downloadButton;
-    private javax.swing.JComboBox emailCombo2;
-    private javax.swing.JLabel emailLabel2;
-    private javax.swing.JComboBox fnameCombo1;
-    private javax.swing.JLabel fnameLabel1;
-    private javax.swing.JCheckBox futureCheck1;
-    private javax.swing.JTextField futureField1;
-    private javax.swing.JCheckBox gcCheck1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox emailCombo;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JComboBox fnameCombo;
+    private javax.swing.JLabel fnameLabel;
+    private javax.swing.JCheckBox futureCheck;
+    private javax.swing.JTextField futureField;
+    private javax.swing.JCheckBox gcCheck;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JComboBox levelCombo1;
-    private javax.swing.JLabel levelLabel1;
-    private javax.swing.JComboBox lnameCombo2;
-    private javax.swing.JLabel lnameLabel2;
-    private javax.swing.JComboBox locationCombo1;
-    private javax.swing.JLabel locationLabel1;
-    private javax.swing.JTextField notesField1;
-    private javax.swing.JLabel notesLabel1;
-    private javax.swing.JPanel pPanel1;
-    private javax.swing.JComboBox phoneCombo2;
-    private javax.swing.JLabel phoneLabel2;
-    private javax.swing.JComboBox teacherCombo1;
-    private javax.swing.JLabel teacherLabel1;
-    private javax.swing.JCheckBox walkoutCheck1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JComboBox levelCombo;
+    private javax.swing.JLabel levelLabel;
+    private javax.swing.JComboBox lnameCombo;
+    private javax.swing.JLabel lnameLabel;
+    private javax.swing.JComboBox locationCombo;
+    private javax.swing.JLabel locationLabel;
+    private javax.swing.JTextField notesField;
+    private javax.swing.JLabel notesLabel;
+    private javax.swing.JPanel pPanel;
+    private javax.swing.JComboBox phoneCombo;
+    private javax.swing.JLabel phoneLabel;
+    private javax.swing.JComboBox teacherCombo;
+    private javax.swing.JLabel teacherLabel;
+    private javax.swing.JCheckBox walkoutCheck;
     // End of variables declaration//GEN-END:variables
 }
