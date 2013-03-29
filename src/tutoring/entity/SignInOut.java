@@ -58,7 +58,7 @@ public class SignInOut
         
         boolean userFound = false;
         
-        for (int i = 0; i < list.size(); i++) 
+        for (int i = 0; i < list.size()-1; i++) 
         {
             if(username.equals(list.get(i).getUserName()))
             {
