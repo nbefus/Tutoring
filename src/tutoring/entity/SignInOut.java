@@ -1,6 +1,9 @@
 
 package tutoring.entity;
 
+import java.util.ArrayList;
+import tutoring.helper.HibernateTest;
+
 public class SignInOut 
 {
     private String username = null;
@@ -9,8 +12,8 @@ public class SignInOut
     private boolean usernameStatus = false;
     private boolean passwordStatus = false;
     private String loginFeedback = "Please enter your 'username' and 'password' to receive feedback.";
-    private String[][] users = new String[2][2];
-    
+    final private ArrayList<User> list = (ArrayList<User>) HibernateTest.select("from User");
+    private String realPassword = null;
     public SignInOut(String username, String password)
     {
         this.username = username;
@@ -52,8 +55,18 @@ public class SignInOut
     
     private boolean lookUpUser()
     {
+        
         boolean userFound = false;
-        //implement database search here, mySql
+        
+        for (int i = 0; i < list.size(); i++) 
+        {
+            if(username.equals(list.get(i).getUserName()))
+            {
+               userFound = true;
+               realPassword = list.get(i).getPassword();
+               return userFound;
+            }
+        }
         
         return userFound;
     }
@@ -61,7 +74,13 @@ public class SignInOut
     private boolean lookUpPassword()
     {
         boolean passwordFound = false;
-        //implement database search here, mySql
+
+        if(password.equals(realPassword))
+        {
+           passwordFound = true;
+           return passwordFound;
+        }
+        
         return passwordFound;
     }
     
