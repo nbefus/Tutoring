@@ -204,7 +204,7 @@ public class Screen1 extends javax.swing.JFrame
        cultimateList.add(clientsphone);
        cultimateList.add(clientsemail);
 
-      UltimateAutoCompleteClient uacc = new UltimateAutoCompleteClient(cultimateList, cboxes, clientFirst, clientLast, clientPhone, clientEmail);
+      UltimateAutoCompleteClientNew uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, clientFirst, clientLast, clientPhone, clientEmail);
        
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
