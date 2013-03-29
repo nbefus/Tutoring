@@ -36,7 +36,7 @@ public class ComboBoxCellEditor extends AbstractCellEditor implements TableCellE
         for(int i=0; i<choice.size(); i++)
             hey[i]=choice.get(i);
        // Java2sAutoComboBox comboBox = new Java2sAutoComboBox(listSomeString);
-        AutoCompleteComboBox comboBox = new AutoCompleteComboBox(jcb, hey);
+        AutoCompleteComboBox comboBox = new AutoCompleteComboBox(jcb, choice);
           
           
             
