@@ -1,6 +1,4 @@
 package preciousAreaSoNoMergeHappensLOL;
-import tutoring.entity.*;
-import UIs.*;
 
 public class LoginView extends javax.swing.JFrame 
 {
