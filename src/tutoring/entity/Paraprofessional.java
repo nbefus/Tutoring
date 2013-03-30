@@ -17,8 +17,8 @@ public class Paraprofessional
     private int paraprofessionalID;         // primary key
     private Role roleID;                      // foreign key
     private String lName, fName;
-    private Timestamp hireDate;
-    private Timestamp terminationDate;
+    private Timestamp hireDate = null;
+    private Timestamp terminationDate = null;
     private boolean isClockedIn;
 
       public Paraprofessional()
@@ -133,12 +133,15 @@ public class Paraprofessional
         this.isClockedIn = isClockedIn;
     }
     
-    
+    public String hi()
+    {
+        return paraprofessionalID + " " + roleID.toString() + " " + lName + " " + fName + " " + hireDate.toString() + " " + terminationDate.toString() + " " + isClockedIn;
+    }
     
     @Override
     public String toString()
     {
-        return paraprofessionalID + " " + roleID.toString() + " " + lName + " " + fName + " " + hireDate.toString() + " " + terminationDate.toString() + " " + isClockedIn;
+        return paraprofessionalID + " " + roleID.toString() + " " + lName + " " + fName + " " + hireDate + " " + terminationDate + " " + isClockedIn;
     }
     
 

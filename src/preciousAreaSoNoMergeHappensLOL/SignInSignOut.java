@@ -1,6 +1,7 @@
 package preciousAreaSoNoMergeHappensLOL;
 import UIs.*;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import tutoring.entity.Paraprofessional;
 import tutoring.entity.User;
 import tutoring.helper.HibernateTest;
@@ -12,10 +13,6 @@ public class SignInSignOut extends javax.swing.JFrame {
         initComponents();
     }
     
-    ArrayList paraprofessionals = new ArrayList();
-    ArrayList<Paraprofessional> list = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional");
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -24,24 +21,40 @@ public class SignInSignOut extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         nameLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         nameCombo = new javax.swing.JComboBox();
         signInAndOutButton = new javax.swing.JButton();
-        errorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
         nameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         nameLabel.setText("Name:");
 
-        nameCombo.setEditable(true);
+        errorLabel.setForeground(new java.awt.Color(204, 0, 0));
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("Error: Invalid Name");
+        errorLabel.setEnabled(false);
+
+        nameCombo.setEditable(false);
         nameCombo.setEnabled(true);
-        ArrayList r = new ArrayList();
-        nameCombo.addItem(r);
+        nameCombo.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                nameComboPopupMenuWillBecomeVisible(evt);
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
 
         signInAndOutButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         signInAndOutButton.setForeground(new java.awt.Color(0, 153, 0));
@@ -52,42 +65,38 @@ public class SignInSignOut extends javax.swing.JFrame {
             }
         });
 
-        errorLabel.setForeground(new java.awt.Color(204, 0, 0));
-        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        errorLabel.setText("Error: Invalid Name");
-        errorLabel.setEnabled(false);
-
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(234, Short.MAX_VALUE)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(signInAndOutButton)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(nameLabel)
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel2Layout.createSequentialGroup()
+                        .add(nameLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 105, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(nameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 183, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(242, 242, 242))
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(251, 251, 251)
-                .add(errorLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 188, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(nameCombo, 0, 282, Short.MAX_VALUE))
+                    .add(errorLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(signInAndOutButton)))
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(164, 164, 164)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .add(42, 42, 42)
                 .add(errorLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(13, 13, 13)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(nameLabel)
                     .add(nameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(signInAndOutButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 40, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(213, Short.MAX_VALUE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
+
+        jPanel1.add(jPanel2, new java.awt.GridBagConstraints());
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,15 +104,15 @@ public class SignInSignOut extends javax.swing.JFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -112,6 +121,16 @@ public class SignInSignOut extends javax.swing.JFrame {
     private void signInAndOutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signInAndOutButtonMouseClicked
         
     }//GEN-LAST:event_signInAndOutButtonMouseClicked
+
+    private void nameComboPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nameComboPopupMenuWillBecomeVisible
+        
+        for (int i = 0; i < list.size(); i++) 
+        {
+            listOfParaprofessionals.add(list.get(i).getlName() + ", " + list.get(i).getfName() );
+        }
+
+        nameCombo.setModel(new DefaultComboBoxModel(listOfParaprofessionals.toArray()));
+    }//GEN-LAST:event_nameComboPopupMenuWillBecomeVisible
 
     public static void main(String args[]) 
     {
@@ -152,9 +171,14 @@ public class SignInSignOut extends javax.swing.JFrame {
             }
         });
     }
+    
+    private ArrayList listOfParaprofessionals = new ArrayList();
+    private ArrayList<Paraprofessional> list = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional where terminationDate is not null");
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLabel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JComboBox nameCombo;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JButton signInAndOutButton;
