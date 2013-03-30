@@ -11,9 +11,9 @@ package tutoring.entity;
 public class Client {
     private int clientID; // primary key
     private String fName, lName, email;
-    private int phone;
+    private String phone;
 
-    public Client(int clientID, String fName, String lName, String email, int phone) {
+    public Client(int clientID, String fName, String lName, String email, String phone) {
         this.clientID = clientID;
         this.fName = fName;
         this.lName = lName;
@@ -85,14 +85,14 @@ public class Client {
     /**
      * @return the phone
      */
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
     /**
      * @param phone the phone to set
      */
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
     

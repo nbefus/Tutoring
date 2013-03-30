@@ -14,7 +14,7 @@
         <property name="lName" type="string">
             <column name="lName" length="100" not-null="true" />
         </property>
-        <property name="phone" type="int">
+        <property name="phone" type="string">
             <column name="phone" not-null="false" />
         </property>
         <property name="email" type="string">

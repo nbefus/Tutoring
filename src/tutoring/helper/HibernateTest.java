@@ -36,7 +36,7 @@ public class HibernateTest {
         //select w.WellName from AM.Library.AMWell as w join
 //w.Operator
         
-        Query query = sess.createSQLQuery("select p.lName, p.fName, c.categoryID from Paraprofessional p join ParaprofessionalCategory c on p.paraProfessionalID=c.paraProfessionalID");//"from tutoring.entity.Paraprofessional as p join p.paraProfessionalID");
+        Query query = sess.createSQLQuery("select * from Paraprofessional as p join ParaprofessionalCategory as c on p.paraProfessionalID=c.paraProfessionalID");//"from tutoring.entity.Paraprofessional as p join p.paraProfessionalID");
         List result = query.list(); 
         Iterator it = result.iterator();
         System.out.println("id  sname  sroll  scourse");
@@ -56,6 +56,29 @@ public class HibernateTest {
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
         Query query = sess.createQuery(sqlQuery);
+        List result = query.list(); 
+        //sess.close();
+        //sessFact.close();
+        return result;
+        /*
+        Iterator it = result.iterator();
+        while(it.hasNext()){
+        Client st = (Client)it.next();
+        System.out.print(st.toString());
+        System.out.print(" "+st.getPassword());
+        System.out.print(" "+st.getfName());
+        System.out.print(" "+st.getlName());
+        System.out.println();
+        }
+        sessFact.close();*/
+    }
+    
+    public static List regularSelect(String sqlQuery)
+    {
+         SessionFactory sessFact = HibernateUtil.getSessionFactory();
+        Session sess = sessFact.getCurrentSession();
+        Transaction tr = sess.beginTransaction();
+        Query query = sess.createSQLQuery(sqlQuery);
         List result = query.list(); 
         //sess.close();
         //sessFact.close();
@@ -107,12 +130,11 @@ public class HibernateTest {
         for(int i=0; i<obj.length; i++)
         {
             sess.save(obj[i]);
-            if (i%50 == 0)
+            if (i%50 == 0 && i != 0)
             {
                 sess.flush();
                 sess.clear();
             }
-            
         }
         
         tr.commit();
@@ -125,6 +147,7 @@ public class HibernateTest {
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
         sess.delete(obj);
+        
         System.out.println("Deleted Successfully");
         tr.commit();
         sessFact.close();

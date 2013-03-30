@@ -4,15 +4,6 @@
  */
 package tutoring.helper;
 
-/**
- *
- * @author Nathaniel
- */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
- 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -30,11 +21,16 @@ import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.text.JTextComponent;
+import tutoring.entity.Category;
 import tutoring.entity.Client;
+import tutoring.entity.Course;
+import tutoring.entity.Subject;
+import tutoring.entity.Teacher;
 
 /**
  *
@@ -48,17 +44,25 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     private boolean[] zeroIndexSel;
     private boolean[] firstClick;
     private int[] lastSize;
-    ArrayList<Courses> clientsFirst;
-    ArrayList<Client> clientsLast;
-
+    ArrayList<Course> courses;
+    ArrayList<Teacher> teachers;
+    ArrayList<Subject> subjects;
+    ArrayList<Category> categories;
+    
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
-
-    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast ) {
+    
+    private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
+    private ArrayList<String> activeBoxValues = new ArrayList<String>();
+    
+    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Subject> subjects, ArrayList<Category> categories) {
         this.keywords = keywords;
         this.boxes = boxes;
-        this.clientsFirst = clientsFirst;
-        this.clientsLast = clientsLast;
- 
+        
+        this.courses = courses;
+        this.teachers = teachers;
+        this.subjects = subjects;
+        this.categories = categories;
+        
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
         firstClick = new boolean[boxes.length];
@@ -87,8 +91,19 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
             
         }
         for(int i=0; i<boxes.length; i++)
-            updatelist(i, false);
+            updateList(i, false);
     } 
+    
+    
+    
+    
+    
+ 
+    
+    
+    
+    
+    /*
     
     public void updateOther(int activeBoxIndex)
     {
@@ -126,9 +141,10 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                     System.out.println("NO NEED");
             }
         }
-    }
+        
+    }*/
     
-    public void updatelist(int activeBoxIndex, boolean updatedOtherBoxes)
+    public void updateList(int activeBoxIndex, boolean updatedOtherBoxes)
     {
         boolean moreChars;
 
@@ -234,8 +250,20 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         
     //System.out.println("Match is: "+matches.get(activeBoxIndex).get(0));
     //System.out.println("Actual is: "+mcbm.getSelectedItem() + " OR "+mcbm.getElementAt(0));
-    if(!updatedOtherBoxes)
-        updateOther(activeBoxIndex);
+  
+   //// if(!updatedOtherBoxes)
+   ////     updateOther(activeBoxIndex);
+      
+    if(!firstClick[activeBoxIndex] && mcbm.getSize() > 0)
+    {
+        
+        setActiveValues(activeBoxIndex, mcbm.getSelectedItem().toString());
+       
+        
+        updateOtherList();
+
+        //updateOtherList(activeBoxIndex, mcbm.getSelectedItem().toString());
+    }
     
         //jcb.setMaximumRowCount(mcbm.getSize());
     if(!firstClick[activeBoxIndex] && mcbm.getSize()>0)
@@ -249,12 +277,237 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         
         
     }
+    
+    
+    public void setActiveValues(int activeBoxIndex, String value)
+    {
+        if(!activeBoxIndexes.contains(activeBoxIndex))
+        {
+            activeBoxIndexes.add(activeBoxIndex);
+            activeBoxValues.add(value);
+        }
+        else
+        {
+            System.out.println("REMOVING: "+activeBoxIndex + "  "+value);
+            //activeBoxIndexes.add(activeBoxIndex);
+           //.set(activeBoxIndexes.activeBoxIndex, text);
+            for(int i=0; i<activeBoxValues.size(); i++)
+                System.out.println("abv: "+activeBoxValues.get(i)+ " abi: "+activeBoxIndexes.get(i));
+            
+           int index = activeBoxIndexes.indexOf(activeBoxIndex);
+           System.out.println("INDEX of removal: "+index);
+           activeBoxValues.remove(index);
+           activeBoxIndexes.remove((Integer)activeBoxIndex);//.add(mcbm.getSelectedItem().toString());
+            
+            activeBoxIndexes.add(activeBoxIndex);
+           activeBoxValues.add(value);
+        }
+    }
+    
+    public void restartActiveValues()
+    {
+        activeBoxValues.removeAll(activeBoxValues);//.set(activeBoxIndexes.activeBoxIndex, text);
+            activeBoxIndexes.removeAll(activeBoxIndexes);//.add(mcbm.getSelectedItem().toString());
+            
+    }
+    
+ 
+    public void updateOtherList()
+    {
+        
+        for(int i=0; i<boxes.length; i++)
+        { 
+            MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
+            
+            if(!activeBoxIndexes.contains(i) && activeBoxIndexes.size()> 0)//ns
+            {
+                System.out.println("MORE CHARS");
+                int max = matches.get(i).size();
+                Object[] values = matches.get(i).toArray();
 
+                System.out.println("UPDATE LAST");
+                ArrayList<Integer> indexesOfValue = new ArrayList<Integer>();
+                
+               // for(int j=0; j<activeBoxIndexes.size(); j++)
+               // {
+                System.out.println("VALUE ENTERED IS: "+activeBoxValues.get(activeBoxValues.size()-1));
+                    indexesOfValue.add(keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1)));
+               // }
+                   //int index= keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1));
+                
+                //int index = keywords.get(activeBoxIndex).indexOf(value);
+                //System.out.println("initial value: "+keywords.get(activeBoxIndex).get(index));
+                /////////for(int k=0; k<activeBoxIndexes.size(); k++)
+                    
+                if(indexesOfValue.get(indexesOfValue.size()-1) != -1)
+                {
+                    String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
+                    String stringToFind;
+                    if(i == 0)
+                        stringToFind = clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                    else if(i == 1)
+                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
+                    else if(i == 2)
+                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
+                    else
+                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail();
+                    
+                    if(!otherText.equals(stringToFind))
+                    {
+                        //clear matches
+                        for(int j=0; j<max; j++)
+                        {
+                            mcbm.removeElement(((String)values[j]));
+                            //indexesToRemove.add(i);
+                            matches.get(i).remove(((String)values[j]));
+                           // System.out.println("CONTAINS: "+keywords[i]);
+                        }
+
+                        ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText(stringToFind);
+                      //  System.out.println("UPDATED Last in other with "+clientsFirst.get(index).getlName());
+
+                        boolean moreResults = true;
+                        int j = indexesOfValue.get(indexesOfValue.size()-1)-1;
+                        String find = activeBoxValues.get(activeBoxValues.size()-1);
+                        
+                        while(moreResults)
+                        {
+
+                            j++;
+                           // System.out.println("Checking keyword"+j+ "  " + keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j));
+                            if(j < keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() && keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find))
+                            {
+                                System.out.println("keywords: "+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) + " has "+find);
+                                /*
+                                String element;
+                                if(activeBoxIndex != 1)
+                                    element = clientsFirst.get(j).getlName();
+                                else
+                                    element = clientsLast.get(j).getfName();
+                                */
+                                Course celement;
+                                if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
+                                    celement = clientsFirst.get(j);
+                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 1)
+                                    celement = clientsLast.get(j);
+                               else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)
+                                    celement = clientsPhone.get(j);
+                                else
+                                    celement = clientsEmail.get(j);
+                                
+                                System.out.println("Client element is "+celement.getfName()+" "+celement.getlName());
+                                boolean containsAll = true;
+                                for(int k=0; k<activeBoxValues.size(); k++)
+                                {
+                                    String elementk = activeBoxValues.get(k);
+                                    System.out.println("Checking "+activeBoxValues.get(k));
+                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.getfName()))
+                                            containsAll = false;
+                                    if(activeBoxIndexes.get(k) == 1 && !elementk.equals(celement.getlName()))
+                                            containsAll = false;
+                                    if(activeBoxIndexes.get(k) == 2 && !elementk.equals(celement.getPhone()+""))
+                                            containsAll = false;
+                                    if(activeBoxIndexes.get(k) == 3 && !elementk.equals(celement.getEmail()))
+                                            containsAll = false;
+                                    
+                                    
+                                    
+                                    /*
+                                    System.out.println("Checking "+activeBoxValues.get(k));
+                                    
+                                    String elementk;
+                                    if(activeBoxIndexes.get(k) == 0)
+                                    {
+                                        elementk = activeBoxValues.get(k);
+                                        if(elementk.equals(celement.getfName()))
+                                        {
+                                            mcbm.addElement(celement.getlName());
+
+                                            matches.get(i).add(celement.getlName());
+                                            System.out.println("FOUND AND ADDED FOR LNAME: "+celement.getlName());
+                                        }
+                                    }
+                                    else// if(activeBoxIndexes.get(k) == 1)
+                                    {
+                                        elementk = activeBoxValues.get(k);//clientsLast.get(j).getfName();
+                                        if(elementk.equals(celement.getlName()))
+                                        {
+                                            mcbm.addElement(celement.getfName());
+
+                                            matches.get(i).add(celement.getfName());
+                                            System.out.println("FOUND AND ADDED FOR FNAME: "+celement.getfName());
+                                        }
+                                    }
+                                    */
+                                    
+                                    
+                                    //if(element)
+                                }
+                                
+                                if(containsAll)
+                                {
+                                    System.out.print("Passed test and added to "+i);
+                                    if(i == 0 && !matches.get(i).contains(celement.getfName()))
+                                    {
+                                        System.out.println(celement.getfName());
+                                        mcbm.addElement(celement.getfName());
+
+                                        matches.get(i).add(celement.getfName());
+                                    }
+                                    else if(i == 1 && !matches.get(i).contains(celement.getlName()))
+                                    {
+                                        System.out.println(celement.getlName());
+                                        mcbm.addElement(celement.getlName());
+
+                                        matches.get(i).add(celement.getlName());
+                                    }
+                                    else if(i==2 && !matches.get(i).contains(celement.getPhone()))
+                                    {
+                                        System.out.println(celement.getPhone());
+                                        mcbm.addElement(celement.getPhone());
+
+                                        matches.get(i).add(celement.getPhone()+"");
+                                    }
+                                    else if(i==3 && !matches.get(i).contains(celement.getEmail()))
+                                    {
+                                        
+                                       
+                                        System.out.println(celement.getEmail());
+                                            mcbm.addElement(celement.getEmail());
+
+                                            matches.get(i).add(celement.getEmail());
+                                        
+                                    }
+                                    System.out.println("END");
+                                }
+                                
+                                //System.out.println("FOUND AND ADDED: "+clientsFirst.get(j).getlName());
+                                
+                                
+                            }
+                            else
+                                moreResults = false;
+                        }
+
+                        boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
+
+                        //updatelist(1, true);
+                    }
+                    else
+                        System.out.println("NO NEED");
+ 
+                }
+            }
+        }
+    }
+    
+    
 
     @Override
     public void keyReleased(KeyEvent evt) 
     {
         int activeBoxIndex = -1;
+        
         
         for(int i=0; i<boxes.length; i++)
         {
@@ -265,6 +518,8 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         }
         if(activeBoxIndex != -1)
         {
+            int cursorPos = ((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).getCaretPosition();
+            
             if(firstClick[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_TAB)
             {
                 firstClick[activeBoxIndex]=false;
@@ -285,16 +540,24 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
                 boxes[activeBoxIndex].setPopupVisible(true);
                 System.out.println("UPDATE OTHER DOWN");
-                updateOther(activeBoxIndex);
+                //////updateOther(activeBoxIndex);
+                
+                setActiveValues(activeBoxIndex, text);
+
+                updateOtherList();
+                /////updateOtherList(activeBoxIndex, text);
             }
             
             
             if(!isUpdating[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_LEFT && evt.getKeyCode() != KeyEvent.VK_RIGHT)
             {
                 boxes[activeBoxIndex].hidePopup();
-                updatelist(activeBoxIndex, false);
+                updateList(activeBoxIndex, false);
+                restartActiveValues();
                 boxes[activeBoxIndex].showPopup();
                 ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).setText(text);
+                if(((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).getText().length() >= cursorPos)
+                    ((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).setCaretPosition(cursorPos);
 
                 int size = boxes[activeBoxIndex].getModel().getSize();
 
@@ -326,7 +589,9 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
             else if (evt.getKeyCode() == KeyEvent.VK_ENTER)
             {
                 String selected = boxes[activeBoxIndex].getSelectedItem().toString();
-                updatelist(activeBoxIndex, false);
+                
+                updateList(activeBoxIndex, false);
+                
                 System.out.println("ENTER PRESSED");
                 if(boxes[activeBoxIndex].getSelectedIndex() >= 0)
                     ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).setText(selected);
@@ -338,8 +603,15 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                 boxes[activeBoxIndex].hidePopup();
                 
                 //try
-                System.out.println("UPDATE OTHER ENTER");
-                updateOther(activeBoxIndex);
+           //     System.out.println("UPDATE OTHER ENTER");
+               /////// updateOther(activeBoxIndex);
+                
+           //     activeBoxIndexes.add(activeBoxIndex);
+          //      activeBoxValues.add(text);
+
+          //      updateOtherList();
+                
+               ///// updateOtherList(activeBoxIndex, text);
 
                 //jcb.requestFocusInWindow();
             }
@@ -361,7 +633,13 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
             if(evt.getKeyCode() == KeyEvent.VK_UP)
             {
                 System.out.println("UPDATE OTHER UP");
-                updateOther(activeBoxIndex);
+                ////updateOther(activeBoxIndex);
+                
+                
+                setActiveValues(activeBoxIndex, text);
+
+                updateOtherList();
+                ///////updateOtherList(activeBoxIndex, text);
             }
             
         }
@@ -490,7 +768,11 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                     //if(.getModifiers() == ActionEvent.MOUSE_EVENT_MASK)
                     //{
                         System.out.println("ACION");
-                        updatelist(activeBoxIndex, false);
+                       ///// updatelist(activeBoxIndex, false);
+                        String text = ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).getText();
+                        setActiveValues(activeBoxIndex, text);
+                        updateOtherList();
+                
                        // System.out.println("UPDATE OTHER MOUSE");
                         //updateOther(activeBoxIndex);
                    // }

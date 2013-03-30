@@ -56,6 +56,7 @@ public class SessionTableModel extends AbstractTableModel {
         int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to change value "+getValueAt(r,c)+" to "+o.toString());
         if(option == JOptionPane.YES_OPTION)
         {
+           
             System.out.println("EDITED at setValueAt STM: "+o.toString());
            // tutorSessions.get(r)
                     
@@ -98,6 +99,7 @@ public class SessionTableModel extends AbstractTableModel {
             case 14:
                 ts.isWalkout();
            }
+            fireTableCellUpdated(r, c);
            //return null;
         }
         else

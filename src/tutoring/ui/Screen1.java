@@ -95,14 +95,14 @@ public class Screen1 extends javax.swing.JFrame
            teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
        
        
-       ArrayList<String> listSomeString = new ArrayList<String>();        
+      /* ArrayList<String> listSomeString = new ArrayList<String>();        
         listSomeString.add("Snowboarding");
         listSomeString.add("Rowing");
         listSomeString.add("Knitting");
         listSomeString.add("Speed reading");
         listSomeString.add("Pool");
-        listSomeString.add("None of the above");
-       jTable1.getColumnModel().getColumn(5).setCellEditor(new ComboBoxCellEditor(listSomeString));
+        listSomeString.add("None of the above");*/
+       jTable1.getColumnModel().getColumn(5).setCellEditor(new ComboBoxCellEditor(teacherslist));
        
       
       // ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term");
@@ -205,7 +205,7 @@ public class Screen1 extends javax.swing.JFrame
        cultimateList.add(clientsemail);
 
       UltimateAutoCompleteClientNew uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, clientFirst, clientLast, clientPhone, clientEmail);
-       
+      
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
 

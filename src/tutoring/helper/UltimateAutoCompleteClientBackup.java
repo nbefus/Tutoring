@@ -214,7 +214,6 @@ public class UltimateAutoCompleteClientBackup implements KeyListener, ActionList
 
                        // System.out.println("CONTAINS: "+keywords[i]);
                     }
-            
                 }
             }
         }

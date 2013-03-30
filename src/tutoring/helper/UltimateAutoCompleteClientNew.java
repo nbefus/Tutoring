@@ -517,9 +517,9 @@ public class UltimateAutoCompleteClientNew implements KeyListener, ActionListene
                     else if(i == 1)
                         stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
                     else if(i == 2)
-                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
+                        stringToFind = clientsPhone.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
                     else
-                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail();
+                        stringToFind = clientsEmail.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail();
                     
                     if(!otherText.equals(stringToFind))
                     {
@@ -615,31 +615,39 @@ public class UltimateAutoCompleteClientNew implements KeyListener, ActionListene
                                 
                                 if(containsAll)
                                 {
-                                    System.out.println("Passed test and added to "+i);
-                                    if(i == 0)
+                                    System.out.print("Passed test and added to "+i);
+                                    if(i == 0 && !matches.get(i).contains(celement.getfName()))
                                     {
+                                        System.out.println(celement.getfName());
                                         mcbm.addElement(celement.getfName());
 
                                         matches.get(i).add(celement.getfName());
                                     }
-                                    else if(i == 1)
+                                    else if(i == 1 && !matches.get(i).contains(celement.getlName()))
                                     {
+                                        System.out.println(celement.getlName());
                                         mcbm.addElement(celement.getlName());
 
                                         matches.get(i).add(celement.getlName());
                                     }
-                                    else if(i==2)
+                                    else if(i==2 && !matches.get(i).contains(celement.getPhone()))
                                     {
+                                        System.out.println(celement.getPhone());
                                         mcbm.addElement(celement.getPhone());
 
                                         matches.get(i).add(celement.getPhone()+"");
                                     }
-                                    else
+                                    else if(i==3 && !matches.get(i).contains(celement.getEmail()))
                                     {
-                                        mcbm.addElement(celement.getEmail());
+                                        
+                                       
+                                        System.out.println(celement.getEmail());
+                                            mcbm.addElement(celement.getEmail());
 
-                                        matches.get(i).add(celement.getEmail());
+                                            matches.get(i).add(celement.getEmail());
+                                        
                                     }
+                                    System.out.println("END");
                                 }
                                 
                                 //System.out.println("FOUND AND ADDED: "+clientsFirst.get(j).getlName());

@@ -38,6 +38,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                     //System.out.println("WORKING");
                     
                     this.setText("Start");
+                    
                     if(isSelected)
                     {
                         setForeground(t.getSelectionForeground());
