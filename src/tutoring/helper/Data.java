@@ -28,8 +28,41 @@ public class Data
     private ArrayList<ParaprofessionalCategory> paraprofessionalCategories;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
     private ArrayList<User> users;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
 
+    
+       private static ArrayList<Client> clientFirst;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
+       private static ArrayList<Client> clientLast;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
+       private static ArrayList<Client> clientPhone;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.phone");
+       private static ArrayList<Client> clientEmail;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.email");
+       
+       private static ArrayList<String> clientsfirst;// = new ArrayList<String>();
+       private static ArrayList<String> clientslast;// = new ArrayList<String>();
+       private static ArrayList<String> clientsphone;// = new ArrayList<String>();
+       private static ArrayList<String> clientsemail;// = new ArrayList<String>();
+       
     public Data(boolean initializeAll)
     {
+       clientFirst = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
+        clientLast = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
+       clientPhone = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.phone");
+       clientEmail = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.email");
+       
+       clientsfirst = new ArrayList<String>();
+       clientslast = new ArrayList<String>();
+       clientsphone = new ArrayList<String>();
+       clientsemail = new ArrayList<String>();
+       
+       for(int i=0; i<clientFirst.size(); i++)
+           clientsfirst.add(clientFirst.get(i).getfName());
+           
+       for(int i=0; i<clientLast.size(); i++)
+            clientslast.add(clientLast.get(i).getlName());
+       
+       for(int i=0; i<clientPhone.size(); i++)
+            clientsphone.add(clientPhone.get(i).getPhone()+"");
+       
+       for(int i=0; i<clientEmail.size(); i++)
+            clientsemail.add(clientEmail.get(i).getEmail());
+       /*
         if(initializeAll)
         {
             subjects =(ArrayList<Subject>) HibernateTest.select("from Subject");
@@ -44,7 +77,7 @@ public class Data
             roles = (ArrayList<Role>)HibernateTest.select("from Role");
             paraprofessionalCategories = (ArrayList<ParaprofessionalCategory>)HibernateTest.select("from ParaprofessionalCategory");
             users = (ArrayList<User>)HibernateTest.select("from User");
-        }
+        }*/
     }
     
     public boolean checkCourse(Course c)
@@ -75,6 +108,7 @@ public class Data
         return true;
     }
     
+    /*
     public boolean checkClient(Client c)
     {
         ArrayList<Client> cclients =(ArrayList<Client>) HibernateTest.select("from Client as c where c.fName='"+c.getfName().trim()+"' and c.lName='"+c.getlName().trim()+"'");
@@ -101,7 +135,7 @@ public class Data
         // Update database with new Course??
 
         return true;
-    }
+    }*/
     
     public ParaprofessionalSession checkValidSession(ParaprofessionalSession ps)
     {
@@ -216,5 +250,38 @@ public class Data
     public ArrayList<User> getUsers() {
         return users;
     }
-    
+
+    public static ArrayList<Client> getClientFirst() {
+        return clientFirst;
+    }
+
+
+    public static ArrayList<Client> getClientLast() {
+        return clientLast;
+    }
+
+    public static ArrayList<Client> getClientPhone() {
+        return clientPhone;
+    }
+
+    public static ArrayList<Client> getClientEmail() {
+        return clientEmail;
+    }
+
+    public static ArrayList<String> getClientsfirst() {
+        return clientsfirst;
+    }
+
+    public static ArrayList<String> getClientslast() {
+        return clientslast;
+    }
+
+    public static ArrayList<String> getClientsphone() {
+        return clientsphone;
+    }
+
+    public static ArrayList<String> getClientsemail() {
+        return clientsemail;
+    }
+
 }

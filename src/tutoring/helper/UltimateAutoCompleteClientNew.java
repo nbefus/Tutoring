@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -89,7 +90,30 @@ public class UltimateAutoCompleteClientNew implements KeyListener, ActionListene
     } 
     
     
-    
+    public void noMore()
+    {
+        for(int i=0; i<boxes.length; i++)
+        {
+           // Arrays.sort(keywords[i]);
+          MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
+
+             for ( int j = 0; j <= mcbm.getSize(); j++ ) {
+            Object element = mcbm.getElementAt(0);
+            mcbm.removeElement( element );
+        }
+             ((DefaultComboBoxModel)boxes[i].getModel()).removeAllElements();
+             System.out.println(mcbm.getSize());
+            //
+            
+            boxes[i].getEditor().getEditorComponent().removeKeyListener(this);
+            boxes[i].getEditor().getEditorComponent().removeMouseListener(this);
+
+            removePopupMouseListener(boxes[i]);
+            boxes[i].removeActionListener(this);
+            ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText("");
+        }
+        matches = null;
+    }
     
     
  
@@ -260,7 +284,7 @@ public class UltimateAutoCompleteClientNew implements KeyListener, ActionListene
     }
     
         //jcb.setMaximumRowCount(mcbm.getSize());
-    if(!firstClick[activeBoxIndex] && mcbm.getSize()>0)
+    if(mcbm.getSize()>0)
             boxes[activeBoxIndex].setSelectedIndex(0);
         else
             System.out.println("FIRST CLICK OR MCBM <=0");
@@ -883,6 +907,27 @@ public class UltimateAutoCompleteClientNew implements KeyListener, ActionListene
                 JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
 
                 scroller.getViewport().getView().addMouseListener(listener());
+//                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
+        }
+        catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     private void removePopupMouseListener(JComboBox box) {
+        try {
+                  Field popupInBasicComboBoxUI = BasicComboBoxUI.class.getDeclaredField("popup");
+                popupInBasicComboBoxUI.setAccessible(true);
+                BasicComboPopup popup = (BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI());
+                
+                Field scrollerInBasicComboPopup = BasicComboPopup.class.getDeclaredField("scroller");
+                scrollerInBasicComboPopup.setAccessible(true);
+                JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
+
+                scroller.getViewport().getView().removeMouseListener(listener());
 //                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
         }
         catch (NoSuchFieldException e) {

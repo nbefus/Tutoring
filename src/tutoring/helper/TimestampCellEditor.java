@@ -91,18 +91,23 @@ public class TimestampCellEditor extends DefaultCellEditor
     public Component getTableCellEditorComponent(JTable table, Object value,
                 boolean isSelected, int row, int column) {
         
-        System.out.println("getTableCellEditorComponent: "+value.toString());
+        //System.out.println("getTableCellEditorComponent: "+value.toString());
+                
                 if(value == null)
                 {
-                    jf.setText("0000-00-00 00:00:00");
-                    return jf;
+                     jf.setText("9999-12-31 12:00:00");
+                    
+                    table.setValueAt("CURRENT", row, column);
+                    stopCellEditing();
+                    return null;
                 }
                 else if(((Timestamp)value).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
                 {
+                    System.out.println("HEREEEEEE");
                     jf.setText("9999-12-31 12:00:00");
+                    
+                    table.setValueAt("CURRENT", row, column);
                     stopCellEditing();
-                    Timestamp now = new Timestamp((new Date()).getTime());
-                    table.setValueAt(now.toString(), row, column);
                     return null;
                 }
                 
@@ -130,15 +135,17 @@ public class TimestampCellEditor extends DefaultCellEditor
     
      @Override
     public boolean stopCellEditing() {
-         if(Timestamp.valueOf(jf.getText()).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
-         {
-             System.out.println("OHHHHHHH here");
-             return super.stopCellEditing();
-         }
+         
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+         
+            if(new Timestamp(sdf.parse(jf.getText()).getTime()).toString().equals(Timestamp.valueOf("9999-12-31 12:00:00").toString()))
+            {
+                System.out.println("OHHHHHHH here");
+                return super.stopCellEditing();
+            }
             System.out.println("stopCellEditing");
             String[] split;
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
             sdf.setLenient(false);
             Date d = sdf.parse(jf.getText());
             //Timestamp t= new Timestamp().parse(jf.getText()).getTime());

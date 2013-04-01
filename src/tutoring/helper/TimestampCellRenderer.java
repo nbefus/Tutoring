@@ -30,10 +30,11 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
         super.getTableCellRendererComponent(t, o, isSelected, hasFocus, r, c);
         if(o instanceof Timestamp)
         {
+            System.out.println("THE OVERALL TIME TIME TIME IS "+((Timestamp)o).toString());
             if(((Timestamp)o).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
             {
                 System.out.println("here here");
-                if(c == 10)
+                if(c == 12)
                 {
                     //System.out.println("WORKING");
                     
@@ -53,15 +54,16 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                     }
                 }
                     
-                else if(c == 11)
+                else if(c == 13)
                 {
                     System.out.println("WORKING");
                     
                     this.setText("");
+                    System.out.println("THIS THIS TIME IS "+t.getValueAt(r, c).toString());
                     if(isSelected)
                     {
                         String cell;// = t.getValueAt(r, c-1).toString();
-                        //System.out.println("CELL: "+cell);
+                        System.out.println("TIME IS "+t.getValueAt(r, c-1).toString());
                         if(((Timestamp)t.getValueAt(r, c-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
                         {
                             setForeground(t.getSelectionForeground());
@@ -70,6 +72,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                         }
                         else
                         {
+                            System.out.println("here under selected");
                             setForeground(t.getSelectionForeground());
                             setBackground(Color.red);
                             setBorder(new MatteBorder(3,3,3,3,Color.black));
@@ -79,6 +82,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                     {
                         String cell;// = t.getValueAt(r, c-1).toString();
                         //System.out.println("CELL: "+cell);
+                        System.out.println("TIME IS "+t.getValueAt(r, c-1).toString());
                         if(((Timestamp)t.getValueAt(r, c-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
                         {
                             setForeground(t.getSelectionForeground());
@@ -87,6 +91,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                         }
                         else
                         {
+                            System.out.println("here under not selected");
                             setForeground(t.getSelectionForeground());
                             setBackground(Color.red);
                             setBorder(new MatteBorder(3,3,3,3,Color.black));
@@ -95,6 +100,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                 }
                 else
                 {
+                    System.out.println("HERE IS THE BAD PART");
                     if(isSelected)
                     {
                         setForeground(t.getSelectionForeground());
@@ -123,6 +129,17 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                     setBackground(t.getBackground());
                 }
             }
+        }
+        else
+        {
+            if(o != null)
+                System.out.println(o.toString() + " value");
+            else
+                System.out.println("NULL NULL");
+            this.setText("STOP");
+            setForeground(t.getSelectionForeground());
+            setBackground(Color.red);
+            setBorder(new MatteBorder(3,3,3,3,Color.black));
         }
         
         

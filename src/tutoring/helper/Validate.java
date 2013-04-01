@@ -20,7 +20,9 @@ public class Validate
     
     public static boolean validateClient(Client c)
     {
-        if(HibernateTest.select("from Client as c where c.fName='"+c.getfName()+"' and c.lName='"+c.getlName()+"' and c.phone='"+c.getPhone()+"' and c.email='"+c.getEmail()+"'").size() > 0)
+        String query = "from Client as c where c.fName='"+c.getfName()+"' and c.lName='"+c.getlName()+"' and c.phone='"+c.getPhone()+"' and c.email='"+c.getEmail()+"'";
+        System.out.println(query);
+        if(HibernateTest.select(query).size() > 0)
             return true;
         return false;
     }

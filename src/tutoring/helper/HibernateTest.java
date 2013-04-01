@@ -80,6 +80,7 @@ public class HibernateTest {
         Transaction tr = sess.beginTransaction();
         Query query = sess.createSQLQuery(sqlQuery);
         List result = query.list(); 
+        
         //sess.close();
         //sessFact.close();
         return result;

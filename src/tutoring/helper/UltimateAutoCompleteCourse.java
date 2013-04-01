@@ -29,6 +29,7 @@ import javax.swing.text.JTextComponent;
 import tutoring.entity.Category;
 import tutoring.entity.Client;
 import tutoring.entity.Course;
+import tutoring.entity.Paraprofessional;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 
@@ -48,13 +49,14 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     ArrayList<Teacher> teachers;
     ArrayList<Subject> subjects;
     ArrayList<Category> categories;
+    ArrayList<Paraprofessional> paraprofessionals;
     
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
     
     private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
     private ArrayList<String> activeBoxValues = new ArrayList<String>();
     
-    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Subject> subjects, ArrayList<Category> categories) {
+    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Subject> subjects, ArrayList<Category> categories, ArrayList<Paraprofessional> paraprofessionals) {
         this.keywords = keywords;
         this.boxes = boxes;
         
@@ -62,6 +64,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         this.teachers = teachers;
         this.subjects = subjects;
         this.categories = categories;
+        this.paraprofessionals = paraprofessionals;
         
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
@@ -239,7 +242,6 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
                        // System.out.println("CONTAINS: "+keywords[i]);
                     }
-            
                 }
             }
         }
@@ -344,13 +346,15 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                     String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
                     String stringToFind;
                     if(i == 0)
-                        stringToFind = clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                        stringToFind = subjects.get(indexesOfValue.get(indexesOfValue.size()-1)).getAbbrevName();
                     else if(i == 1)
-                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
+                        stringToFind = courses.get(indexesOfValue.get(indexesOfValue.size()-1)).getLevel()+"";
                     else if(i == 2)
-                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
+                        stringToFind = teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName()+" "+teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                    else if(i == 3)
+                        stringToFind = categories.get(indexesOfValue.get(indexesOfValue.size()-1)).getName();
                     else
-                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail();
+                        stringToFind = paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName() + " " + paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
                     
                     if(!otherText.equals(stringToFind))
                     {
@@ -386,8 +390,14 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                                     element = clientsLast.get(j).getfName();
                                 */
                                 Course celement;
+                                Subject selement;
+                                Teacher telement;
+                                Paraprofessional pelement;
+                                
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
+                                {
                                     celement = clientsFirst.get(j);
+                                }
                                 else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 1)
                                     celement = clientsLast.get(j);
                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)

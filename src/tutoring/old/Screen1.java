@@ -1,4 +1,4 @@
-package tutoring.ui;
+package tutoring.old;
 
 
 import java.awt.FontMetrics;
@@ -33,20 +33,24 @@ import tutoring.helper.*;
  *
  * @author dabeefinator
  */
-public class ScreenAdmin extends javax.swing.JFrame {
+public class Screen1 extends javax.swing.JFrame 
+{
 
     Screen11 screen;
     int count = 0;
+    
     /**
      * Creates new form Screen1
      */
-    public ScreenAdmin() 
+    
+    public Screen1() 
     {
         initComponents();
        // FakeValues fv = new FakeValues();
         DefaultCellEditor singleclick = new DefaultCellEditor(new JCheckBox());
         singleclick.setClickCountToStart(2);
-
+       // DefaultCellEditor singleclickCombo = new DefaultCellEditor(new JComboBox());
+        //singleclickCombo.setClickCountToStart(2);
     //set the editor as default on every column
    
         jTable1.setDefaultEditor(Boolean.class, singleclick);
@@ -73,33 +77,27 @@ public class ScreenAdmin extends javax.swing.JFrame {
        
        FontMetrics fm = jTable1.getFontMetrics(jTable1.getFont());
        int fontHeight = fm.getHeight();
-       jTable1.setRowHeight(fontHeight+8);
+       jTable1.setRowHeight(fontHeight+12);
        
        
     
        
-       ArrayList<Subject> subjects = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
+       
 
        
-       ArrayList<Paraprofessional> tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
+       
 
-
-       ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
-       ArrayList<String> teacherslist = new ArrayList<String>();
-              
-
-       for(int i=0; i<teachers.size(); i++)
-           teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
+     
        
        
-       ArrayList<String> listSomeString = new ArrayList<String>();        
+      /* ArrayList<String> listSomeString = new ArrayList<String>();        
         listSomeString.add("Snowboarding");
         listSomeString.add("Rowing");
         listSomeString.add("Knitting");
         listSomeString.add("Speed reading");
         listSomeString.add("Pool");
-        listSomeString.add("None of the above");
-       jTable1.getColumnModel().getColumn(5).setCellEditor(new ComboBoxCellEditor(listSomeString));
+        listSomeString.add("None of the above");*/
+       
        
       
       // ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term");
@@ -115,18 +113,36 @@ public class ScreenAdmin extends javax.swing.JFrame {
        
        ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
        ArrayList<String> locationslist = new ArrayList<String>();
-              
+             
 
        for(int i=0; i<locations.size(); i++)
            locationslist.add(locations.get(i).getName());
        
        
        
-       
+        ArrayList<Paraprofessional> tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
         ArrayList<String> tutorslist = new ArrayList<String>();
        for(int i=0; i<tutors.size(); i++)
            tutorslist.add(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
        
+       
+       ArrayList<Subject> subjects = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
+       ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       ArrayList<Category> categories = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
+       ArrayList<Course> levels = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
+        
+       ArrayList<String> levelslist = new ArrayList<String>();
+       for(int i=0; i<levels.size(); i++)
+          levelslist.add(levels.get(i).getLevel()+"");
+       
+        ArrayList<String> categorieslist = new ArrayList<String>();
+       for(int i=0; i<categories.size(); i++)
+           categorieslist.add(categories.get(i).getName());
+       
+       
+       ArrayList<String> teacherslist = new ArrayList<String>();
+       for(int i=0; i<teachers.size(); i++)
+           teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
        
         ArrayList<String> subjectslist = new ArrayList<String>();
        for(int i=0; i<subjects.size(); i++)
@@ -135,17 +151,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
        
        
        
-       ArrayList<Client> clientFirst = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
-       ArrayList<Client> clientLast = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
-       ArrayList<String> clientsfirst = new ArrayList<String>();
-       ArrayList<String> clientslast = new ArrayList<String>();
-
-       for(int i=0; i<clientFirst.size(); i++)
-           clientsfirst.add(clientFirst.get(i).getfName());
-           
-       for(int i=0; i<clientLast.size(); i++)
-            clientslast.add(clientLast.get(i).getlName());
-       
+     
        /*
        AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutorslist);
        AutoCompleteComboBox accb22 = new AutoCompleteComboBox(jComboBoxCreator, tutorslist);
@@ -174,21 +180,32 @@ public class ScreenAdmin extends javax.swing.JFrame {
        ultimateList.add(clientslast);
        ultimateList.add(teacherslist);
        UltimateAutoComplete uac = new UltimateAutoComplete(ultimateList, boxes);
-       */
+       */ 
        
+       Data d = new Data(false);
+       
+       jTable1.getColumnModel().getColumn(4).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
+       jTable1.getColumnModel().getColumn(3).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
+       jTable1.getColumnModel().getColumn(2).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
+       jTable1.getColumnModel().getColumn(1).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
+
        
        //Clients autocomplete
-       JComboBox[] cboxes = new  JComboBox[2];
+       JComboBox[] cboxes = new  JComboBox[4];
        cboxes[0]=jComboBoxClientFirstName;
        cboxes[1]=jComboBoxClientLastName;
+       cboxes[2]=jComboBoxPhone;
+       cboxes[3]=jComboBoxEmail;
        
        ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
 
-       cultimateList.add(clientsfirst);
-       cultimateList.add(clientslast);
+       cultimateList.add(Data.getClientsfirst());
+       cultimateList.add(Data.getClientslast());
+       cultimateList.add(Data.getClientsphone());
+       cultimateList.add(Data.getClientsemail());
 
-       UltimateAutoCompleteClient uacc = new UltimateAutoCompleteClient(cultimateList, cboxes, clientFirst, clientLast);
-       
+      UltimateAutoCompleteClientNew uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
 
@@ -209,6 +226,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -222,7 +240,6 @@ public class ScreenAdmin extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBoxCourse = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jTextFieldLevel = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextFieldNotes = new javax.swing.JTextField();
@@ -245,6 +262,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
         jComboBoxEmail = new javax.swing.JComboBox();
         jLabel12 = new javax.swing.JLabel();
         jComboBoxCategory = new javax.swing.JComboBox();
+        jComboBoxLevel = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -259,14 +277,14 @@ public class ScreenAdmin extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Clear");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Delete");
 
         jLabel3.setText("course");
 
@@ -342,8 +360,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
                                 .add(101, 101, 101)
                                 .add(jLabel10)
                                 .add(55, 55, 55)
-                                .add(jLabel11)
-                                .add(55, 55, 55))
+                                .add(jLabel11))
                             .add(jPanel2Layout.createSequentialGroup()
                                 .add(jComboBoxClientLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 120, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -362,15 +379,16 @@ public class ScreenAdmin extends javax.swing.JFrame {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(jButton1)
                             .add(jPanel2Layout.createSequentialGroup()
-                                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                     .add(jPanel2Layout.createSequentialGroup()
                                         .add(jLabel4)
                                         .add(39, 39, 39)
                                         .add(jLabel5)
                                         .add(110, 110, 110))
                                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 75, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(2, 2, 2)
+                                        .add(jComboBoxLevel, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                         .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 139, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                         .add(2, 2, 2)))
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -400,7 +418,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
                                 .add(jButton2)
                                 .add(jButton3))
                             .add(jLabel9))))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -424,7 +442,6 @@ public class ScreenAdmin extends javax.swing.JFrame {
                     .add(jComboBoxClientFirstName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxClientLastName, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxCourse, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jTextFieldLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxTeacher, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jTextFieldNotes, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxTutor, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -434,7 +451,8 @@ public class ScreenAdmin extends javax.swing.JFrame {
                     .add(jComboBoxLocation, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxPhone, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jComboBoxEmail, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jComboBoxCategory, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jComboBoxCategory, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jComboBoxLevel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(7, 7, 7)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jButton1)
@@ -468,7 +486,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBoxFutureActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        screen = new Screen11(ScreenAdmin.this, false);
+        screen = new Screen11(Screen1.this, false);
         screen.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -487,7 +505,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
         String clientLName = jComboBoxClientLastName.getSelectedItem().toString();
         boolean GC = jCheckBoxGC.isSelected();
         String notes = jTextFieldNotes.getText().toString();
-        String level = jTextFieldLevel.getText().toString();
+        String level = jComboBoxLevel.getSelectedItem().toString();
         int intLevel = Integer.parseInt(level);
         String location = jComboBoxLocation.getSelectedItem().toString();
        // String term = jComboBoxTerm.getSelectedItem().toString();
@@ -572,20 +590,20 @@ public class ScreenAdmin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ScreenAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Screen1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ScreenAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Screen1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ScreenAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Screen1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ScreenAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Screen1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ScreenAdmin().setVisible(true);
+                new Screen1().setVisible(true);
             }
         });
     }
@@ -601,6 +619,7 @@ public class ScreenAdmin extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBoxCourse;
     private javax.swing.JComboBox jComboBoxCreator;
     private javax.swing.JComboBox jComboBoxEmail;
+    private javax.swing.JComboBox jComboBoxLevel;
     private javax.swing.JComboBox jComboBoxLocation;
     private javax.swing.JComboBox jComboBoxPhone;
     private javax.swing.JComboBox jComboBoxTeacher;
@@ -620,7 +639,6 @@ public class ScreenAdmin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldLevel;
     private javax.swing.JTextField jTextFieldNotes;
     // End of variables declaration//GEN-END:variables
 }

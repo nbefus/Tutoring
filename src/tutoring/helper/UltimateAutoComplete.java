@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.MutableComboBoxModel;
@@ -63,6 +64,33 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
             updatelist(i);
         }
     } 
+    
+    public void noMore()
+    {
+        for(int i=0; i<boxes.length; i++)
+        {
+           // Arrays.sort(keywords[i]);
+
+            MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
+
+             for ( int j = 0; j <= mcbm.getSize(); j++ ) {
+            Object element = mcbm.getElementAt(0);
+            mcbm.removeElement( element );
+        }
+             ((DefaultComboBoxModel)boxes[i].getModel()).removeAllElements();
+             System.out.println(mcbm.getSize());
+            //
+            
+            boxes[i].getEditor().getEditorComponent().removeKeyListener(this);
+            boxes[i].getEditor().getEditorComponent().removeMouseListener(this);
+
+            boxes[i].removeActionListener(this);
+            ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText("");
+
+        }
+        matches = null;
+    }
+    
     
     public void updatelist(int activeBoxIndex)
     {

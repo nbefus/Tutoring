@@ -44,14 +44,15 @@ public class AutoCompleteComboBox extends JComboBox implements KeyListener, Acti
      ArrayList<String> matches = new ArrayList<String>();
     //private MutableComboBoxModel mcbm;
     
-    public AutoCompleteComboBox(JComboBox jcb, ArrayList<String> keywords)
+    public AutoCompleteComboBox(JComboBox jcb, ArrayList<String> keywords, String initialText)
     {
         this.keywords = keywords;
         //Arrays.sort(keywords.toArray());
         this.jcb = jcb;
         jcb.setEditable(true);
-        updatelist();
+       
         
+        updatelist();
 
         jcb.getEditor().getEditorComponent().addKeyListener(AutoCompleteComboBox.this);
         jcb.getEditor().getEditorComponent().addMouseListener(AutoCompleteComboBox.this);
@@ -61,8 +62,19 @@ public class AutoCompleteComboBox extends JComboBox implements KeyListener, Acti
         //jcb.showPopup();
         //jcb.hidePopup();
         
-        
+         if(initialText != null)
+            ((JTextComponent)jcb.getEditor().getEditorComponent()).setText("");
         //jcb.setLightWeightPopupEnabled(false);
+        
+    }
+    
+     public void noMore()
+    {
+        jcb.getEditor().getEditorComponent().removeKeyListener(this);
+        jcb.getEditor().getEditorComponent().removeMouseListener(this);
+
+       
+        jcb.removeActionListener(this);
         
     }
     

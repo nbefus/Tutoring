@@ -1,3 +1,5 @@
+package tutoring.old;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -70,6 +72,7 @@ public class BarChartTest extends ApplicationFrame {
         // create the dataset...
         final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
+        
         dataset.addValue(1.0, series1, category1);
         dataset.addValue(4.0, series1, category2);
         dataset.addValue(3.0, series1, category3);

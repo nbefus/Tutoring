@@ -1,4 +1,4 @@
-package tutoring.ui;
+package tutoring.old;
 
 
 import javax.swing.JOptionPane;
@@ -104,7 +104,7 @@ public class Screen1Copy extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jScrollPane1.setBounds(60, 80, 454, 404);
+        jScrollPane1.setBounds(60, 80, 452, 404);
         jLayeredPane1.add(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setText("fname");
@@ -147,7 +147,7 @@ public class Screen1Copy extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jButton1.setBounds(0, 10, 121, 29);
+        jButton1.setBounds(0, 10, 91, 23);
         jLayeredPane2.add(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -161,9 +161,7 @@ public class Screen1Copy extends javax.swing.JFrame {
                             .add(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                        .add(jButton2)
-                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED))
+                                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jButton2)
                                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                                         .add(jButton3)
                                         .add(51, 51, 51)))
