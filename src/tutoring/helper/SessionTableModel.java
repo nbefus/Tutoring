@@ -28,7 +28,7 @@ import tutoring.entity.ParaprofessionalSession;
  */
 public class SessionTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"SessionID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout" };
+    private String[] columnNames = {"SessionID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout","category" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
@@ -187,6 +187,8 @@ public class SessionTableModel extends AbstractTableModel {
                         //ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
                     case 17:
                         ts.isWalkout();
+                    case 18:
+                        ts.getCourseID().getSubjectID().getCategoryID().getName();
                    }
                    // fireTableCellUpdated(r, c);
                     fireTableDataChanged();
@@ -297,6 +299,8 @@ public class SessionTableModel extends AbstractTableModel {
                 return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
             case 17:
                 return ts.isWalkout();
+            case 18:
+                return ts.getCourseID().getSubjectID().getCategoryID().getName();
            }
            return null;
    }
@@ -348,6 +352,8 @@ public class SessionTableModel extends AbstractTableModel {
                return String.class;
              case 17:
                return Boolean.class;
+             case 18:
+               return String.class;
                  
              }
              return null;

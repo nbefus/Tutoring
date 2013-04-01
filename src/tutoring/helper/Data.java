@@ -15,6 +15,7 @@ import tutoring.entity.*;
  */
 public class Data 
 {
+    /*
     private ArrayList<Subject> subjects;// =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='"+jComboBoxCourse.getSelectedItem().toString()+"'");
     private ArrayList<Teacher> teachers;// = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where t.fName='"+tName[0].trim()+"' and t.lName='"+tName[1].trim()+"'");
     private ArrayList<Course> courses;// = (ArrayList<Course>)HibernateTest.select("from Course as c where c.subjectID="+subjects.get(0).getSubjectID()+" and c.teacherID="+teachers.get(0).getTeacherID() + " and c.level="+intLevel);
@@ -27,7 +28,7 @@ public class Data
     private ArrayList<Role> roles;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
     private ArrayList<ParaprofessionalCategory> paraprofessionalCategories;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
     private ArrayList<User> users;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
-
+*/
     
        private static ArrayList<Client> clientFirst;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
        private static ArrayList<Client> clientLast;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
@@ -39,10 +40,26 @@ public class Data
        private static ArrayList<String> clientsphone;// = new ArrayList<String>();
        private static ArrayList<String> clientsemail;// = new ArrayList<String>();
        
+       private static ArrayList<Location> locations;// = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
+       private static ArrayList<Paraprofessional> tutors;// = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
+       private static ArrayList<Subject> subjects;// = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
+       private static ArrayList<Teacher> teachers;// = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       private static ArrayList<Category> categories;// = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
+       private static ArrayList<Course> levels;// = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
+       
+       private static ArrayList<String> locationslist;// = new ArrayList<String>();
+       private static  ArrayList<String> tutorslist;// = new ArrayList<String>();
+       private static ArrayList<String> teacherslist;// = new ArrayList<String>();
+       private static ArrayList<String> subjectslist;// = new ArrayList<String>();
+       private static ArrayList<String> categorieslist;// = new ArrayList<String>();
+       private static ArrayList<String> levelslist;// = new ArrayList<String>();
+
+   
+       
     public Data(boolean initializeAll)
     {
        clientFirst = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
-        clientLast = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
+       clientLast = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
        clientPhone = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.phone");
        clientEmail = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.email");
        
@@ -50,6 +67,20 @@ public class Data
        clientslast = new ArrayList<String>();
        clientsphone = new ArrayList<String>();
        clientsemail = new ArrayList<String>();
+       
+       locations = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
+       tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
+       subjects = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
+       teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       categories = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
+       levels = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
+       
+       locationslist = new ArrayList<String>();
+       tutorslist = new ArrayList<String>();
+       teacherslist = new ArrayList<String>();
+       subjectslist = new ArrayList<String>();
+       categorieslist = new ArrayList<String>();
+       levelslist = new ArrayList<String>();
        
        for(int i=0; i<clientFirst.size(); i++)
            clientsfirst.add(clientFirst.get(i).getfName());
@@ -62,6 +93,31 @@ public class Data
        
        for(int i=0; i<clientEmail.size(); i++)
             clientsemail.add(clientEmail.get(i).getEmail());
+
+       
+       
+       for(int i=0; i<locations.size(); i++)
+           locationslist.add(locations.get(i).getName());
+       
+       for(int i=0; i<tutors.size(); i++)
+           tutorslist.add(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
+       
+       
+       for(int i=0; i<levels.size(); i++)
+          levelslist.add(levels.get(i).getLevel()+"");
+       
+       
+       for(int i=0; i<categories.size(); i++)
+           categorieslist.add(categories.get(i).getName());
+       
+       
+       
+       for(int i=0; i<teachers.size(); i++)
+           teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
+       
+        
+       for(int i=0; i<subjects.size(); i++)
+           subjectslist.add(subjects.get(i).getAbbrevName());
        /*
         if(initializeAll)
         {
@@ -200,9 +256,10 @@ public class Data
     {
        ArrayList<Subject> updatedSubjects =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.subjectID > "+id);
        for(int i=0; i<updatedSubjects.size(); i++)
-           subjects.add(updatedSubjects.get(i));
+           getSubjects().add(updatedSubjects.get(i));
     }
     
+    /*
     public ArrayList<Subject> getSubjects() {
         return subjects;
     }
@@ -250,6 +307,7 @@ public class Data
     public ArrayList<User> getUsers() {
         return users;
     }
+    */
 
     public static ArrayList<Client> getClientFirst() {
         return clientFirst;
@@ -282,6 +340,54 @@ public class Data
 
     public static ArrayList<String> getClientsemail() {
         return clientsemail;
+    }
+    
+     public static ArrayList<Location> getLocations() {
+        return locations;
+    }
+
+    public static ArrayList<Paraprofessional> getTutors() {
+        return tutors;
+    }
+
+    public static ArrayList<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public static ArrayList<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public static ArrayList<Category> getCategories() {
+        return categories;
+    }
+
+    public static ArrayList<Course> getLevels() {
+        return levels;
+    }
+
+    public static ArrayList<String> getLocationslist() {
+        return locationslist;
+    }
+
+    public static ArrayList<String> getTutorslist() {
+        return tutorslist;
+    }
+
+    public static ArrayList<String> getTeacherslist() {
+        return teacherslist;
+    }
+
+    public static ArrayList<String> getSubjectslist() {
+        return subjectslist;
+    }
+
+    public static ArrayList<String> getCategorieslist() {
+        return categorieslist;
+    }
+
+    public static ArrayList<String> getLevelslist() {
+        return levelslist;
     }
 
 }

@@ -5,11 +5,14 @@
 package tutoring.ui;
 
 import UIs.*;
+import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
@@ -37,161 +40,21 @@ public class SIA extends javax.swing.JFrame {
      */
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientNew uacc;
-    public SIA() {
+    public SIA() 
+    {
         initComponents();
-        DefaultCellEditor singleclick = new DefaultCellEditor(new JCheckBox());
-        singleclick.setClickCountToStart(2);
-       // DefaultCellEditor singleclickCombo = new DefaultCellEditor(new JComboBox());
-        //singleclickCombo.setClickCountToStart(2);
-    //set the editor as default on every column
-   
-        sessionsTable.setDefaultEditor(Boolean.class, singleclick);
+        
+        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable);
+        
+        tableHelper.allowScrollingOnTable();
+        tableHelper.fasterScrolling(16);
+        tableHelper.increaseRowHeight(12);
+       
         
         
-       sessionsTable.setModel(new SessionTableModel());
-       sessionsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-       sessionsTable.setAutoCreateRowSorter(true);
-       sessionsTable.setFillsViewportHeight(true);
-      // sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
-       
-       sessionsTable.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer());
-       sessionsTable.setDefaultEditor(Timestamp.class, new TimestampCellEditor(new JTextField()));
-
-       
-       
-    //   sessionsTable.getColumnModel().getColumn(11).setCellEditor(new TimestampCellEditor(new JTextField()));
-    //   sessionsTable.getColumnModel().getColumn(12).setCellEditor(new TimestampCellEditor(new JTextField()));
-    //   sessionsTable.getColumnModel().getColumn(13).setCellEditor(new TimestampCellEditor(new JTextField()));
-       //sessionsTable.getColumnModel().getColumn(11).setCellRenderer(new TimestampCellRenderer());
-       //sessionsTable.getColumnModel().getColumn(12).setCellRenderer(new TimestampCellRenderer());
-      // sessionsTable.getColumnModel().getColumn(13).setCellRenderer(new TimestampCellRenderer());
-       
-       //sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new ButtonCellRenderer());
-       //sessionsTable.getColumnModel().getColumn(11).setCellRenderer(new ButtonCellRenderer());
-       //sessionsTable.getColumnModel().getColumn(9).setCellEditor(new TimestampCellEditor(new JTextField()));
-       //sessionsTable.getColumnModel().getColumn(10).setCellEditor(new ButtonCellEditor(new JCheckBox()));
-       //sessionsTable.getColumnModel().getColumn(11).setCellEditor(new ButtonCellEditor(new JCheckBox()));
-      
-       
-       FontMetrics fm = sessionsTable.getFontMetrics(sessionsTable.getFont());
-       int fontHeight = fm.getHeight();
-       sessionsTable.setRowHeight(fontHeight+12);
-       
-       
-    
-       
-       
-for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListeners()) {
-    sessionsTableScrollPanel.removeMouseWheelListener(listener);
-}
-       
-       SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(16);
-
-     
-       
-       
-      /* ArrayList<String> listSomeString = new ArrayList<String>();        
-        listSomeString.add("Snowboarding");
-        listSomeString.add("Rowing");
-        listSomeString.add("Knitting");
-        listSomeString.add("Speed reading");
-        listSomeString.add("Pool");
-        listSomeString.add("None of the above");*/
-       
-       
-      
-      // ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term");
-       //String[] termslist = new String[terms.size()];
-              
-
-      // for(int i=0; i<terms.size(); i++)
-      //     termslist[i]=terms.get(i).getName();
-       //AutoComplete ac = new AutoComplete( jListTeacher, jTextFieldTeacher, jScrollPaneTeacher, teachers);
-       //AutoCompleteComboBox accb11 = new AutoCompleteComboBox(jComboBoxTerm, termslist);
-       
-       
-       
-       ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
-       ArrayList<String> locationslist = new ArrayList<String>();
-             
-
-       for(int i=0; i<locations.size(); i++)
-           locationslist.add(locations.get(i).getName());
-       
-       
-       
-        ArrayList<Paraprofessional> tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
-        ArrayList<String> tutorslist = new ArrayList<String>();
-       for(int i=0; i<tutors.size(); i++)
-           tutorslist.add(tutors.get(i).getfName()+" "+tutors.get(i).getlName());
-       
-       
-       ArrayList<Subject> subjects = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
-       ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
-       ArrayList<Category> categories = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
-       ArrayList<Course> levels = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
         
-       ArrayList<String> levelslist = new ArrayList<String>();
-       for(int i=0; i<levels.size(); i++)
-          levelslist.add(levels.get(i).getLevel()+"");
-       
-        ArrayList<String> categorieslist = new ArrayList<String>();
-       for(int i=0; i<categories.size(); i++)
-           categorieslist.add(categories.get(i).getName());
-       
-       
-       ArrayList<String> teacherslist = new ArrayList<String>();
-       for(int i=0; i<teachers.size(); i++)
-           teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
-       
-        ArrayList<String> subjectslist = new ArrayList<String>();
-       for(int i=0; i<subjects.size(); i++)
-           subjectslist.add(subjects.get(i).getAbbrevName());
-       
-       
-       
-       
-     
-       /*
-       AutoCompleteComboBox accb2 = new AutoCompleteComboBox(jComboBoxTutor, tutorslist);
-       AutoCompleteComboBox accb22 = new AutoCompleteComboBox(jComboBoxCreator, tutorslist);
-       AutoCompleteComboBox accb3 = new AutoCompleteComboBox(jComboBoxCourse, subjectslist);
-       AutoCompleteComboBox accb111 = new AutoCompleteComboBox(jComboBoxLocation, locationslist);
-       AutoCompleteComboBox accb4 = new AutoCompleteComboBox(jComboBoxClientFirstName, clientsfirst);
-       AutoCompleteComboBox accb5 = new AutoCompleteComboBox(jComboBoxClientLastName, clientslast);
-       AutoCompleteComboBox accb = new AutoCompleteComboBox(jComboBoxTeacher, teacherslist);
-       */
-       /* test ultimate
-       JComboBox[] boxes = new  JComboBox[7];
-       boxes[0]=jComboBoxTutor;
-       boxes[1]=jComboBoxCreator;
-       boxes[2]=jComboBoxCourse;
-       boxes[3]=jComboBoxLocation;
-       boxes[4]=jComboBoxClientFirstName;
-       boxes[5]=jComboBoxClientLastName;
-       boxes[6]=jComboBoxTeacher;
-       
-       ArrayList<ArrayList<String>> ultimateList = new ArrayList<ArrayList<String>>();
-       ultimateList.add(tutorslist);
-       ultimateList.add(tutorslist);
-       ultimateList.add(subjectslist);
-       ultimateList.add(locationslist);
-       ultimateList.add(clientsfirst);
-       ultimateList.add(clientslast);
-       ultimateList.add(teacherslist);
-       UltimateAutoComplete uac = new UltimateAutoComplete(ultimateList, boxes);
-       */ 
-       
+        
        Data d = new Data(false);
-       
-       sessionsTable.getColumnModel().getColumn(14).setCellRenderer(new MinuteCellRenderer());
-
-              
-       sessionsTable.getColumnModel().getColumn(4).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-       sessionsTable.getColumnModel().getColumn(3).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-       sessionsTable.getColumnModel().getColumn(2).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-       sessionsTable.getColumnModel().getColumn(1).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-
        
        //Clients autocomplete
        JComboBox[] cboxes = new  JComboBox[4];
@@ -239,6 +102,58 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
  
         timer.schedule(min, 0, 60000);
         
+        
+        
+        DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
+        {
+            
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                        boolean isSelected, int row, int column) 
+            {
+                uac.setComboValue(table.getValueAt(row, 7).toString(), 10);
+                uac.setComboValue(table.getValueAt(row, 6).toString(), 7);
+                uac.setComboValue(table.getValueAt(row, 5).toString(), 5);
+                uac.setComboValue(table.getValueAt(row, 4).toString(), 3);
+                uac.setComboValue(table.getValueAt(row, 3).toString(), 2);
+                uac.setComboValue(table.getValueAt(row, 2).toString(), 1);
+                uac.setComboValue(table.getValueAt(row, 1).toString(), 0);
+                uac.setComboValue(table.getValueAt(row, 9).toString(), 9);
+                uac.setComboValue(table.getValueAt(row, 15).toString(), 8);
+                uac.setComboValue(table.getValueAt(row, 16).toString(), 6);
+                uac.setComboValue(table.getValueAt(row, 18).toString(), 4);
+                
+                
+                gcCheck.setSelected((Boolean)table.getValueAt(row, 10));
+                
+                notesField.setText(table.getValueAt(row, 8).toString());
+                
+                System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, 12));
+                System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, 13));
+                               
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+               
+                boolean hasSessionStart = (table.getValueAt(row, 12) != null && Validate.validateTimestamp(sdf.format(new Date(((Timestamp)table.getValueAt(row, 12)).getTime()))) && !sdf.format(new Date(((Timestamp)table.getValueAt(row, 12)).getTime())).equals("12/31/9999 12:00 PM"));
+                boolean hasSessionEnd = (table.getValueAt(row, 13) != null && Validate.validateTimestamp(sdf.format(new Date(((Timestamp)table.getValueAt(row, 13)).getTime())))  && !sdf.format(new Date(((Timestamp)table.getValueAt(row, 13)).getTime())).equals("12/31/9999 12:00 PM"));
+                
+                
+                if(hasSessionStart)
+                    sessionstartField.setText(sdf.format(new Date(((Timestamp)table.getValueAt(row, 12)).getTime())));
+                else
+                    sessionstartField.setText("mm/dd/yyyy hh:mm aa");
+
+                if(hasSessionEnd)
+                    sessionendField.setText(sdf.format(new Date(((Timestamp)table.getValueAt(row, 13)).getTime())));
+                else
+                    sessionendField.setText("mm/dd/yyyy hh:mm aa");
+                
+                walkoutCheck.setSelected((Boolean)table.getValueAt(row, 17));
+                
+                return null;
+            }
+        };
+        
+        tableHelper.setTableRendersAndEditors(true, dce);
     
     }
 
@@ -798,7 +713,8 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 //Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
         //Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
         //Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
-        
+        try
+        {
         ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='"+courseCombo.getSelectedItem().toString()+"'");
         
         String[] tName = teacherCombo.getSelectedItem().toString().split(" ");
@@ -811,6 +727,18 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         String level = levelCombo.getSelectedItem().toString();
         int intLevel = Integer.parseInt(level);
         String location = locationCombo.getSelectedItem().toString();
+        boolean hasSessionStart = Validate.validateTimestamp(sessionstartField.getText().trim());
+        boolean hasSessionEnd = Validate.validateTimestamp(sessionendField.getText().trim());
+        Timestamp sessionStart = null;
+        Timestamp sessionEnd = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+        if(hasSessionStart)
+            sessionStart = new Timestamp(sdf.parse(sessionstartField.getText().trim()).getTime());
+        if(hasSessionEnd)
+            sessionEnd = new Timestamp(sdf.parse(sessionendField.getText().trim()).getTime());
+        
+        boolean walkout = walkoutCheck.isSelected();
+            
        // String term = jComboBoxTerm.getSelectedItem().toString();
         
         ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where t.fName='"+tName[0].trim()+"' and t.lName='"+tName[1].trim()+"'");
@@ -846,11 +774,11 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
       //      System.out.println("Terms less than 1");
         Timestamp now = new Timestamp((new Date()).getTime());
         
-        ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0), locations.get(0), creators.get(0), now, null, null, GC, notes, false);
+        ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0), locations.get(0), creators.get(0), now, sessionStart, sessionEnd, GC, notes, walkout);
         HibernateTest.create(ps);
         
         System.out.println("NOW: "+now.toString());
-        String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart IS NULL and ps.sessionEnd IS NULL and ps.grammarCheck='"+GC+"' and ps.notes='"+notes+"' and ps.walkout='false'";
+        String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart='"+sessionStart.toString()+"' and ps.sessionEnd='"+sessionEnd.toString()+"' and ps.grammarCheck='"+GC+"' and ps.notes='"+notes+"' and ps.walkout='"+walkout+"'";
         
         System.out.println(query);
         ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
@@ -863,6 +791,12 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             System.out.println("ID: "+sessions.get(0).getParaprofessionalSessionID());
         ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(0));
         sessionsTable.repaint();
+        }
+        catch(Exception e)
+        {
+            System.out.println("ERROR ADDING SESSION"+e.getMessage() +"\n\n");
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_addSessionbuttonActionPerformed
 
     private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
@@ -891,19 +825,35 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         {
             uacc.noMore();
             
-            JComboBox[] boxes = new  JComboBox[4];
+            JComboBox[] boxes = new  JComboBox[11];
             boxes[0]=fnameCombo;
             boxes[1]=lnameCombo;
             boxes[2]=phoneCombo;
             boxes[3]=emailCombo;
+            boxes[4]=categoryCombo;
+            boxes[5]=courseCombo;
+            boxes[6]=creatorCombo;
+            boxes[7]=levelCombo;
+            boxes[8]=locationCombo;
+            boxes[9]=paraprofessionalCombo;
+            boxes[10]=teacherCombo;
 
             ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
             cultimateList.add(Data.getClientsfirst());
             cultimateList.add(Data.getClientslast());
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
+            cultimateList.add(Data.getCategorieslist());
+            cultimateList.add(Data.getSubjectslist());
+            cultimateList.add(Data.getTutorslist());
+            cultimateList.add(Data.getLevelslist());
+            cultimateList.add(Data.getLocationslist());
+            cultimateList.add(Data.getTutorslist());
+            cultimateList.add(Data.getTeacherslist());
             uac = new UltimateAutoComplete(cultimateList, boxes);
         }
+        
+        
     }//GEN-LAST:event_autocompleteCheckActionPerformed
 
     /**
