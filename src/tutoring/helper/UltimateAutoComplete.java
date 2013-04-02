@@ -62,6 +62,7 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
 
             boxes[i].setMaximumRowCount(5);
             updatelist(i);
+            ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText("");
         }
     } 
     
@@ -89,6 +90,11 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
 
         }
         matches = null;
+    }
+    
+    public int getBoxesLength()
+    {
+        return boxes.length;
     }
     
     
@@ -339,9 +345,10 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
     public void setComboValue(String value, int indexOfBox)
     {
         ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
-        
-        KeyEvent ke = new KeyEvent(boxes[indexOfBox],0,0,0,KeyEvent.VK_A);
-        keyReleased(ke);
+        updatelist(indexOfBox);
+        ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
+        //KeyEvent ke = new KeyEvent(boxes[indexOfBox].getEditor().getEditorComponent(),0,0,0,KeyEvent.VK_BACK_SPACE);
+        //keyReleased(ke);
         firstClick[indexOfBox] = true;
     }
 }

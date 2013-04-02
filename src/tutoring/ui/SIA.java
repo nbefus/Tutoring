@@ -45,12 +45,16 @@ public class SIA extends javax.swing.JFrame {
         initComponents();
         
         SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable);
+        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable);
+        
+        tableHelperFuture.allowScrollingOnTable();
+        tableHelperFuture.increaseRowHeight(12);
         
         tableHelper.allowScrollingOnTable();
-        tableHelper.fasterScrolling(16);
+       
         tableHelper.increaseRowHeight(12);
        
-        
+       // sessionsTable.setCellSelectionEnabled(true);
         
         
         
@@ -72,8 +76,9 @@ public class SIA extends javax.swing.JFrame {
 
       uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
+      Timestamp now = new Timestamp((new Date()).getTime());
        
-       ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
+       ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
         if(sessions.size() > 0)
         {
@@ -84,6 +89,34 @@ public class SIA extends javax.swing.JFrame {
             
             sessionsTable.repaint();
         }
+        
+        
+        ArrayList<ParaprofessionalSession> futureSessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NOT NULL and ps.sessionEnd IS NULL) AND ps.sessionStart >= '"+now.toString()+"' AND walkout='false'");
+
+        if(futureSessions.size() > 0)
+        {
+            for(int i=0; i<futureSessions.size(); i++)
+            {
+                ((SessionTableModel) appointmentsTable.getModel()).addRow(futureSessions.get(i)); 
+            }
+            
+            appointmentsTable.repaint();
+        }
+        
+        /*
+         ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
+
+        if(sessions.size() > 0)
+        {
+            for(int i=0; i<sessions.size(); i++)
+            {
+                ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(i)); 
+            }
+            
+            sessionsTable.repaint();
+        }*/
+        
+        
         
         Timer timer = new Timer("Minute Update");
  
@@ -106,7 +139,6 @@ public class SIA extends javax.swing.JFrame {
         
         DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
         {
-            
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                         boolean isSelected, int row, int column) 
@@ -154,7 +186,10 @@ public class SIA extends javax.swing.JFrame {
         };
         
         tableHelper.setTableRendersAndEditors(true, dce);
-    
+        tableHelperFuture.setTableRendersAndEditors(true, dce);
+        //tableHelper.fasterScrolling(20);
+            
+    SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
     }
 
     /**
@@ -208,6 +243,10 @@ public class SIA extends javax.swing.JFrame {
         sessionsTableScrollPanel = new javax.swing.JScrollPane();
         sessionsTable = new javax.swing.JTable();
         deleteSessionButton = new javax.swing.JButton();
+        appointmentsTablePanel = new javax.swing.JPanel();
+        appointmentsTableScrollPanel = new javax.swing.JScrollPane();
+        appointmentsTable = new javax.swing.JTable();
+        deleteSessionButton1 = new javax.swing.JButton();
         createAgendaPanel = new javax.swing.JPanel();
         agendaCategoryLabel = new javax.swing.JLabel();
         agendaCategoryCombo = new javax.swing.JComboBox();
@@ -402,7 +441,7 @@ public class SIA extends javax.swing.JFrame {
                 .add(sessionendLabel)
                 .add(18, 18, 18)
                 .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 33, Short.MAX_VALUE)
                 .add(gcCheck)
                 .add(18, 18, 18)
                 .add(walkoutCheck)
@@ -476,6 +515,50 @@ public class SIA extends javax.swing.JFrame {
             }
         });
 
+        appointmentsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
+
+        appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "First", "Last", "Email", "Phone"
+            }
+        ));
+        appointmentsTableScrollPanel.setViewportView(appointmentsTable);
+
+        deleteSessionButton1.setText("Delete Session");
+        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteSessionButton1ActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout appointmentsTablePanelLayout = new org.jdesktop.layout.GroupLayout(appointmentsTablePanel);
+        appointmentsTablePanel.setLayout(appointmentsTablePanelLayout);
+        appointmentsTablePanelLayout.setHorizontalGroup(
+            appointmentsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(appointmentsTablePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(appointmentsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(appointmentsTableScrollPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1309, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, appointmentsTablePanelLayout.createSequentialGroup()
+                        .add(0, 0, Short.MAX_VALUE)
+                        .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        appointmentsTablePanelLayout.setVerticalGroup(
+            appointmentsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, appointmentsTablePanelLayout.createSequentialGroup()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(appointmentsTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+
         org.jdesktop.layout.GroupLayout sessionsTablePanelLayout = new org.jdesktop.layout.GroupLayout(sessionsTablePanel);
         sessionsTablePanel.setLayout(sessionsTablePanelLayout);
         sessionsTablePanelLayout.setHorizontalGroup(
@@ -488,6 +571,7 @@ public class SIA extends javax.swing.JFrame {
                         .add(0, 0, Short.MAX_VALUE)
                         .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
+            .add(appointmentsTablePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         sessionsTablePanelLayout.setVerticalGroup(
             sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -496,6 +580,8 @@ public class SIA extends javax.swing.JFrame {
                 .add(sessionsTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 337, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(appointmentsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -638,7 +724,7 @@ public class SIA extends javax.swing.JFrame {
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                         .add(173, 173, 173)
                         .add(autocompleteCheck)))
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -656,11 +742,11 @@ public class SIA extends javax.swing.JFrame {
                     .add(clearButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         SIAScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -778,7 +864,7 @@ public class SIA extends javax.swing.JFrame {
         HibernateTest.create(ps);
         
         System.out.println("NOW: "+now.toString());
-        String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart='"+sessionStart.toString()+"' and ps.sessionEnd='"+sessionEnd.toString()+"' and ps.grammarCheck='"+GC+"' and ps.notes='"+notes+"' and ps.walkout='"+walkout+"'";
+        String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart='"+sessionStart+"' and ps.sessionEnd='"+sessionEnd+"' and ps.grammarCheck='"+GC+"' and ps.notes='"+notes+"' and ps.walkout='"+walkout+"'";
         
         System.out.println(query);
         ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
@@ -856,6 +942,10 @@ public class SIA extends javax.swing.JFrame {
         
     }//GEN-LAST:event_autocompleteCheckActionPerformed
 
+    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteSessionButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -910,6 +1000,9 @@ public class SIA extends javax.swing.JFrame {
     private javax.swing.JScrollPane agendaTableScrollPanel;
     private javax.swing.JTextArea agendaTextArea;
     private javax.swing.JScrollPane agendaTextAreaScrollPanel;
+    private javax.swing.JTable appointmentsTable;
+    private javax.swing.JPanel appointmentsTablePanel;
+    private javax.swing.JScrollPane appointmentsTableScrollPanel;
     private javax.swing.JCheckBox autocompleteCheck;
     private javax.swing.JButton cancelButton;
     private javax.swing.JComboBox categoryCombo;
@@ -925,6 +1018,7 @@ public class SIA extends javax.swing.JFrame {
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton deleteAgendaButton;
     private javax.swing.JButton deleteSessionButton;
+    private javax.swing.JButton deleteSessionButton1;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JComboBox fnameCombo;

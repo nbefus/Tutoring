@@ -65,12 +65,12 @@ public class SessionTableHelper
        // sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
 
         table.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer());
-        
+        table.getColumnModel().getColumn(14).setCellRenderer(new MinuteCellRenderer());
         
         if(!doubleClickBringsInfoUpTop)
         {
             table.setDefaultEditor(Timestamp.class, new TimestampCellEditor(new JTextField()));
-            table.getColumnModel().getColumn(14).setCellRenderer(new MinuteCellRenderer());
+            
             table.getColumnModel().getColumn(4).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
             table.getColumnModel().getColumn(3).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
             table.getColumnModel().getColumn(2).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
