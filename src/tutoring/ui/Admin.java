@@ -12,10 +12,12 @@ import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
@@ -36,10 +38,15 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 import tutoring.entity.Category;
 import tutoring.entity.Client;
 import tutoring.entity.Course;
@@ -59,6 +66,7 @@ import tutoring.helper.TimestampCellEditor;
 import tutoring.helper.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
 import tutoring.helper.UltimateAutoCompleteClientNew;
+import tutoring.helper.Validate;
 
 /**
  *
@@ -72,30 +80,39 @@ public class Admin extends javax.swing.JFrame {
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientNew uacc;
     DefaultListModel dlm = new DefaultListModel();
+    RestrictionListModel restrictHelper;
+    
     
     public enum ComboBoxesIndexes
     {
-        FNAME(0, "First Name", "fname"),
-        LNAME(1, "Last Name", "lname"),
-        PHONE(2,"Phone", "phone"),
-        EMAIL(3, "Email", "email"),
-        CATEGORY(4, "Category", "name"),
-        COURSE(5, "Course", "abbrevName"),
-        CREATOR(6, "Creator", ""),
-        LEVEL(7, "Level", "level"),
-        LOCATION(8, "Location", "location"),
-        PARAPROFESSIONAL(9, "Tutor",""),
-        TEACHER(10, "Teacher", "");
+        FNAME(0, "First Name", "fname", 'd'),
+        LNAME(1, "Last Name", "lname", 'd'),
+        PHONE(2,"Phone", "phone", 'd'),
+        EMAIL(3, "Email", "email", 'd'),
+        CATEGORY(4, "Category", "name", 'a'),
+        COURSE(5, "Course", "abbrevName", 's'),
+        CREATOR(6, "Creator", "", 'e'),
+        LEVEL(7, "Level", "level", 'c'),
+        LOCATION(8, "Location", "location",'l'),
+        PARAPROFESSIONAL(9, "Tutor","", 'p'),
+        TEACHER(10, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't');
         
         private int indexOfCombo;
         private String displayName;
         private String databaseName;
+        private char letter;
         
-	private ComboBoxesIndexes(int i, String displayName, String databaseName) {
+	private ComboBoxesIndexes(int i, String displayName, String databaseName, char letter) {
 		indexOfCombo = i;
                 this.displayName = displayName;
                 this.databaseName = databaseName;
+                this.letter = letter;
 	}
+        
+        public char getLetter()
+        {
+            return letter;
+        }
  
 	public int getBoxIndex() {
 		return indexOfCombo;
@@ -109,14 +126,271 @@ public class Admin extends javax.swing.JFrame {
         {
             return databaseName;
         }
+        
+        public String getDatabaseName(String DisplayName)
+        {
+            ComboBoxesIndexes[] components = ComboBoxesIndexes.class.getEnumConstants();
+            for(int i=0; i< components.length; i++)
+                if(components[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                    return components[i].getDatabaseName();
+            
+            return "";
+        }
     }
     public Admin() {
         initComponents();
         
-        setUpReportTab();
+       // setUpReportTab();
         setUpSearchTab();
+        setUpGeneralReportTab();
     }
     
+
+    public void setUpGeneralReportTab()
+    {
+        
+
+        String[][] data = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+
+                "abbrevName,"+
+
+                "COUNT(paraprofessionalSessionID) as 'Total Sessions',"+
+
+                "Sum(IF( TIMESTAMPDIFF("+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "+
+
+                "Sum(IF( TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "+
+
+                "SUM(walkout) as 'Walkouts', "+
+
+                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "+
+
+                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "+
+
+                "FROM ParaprofessionalSession ps "+
+                "join Course c on ps.courseID=c.courseID "+
+                "join Subject s on c.subjectID=s.subjectID "+
+
+                "group by abbrevName"
+                );
+        
+        String[][] categoryData = HibernateTest.getDataFromRegularQuery(
+                "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
+                + " from ParaprofessionalSession ps"
+                + " join Course course on course.courseID=ps.courseID"
+                + " join Subject s on course.subjectID=s.subjectID"
+                + " join Category c on s.categoryID=c.categoryID"
+                + " group by c.name");
+        
+        String[][] otherValues = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+                
+                "SUM(walkout) as 'Walkouts', "+
+                
+                "COUNT(paraprofessionalID) as 'Total Students',"+
+
+                "Sum(IF( TIMESTAMPDIFF("+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "+
+
+                "FROM ParaprofessionalSession ps");
+        
+        
+        String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+                
+                "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"+
+                " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"+
+                " AS '<10 Min. Sessions', "+
+                
+                 "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"+
+                " AS '10-24 Min. Sessions', "+
+                
+                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"+
+                " AS '25-35 Min. Sessions', "+
+
+                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"+
+                " AS '36-60 Min. Sessions', "+
+                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 60"+
+                ", 1, 0))"+
+                " AS '>60 Min. Sessions' "+
+
+                "FROM ParaprofessionalSession ps");
+        
+        displayCharts(data, categoryData, otherValues, studentMinutes);
+        
+
+
+        // String[] columns = new String[c.size()];
+        // for(int i=0; i<c.size(); i++)
+        //     columns[i]=(String)c.get(i);
+         
+
+    }
+    
+    private void displayCharts(String[][] generalData, String[][] categoryData, String[][] otherValues, String[][] studentMinutes)
+    {
+          String[] columns = {"Subject","Total Sessions", "30-min. Sessions","Avg. Session/Visit","Total Wait Time", "Avg. Wait Time"};
+
+         DefaultTableModel dtm = new DefaultTableModel();
+         dtm.setDataVector(generalData, columns);
+         generalReportTable.setModel(dtm);
+
+         String[] columns1 = {"Category","# of Sessions"};
+
+         DefaultTableModel dtm1 = new DefaultTableModel();
+         dtm1.setDataVector(categoryData, columns1);
+         generalReportTable3.setModel(dtm1);
+         
+         String[] columns2 = {"Walkouts","Total Students","Total Sessions"};
+
+         DefaultTableModel dtm2 = new DefaultTableModel();
+         dtm2.setDataVector(otherValues, columns2);
+         generalReportTable2.setModel(dtm2);
+         
+         String[] columns3 = {"<10 Min.","10-25 Min.","25-35 Min.", "36-60 Min.", ">60 Min."};
+
+         DefaultTableModel dtm3 = new DefaultTableModel();
+         dtm3.setDataVector(studentMinutes, columns3);
+         generalReportTable4.setModel(dtm3);
+
+
+
+         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+         DefaultCategoryDataset barDataset1 = new DefaultCategoryDataset();
+         DefaultCategoryDataset barDataset2 = new DefaultCategoryDataset();
+         DefaultCategoryDataset barDataset3 = new DefaultCategoryDataset();
+         
+         DefaultPieDataset pieDataset = new DefaultPieDataset();
+         DefaultPieDataset pieDataset1 = new DefaultPieDataset();
+         DefaultPieDataset pieDataset2 = new DefaultPieDataset();
+         
+         String series = "Category";
+        
+
+         // String[] categories = new String[data.length];
+         // for(int i=0; i<data.length; i++)
+         //     categories[i] = data[i][1];
+
+         for(int i=0; i<categoryData.length; i++)
+         {
+             barDataset1.addValue(Double.parseDouble(categoryData[i][1]), series, categoryData[i][0]);
+             pieDataset1.setValue(categoryData[i][0], Double.parseDouble(categoryData[i][1]));
+         }
+         
+         for(int i=0; i<columns2.length; i++)
+         {
+            barDataset2.addValue(Double.parseDouble(otherValues[0][i]), series, columns2[i]);
+         }
+         
+         for(int i=0; i<columns3.length; i++)
+         {
+            barDataset3.addValue(Double.parseDouble(studentMinutes[0][i]), series, columns3[i]);
+            pieDataset2.setValue(columns3[i], Double.parseDouble(studentMinutes[0][i]));
+         }
+         
+        for(int i=0; i<generalData.length; i++)
+        {
+            System.out.println(Double.parseDouble(generalData[i][1])+" + "+generalData[i][0]);
+            barDataset.addValue(Double.parseDouble(generalData[i][1]), series, generalData[i][0]);
+            pieDataset.setValue(generalData[i][0], Double.parseDouble(generalData[i][1]));
+            
+            
+        }
+
+        final JFreeChart barChart = createChart(barDataset, "Total Student Sessions by Subject","# of Student Sessions","Subject",false, Color.green, Color.gray);
+        final ChartPanel barChartPanel = new ChartPanel(barChart);
+        barChartPanel.setPreferredSize(generalChartPanelLong.getSize());
+        System.out.println(barChartPanel.getPreferredSize().height + " "+barChartPanel.getPreferredSize().width);
+        generalChartPanelLong.removeAll();
+        generalChartPanelLong.add(barChartPanel);
+        generalChartPanelLong.validate();
+        
+        
+        final JFreeChart barChart1 = createChart(barDataset1, "Total Student Sessions by Category","# of Student Sessions","Category",false, Color.blue, Color.gray);
+        final ChartPanel barChartPanel1 = new ChartPanel(barChart1);
+        barChartPanel1.setPreferredSize(generalChartPanelLeft2.getSize());
+        System.out.println(barChartPanel1.getPreferredSize().height + " "+barChartPanel1.getPreferredSize().width);
+        generalChartPanelLeft2.removeAll();
+        generalChartPanelLeft2.add(barChartPanel1);
+        generalChartPanelLeft2.validate();
+        
+       final JFreeChart barChart2 = createChart(barDataset2, "Other Information","Total #","Statistic",false, Color.red, Color.gray);
+        final ChartPanel barChartPanel2 = new ChartPanel(barChart2);
+        barChartPanel2.setPreferredSize(generalChartPanelMid2.getSize());
+        System.out.println(barChartPanel2.getPreferredSize().height + " "+barChartPanel2.getPreferredSize().width);
+        generalChartPanelMid2.removeAll();
+        generalChartPanelMid2.add(barChartPanel2);
+        generalChartPanelMid2.validate();
+        
+        final JFreeChart barChart3 = createChart(barDataset3, "Session Length Overview","# of Sessions of Length","Length Period",false, Color.gray, Color.white);
+        final ChartPanel barChartPanel3 = new ChartPanel(barChart3);
+        barChartPanel3.setPreferredSize(generalChartPanelRight2.getSize());
+        System.out.println(barChartPanel3.getPreferredSize().height + " "+barChartPanel3.getPreferredSize().width);
+        generalChartPanelRight2.removeAll();
+        generalChartPanelRight2.add(barChartPanel3);
+        generalChartPanelRight2.validate();
+        
+        
+        final JFreeChart pieChart = createChart(pieDataset, "Total Student Sessions by Subject");
+        final ChartPanel pieChartPanel = new ChartPanel(pieChart);
+        pieChartPanel.setPreferredSize(generalChartPanelLeft.getSize());
+        System.out.println(pieChartPanel.getPreferredSize().height + " "+pieChartPanel.getPreferredSize().width);
+        generalChartPanelLeft.removeAll();
+        generalChartPanelLeft.add(pieChartPanel);
+        generalChartPanelLeft.validate();
+        
+        final JFreeChart pieChart1 = createChart(pieDataset1, "Total Student Sessions by Category");
+        final ChartPanel pieChartPanel1 = new ChartPanel(pieChart1);
+        pieChartPanel1.setPreferredSize(generalChartPanelRight.getSize());
+        System.out.println(pieChartPanel1.getPreferredSize().height + " "+pieChartPanel1.getPreferredSize().width);
+        generalChartPanelRight.removeAll();
+        generalChartPanelRight.add(pieChartPanel1);
+        generalChartPanelRight.validate();
+        
+        final JFreeChart pieChart2 = createChart(pieDataset2, "Total Student Sessions by Length");
+        final ChartPanel pieChartPanel2 = new ChartPanel(pieChart2);
+        pieChartPanel2.setPreferredSize(generalChartPanelMid.getSize());
+        System.out.println(pieChartPanel2.getPreferredSize().height + " "+pieChartPanel2.getPreferredSize().width);
+        generalChartPanelMid.removeAll();
+        generalChartPanelMid.add(pieChartPanel2);
+        generalChartPanelMid.validate();
+        
+       // thechartPanel1.validate();
+      //  reportPanel1.validate();
+       // jScrollPane10.validate();
+    }
+    
+    private JFreeChart createChart(PieDataset dataset, String title) {
+        
+        JFreeChart chart = ChartFactory.createPieChart3D(title,          // chart title
+            dataset,                // data
+            true,                   // include legend
+            true,
+            false);
+
+        PiePlot3D plot = (PiePlot3D) chart.getPlot();
+        chart.setBorderVisible(false);
+        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setStartAngle(290);
+        plot.setOutlineVisible(false);
+        plot.setDirection(Rotation.CLOCKWISE);
+        chart.setBackgroundPaint(Admin.this.getBackground());
+        plot.setForegroundAlpha(0.75f);
+        
+        LegendTitle lt = chart.getLegend();
+        lt.setBackgroundPaint(Admin.this.getBackground());
+        lt.setBorder(0, 0, 0, 0);
+        //lt.setBackgroundPaint(null);
+        return chart;
+    }
     
     public void setUpReportTab()
     {
@@ -187,7 +461,7 @@ public class Admin extends javax.swing.JFrame {
                           for(int i=0; i<data.length; i++)
                               dataset.addValue(Integer.parseInt(data[i][0]), series, data[i][1]);
 
-                          final JFreeChart chart = createChart(dataset);
+                          final JFreeChart chart = createChart(dataset,"title","x","y",false, Color.blue, Color.gray);
                           final ChartPanel chartPanel = new ChartPanel(chart);
                           chartPanel.setPreferredSize(thechartPanel.getSize());
                           thechartPanel.removeAll();
@@ -204,16 +478,16 @@ public class Admin extends javax.swing.JFrame {
         });
     }
     
-    private JFreeChart createChart(final CategoryDataset dataset) {
+    private JFreeChart createChart(final CategoryDataset dataset, final String title, final String xText, final String yText, final boolean showLegend, Color start, Color end) {
         
         // create the chart...
         final JFreeChart chart = ChartFactory.createBarChart(
-            "Bar Chart Demo",         // chart title
-            "Category",               // domain axis label
-            "Value",                  // range axis label
+            title,         // chart title
+            xText,               // domain axis label
+            yText,                  // range axis label
             dataset,                  // data
             PlotOrientation.VERTICAL, // orientation
-            true,                     // include legend
+            showLegend,                     // include legend
             true,                     // tooltips?
             false                     // URLs?
         );
@@ -221,14 +495,14 @@ public class Admin extends javax.swing.JFrame {
         // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
         // set the background color for the chart...
-        chart.setBackgroundPaint(Color.white);
+        chart.setBackgroundPaint(Admin.this.getBackground());
 
         // get a reference to the plot for further customisation...
         final CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(Color.lightGray);
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setRangeGridlinePaint(Color.white);
-
+        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setDomainGridlinePaint(Color.black);
+        plot.setRangeGridlinePaint(Color.black);
+        plot.setOutlineVisible(false);
         // set the range axis to display integers only...
         final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
@@ -239,8 +513,8 @@ public class Admin extends javax.swing.JFrame {
         
         // set up gradient paints for series...
         final GradientPaint gp0 = new GradientPaint(
-            0.0f, 0.0f, Color.blue, 
-            0.0f, 0.0f, Color.lightGray
+            0.0f, 0.0f, start, 
+            0.0f, 0.0f, end
         );
         /*
         final GradientPaint gp1 = new GradientPaint(
@@ -269,21 +543,19 @@ public class Admin extends javax.swing.JFrame {
     
     public void setUpSearchTab()
     {
-        ComboBoxesIndexes.class.getEnumConstants();
+        //ComboBoxesIndexes.class.getEnumConstants();
         //BASED ON TABLE SEARCHING..
-        String[] restrictions = new String[4];
-        restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";
         
-        for(int i=0; i<restrictions.length; i++)
-        dlm.addElement(restrictions[i]);
  
         searchList.setModel(dlm);
         
-        searchcourseInfoPanel.setVisible(false);
-        searchotherInfoPanel.setVisible(false);
+        searchclientPanel.setVisible(true);
+        searchcoursePanel.setVisible(false);
+        searchsessionPanel.setVisible(false);
+        searchparaprofessionalPanel.setVisible(false);
+        searchteacherPanel.setVisible(false);
+        searchagendaPanel.setVisible(false);
+        searchsubjectPanel.setVisible(false);
         
         Data d = new Data(false);
         
@@ -292,13 +564,15 @@ public class Admin extends javax.swing.JFrame {
         boxes[1]=searchlnameCombo;
         boxes[2]=searchphoneCombo;
         boxes[3]=searchemailCombo;
-        boxes[4]=searchcategoryCombo;
+        boxes[4]=searchcategorysessionCombo;
         boxes[5]=searchcourseCombo;
         boxes[6]=searchcreatorCombo;
         boxes[7]=searchlevelCombo;
         boxes[8]=searchlocationCombo;
         boxes[9]=searchparaprofessionalCombo;
         boxes[10]=searchteacherCombo;
+        
+        
 
         ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
         cultimateList.add(Data.getClientsfirst());
@@ -314,7 +588,20 @@ public class Admin extends javax.swing.JFrame {
         cultimateList.add(Data.getTeacherslist());
         uac = new UltimateAutoComplete(cultimateList, boxes);
         
+        clientRadio.setSelected(true);
         
+        //String[] restrictions = new String[4];
+        
+        /*restrictions[0]="First Name is any";
+        restrictions[1]="Last Name is any";
+        restrictions[2]="Phone is any";
+        restrictions[3]="Email is any";*/
+
+       // for(int i=0; i<restrictions.length; i++)
+           // dlm.addElement(restrictions[i]);
+        
+        dlm.addElement("Search for all records");
+        restrictHelper = new RestrictionListModel(dlm);//, restrictions);
     }
     
     public void setUpSessionsTab()
@@ -520,6 +807,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         adminPanel = new javax.swing.JTabbedPane();
         sessionsPanel = new javax.swing.JPanel();
         currentSessionsPanel = new javax.swing.JPanel();
@@ -635,33 +923,35 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         deleteSessionButton1 = new javax.swing.JButton();
         searchsearchButton = new javax.swing.JButton();
         clearButton1 = new javax.swing.JButton();
-        searchotherInfoPanel = new javax.swing.JPanel();
+        searchsessionPanel = new javax.swing.JPanel();
         locationLabel1 = new javax.swing.JLabel();
         searchlocationCombo = new javax.swing.JComboBox();
         creatorLabel1 = new javax.swing.JLabel();
         notesLabel1 = new javax.swing.JLabel();
         searchnotesField = new javax.swing.JTextField();
-        gcCheck1 = new javax.swing.JCheckBox();
-        walkoutCheck1 = new javax.swing.JCheckBox();
         sessionstartLabel1 = new javax.swing.JLabel();
         searchsessionstartField = new javax.swing.JTextField();
         searchcreatorCombo = new javax.swing.JComboBox();
         sessionendLabel1 = new javax.swing.JLabel();
         searchsessionendField = new javax.swing.JTextField();
         categoryLabel1 = new javax.swing.JLabel();
-        searchcategoryCombo = new javax.swing.JComboBox();
+        searchcategorysessionCombo = new javax.swing.JComboBox();
         ParaprofessionalLabel1 = new javax.swing.JLabel();
         searchparaprofessionalCombo = new javax.swing.JComboBox();
         sessionstartLabel2 = new javax.swing.JLabel();
         searchsessionstartField1 = new javax.swing.JTextField();
-        searchcourseInfoPanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        searchgcCombo = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
+        searchwalkoutCombo = new javax.swing.JComboBox();
+        searchcoursePanel = new javax.swing.JPanel();
         courseLabel1 = new javax.swing.JLabel();
         searchcourseCombo = new javax.swing.JComboBox();
         levelLabel1 = new javax.swing.JLabel();
         searchlevelCombo = new javax.swing.JComboBox();
         teacherLabel1 = new javax.swing.JLabel();
         searchteacherCombo = new javax.swing.JComboBox();
-        searchstudentInfoPanel = new javax.swing.JPanel();
+        searchclientPanel = new javax.swing.JPanel();
         fnameLabel4 = new javax.swing.JLabel();
         searchfnameCombo = new javax.swing.JComboBox();
         lnameLabel4 = new javax.swing.JLabel();
@@ -670,13 +960,12 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         searchemailCombo = new javax.swing.JComboBox();
         phoneLabel4 = new javax.swing.JLabel();
         searchphoneCombo = new javax.swing.JComboBox();
-        searchautocompleteCheck = new javax.swing.JCheckBox();
         jScrollPane7 = new javax.swing.JScrollPane();
         searchList = new javax.swing.JList();
         searchAddRestrictionsButton = new javax.swing.JButton();
         searchresetrestrictionButton = new javax.swing.JButton();
         searchclearrestrictionsButton = new javax.swing.JButton();
-        searchcourseInfoPanel1 = new javax.swing.JPanel();
+        searchparaprofessionalPanel = new javax.swing.JPanel();
         courseLabel3 = new javax.swing.JLabel();
         searchcourseCombo1 = new javax.swing.JComboBox();
         levelLabel3 = new javax.swing.JLabel();
@@ -684,29 +973,35 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         teacherLabel3 = new javax.swing.JLabel();
         categoryLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        searchparaprofessionalCombo2 = new javax.swing.JComboBox();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        searchlevelCombo4 = new javax.swing.JComboBox();
+        searchroleCombo = new javax.swing.JComboBox();
+        searchcategoryparaprofessionalCombo = new javax.swing.JComboBox();
         levelLabel6 = new javax.swing.JLabel();
         searchsessionstartField2 = new javax.swing.JTextField();
         searchsessionstartField3 = new javax.swing.JTextField();
-        searchcourseInfoPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        searchclockedinCombo = new javax.swing.JComboBox();
+        searchteacherPanel = new javax.swing.JPanel();
         courseLabel4 = new javax.swing.JLabel();
-        searchcourseCombo2 = new javax.swing.JComboBox();
+        searchfnameteacherCombo = new javax.swing.JComboBox();
         levelLabel4 = new javax.swing.JLabel();
-        searchlevelCombo2 = new javax.swing.JComboBox();
-        searchcourseInfoPanel3 = new javax.swing.JPanel();
+        searchlnameteacherCombo = new javax.swing.JComboBox();
+        searchsubjectPanel = new javax.swing.JPanel();
         courseLabel5 = new javax.swing.JLabel();
-        searchcourseCombo3 = new javax.swing.JComboBox();
+        searchsubjectnameCombo = new javax.swing.JComboBox();
         levelLabel5 = new javax.swing.JLabel();
-        searchlevelCombo3 = new javax.swing.JComboBox();
-        searchcourseInfoPanel4 = new javax.swing.JPanel();
+        searchsubjectcategoryCombo = new javax.swing.JComboBox();
+        searchagendaPanel = new javax.swing.JPanel();
         courseLabel6 = new javax.swing.JLabel();
-        searchcourseCombo4 = new javax.swing.JComboBox();
+        searchagendanotesCombo = new javax.swing.JComboBox();
         levelLabel7 = new javax.swing.JLabel();
-        searchlevelCombo5 = new javax.swing.JComboBox();
+        searchagendacategoryCombo = new javax.swing.JComboBox();
         teacherLabel4 = new javax.swing.JLabel();
         searchsessionstartField4 = new javax.swing.JTextField();
+        clientRadio = new javax.swing.JRadioButton();
+        courseRadio = new javax.swing.JRadioButton();
+        sessionsRadio = new javax.swing.JRadioButton();
+        teacherRadio = new javax.swing.JRadioButton();
+        jScrollPane9 = new javax.swing.JScrollPane();
         reportPanel = new javax.swing.JPanel();
         downloadButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -714,6 +1009,31 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         jScrollPane2 = new javax.swing.JScrollPane();
         reportList = new javax.swing.JList();
         thechartPanel = new javax.swing.JPanel();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        reportPanel1 = new javax.swing.JPanel();
+        thechartPanel1 = new javax.swing.JPanel();
+        generalChartPanelLeft = new javax.swing.JPanel();
+        generalChartPanelMid = new javax.swing.JPanel();
+        generalChartPanelRight = new javax.swing.JPanel();
+        generalChartPanelLong = new javax.swing.JPanel();
+        generalChartPanelMid2 = new javax.swing.JPanel();
+        generalChartPanelLeft2 = new javax.swing.JPanel();
+        generalChartPanelRight2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        generalReportTable2 = new javax.swing.JTable();
+        generalReportBeginField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        generalReportEndField = new javax.swing.JTextField();
+        downloadButton1 = new javax.swing.JButton();
+        generalReportLoadButton = new javax.swing.JButton();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        generalReportTable = new javax.swing.JTable();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        generalReportTable3 = new javax.swing.JTable();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        generalReportTable4 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -912,7 +1232,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(ParaprofessionalLabel)
                 .add(18, 18, 18)
                 .add(sessionsparaprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         courseInfoPanelLayout.setVerticalGroup(
             courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -970,7 +1290,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(phoneLabel3)
                 .add(18, 18, 18)
                 .add(sessionsphoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(340, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         studentInfoPanel1Layout.setVerticalGroup(
             studentInfoPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1034,7 +1354,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(sessionsclearButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(476, Short.MAX_VALUE))
+                .addContainerGap(662, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Sessions", sessionsPanel);
@@ -1127,7 +1447,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(deleteAgendaButton)
-                .add(0, 368, Short.MAX_VALUE))
+                .add(0, 583, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout agendaPanelLayout = new org.jdesktop.layout.GroupLayout(agendaPanel);
@@ -1137,7 +1457,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             .add(agendaPanelLayout.createSequentialGroup()
                 .add(112, 112, 112)
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(279, Short.MAX_VALUE))
+                .addContainerGap(263, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1553,7 +1873,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(createAgendaPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(336, Short.MAX_VALUE))
+                .addContainerGap(528, Short.MAX_VALUE))
         );
 
         adminScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -1630,17 +1950,13 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             }
         });
 
-        searchotherInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Other Information"));
+        searchsessionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Other Information"));
 
         locationLabel1.setText("Location:");
 
         creatorLabel1.setText("Creator:");
 
         notesLabel1.setText("Notes:");
-
-        gcCheck1.setText("GC");
-
-        walkoutCheck1.setText("Walkout");
 
         sessionstartLabel1.setText("Session Start:");
 
@@ -1654,7 +1970,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 
         categoryLabel1.setText("Category:");
 
-        searchcategoryCombo.setEditable(true);
+        searchcategorysessionCombo.setEditable(true);
 
         ParaprofessionalLabel1.setText("Paraprofessional:");
 
@@ -1664,13 +1980,21 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 
         searchsessionstartField1.setText("dd/mm/yyyy hh:mm aa");
 
-        org.jdesktop.layout.GroupLayout searchotherInfoPanelLayout = new org.jdesktop.layout.GroupLayout(searchotherInfoPanel);
-        searchotherInfoPanel.setLayout(searchotherInfoPanelLayout);
-        searchotherInfoPanelLayout.setHorizontalGroup(
-            searchotherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchotherInfoPanelLayout.createSequentialGroup()
-                .add(searchotherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(searchotherInfoPanelLayout.createSequentialGroup()
+        jLabel2.setText("Grammar Check:");
+
+        searchgcCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Either", "True", "False" }));
+
+        jLabel4.setText("Walkout:");
+
+        searchwalkoutCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Either", "True", "False" }));
+
+        org.jdesktop.layout.GroupLayout searchsessionPanelLayout = new org.jdesktop.layout.GroupLayout(searchsessionPanel);
+        searchsessionPanel.setLayout(searchsessionPanelLayout);
+        searchsessionPanelLayout.setHorizontalGroup(
+            searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchsessionPanelLayout.createSequentialGroup()
+                .add(searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(searchsessionPanelLayout.createSequentialGroup()
                         .add(15, 15, 15)
                         .add(locationLabel1)
                         .add(18, 18, 18)
@@ -1690,16 +2014,12 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                         .add(18, 18, 18)
                         .add(sessionendLabel1)
                         .add(18, 18, 18)
-                        .add(searchsessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(gcCheck1)
-                        .add(18, 18, 18)
-                        .add(walkoutCheck1))
-                    .add(searchotherInfoPanelLayout.createSequentialGroup()
+                        .add(searchsessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchsessionPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(categoryLabel1)
                         .add(18, 18, 18)
-                        .add(searchcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(searchcategorysessionCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
                         .add(ParaprofessionalLabel1)
                         .add(18, 18, 18)
@@ -1707,14 +2027,22 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                         .add(18, 18, 18)
                         .add(sessionstartLabel2)
                         .add(18, 18, 18)
-                        .add(searchsessionstartField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(searchsessionstartField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(jLabel2)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(searchgcCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jLabel4)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(searchwalkoutCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
-        searchotherInfoPanelLayout.setVerticalGroup(
-            searchotherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchotherInfoPanelLayout.createSequentialGroup()
+        searchsessionPanelLayout.setVerticalGroup(
+            searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchsessionPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(searchotherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(locationLabel1)
                     .add(searchlocationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(creatorLabel1)
@@ -1723,22 +2051,24 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(searchnotesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(sessionstartLabel1)
                     .add(searchsessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(gcCheck1)
-                    .add(walkoutCheck1)
                     .add(sessionendLabel1)
                     .add(searchsessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(searchotherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(categoryLabel1)
-                    .add(searchcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchcategorysessionCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(ParaprofessionalLabel1)
                     .add(searchparaprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(sessionstartLabel2)
-                    .add(searchsessionstartField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchsessionstartField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel2)
+                    .add(searchgcCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel4)
+                    .add(searchwalkoutCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        searchcourseInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchcoursePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
 
         courseLabel1.setText("Course:");
 
@@ -1757,11 +2087,11 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             }
         });
 
-        org.jdesktop.layout.GroupLayout searchcourseInfoPanelLayout = new org.jdesktop.layout.GroupLayout(searchcourseInfoPanel);
-        searchcourseInfoPanel.setLayout(searchcourseInfoPanelLayout);
-        searchcourseInfoPanelLayout.setHorizontalGroup(
-            searchcourseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanelLayout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout searchcoursePanelLayout = new org.jdesktop.layout.GroupLayout(searchcoursePanel);
+        searchcoursePanel.setLayout(searchcoursePanelLayout);
+        searchcoursePanelLayout.setHorizontalGroup(
+            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcoursePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(courseLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
@@ -1774,12 +2104,12 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(teacherLabel1)
                 .add(18, 18, 18)
                 .add(searchteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(583, Short.MAX_VALUE))
         );
-        searchcourseInfoPanelLayout.setVerticalGroup(
-            searchcourseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanelLayout.createSequentialGroup()
-                .add(searchcourseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchcoursePanelLayout.setVerticalGroup(
+            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcoursePanelLayout.createSequentialGroup()
+                .add(searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel1)
                     .add(searchcourseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel1)
@@ -1789,7 +2119,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchstudentInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
+        searchclientPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
 
         fnameLabel4.setText("First Name:");
 
@@ -1807,11 +2137,11 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 
         searchphoneCombo.setEditable(true);
 
-        org.jdesktop.layout.GroupLayout searchstudentInfoPanelLayout = new org.jdesktop.layout.GroupLayout(searchstudentInfoPanel);
-        searchstudentInfoPanel.setLayout(searchstudentInfoPanelLayout);
-        searchstudentInfoPanelLayout.setHorizontalGroup(
-            searchstudentInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchstudentInfoPanelLayout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout searchclientPanelLayout = new org.jdesktop.layout.GroupLayout(searchclientPanel);
+        searchclientPanel.setLayout(searchclientPanelLayout);
+        searchclientPanelLayout.setHorizontalGroup(
+            searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchclientPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(fnameLabel4)
                 .add(18, 18, 18)
@@ -1830,10 +2160,10 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(searchphoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchstudentInfoPanelLayout.setVerticalGroup(
-            searchstudentInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchstudentInfoPanelLayout.createSequentialGroup()
-                .add(searchstudentInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchclientPanelLayout.setVerticalGroup(
+            searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchclientPanelLayout.createSequentialGroup()
+                .add(searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(phoneLabel4)
                     .add(emailLabel4)
                     .add(searchlnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -1844,14 +2174,6 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(searchphoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(6, 6, 6))
         );
-
-        searchautocompleteCheck.setSelected(true);
-        searchautocompleteCheck.setText("AutoComplete");
-        searchautocompleteCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchautocompleteCheckActionPerformed(evt);
-            }
-        });
 
         jScrollPane7.setViewportView(searchList);
 
@@ -1876,7 +2198,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             }
         });
 
-        searchcourseInfoPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchparaprofessionalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
 
         courseLabel3.setText("First Name:");
 
@@ -1892,11 +2214,9 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 
         jLabel1.setText("Role:");
 
-        searchparaprofessionalCombo2.setEditable(true);
+        searchroleCombo.setEditable(true);
 
-        jCheckBox1.setText("isClockedIn");
-
-        searchlevelCombo4.setEditable(true);
+        searchcategoryparaprofessionalCombo.setEditable(true);
 
         levelLabel6.setText("Category:");
 
@@ -1904,43 +2224,52 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
 
         searchsessionstartField3.setText("dd/mm/yyyy hh:mm aa");
 
-        org.jdesktop.layout.GroupLayout searchcourseInfoPanel1Layout = new org.jdesktop.layout.GroupLayout(searchcourseInfoPanel1);
-        searchcourseInfoPanel1.setLayout(searchcourseInfoPanel1Layout);
-        searchcourseInfoPanel1Layout.setHorizontalGroup(
-            searchcourseInfoPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel1Layout.createSequentialGroup()
+        jLabel3.setText("Clocked In:");
+
+        searchclockedinCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Either", "True", "False" }));
+
+        org.jdesktop.layout.GroupLayout searchparaprofessionalPanelLayout = new org.jdesktop.layout.GroupLayout(searchparaprofessionalPanel);
+        searchparaprofessionalPanel.setLayout(searchparaprofessionalPanelLayout);
+        searchparaprofessionalPanelLayout.setHorizontalGroup(
+            searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchparaprofessionalPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(courseLabel3)
+                .add(searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(courseLabel3)
+                    .add(levelLabel6))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchcourseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(levelLabel3)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchlevelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(teacherLabel3)
+                .add(searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(searchparaprofessionalPanelLayout.createSequentialGroup()
+                        .add(searchcourseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(levelLabel3)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(searchlevelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(teacherLabel3)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(searchsessionstartField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(18, 18, 18)
+                        .add(categoryLabel3)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(searchsessionstartField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchparaprofessionalPanelLayout.createSequentialGroup()
+                        .add(6, 6, 6)
+                        .add(searchcategoryparaprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 161, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchsessionstartField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(categoryLabel3)
+                .add(jLabel3)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchsessionstartField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(jCheckBox1)
-                .add(18, 18, 18)
+                .add(searchclockedinCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchparaprofessionalCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(levelLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchlevelCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchroleCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchcourseInfoPanel1Layout.setVerticalGroup(
-            searchcourseInfoPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel1Layout.createSequentialGroup()
-                .add(searchcourseInfoPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchparaprofessionalPanelLayout.setVerticalGroup(
+            searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchparaprofessionalPanelLayout.createSequentialGroup()
+                .add(searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel3)
                     .add(searchcourseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel3)
@@ -1948,152 +2277,172 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(teacherLabel3)
                     .add(categoryLabel3)
                     .add(jLabel1)
-                    .add(searchparaprofessionalCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jCheckBox1)
-                    .add(searchcourseInfoPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(levelLabel6)
-                        .add(searchlevelCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchroleCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(searchsessionstartField2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(searchsessionstartField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(searchsessionstartField3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jLabel3)
+                    .add(searchclockedinCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(12, 12, 12)
+                .add(searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(levelLabel6)
+                    .add(searchcategoryparaprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        searchcourseInfoPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchteacherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
 
         courseLabel4.setText("First Name:");
 
-        searchcourseCombo2.setEditable(true);
+        searchfnameteacherCombo.setEditable(true);
 
         levelLabel4.setText("Last Name:");
 
-        searchlevelCombo2.setEditable(true);
+        searchlnameteacherCombo.setEditable(true);
 
-        org.jdesktop.layout.GroupLayout searchcourseInfoPanel2Layout = new org.jdesktop.layout.GroupLayout(searchcourseInfoPanel2);
-        searchcourseInfoPanel2.setLayout(searchcourseInfoPanel2Layout);
-        searchcourseInfoPanel2Layout.setHorizontalGroup(
-            searchcourseInfoPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel2Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout searchteacherPanelLayout = new org.jdesktop.layout.GroupLayout(searchteacherPanel);
+        searchteacherPanel.setLayout(searchteacherPanelLayout);
+        searchteacherPanelLayout.setHorizontalGroup(
+            searchteacherPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchteacherPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(courseLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchcourseCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchfnameteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(levelLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchlevelCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchlnameteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchcourseInfoPanel2Layout.setVerticalGroup(
-            searchcourseInfoPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel2Layout.createSequentialGroup()
-                .add(searchcourseInfoPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchteacherPanelLayout.setVerticalGroup(
+            searchteacherPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchteacherPanelLayout.createSequentialGroup()
+                .add(searchteacherPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel4)
-                    .add(searchcourseCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchfnameteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel4)
-                    .add(searchlevelCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchlnameteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchcourseInfoPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchsubjectPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
 
         courseLabel5.setText("Name:");
 
-        searchcourseCombo3.setEditable(true);
+        searchsubjectnameCombo.setEditable(true);
 
         levelLabel5.setText("Category:");
 
-        searchlevelCombo3.setEditable(true);
+        searchsubjectcategoryCombo.setEditable(true);
 
-        org.jdesktop.layout.GroupLayout searchcourseInfoPanel3Layout = new org.jdesktop.layout.GroupLayout(searchcourseInfoPanel3);
-        searchcourseInfoPanel3.setLayout(searchcourseInfoPanel3Layout);
-        searchcourseInfoPanel3Layout.setHorizontalGroup(
-            searchcourseInfoPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel3Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout searchsubjectPanelLayout = new org.jdesktop.layout.GroupLayout(searchsubjectPanel);
+        searchsubjectPanel.setLayout(searchsubjectPanelLayout);
+        searchsubjectPanelLayout.setHorizontalGroup(
+            searchsubjectPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchsubjectPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(courseLabel5)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchcourseCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchsubjectnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
-                .add(levelLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 51, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(levelLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchlevelCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchsubjectcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchcourseInfoPanel3Layout.setVerticalGroup(
-            searchcourseInfoPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel3Layout.createSequentialGroup()
-                .add(searchcourseInfoPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchsubjectPanelLayout.setVerticalGroup(
+            searchsubjectPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchsubjectPanelLayout.createSequentialGroup()
+                .add(searchsubjectPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel5)
-                    .add(searchcourseCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchsubjectnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel5)
-                    .add(searchlevelCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchsubjectcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        searchcourseInfoPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchagendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
 
         courseLabel6.setText("Notes:");
 
-        searchcourseCombo4.setEditable(true);
+        searchagendanotesCombo.setEditable(true);
 
         levelLabel7.setText("Category:");
 
-        searchlevelCombo5.setEditable(true);
+        searchagendacategoryCombo.setEditable(true);
 
         teacherLabel4.setText("Date:");
 
         searchsessionstartField4.setText("dd/mm/yyyy hh:mm aa");
 
-        org.jdesktop.layout.GroupLayout searchcourseInfoPanel4Layout = new org.jdesktop.layout.GroupLayout(searchcourseInfoPanel4);
-        searchcourseInfoPanel4.setLayout(searchcourseInfoPanel4Layout);
-        searchcourseInfoPanel4Layout.setHorizontalGroup(
-            searchcourseInfoPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel4Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout searchagendaPanelLayout = new org.jdesktop.layout.GroupLayout(searchagendaPanel);
+        searchagendaPanel.setLayout(searchagendaPanelLayout);
+        searchagendaPanelLayout.setHorizontalGroup(
+            searchagendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchagendaPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(courseLabel6)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchcourseCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchagendanotesCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(levelLabel7)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchlevelCombo5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchagendacategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(teacherLabel4)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(searchsessionstartField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchcourseInfoPanel4Layout.setVerticalGroup(
-            searchcourseInfoPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcourseInfoPanel4Layout.createSequentialGroup()
-                .add(searchcourseInfoPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchagendaPanelLayout.setVerticalGroup(
+            searchagendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchagendaPanelLayout.createSequentialGroup()
+                .add(searchagendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel6)
-                    .add(searchcourseCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchagendanotesCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel7)
-                    .add(searchlevelCombo5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchagendacategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(teacherLabel4)
                     .add(searchsessionstartField4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        buttonGroup1.add(clientRadio);
+        clientRadio.setText("Client");
+        clientRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(courseRadio);
+        courseRadio.setText("Course");
+        courseRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                courseRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(sessionsRadio);
+        sessionsRadio.setText("Sessions");
+
+        buttonGroup1.add(teacherRadio);
+        teacherRadio.setText("Teacher");
 
         org.jdesktop.layout.GroupLayout sessionsPanel1Layout = new org.jdesktop.layout.GroupLayout(sessionsPanel1);
         sessionsPanel1.setLayout(sessionsPanel1Layout);
         sessionsPanel1Layout.setHorizontalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsPanel1Layout.createSequentialGroup()
-                .add(209, 209, 209)
-                .add(searchautocompleteCheck)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .add(sessionsPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(searchotherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcourseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchstudentInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcourseInfoPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcourseInfoPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcourseInfoPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcourseInfoPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchsessionPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchcoursePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchclientPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchparaprofessionalPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchteacherPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchsubjectPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsPanel1Layout.createSequentialGroup()
                         .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 331, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2108,30 +2457,44 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                                 .add(searchresetrestrictionButton)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .add(searchAddRestrictionsButton)
-                                .add(2, 2, 2)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(58, 58, 58)))))
+                                .add(177, 177, 177)))))
                 .addContainerGap())
+            .add(sessionsPanel1Layout.createSequentialGroup()
+                .add(322, 322, 322)
+                .add(clientRadio)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(courseRadio)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(sessionsRadio)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(teacherRadio)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sessionsPanel1Layout.setVerticalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(searchautocompleteCheck)
                 .add(18, 18, 18)
-                .add(searchstudentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(clientRadio)
+                    .add(courseRadio)
+                    .add(sessionsRadio)
+                    .add(teacherRadio))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchcourseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 52, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchclientPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchotherInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchcoursePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchcourseInfoPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchsessionPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchcourseInfoPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchparaprofessionalPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchcourseInfoPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchteacherPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchcourseInfoPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchsubjectPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(sessionsPanel1Layout.createSequentialGroup()
@@ -2147,7 +2510,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 234, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 213, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -2196,7 +2559,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             reportPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(reportPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(thechartPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
+                .add(thechartPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1478, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(reportPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(reportPanelLayout.createSequentialGroup()
@@ -2207,7 +2570,237 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .addContainerGap())
         );
 
-        adminPanel.addTab("Report", reportPanel);
+        jScrollPane9.setViewportView(reportPanel);
+
+        adminPanel.addTab("tab7", jScrollPane9);
+
+        reportPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        generalChartPanelLeft.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLong.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLeft2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight2.setLayout(new java.awt.GridBagLayout());
+
+        generalReportTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(generalReportTable2);
+
+        generalReportBeginField.setText("mm/dd/yyyy hh:mm aa");
+
+        jLabel5.setText("Begin");
+
+        jLabel6.setText("End");
+
+        generalReportEndField.setText("mm/dd/yyyy hh:mm aa");
+
+        downloadButton1.setText("Download");
+
+        generalReportLoadButton.setText("Load");
+        generalReportLoadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generalReportLoadButtonActionPerformed(evt);
+            }
+        });
+
+        generalReportTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane11.setViewportView(generalReportTable);
+
+        generalReportTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane12.setViewportView(generalReportTable3);
+
+        generalReportTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane13.setViewportView(generalReportTable4);
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(598, 598, 598)
+                        .add(downloadButton1))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(183, 183, 183)
+                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 23, Short.MAX_VALUE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(56, 56, 56))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(12, 12, 12)
+                                .add(jLabel5))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(21, 21, 21)
+                                .add(jLabel6)))
+                        .add(generalReportLoadButton))
+                    .addContainerGap(1136, Short.MAX_VALUE)))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .add(185, 185, 185)
+                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(421, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(downloadButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(17, 17, 17))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .add(jLabel5)
+                    .add(1, 1, 1)
+                    .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(jLabel6)
+                    .add(1, 1, 1)
+                    .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(18, 18, 18)
+                    .add(generalReportLoadButton)
+                    .addContainerGap(109, Short.MAX_VALUE)))
+            .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel1Layout.createSequentialGroup()
+                    .add(16, 16, 16)
+                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(163, Short.MAX_VALUE)))
+        );
+
+        org.jdesktop.layout.GroupLayout thechartPanel1Layout = new org.jdesktop.layout.GroupLayout(thechartPanel1);
+        thechartPanel1.setLayout(thechartPanel1Layout);
+        thechartPanel1Layout.setHorizontalGroup(
+            thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(thechartPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(thechartPanel1Layout.createSequentialGroup()
+                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                                .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                                .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                                .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(40, 40, 40)))
+                    .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1296, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(2165, Short.MAX_VALUE))
+        );
+        thechartPanel1Layout.setVerticalGroup(
+            thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(thechartPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(thechartPanel1Layout.createSequentialGroup()
+                        .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                    .add(thechartPanel1Layout.createSequentialGroup()
+                        .add(233, 233, 233)
+                        .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(thechartPanel1Layout.createSequentialGroup()
+                        .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 285, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(477, 477, 477))
+        );
+
+        org.jdesktop.layout.GroupLayout reportPanel1Layout = new org.jdesktop.layout.GroupLayout(reportPanel1);
+        reportPanel1.setLayout(reportPanel1Layout);
+        reportPanel1Layout.setHorizontalGroup(
+            reportPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(reportPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(thechartPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(689, Short.MAX_VALUE))
+        );
+        reportPanel1Layout.setVerticalGroup(
+            reportPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(reportPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(thechartPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(344, 344, 344))
+        );
+
+        jScrollPane10.setViewportView(reportPanel1);
+
+        adminPanel.addTab("tab7", jScrollPane10);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -2219,7 +2812,9 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1037, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(adminPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1270, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 122, Short.MAX_VALUE))
         );
 
         pack();
@@ -2391,77 +2986,108 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     }//GEN-LAST:event_searchsearchButtonMouseClicked
 
     private void searchsearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchsearchButtonActionPerformed
-        String[] restrictions = new String[4];
-        restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";
         
         String[] columns = {"fname","lname","phone","email"};
         String table = "Client";
         char letter = 'c';
+        String join;
         
-        RestrictionListModel restrictHelper = new RestrictionListModel(dlm, restrictions);
-
-        String fnameQuery = restrictHelper.getQuery(ComboBoxesIndexes.FNAME.indexOfCombo, letter, ComboBoxesIndexes.FNAME.getDatabaseName());
-        String lnameQuery = restrictHelper.getQuery(ComboBoxesIndexes.LNAME.indexOfCombo, letter, ComboBoxesIndexes.LNAME.getDatabaseName());
-        String phoneQuery = restrictHelper.getQuery(ComboBoxesIndexes.PHONE.indexOfCombo, letter, ComboBoxesIndexes.PHONE.getDatabaseName());
-        String emailQuery = restrictHelper.getQuery(ComboBoxesIndexes.EMAIL.indexOfCombo, letter, ComboBoxesIndexes.EMAIL.getDatabaseName());
-
-
-        String query = "";
-        if(fnameQuery.length() > 0)
-            query += fnameQuery + " and ";
-        if(lnameQuery.length() > 0)
-            query += lnameQuery + " and ";
-        if(phoneQuery.length() > 0)
-            query += phoneQuery + " and ";
-        if(emailQuery.length() > 0)
-            query += emailQuery + " and ";
+        DefaultCellEditor dce =null;
         
-        if(query.length() != 0)
-            query = " as "+letter+" where "+query.substring(0, query.length()-5);
-        
-        String stringColumns = "";
-        for(int i=0; i<columns.length-1; i++)
+        if(clientRadio.isSelected())
         {
-            stringColumns += columns[i]+", ";
-        }
-        stringColumns += columns[columns.length-1];
-        
-         System.out.println("select "+stringColumns+" from "+table+""+query);
-        
-         String fullQuery = "select "+stringColumns+" from "+table+""+query;
-         
-         HibernateTest.fillTableWithQuery(fullQuery, searchsearchTable, columns);
-         
-         DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
-        {
+            columns = new String[4];
+            columns[0]="fname";
+            columns[1]="lname";
+            columns[2]="phone";
+            columns[3]="email";
+            table = "Client";
+            letter = 'c';
             
-            @Override
-            public Component getTableCellEditorComponent(JTable table, Object value,
-                        boolean isSelected, int row, int column) 
+            dce = new DefaultCellEditor(new JTextField())
             {
-               /* boxes[0]=searchfnameCombo;
-                boxes[1]=searchlnameCombo;
-                boxes[2]=searchphoneCombo;
-                boxes[3]=searchemailCombo;
-                boxes[4]=searchcategoryCombo;
-                boxes[5]=searchcourseCombo;
-                boxes[6]=searchcreatorCombo;
-                boxes[7]=searchlevelCombo;
-                boxes[8]=searchlocationCombo;
-                boxes[9]=searchparaprofessionalCombo;
-                boxes[10]=searchteacherCombo;*/
-                
-                uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.FNAME.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.LNAME.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, 2).toString(), ComboBoxesIndexes.PHONE.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, 3).toString(), ComboBoxesIndexes.EMAIL.getBoxIndex());
 
-                return null;
-            }
-        };
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value,
+                            boolean isSelected, int row, int column) 
+                {
+                   /* boxes[0]=searchfnameCombo;
+                    boxes[1]=searchlnameCombo;
+                    boxes[2]=searchphoneCombo;
+                    boxes[3]=searchemailCombo;
+                    boxes[4]=searchcategoryCombo;
+                    boxes[5]=searchcourseCombo;
+                    boxes[6]=searchcreatorCombo;
+                    boxes[7]=searchlevelCombo;
+                    boxes[8]=searchlocationCombo;
+                    boxes[9]=searchparaprofessionalCombo;
+                    boxes[10]=searchteacherCombo;*/
+
+                    uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.FNAME.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.LNAME.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 2).toString(), ComboBoxesIndexes.PHONE.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 3).toString(), ComboBoxesIndexes.EMAIL.getBoxIndex());
+
+                    return null;
+                }
+            };
+        }
+        else if(courseRadio.isSelected())
+        {
+            columns = new String[3];
+            columns[0]="s.abbrevName";
+            columns[1]="c.level";
+            columns[2]="concat_ws(' ', t.fname, t.lname) as 'Teacher Name'";
+            
+            char lCourse = ComboBoxesIndexes.LEVEL.getLetter();
+            char lTeacher = ComboBoxesIndexes.TEACHER.getLetter();
+            char lSubject = ComboBoxesIndexes.COURSE.getLetter();
+            
+            table = "Course as "+lCourse;
+            
+            table += " join Teacher as "+lTeacher+" on "+lCourse+".teacherID="+lTeacher+".teacherID join Subject "+lSubject+" on "+lCourse+".subjectID="+lSubject+".subjectID";
+            
+            dce = new DefaultCellEditor(new JTextField())
+            {
+
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value,
+                            boolean isSelected, int row, int column) 
+                {
+                   /* boxes[0]=searchfnameCombo;
+                    boxes[1]=searchlnameCombo;
+                    boxes[2]=searchphoneCombo;
+                    boxes[3]=searchemailCombo;
+                    boxes[4]=searchcategoryCombo;
+                    boxes[5]=searchcourseCombo;
+                    boxes[6]=searchcreatorCombo;
+                    boxes[7]=searchlevelCombo;
+                    boxes[8]=searchlocationCombo;
+                    boxes[9]=searchparaprofessionalCombo;
+                    boxes[10]=searchteacherCombo;*/
+
+                    uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 2).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
+
+                    return null;
+                }
+            };
+        }
+        
+        String fullQuery=null;
+        
+        /*
+        if(clientRadio.isSelected())
+            fullQuery = restrictHelper.createClientQuery(columns, table, letter);
+        else if(courseRadio.isSelected())
+            fullQuery = restrictHelper.createCourseQuery(columns);*/
+        
+        fullQuery = restrictHelper.createQuery(columns, table);
+        
+        System.out.println("QUERY: "+fullQuery);
+        
+         HibernateTest.fillTableWithQuery(fullQuery, searchsearchTable, columns);
         
         for(int i=0; i<searchsearchTable.getColumnCount(); i++)
             searchsearchTable.getColumnModel().getColumn(i).setCellEditor(dce);
@@ -2480,137 +3106,294 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         // TODO add your handling code here:
     }//GEN-LAST:event_searchteacherComboActionPerformed
 
-    private void searchautocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchautocompleteCheckActionPerformed
-        searchstudentInfoPanel.setVisible(false);
-        //courseInfoPanel1.setLocation(studentInfoPanel3.getLocation().x, studentInfoPanel3.getLocation().y);
-        
-        
-    }//GEN-LAST:event_searchautocompleteCheckActionPerformed
-
     private void searchAddRestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchAddRestrictionsButtonActionPerformed
-        String[] restrictions = new String[4];
-        restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";
         
-        RestrictionListModel restrictHelper = new RestrictionListModel(dlm, restrictions);
         
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String lname = ((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText();
-        String phone = ((JTextComponent)searchphoneCombo.getEditor().getEditorComponent()).getText();
-        String email = ((JTextComponent)searchemailCombo.getEditor().getEditorComponent()).getText();
-        /*String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-        String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();*/
-        
-        restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
-        restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
-        restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
-        restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);
-        
-        /*
-        if(fname.length() > 0)
+        ArrayList<String> restrictions = new ArrayList<String>();
+        ArrayList<String> displayNames = new ArrayList<String>();
+        if(clientRadio.isSelected())
         {
-            String existing = dlm.get(0).toString();
             
-            if(existing.equals(restrictions[0]))
+            String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
+            String lname = ((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText();
+            String phone = ((JTextComponent)searchphoneCombo.getEditor().getEditorComponent()).getText();
+            String email = ((JTextComponent)searchemailCombo.getEditor().getEditorComponent()).getText();
+            
+            
+            
+            if(fname.length() > 0)
             {
-                String replacedExisting = existing.replace(" any", "");
-                dlm.set(0, replacedExisting+" '"+fname+"'");
+                restrictions.add(fname);
+                displayNames.add(ComboBoxesIndexes.FNAME.getDisplayName());
             }
-            else
-                dlm.set(0, existing+" or '"+fname+"'");
+            if(lname.length() > 0)
+            {
+                restrictions.add(lname);
+                displayNames.add(ComboBoxesIndexes.LNAME.getDisplayName());
+            }
+            if(phone.length() > 0)
+            {
+                restrictions.add(phone);
+                displayNames.add(ComboBoxesIndexes.PHONE.getDisplayName());
+            }
+            if(email.length() > 0)
+            {
+                restrictions.add(email);
+                displayNames.add(ComboBoxesIndexes.EMAIL.getDisplayName());
+            }
             
-            System.out.println("add fname restriction searchaddrestriciton");
+            restrictHelper.setListElement(restrictions, displayNames);
+            /*
+            restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
+            restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
+            restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
+            restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);*/
+        }
+        else if(courseRadio.isSelected())
+        {
+            
+            String teacher = ((JTextComponent)searchteacherCombo.getEditor().getEditorComponent()).getText();
+            String subject = ((JTextComponent)searchcourseCombo.getEditor().getEditorComponent()).getText();
+            String level = ((JTextComponent)searchlevelCombo.getEditor().getEditorComponent()).getText();
+            
+            if(teacher.length() > 0)
+            {
+                restrictions.add(teacher);
+                displayNames.add(ComboBoxesIndexes.TEACHER.getDisplayName());
+            }
+            if(subject.length() > 0)
+            {
+                restrictions.add(subject);
+                displayNames.add(ComboBoxesIndexes.COURSE.getDisplayName());
+            }
+            if(level.length() > 0)
+            {
+                restrictions.add(level);
+                displayNames.add(ComboBoxesIndexes.LEVEL.getDisplayName());
+            }
+            restrictHelper.setListElement(restrictions, displayNames);
+            /*
+            restrictHelper.setListElement(subject, 0);
+            restrictHelper.setListElement(level, 1);
+            restrictHelper.setListElement(teacher, 2);*/
         }
         
-        if(lname.length() > 0)
-        {
-            String existing = dlm.get(1).toString();
-            
-            if(existing.equals(restrictions[1]))
-            {
-                String replacedExisting = existing.replace(" any", "");
-                dlm.set(1, replacedExisting+" '"+lname+"'");
-            }
-            else
-                dlm.set(1, existing+" or '"+lname+"'");
-            System.out.println("add lname restriction searchaddrestriciton");
-        }
-        if(phone.length() > 0)
-        {
-            String existing = dlm.get(2).toString();
-            
-            if(existing.equals(restrictions[2]))
-            {
-                String replacedExisting = existing.replace(" any", "");
-                dlm.set(2, replacedExisting+" '"+phone+"'");
-            }
-            else
-                dlm.set(2, existing+" or '"+phone+"'");
-            System.out.println("add phone restriction searchaddrestriciton");
-        }
-        if(email.length() > 0)
-        {
-            String existing = dlm.get(3).toString();
-            
-            if(existing.equals(restrictions[3]))
-            {
-                String replacedExisting = existing.replace(" any", "");
-                dlm.set(3, replacedExisting+" '"+email+"'");
-            }
-            else
-                dlm.set(3, existing+" or '"+email+"'");
-            
-            System.out.println("add email restriction searchaddrestriciton");
-        }*/
         
-       // searchList.validate();
-       // searchList.repaint();
+        
         System.out.println("DONE searchaddrestriciton");
         
        clearComboBoxes();
 
-        
-        /*else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)
-            
-        else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)
-            
-        else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)
-            
-        else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)
-            
-        else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)
-            
-        else if(((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText().length() > 0)*/
     }//GEN-LAST:event_searchAddRestrictionsButtonActionPerformed
 
     
     private void searchresetrestrictionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchresetrestrictionButtonActionPerformed
-        String[] restrictions = new String[4];
-        restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";
+
+        //dlm.set(searchList.getSelectedIndex(), restrictHelper.getRestrictionAt(searchList.getSelectedIndex()));
+        if(searchList.getSelectedIndex() > 1 && dlm.size()-1 == searchList.getSelectedIndex() )
+            dlm.setElementAt(dlm.getElementAt(dlm.size()-2).toString().substring(0, dlm.getElementAt(dlm.size()-2).toString().length()-3), dlm.size()-2);
+        if(searchList.getSelectedIndex() > 0)
+            dlm.removeElement(searchList.getSelectedValue());
         
-        dlm.set(searchList.getSelectedIndex(), restrictions[searchList.getSelectedIndex()]);
-        //dlm.removeElement(searchList.getSelectedValue());
     }//GEN-LAST:event_searchresetrestrictionButtonActionPerformed
 
     private void searchclearrestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchclearrestrictionsButtonActionPerformed
-        String[] restrictions = new String[4];
-        restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";
+        /*
+        String[] restrictions = restrictHelper.getRestrictions();
+        
         
         for(int i=0; i<restrictions.length; i++)
-        dlm.set(i, restrictions[i]);
+            dlm.set(i, restrictions[i]);*/
+        
+        dlm.clear();
+        dlm.addElement("Search for all records");
+        
     }//GEN-LAST:event_searchclearrestrictionsButtonActionPerformed
+
+    private void clientRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientRadioActionPerformed
+
+        System.out.println("ACTION ON CLIENT RADIO");
+        if(clientRadio.isSelected())
+        {
+            searchclientPanel.setVisible(true);
+            searchcoursePanel.setVisible(false);
+            searchsessionPanel.setVisible(false);
+            searchparaprofessionalPanel.setVisible(false);
+            searchteacherPanel.setVisible(false);
+            searchagendaPanel.setVisible(false);
+            searchsubjectPanel.setVisible(false);
+
+            dlm.clear();
+
+            
+            /*
+            String[] restrictions = new String[4];
+            restrictions[0]="First Name is any";
+            restrictions[1]="Last Name is any";
+            restrictions[2]="Phone is any";
+            restrictions[3]="Email is any";
+
+            for(int i=0; i<restrictions.length; i++)
+                dlm.addElement(restrictions[i]);*/
+            
+            dlm.addElement("Search for all records");
+           // restrictHelper.setRestrictions(restrictions);
+            
+
+        }
+        
+    }//GEN-LAST:event_clientRadioActionPerformed
+
+    private void courseRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseRadioActionPerformed
+        
+        System.out.println("ACTION ON COURSE RADIO");
+        if(courseRadio.isSelected())
+        {
+            searchclientPanel.setVisible(false);
+            searchcoursePanel.setVisible(true);
+            searchsessionPanel.setVisible(false);
+            searchparaprofessionalPanel.setVisible(false);
+            searchteacherPanel.setVisible(false);
+            searchagendaPanel.setVisible(false);
+            searchsubjectPanel.setVisible(false);
+
+            dlm.clear();
+            /*
+            String[] restrictions = new String[3];
+            restrictions[0]="Course is any";
+            restrictions[1]="Course# is any";
+            restrictions[2]="Teacher is any";
+
+            for(int i=0; i<restrictions.length; i++)
+                dlm.addElement(restrictions[i]);*/
+            
+           // restrictHelper.setRestrictions(restrictions);
+            
+            dlm.addElement("Search for all records");
+        }
+    }//GEN-LAST:event_courseRadioActionPerformed
+
+    private void generalReportLoadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generalReportLoadButtonActionPerformed
+        try{
+            String begin = generalReportBeginField.getText().trim();
+            String end = generalReportEndField.getText().trim();
+
+            boolean isDateBegin = Validate.validateTimestamp(begin);
+            boolean isDateEnd = Validate.validateTimestamp(end);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+            Timestamp beginDate = null;
+            Timestamp endDate = null;
+            if(isDateBegin)
+                beginDate = new Timestamp(sdf.parse(begin).getTime());
+            if(isDateEnd)
+                endDate = new Timestamp(sdf.parse(end).getTime());
+
+            if(beginDate != null && endDate != null && beginDate.before(endDate))
+            {
+                String[][] data = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+
+                "abbrevName,"+
+
+                "COUNT(paraprofessionalSessionID) as 'Total Sessions',"+
+
+                "Sum(IF( TIMESTAMPDIFF("+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "+
+
+                "Sum(IF( TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "+
+
+                "SUM(walkout) as 'Walkouts', "+
+
+                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "+
+
+                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "+
+
+                "FROM ParaprofessionalSession ps "+
+                "join Course c on ps.courseID=c.courseID "+
+                "join Subject s on c.subjectID=s.subjectID "+
+
+                "where "+
+                "timeAndDateEntered "+
+                "between "+
+                "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
+
+                "group by abbrevName"
+                );
+                
+                String[][] categoryData = HibernateTest.getDataFromRegularQuery(
+                "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
+                + " from ParaprofessionalSession ps"
+                + " join Course course on course.courseID=ps.courseID"
+                + " join Subject s on course.subjectID=s.subjectID"
+                + " join Category c on s.categoryID=c.categoryID"
+                       +"where "+
+                "timeAndDateEntered "+
+                "between "+
+                "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
+
+                " group by c.name");
+        
+        String[][] otherValues = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+                
+                "SUM(walkout) as 'Walkouts', "+
+                
+                "COUNT(paraprofessionalID) as 'Total Students',"+
+
+                "Sum(IF( TIMESTAMPDIFF("+
+                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
+                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions', "+
+
+                "where "+
+                "timeAndDateEntered "+
+                "between "+
+                "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
+
+                
+                "FROM ParaprofessionalSession ps");
+        
+        
+        String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
+                "SELECT "+
+                
+                "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"+
+                " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"+
+                " AS '<10 Min. Sessions', "+
+                
+                 "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"+
+                " AS '10-24 Min. Sessions', "+
+                
+                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"+
+                " AS '25-35 Min. Sessions', "+
+
+                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"+
+                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"+
+                " AS '36-60 Min. Sessions', "+
+
+                "where "+
+                "timeAndDateEntered "+
+                "between "+
+                "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
+
+                
+                "FROM ParaprofessionalSession ps");
+        
+        displayCharts(data, categoryData, otherValues, studentMinutes);
+
+            }
+                 
+        }
+        catch(Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+        }        
+        
+    }//GEN-LAST:event_generalReportLoadButtonActionPerformed
 
     
     public void clearComboBoxes()
@@ -2680,6 +3463,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JTextArea agendaTextArea2;
     private javax.swing.JScrollPane agendaTextAreaScrollPanel;
     private javax.swing.JCheckBox autocompleteCheck;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton cancelButton2;
     private javax.swing.JComboBox categoryCombo2;
@@ -2689,6 +3473,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JLabel categoryLabel3;
     private javax.swing.JButton clearButton1;
     private javax.swing.JButton clearButton2;
+    private javax.swing.JRadioButton clientRadio;
     private javax.swing.JComboBox courseCombo2;
     private javax.swing.JPanel courseInfoPanel;
     private javax.swing.JPanel courseInfoPanel2;
@@ -2699,6 +3484,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JLabel courseLabel4;
     private javax.swing.JLabel courseLabel5;
     private javax.swing.JLabel courseLabel6;
+    private javax.swing.JRadioButton courseRadio;
     private javax.swing.JPanel createAgendaPanel;
     private javax.swing.JPanel createAgendaPanel2;
     private javax.swing.JTextField creatorField2;
@@ -2716,6 +3502,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JButton deleteSessionButton1;
     private javax.swing.JButton deleteSessionButton2;
     private javax.swing.JButton downloadButton;
+    private javax.swing.JButton downloadButton1;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel3;
@@ -2727,17 +3514,41 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JCheckBox futureCheck2;
     private javax.swing.JTextField futureField2;
     private javax.swing.JCheckBox gcCheck;
-    private javax.swing.JCheckBox gcCheck1;
     private javax.swing.JCheckBox gcCheck2;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JPanel generalChartPanelLeft;
+    private javax.swing.JPanel generalChartPanelLeft2;
+    private javax.swing.JPanel generalChartPanelLong;
+    private javax.swing.JPanel generalChartPanelMid;
+    private javax.swing.JPanel generalChartPanelMid2;
+    private javax.swing.JPanel generalChartPanelRight;
+    private javax.swing.JPanel generalChartPanelRight2;
+    private javax.swing.JTextField generalReportBeginField;
+    private javax.swing.JTextField generalReportEndField;
+    private javax.swing.JButton generalReportLoadButton;
+    private javax.swing.JTable generalReportTable;
+    private javax.swing.JTable generalReportTable2;
+    private javax.swing.JTable generalReportTable3;
+    private javax.swing.JTable generalReportTable4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JComboBox levelCombo2;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JLabel levelLabel1;
@@ -2767,55 +3578,59 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JLabel phoneLabel4;
     private javax.swing.JList reportList;
     private javax.swing.JPanel reportPanel;
+    private javax.swing.JPanel reportPanel1;
     private javax.swing.JTable reportTable;
     private javax.swing.JLabel scheduleLabel;
     private javax.swing.JButton searchAddRestrictionsButton;
     private javax.swing.JList searchList;
-    private javax.swing.JCheckBox searchautocompleteCheck;
-    private javax.swing.JComboBox searchcategoryCombo;
+    private javax.swing.JPanel searchagendaPanel;
+    private javax.swing.JComboBox searchagendacategoryCombo;
+    private javax.swing.JComboBox searchagendanotesCombo;
+    private javax.swing.JComboBox searchcategoryparaprofessionalCombo;
+    private javax.swing.JComboBox searchcategorysessionCombo;
     private javax.swing.JButton searchclearrestrictionsButton;
+    private javax.swing.JPanel searchclientPanel;
+    private javax.swing.JComboBox searchclockedinCombo;
     private javax.swing.JComboBox searchcourseCombo;
     private javax.swing.JComboBox searchcourseCombo1;
-    private javax.swing.JComboBox searchcourseCombo2;
-    private javax.swing.JComboBox searchcourseCombo3;
-    private javax.swing.JComboBox searchcourseCombo4;
-    private javax.swing.JPanel searchcourseInfoPanel;
-    private javax.swing.JPanel searchcourseInfoPanel1;
-    private javax.swing.JPanel searchcourseInfoPanel2;
-    private javax.swing.JPanel searchcourseInfoPanel3;
-    private javax.swing.JPanel searchcourseInfoPanel4;
+    private javax.swing.JPanel searchcoursePanel;
     private javax.swing.JComboBox searchcreatorCombo;
     private javax.swing.JComboBox searchemailCombo;
     private javax.swing.JComboBox searchfnameCombo;
+    private javax.swing.JComboBox searchfnameteacherCombo;
+    private javax.swing.JComboBox searchgcCombo;
     private javax.swing.JComboBox searchlevelCombo;
     private javax.swing.JComboBox searchlevelCombo1;
-    private javax.swing.JComboBox searchlevelCombo2;
-    private javax.swing.JComboBox searchlevelCombo3;
-    private javax.swing.JComboBox searchlevelCombo4;
-    private javax.swing.JComboBox searchlevelCombo5;
     private javax.swing.JComboBox searchlnameCombo;
+    private javax.swing.JComboBox searchlnameteacherCombo;
     private javax.swing.JComboBox searchlocationCombo;
     private javax.swing.JTextField searchnotesField;
-    private javax.swing.JPanel searchotherInfoPanel;
     private javax.swing.JComboBox searchparaprofessionalCombo;
-    private javax.swing.JComboBox searchparaprofessionalCombo2;
+    private javax.swing.JPanel searchparaprofessionalPanel;
     private javax.swing.JComboBox searchphoneCombo;
     private javax.swing.JButton searchresetrestrictionButton;
+    private javax.swing.JComboBox searchroleCombo;
     private javax.swing.JButton searchsearchButton;
     private javax.swing.JTable searchsearchTable;
+    private javax.swing.JPanel searchsessionPanel;
     private javax.swing.JTextField searchsessionendField;
     private javax.swing.JTextField searchsessionstartField;
     private javax.swing.JTextField searchsessionstartField1;
     private javax.swing.JTextField searchsessionstartField2;
     private javax.swing.JTextField searchsessionstartField3;
     private javax.swing.JTextField searchsessionstartField4;
-    private javax.swing.JPanel searchstudentInfoPanel;
+    private javax.swing.JPanel searchsubjectPanel;
+    private javax.swing.JComboBox searchsubjectcategoryCombo;
+    private javax.swing.JComboBox searchsubjectnameCombo;
     private javax.swing.JComboBox searchteacherCombo;
+    private javax.swing.JPanel searchteacherPanel;
+    private javax.swing.JComboBox searchwalkoutCombo;
     private javax.swing.JLabel sessionendLabel;
     private javax.swing.JLabel sessionendLabel1;
     private javax.swing.JPanel sessionsAndAgendaPanel;
     private javax.swing.JPanel sessionsPanel;
     private javax.swing.JPanel sessionsPanel1;
+    private javax.swing.JRadioButton sessionsRadio;
     private javax.swing.JTable sessionsTable;
     private javax.swing.JPanel sessionsTablePanel;
     private javax.swing.JScrollPane sessionsTableScrollPanel;
@@ -2850,9 +3665,10 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     private javax.swing.JLabel teacherLabel2;
     private javax.swing.JLabel teacherLabel3;
     private javax.swing.JLabel teacherLabel4;
+    private javax.swing.JRadioButton teacherRadio;
     private javax.swing.JPanel thechartPanel;
+    private javax.swing.JPanel thechartPanel1;
     private javax.swing.JCheckBox walkoutCheck;
-    private javax.swing.JCheckBox walkoutCheck1;
     private javax.swing.JCheckBox walkoutCheck2;
     // End of variables declaration//GEN-END:variables
 }

@@ -43,9 +43,12 @@ public class Data
        private static ArrayList<Location> locations;// = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
        private static ArrayList<Paraprofessional> tutors;// = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
        private static ArrayList<Subject> subjects;// = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
-       private static ArrayList<Teacher> teachers;// = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       private static ArrayList<Teacher> teacherFirst;// = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
        private static ArrayList<Category> categories;// = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
        private static ArrayList<Course> levels;// = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
+       
+       private static ArrayList<Teacher> teacherLast;
+       private static ArrayList<Role> roles;
        
        private static ArrayList<String> locationslist;// = new ArrayList<String>();
        private static  ArrayList<String> tutorslist;// = new ArrayList<String>();
@@ -55,6 +58,9 @@ public class Data
        private static ArrayList<String> levelslist;// = new ArrayList<String>();
 
    
+       private static ArrayList<String> teacherfirstlist;
+       private static ArrayList<String> teacherlastlist;
+       private static ArrayList<String> roleslist;
        
     public Data(boolean initializeAll)
     {
@@ -71,7 +77,8 @@ public class Data
        locations = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
        tutors = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
        subjects = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
-       teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       teacherFirst = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.fName");
+       teacherLast = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t order by t.lName");
        categories = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
        levels = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
        
@@ -81,7 +88,12 @@ public class Data
        subjectslist = new ArrayList<String>();
        categorieslist = new ArrayList<String>();
        levelslist = new ArrayList<String>();
+       teacherlastlist = new ArrayList<String>();
+       teacherfirstlist = new ArrayList<String>();
+       roleslist = new ArrayList<String>();
        
+       roles = (ArrayList<Role>)HibernateTest.select("from Role as r order by r.type");
+
        for(int i=0; i<clientFirst.size(); i++)
            clientsfirst.add(clientFirst.get(i).getfName());
            
@@ -112,8 +124,18 @@ public class Data
        
        
        
-       for(int i=0; i<teachers.size(); i++)
-           teacherslist.add(teachers.get(i).getfName()+" "+teachers.get(i).getlName());
+       for(int i=0; i<teacherFirst.size(); i++)
+           teacherslist.add(teacherFirst.get(i).getfName()+" "+teacherFirst.get(i).getlName());
+       
+       for(int i=0; i<teacherFirst.size(); i++)
+           teacherfirstlist.add(teacherFirst.get(i).getfName());
+       
+       for(int i=0; i<teacherLast.size(); i++)
+           teacherlastlist.add(teacherLast.get(i).getlName());
+       
+       for(int i=0; i<roles.size(); i++)
+           roleslist.add(roles.get(i).getType());
+       
        
         
        for(int i=0; i<subjects.size(); i++)
@@ -354,8 +376,8 @@ public class Data
         return subjects;
     }
 
-    public static ArrayList<Teacher> getTeachers() {
-        return teachers;
+    public static ArrayList<Teacher> getTeacherFirst() {
+        return teacherFirst;
     }
 
     public static ArrayList<Category> getCategories() {
@@ -388,6 +410,27 @@ public class Data
 
     public static ArrayList<String> getLevelslist() {
         return levelslist;
+    }
+
+    /**
+     * @return the teacherfirstlist
+     */
+    public static ArrayList<String> getTeacherfirstlist() {
+        return teacherfirstlist;
+    }
+
+    /**
+     * @return the teacherlastlist
+     */
+    public static ArrayList<String> getTeacherlastlist() {
+        return teacherlastlist;
+    }
+
+    /**
+     * @return the roleslist
+     */
+    public static ArrayList<String> getRoleslist() {
+        return roleslist;
     }
 
 }

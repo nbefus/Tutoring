@@ -175,4 +175,38 @@ public class HibernateTest {
         dtm.setDataVector(data, columns);
         table.setModel(dtm);
     }
+    
+    public static String[][] getDataFromRegularQuery(String query)
+    {
+        System.out.println(query);
+        List l = HibernateTest.regularSelect(query);
+        //List c = HibernateTest.regularSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'User'");
+
+        String[][] data = null;
+        boolean firstTime = true;
+        Iterator it = l.iterator();
+
+        int count = 0;
+         while(it.hasNext()) {
+            Object[] row = (Object[]) it.next();
+
+            if(firstTime)
+            {
+                data = new String[l.size()][row.length];
+                firstTime = false;
+            }
+
+            for(int i=0; i<row.length; i++)
+            {
+                data[count][i] = row[i].toString();
+                System.out.print("\t\t"+row[i]+"--"+row[i].getClass().toString());
+            }
+
+
+
+            count++;
+         }
+         
+         return data;
+    }
 }
