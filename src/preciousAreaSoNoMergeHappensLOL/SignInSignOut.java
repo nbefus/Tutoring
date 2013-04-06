@@ -1,6 +1,7 @@
 package preciousAreaSoNoMergeHappensLOL;
 import UIs.*;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import tutoring.entity.Paraprofessional;
 import tutoring.entity.User;
@@ -21,7 +22,6 @@ public class SignInSignOut extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -51,6 +51,7 @@ public class SignInSignOut extends javax.swing.JFrame {
                 nameComboPopupMenuWillBecomeVisible(evt);
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                nameComboPopupMenuWillBecomeInvisible(evt);
             }
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -131,6 +132,27 @@ public class SignInSignOut extends javax.swing.JFrame {
 
         nameCombo.setModel(new DefaultComboBoxModel(listOfParaprofessionals.toArray()));
     }//GEN-LAST:event_nameComboPopupMenuWillBecomeVisible
+
+    private void nameComboPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nameComboPopupMenuWillBecomeInvisible
+
+        if(!list.get(nameCombo.getSelectedIndex()).isIsClockedIn())
+        {
+            signInAndOutButton.setText("Sign Out");
+            //System.out.println(nameCombo.getSelectedIndex());
+            //list.get(nameCombo.getSelectedIndex()).setIsClockedIn(true);
+
+            //HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
+        }
+        /**
+        else if(!list.get(nameCombo.getSelectedIndex()).isIsClockedIn())
+        {
+            signInAndOutButton.setText("Sign In");
+            list.get(nameCombo.getSelectedIndex()).setIsClockedIn(true);
+            HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
+        }*/
+        
+        
+    }//GEN-LAST:event_nameComboPopupMenuWillBecomeInvisible
 
     public static void main(String args[]) 
     {
