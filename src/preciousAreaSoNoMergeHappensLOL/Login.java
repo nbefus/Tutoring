@@ -10,7 +10,7 @@ public class Login
     private boolean loginStatus = false;
     private boolean usernameStatus = false;
     private boolean passwordStatus = false;
-    private String loginFeedback = "Please enter your 'username' and 'password' to receive feedback.";
+    private String loginFeedback = "Please enter your 'username' and 'password'";
     final private ArrayList<User> list = (ArrayList<User>) HibernateTest.select("from User");
     private String realPassword = null;
     

@@ -127,6 +127,7 @@
               </Properties>
               <Events>
                 <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="nameComboPopupMenuWillBecomeVisible"/>
+                <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="nameComboPopupMenuWillBecomeInvisible"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="signInAndOutButton">
