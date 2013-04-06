@@ -4,6 +4,7 @@
  */
 package tutoring.helper;
 
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
@@ -13,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -26,6 +28,8 @@ public class SessionTableHelper
     {
         this.table = table;
         table.setModel(new SessionTableModel());
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Arial", Font.BOLD, 10));
     }
     
     public void increaseRowHeight(int increase)
@@ -80,11 +84,16 @@ public class SessionTableHelper
         else
         {
             for(int i=0; i<table.getColumnCount(); i++)
+            {
+                if(i!=12 && i!=13 && i != 10 && i !=17)
+                    table.getColumnModel().getColumn(i).setCellRenderer(new FontCellRenderer());
                 table.getColumnModel().getColumn(i).setCellEditor(dce);
+            }
             table.getColumnModel().getColumn(12).setCellEditor(new TimestampCellEditor(new JTextField()));
             table.getColumnModel().getColumn(13).setCellEditor(new TimestampCellEditor(new JTextField()));
 
         }
+        
         
 
 

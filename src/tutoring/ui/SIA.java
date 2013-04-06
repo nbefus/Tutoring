@@ -55,9 +55,7 @@ public class SIA extends javax.swing.JFrame {
         tableHelper.increaseRowHeight(12);
        
        // sessionsTable.setCellSelectionEnabled(true);
-        
-        
-        
+
        Data d = new Data(false);
        
        //Clients autocomplete
@@ -868,8 +866,6 @@ public class SIA extends javax.swing.JFrame {
         
         System.out.println(query);
         ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
-
-        
         
         if(sessions.size() <=0)
             System.out.println("SESSION WAS NOT CREATED ERROR");
@@ -938,8 +934,6 @@ public class SIA extends javax.swing.JFrame {
             cultimateList.add(Data.getTeacherslist());
             uac = new UltimateAutoComplete(cultimateList, boxes);
         }
-        
-        
     }//GEN-LAST:event_autocompleteCheckActionPerformed
 
     private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed

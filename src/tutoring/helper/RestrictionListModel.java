@@ -158,12 +158,14 @@ public class RestrictionListModel
         {
             query += columns[i]+", ";
         }
-        query += columns[columns.length-1] + " from "+table+" where ";
+        query += columns[columns.length-1] + " from "+table;
         
         
         
         for(int i=1; i<dlm.size(); i++)
         {
+            if(i==1)
+                query+=" where ";
             query += getQuery(i);
             System.out.println("query is now: "+query);
         }

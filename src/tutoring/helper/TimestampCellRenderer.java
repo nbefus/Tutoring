@@ -6,6 +6,7 @@ package tutoring.helper;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -143,6 +144,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
         }
         
         
+        this.setFont(new Font("Arial", Font.PLAIN, 10));
         
         return this;
     }

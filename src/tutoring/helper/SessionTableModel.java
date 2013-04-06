@@ -28,7 +28,7 @@ import tutoring.entity.ParaprofessionalSession;
  */
 public class SessionTableModel extends AbstractTableModel {
 
-    private String[] columnNames = {"SessionID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout","category" };
+    private String[] columnNames = {"ID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout","category" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
