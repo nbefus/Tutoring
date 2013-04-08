@@ -18,7 +18,7 @@
             <column name="hireDate" length="19" not-null="false" />
         </property>
         <property name="terminationDate" type="timestamp">
-            <column name="terminationDate" length="19" not-null="true" />
+            <column name="terminationDate" length="19" not-null="false" />
         </property>
         <property name="isClockedIn" type="boolean">
             <column name="isClockedIn" not-null="true" />
