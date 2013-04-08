@@ -1,4 +1,5 @@
 package preciousAreaSoNoMergeHappensLOL;
+import tutoring.ui.*;
 
 public class LoginView extends javax.swing.JFrame 
 {
@@ -171,11 +172,28 @@ public class LoginView extends javax.swing.JFrame
         
         login = new Login(usernameField.getText(),passwordField.getText());
         errorLabel.setText(login.loginFeedback());
+        
+        if(login.isLoggedIn())
+        {
+            if(login.getRole().getType().equalsIgnoreCase("SIA"))
+            {
+                
+                SIA sia = new SIA();
+                sia.show();
+                this.setVisible(false);
+                
+            }
+            else if(login.getRole().getType().equalsIgnoreCase("ADMIN"))
+            {
+                Admin admin = new Admin();
+                admin.show();
+                this.setVisible(false);
+            }
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     public static void main(String args[]) 
     {
-        System.out.println("main");
         /*
          * Set the Nimbus look and feel
          */

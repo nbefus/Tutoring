@@ -13,6 +13,7 @@ public class Login
     private String loginFeedback = "Please enter your 'username' and 'password'";
     final private ArrayList<User> list = (ArrayList<User>) HibernateTest.select("from User");
     private String realPassword = null;
+    private Role role = null;
     
     public Login(String username, String password)
     {
@@ -54,6 +55,21 @@ public class Login
        
     }
     
+    public boolean isLoggedIn()
+    {
+        return loginStatus;
+    }
+    
+    public Role getRole()
+    {
+        if(loginStatus)
+        {
+            return role;
+        }
+        
+        return role; //should be null if none
+    }
+    
     private boolean lookUpUser()
     {
         boolean userFound = false;
@@ -64,6 +80,7 @@ public class Login
             {
                userFound = true;
                realPassword = list.get(i).getPassword();
+               role = list.get(i).getRoleID();
                return userFound;
             }
         }
