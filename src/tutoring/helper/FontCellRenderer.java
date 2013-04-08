@@ -39,7 +39,7 @@ public class FontCellRenderer extends DefaultTableCellRenderer
     {
         super.getTableCellRendererComponent(t, o, isSelected, hasFocus, r, c);
        
-        this.setFont(new Font("Arial", Font.PLAIN, 10));
+        this.setFont(new Font("Arial", Font.PLAIN, 11));
 
         return this;
     }

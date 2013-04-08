@@ -15,7 +15,7 @@
             <column name="lName" length="100" not-null="true" />
         </property>
         <property name="hireDate" type="timestamp">
-            <column name="hireDate" length="19" not-null="true" />
+            <column name="hireDate" length="19" not-null="false" />
         </property>
         <property name="terminationDate" type="timestamp">
             <column name="terminationDate" length="19" not-null="true" />

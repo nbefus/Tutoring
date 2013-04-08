@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +17,6 @@ import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
 import tutoring.entity.ParaprofessionalSession;
-import tutoring.ui.Admin;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -28,91 +26,18 @@ import tutoring.ui.Admin;
  *
  * @author Nathaniel
  */
-public class SessionTableModel extends AbstractTableModel {
+public class FutureSessionTableModel extends AbstractTableModel {
 
-    
-    public enum Columns
-    {
-        ID(0, "First Name", String.class),
-        CLIENTFIRSTNAME(1, "Last Name", String.class),
-        CLIENTLASTNAME(2,"Phone", String.class),
-        CLIENTPHONE(3, "Last Name", String.class),
-        CLIENTEMAIL(4, "Email", String.class),
-        COURSE(5, "Course", String.class),
-        LEVEL(6, "Level", Integer.class),
-        TEACHER(7, "Teacher", String.class),
-        CATEGORY(8, "Category", String.class),
-        NOTES(9, "Notes", String.class),
-        PARAPROFESSIONAL(10, "Paraprofessional", String.class),
-        GC(11, "GC", Boolean.class),
-        ENTEREDDATE(12, "Entered Date", Timestamp.class),
-        START(13, "Start Session", Timestamp.class),
-        STOP(14, "Stop Session", Timestamp.class),
-        MIN(15, "Min. Passed", Integer.class),
-        LOCATION(16, "Location", String.class),
-        CREATOR(17, "Creator", String.class),
-        WALKOUT(18, "Walkout", Boolean.class);
-
-        private int columnIndex;
-        private String displayName;
-        private Class<?> columnClass;
-        private static HashMap<Integer, Class<?>> classMap = new HashMap<Integer, Class<?>>();
-        
-	private Columns(int i, String displayName, Class<?> columnClass) {
-		columnIndex = i;
-                this.displayName = displayName;
-                this.columnClass = columnClass;
-	}
-        
-        static {
-            for (Columns v : Columns.values()) {
-            classMap.put(v.columnIndex, v.columnClass);
-            }
-        }
-        
-        public static Class<?> getColumnClass(int columnIndex)
-        {
-            return classMap.get(columnIndex);
-        }
-        
-        public Class<?> getColumnClass()
-        {
-            return columnClass;
-        }
-        
-	public int getColumnIndex() {
-		return columnIndex;
-	}
-        
-        public String getDisplayName() {
-		return displayName;
-	}
- 
-    }
-     
-    private String[] columnNames;// = {"ID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout","category" };
+    private String[] columnNames = {"ID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","scheduled time","start", "location","creator","canceled","category" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
 
-    public SessionTableModel(ArrayList<ParaprofessionalSession> list){
+    public FutureSessionTableModel(ArrayList<ParaprofessionalSession> list){
          this.tutorSessions = list;
-         columnNames=generateColumns();
     }
-    public SessionTableModel(){
+    public FutureSessionTableModel(){
         
-    }
-    
-    private String[] generateColumns()
-    {
-        Columns[] c = Columns.class.getEnumConstants();
-        String[] columnNames = new String[c.length];
-        for(int i=0; i<c.length; i++)
-        {
-            columnNames[c[i].getColumnIndex()] = c[i].getDisplayName();
-        }
-        
-        return columnNames;
     }
     
     /*
@@ -256,16 +181,15 @@ public class SessionTableModel extends AbstractTableModel {
                             Timestamp.valueOf("9999-12-31 12:00:00");
                         break;
                     case 14:
-                    case 15:
                         ts.getLocationID().getName();
-                    case 16:
+                    case 15:
                         //ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
-                    case 17:
+                    case 16:
                         ts.setWalkout((Boolean)o);
                         //HibernateTest.update(ts);
                         tutorSessions.remove(ts);
                         break;
-                    case 18:
+                    case 17:
                         ts.getCourseID().getSubjectID().getCategoryID().getName();
                    }
                    // fireTableCellUpdated(r, c);
@@ -280,9 +204,9 @@ public class SessionTableModel extends AbstractTableModel {
         else
         {
             ParaprofessionalSession ts = tutorSessions.get(r);
-            if(c == Columns.START.getColumnIndex())
+            if(c == 12)
                 ts.setSessionStart(new Timestamp((new Date()).getTime()));
-            else if(c == Columns.STOP.getColumnIndex())
+            else if(c == 13)
             {
                 ts.setSessionEnd(new Timestamp((new Date()).getTime()));
                 //HibernateTest.update(ts);
@@ -311,7 +235,7 @@ public class SessionTableModel extends AbstractTableModel {
       //  System.out.println(getValueAt(i,j).getClass().toString());
       //  System.out.println((getValueAt(i, j-1) instanceof Timestamp));
       //  System.out.println(((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")));
-        if(j != 0 && !(getValueAt(i, j-1) instanceof Timestamp && ((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")) && j == Columns.STOP.getColumnIndex()))
+        if(j != 0 && !(getValueAt(i, j-1) instanceof Timestamp && ((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")) && j == 13))
             return true;
         return false;
     }
@@ -370,19 +294,12 @@ public class SessionTableModel extends AbstractTableModel {
                 else
                     return Timestamp.valueOf("9999-12-31 12:00:00");
             case 14:
-                if(ts.getSessionStart() != null && ts.getSessionEnd() == null)
-                    return minutesOf(new Date(ts.getSessionStart().getTime()), new Date());
-                else if(ts.getSessionStart() != null && ts.getSessionEnd() != null)
-                    return minutesOf(new Date(ts.getSessionStart().getTime()), new Date(ts.getSessionEnd().getTime()));
-                else
-                    return 0;
-            case 15:
                 return ts.getLocationID().getName();
-            case 16:
+            case 15:
                 return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
-            case 17:
+            case 16:
                 return ts.isWalkout();
-            case 18:
+            case 17:
                 return ts.getCourseID().getSubjectID().getCategoryID().getName();
            }
            return null;
@@ -398,9 +315,46 @@ public class SessionTableModel extends AbstractTableModel {
 
    @Override
    public Class<?> getColumnClass(int columnIndex){
-
-       return Columns.getColumnClass(columnIndex);
-          //   return null;
+          switch (columnIndex){
+             case 0:
+               return Integer.class;
+             case 1:
+               return String.class;
+             case 2:
+               return String.class;
+             case 3:
+               return String.class;
+             case 4:
+               return String.class;
+             case 5:
+               return String.class;
+             case 6:
+               return String.class;
+             case 7:
+               return String.class;
+             case 8:
+               return String.class;
+             case 9:
+               return String.class;
+             case 10:
+               return Boolean.class;
+             case 11:
+               return Timestamp.class;
+             case 12:
+               return Timestamp.class;
+             case 13:
+               return Timestamp.class;
+             case 14:
+               return String.class;
+             case 15:
+               return String.class;
+             case 16:
+               return Boolean.class;
+             case 17:
+               return String.class;
+                 
+             }
+             return null;
       }
    
    

@@ -19,6 +19,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -139,7 +141,6 @@ public class Admin extends javax.swing.JFrame {
     }
     public Admin() {
         initComponents();
-        
        // setUpReportTab();
         setUpSearchTab();
         setUpGeneralReportTab();
@@ -199,7 +200,6 @@ public class Admin extends javax.swing.JFrame {
 
                 "FROM ParaprofessionalSession ps");
         
-        
         String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
                 "SELECT "+
                 
@@ -214,7 +214,7 @@ public class Admin extends javax.swing.JFrame {
                 "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"+
                 " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"+
                 " AS '25-35 Min. Sessions', "+
-
+                
                 "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"+
                 " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"+
                 " AS '36-60 Min. Sessions', "+
@@ -621,7 +621,7 @@ public class Admin extends javax.swing.JFrame {
        sessionsTable.setFillsViewportHeight(true);
       // sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
        
-       sessionsTable.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer());
+       sessionsTable.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer(false));
        sessionsTable.setDefaultEditor(Timestamp.class, new TimestampCellEditor(new JTextField()));
 
        
@@ -806,6 +806,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         adminPanel = new javax.swing.JTabbedPane();
@@ -1011,14 +1012,6 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         thechartPanel = new javax.swing.JPanel();
         jScrollPane10 = new javax.swing.JScrollPane();
         reportPanel1 = new javax.swing.JPanel();
-        thechartPanel1 = new javax.swing.JPanel();
-        generalChartPanelLeft = new javax.swing.JPanel();
-        generalChartPanelMid = new javax.swing.JPanel();
-        generalChartPanelRight = new javax.swing.JPanel();
-        generalChartPanelLong = new javax.swing.JPanel();
-        generalChartPanelMid2 = new javax.swing.JPanel();
-        generalChartPanelLeft2 = new javax.swing.JPanel();
-        generalChartPanelRight2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         generalReportTable2 = new javax.swing.JTable();
@@ -1034,6 +1027,14 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         generalReportTable3 = new javax.swing.JTable();
         jScrollPane13 = new javax.swing.JScrollPane();
         generalReportTable4 = new javax.swing.JTable();
+        thechartPanel1 = new javax.swing.JPanel();
+        generalChartPanelLeft = new javax.swing.JPanel();
+        generalChartPanelMid = new javax.swing.JPanel();
+        generalChartPanelRight = new javax.swing.JPanel();
+        generalChartPanelLong = new javax.swing.JPanel();
+        generalChartPanelMid2 = new javax.swing.JPanel();
+        generalChartPanelLeft2 = new javax.swing.JPanel();
+        generalChartPanelRight2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -1154,7 +1155,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(sessionendLabel)
                 .add(18, 18, 18)
                 .add(sessionssessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 85, Short.MAX_VALUE)
                 .add(gcCheck)
                 .add(18, 18, 18)
                 .add(walkoutCheck)
@@ -1354,7 +1355,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(sessionsclearButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(662, Short.MAX_VALUE))
+                .addContainerGap(831, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Sessions", sessionsPanel);
@@ -1447,7 +1448,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(deleteAgendaButton)
-                .add(0, 583, Short.MAX_VALUE))
+                .add(0, 723, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout agendaPanelLayout = new org.jdesktop.layout.GroupLayout(agendaPanel);
@@ -1457,7 +1458,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             .add(agendaPanelLayout.createSequentialGroup()
                 .add(112, 112, 112)
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addContainerGap(355, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -2036,7 +2037,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                         .add(jLabel4)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(searchwalkoutCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
         searchsessionPanelLayout.setVerticalGroup(
             searchsessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -2104,7 +2105,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(teacherLabel1)
                 .add(18, 18, 18)
                 .add(searchteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(583, Short.MAX_VALUE))
+                .addContainerGap(702, Short.MAX_VALUE))
         );
         searchcoursePanelLayout.setVerticalGroup(
             searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -2286,7 +2287,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(levelLabel6)
                     .add(searchcategoryparaprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         searchteacherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
@@ -2510,7 +2511,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 234, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 213, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(360, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -2575,20 +2576,9 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         adminPanel.addTab("tab7", jScrollPane9);
 
         reportPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        reportPanel1.setLayout(new java.awt.GridBagLayout());
 
-        generalChartPanelLeft.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelMid.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelRight.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelLong.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelMid2.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelLeft2.setLayout(new java.awt.GridBagLayout());
-
-        generalChartPanelRight2.setLayout(new java.awt.GridBagLayout());
+        jPanel1.setPreferredSize(new java.awt.Dimension(1300, 258));
 
         generalReportTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2671,7 +2661,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(183, 183, 183)
                         .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -2691,17 +2681,17 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                                 .add(21, 21, 21)
                                 .add(jLabel6)))
                         .add(generalReportLoadButton))
-                    .addContainerGap(1136, Short.MAX_VALUE)))
+                    .addContainerGap(1193, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(185, 185, 185)
                     .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(421, Short.MAX_VALUE)))
+                    .addContainerGap(436, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2723,80 +2713,84 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(18, 18, 18)
                     .add(generalReportLoadButton)
-                    .addContainerGap(109, Short.MAX_VALUE)))
+                    .addContainerGap(126, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(16, 16, 16)
                     .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(163, Short.MAX_VALUE)))
+                    .addContainerGap(159, Short.MAX_VALUE)))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipady = -4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(11, 23, 520, 62);
+        reportPanel1.add(jPanel1, gridBagConstraints);
+
+        thechartPanel1.setPreferredSize(new java.awt.Dimension(1300, 1200));
+
+        generalChartPanelLeft.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLong.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLeft2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight2.setLayout(new java.awt.GridBagLayout());
 
         org.jdesktop.layout.GroupLayout thechartPanel1Layout = new org.jdesktop.layout.GroupLayout(thechartPanel1);
         thechartPanel1.setLayout(thechartPanel1Layout);
         thechartPanel1Layout.setHorizontalGroup(
             thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(thechartPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                        .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(thechartPanel1Layout.createSequentialGroup()
-                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                                .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
-                                .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                            .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
-                                .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .add(40, 40, 40)))
-                    .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1296, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(2165, Short.MAX_VALUE))
+                .add(16, 16, 16)
+                .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(thechartPanel1Layout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 436, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(thechartPanel1Layout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         thechartPanel1Layout.setVerticalGroup(
             thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(thechartPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .add(11, 11, 11)
                 .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(thechartPanel1Layout.createSequentialGroup()
-                        .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
-                    .add(thechartPanel1Layout.createSequentialGroup()
-                        .add(233, 233, 233)
-                        .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(thechartPanel1Layout.createSequentialGroup()
-                        .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 227, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 285, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(477, 477, 477))
+                    .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(6, 6, 6)
+                .add(thechartPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(6, 6, 6)
+                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        org.jdesktop.layout.GroupLayout reportPanel1Layout = new org.jdesktop.layout.GroupLayout(reportPanel1);
-        reportPanel1.setLayout(reportPanel1Layout);
-        reportPanel1Layout.setHorizontalGroup(
-            reportPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(reportPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(thechartPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(689, Short.MAX_VALUE))
-        );
-        reportPanel1Layout.setVerticalGroup(
-            reportPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(reportPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .add(thechartPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(344, 344, 344))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipady = -428;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(17, 23, 0, 62);
+        reportPanel1.add(thechartPanel1, gridBagConstraints);
 
         jScrollPane10.setViewportView(reportPanel1);
 
@@ -2806,15 +2800,11 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(adminPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1354, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1430, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(adminPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1270, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 122, Short.MAX_VALUE))
+            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1392, Short.MAX_VALUE)
         );
 
         pack();

@@ -12,6 +12,7 @@
     <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
     <property name="hibernate.jdbc.batch_size">50</property>
     <property name="hibernate.connection.pool_size">10</property>
+    <property name="hibernate.generate_statistics">false</property>
     <mapping resource="tutoring/entity/Subject.hbm.xml"/>
     <mapping resource="tutoring/entity/ParaprofessionalCategory.hbm.xml"/>
     <mapping resource="tutoring/entity/ParaprofessionalSession.hbm.xml"/>

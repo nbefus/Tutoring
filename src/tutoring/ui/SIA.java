@@ -183,8 +183,9 @@ public class SIA extends javax.swing.JFrame {
             }
         };
         
-        tableHelper.setTableRendersAndEditors(true, dce);
-        tableHelperFuture.setTableRendersAndEditors(true, dce);
+        tableHelper.setTableRendersAndEditors(true, dce, false);
+        tableHelperFuture.setTableRendersAndEditors(true, dce, true);
+        tableHelper.autoResizeColWidth();
         //tableHelper.fasterScrolling(20);
             
     SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);

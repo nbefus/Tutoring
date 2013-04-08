@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.swing.JTable;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
+import tutoring.helper.SessionTableModel.Columns;
 
 /**
  *
@@ -20,9 +21,11 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class TimestampCellRenderer extends DefaultTableCellRenderer
 {
-    public TimestampCellRenderer()
+    boolean showDate;
+    
+    public TimestampCellRenderer(boolean showDate)
     {
-        
+        this.showDate = showDate;
     }
     
     @Override
@@ -35,7 +38,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
             if(((Timestamp)o).equals(Timestamp.valueOf("9999-12-31 12:00:00")))
             {
                 System.out.println("here here");
-                if(c == 12)
+                if(c == Columns.START.getColumnIndex())
                 {
                     //System.out.println("WORKING");
                     
@@ -55,7 +58,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                     }
                 }
                     
-                else if(c == 13)
+                else if(c == Columns.STOP.getColumnIndex())
                 {
                     System.out.println("WORKING");
                     
@@ -117,7 +120,13 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
             else
             {
                 System.out.println("getTableCellRendererComponent");
-                String date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").format((Date)o);
+                String date;
+                if(!showDate)
+                    date = new SimpleDateFormat("hh:mm aa").format((Date)o);
+                else
+                    date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").format((Date)o);
+
+                
                 this.setText(date);
                 if(isSelected)
                 {
@@ -137,14 +146,16 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                 System.out.println(o.toString() + " value");
             else
                 System.out.println("NULL NULL");
-            this.setText("STOP");
+            this.setText("<html><div style=\"text-align: center;\">STOP</div></html>");
+            
             setForeground(t.getSelectionForeground());
             setBackground(Color.red);
             setBorder(new MatteBorder(3,3,3,3,Color.black));
         }
         
         
-        this.setFont(new Font("Arial", Font.PLAIN, 10));
+        this.setHorizontalAlignment(TimestampCellRenderer.CENTER);
+        this.setFont(new Font("Arial", Font.PLAIN, 11));
         
         return this;
     }
