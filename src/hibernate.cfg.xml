@@ -2,6 +2,8 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
+      
+      
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms?zeroDateTimeBehavior=convertToNull</property>
@@ -12,6 +14,8 @@
     <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
     <property name="hibernate.jdbc.batch_size">50</property>
     <property name="hibernate.connection.pool_size">10</property>
+    
+    
     <mapping resource="tutoring/entity/Subject.hbm.xml"/>
     <mapping resource="tutoring/entity/ParaprofessionalCategory.hbm.xml"/>
     <mapping resource="tutoring/entity/ParaprofessionalSession.hbm.xml"/>
@@ -23,5 +27,9 @@
     <mapping resource="tutoring/entity/Course.hbm.xml"/>
     <mapping resource="tutoring/entity/User.hbm.xml"/>
     <mapping resource="tutoring/entity/Location.hbm.xml"/>
+    
+
+        
   </session-factory>
+  
 </hibernate-configuration>

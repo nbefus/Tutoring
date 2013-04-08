@@ -1,4 +1,9 @@
 package preciousAreaSoNoMergeHappensLOL;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import tutoring.ui.*;
 
 public class LoginView extends javax.swing.JFrame 
@@ -6,9 +11,9 @@ public class LoginView extends javax.swing.JFrame
 
     public LoginView() 
     {
-        
         initComponents();
         errorLabel.setText(login.loginFeedback());
+        
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -30,6 +35,8 @@ public class LoginView extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         loginButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         loginButton.setForeground(new java.awt.Color(0, 153, 0));

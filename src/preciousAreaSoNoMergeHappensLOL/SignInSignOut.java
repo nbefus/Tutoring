@@ -1,5 +1,6 @@
 package preciousAreaSoNoMergeHappensLOL;
 import UIs.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -59,7 +60,7 @@ public class SignInSignOut extends javax.swing.JFrame {
 
         signInAndOutButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         signInAndOutButton.setForeground(new java.awt.Color(0, 153, 0));
-        signInAndOutButton.setText("Sign In");
+        signInAndOutButton.setText("Status");
         signInAndOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 signInAndOutButtonMouseClicked(evt);
@@ -120,6 +121,19 @@ public class SignInSignOut extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signInAndOutButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signInAndOutButtonMouseClicked
+
+        list.get(nameCombo.getSelectedIndex()).setIsClockedIn(!(list.get(nameCombo.getSelectedIndex()).isIsClockedIn()));
+        HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
+        
+        if((list.get(nameCombo.getSelectedIndex()).isIsClockedIn()) == false)
+        {
+            signInAndOutButton.setText("Sign In");
+        }
+        else
+        {
+            signInAndOutButton.setText("Sign Out");
+        }
+        
         
     }//GEN-LAST:event_signInAndOutButtonMouseClicked
 
@@ -135,22 +149,14 @@ public class SignInSignOut extends javax.swing.JFrame {
 
     private void nameComboPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nameComboPopupMenuWillBecomeInvisible
 
-        if(!list.get(nameCombo.getSelectedIndex()).isIsClockedIn())
-        {
-            signInAndOutButton.setText("Sign Out");
-            //System.out.println(nameCombo.getSelectedIndex());
-            //list.get(nameCombo.getSelectedIndex()).setIsClockedIn(true);
-
-            //HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
-        }
-        /**
-        else if(!list.get(nameCombo.getSelectedIndex()).isIsClockedIn())
+        if((list.get(nameCombo.getSelectedIndex()).isIsClockedIn()) == false)
         {
             signInAndOutButton.setText("Sign In");
-            list.get(nameCombo.getSelectedIndex()).setIsClockedIn(true);
-            HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
-        }*/
-        
+        }
+        else
+        {
+            signInAndOutButton.setText("Sign Out");
+        }
         
     }//GEN-LAST:event_nameComboPopupMenuWillBecomeInvisible
 
@@ -195,7 +201,7 @@ public class SignInSignOut extends javax.swing.JFrame {
     }
     
     private ArrayList listOfParaprofessionals = new ArrayList();
-    private ArrayList<Paraprofessional> list = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional where terminationDate is not null");
+    private ArrayList<Paraprofessional> list = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional where terminationDate is null");
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLabel;
