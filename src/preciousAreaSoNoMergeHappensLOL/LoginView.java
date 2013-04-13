@@ -12,7 +12,6 @@ public class LoginView extends javax.swing.JFrame
     public LoginView() 
     {
         initComponents();
-        errorLabel.setText(login.loginFeedback());
         
     }
     
@@ -33,10 +32,9 @@ public class LoginView extends javax.swing.JFrame
         errorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         loginButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         loginButton.setForeground(new java.awt.Color(0, 153, 0));
@@ -48,6 +46,7 @@ public class LoginView extends javax.swing.JFrame
         });
         jPanel2.add(loginButton);
 
+        usernameLabel.setBackground(new java.awt.Color(255, 255, 255));
         usernameLabel.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setText("Username:");
@@ -130,7 +129,7 @@ public class LoginView extends javax.swing.JFrame
 
         errorLabel.setForeground(new java.awt.Color(204, 0, 0));
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        errorLabel.setText("Error: Invalid Input");
+        errorLabel.setText(login.loginFeedback());
         errorLabel.setEnabled(false);
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);

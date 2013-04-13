@@ -108,7 +108,7 @@ public class Login
             loginFeedback = "Username and passwords match.";
             return loginFeedback;
         }
-        else if(usernameStatus == false)
+        else if((usernameStatus == false) )
         {
             loginFeedback = "The username that you entered was not found.";
             return loginFeedback;
