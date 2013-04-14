@@ -76,12 +76,12 @@ public class SessionTableHelper
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         
-        table.getColumnModel().getColumn(17).setCellEditor(singleclick);
+        table.getColumnModel().getColumn(SessionTableModel.Columns.WALKOUT.getColumnIndex()).setCellEditor(singleclick);
         
        // sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
 
         table.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer(showDateOnTimestamps));
-        table.getColumnModel().getColumn(14).setCellRenderer(new MinuteCellRenderer());
+        table.getColumnModel().getColumn(SessionTableModel.Columns.MIN.getColumnIndex()).setCellRenderer(new MinuteCellRenderer());
         
         if(!doubleClickBringsInfoUpTop)
         {
@@ -97,13 +97,13 @@ public class SessionTableHelper
         {
             for(int i=0; i<table.getColumnCount(); i++)
             {
-                if(i!=12 && i!=13 && i!=11 && i != 10 && i !=17)
+                if(i!=SessionTableModel.Columns.START.getColumnIndex() && i!=SessionTableModel.Columns.STOP.getColumnIndex() && i!=SessionTableModel.Columns.ENTEREDDATE.getColumnIndex() && i != SessionTableModel.Columns.GC.getColumnIndex() && i !=SessionTableModel.Columns.WALKOUT.getColumnIndex())
                     table.getColumnModel().getColumn(i).setCellRenderer(new FontCellRenderer());
-                if(i !=17)
+                if(i !=SessionTableModel.Columns.WALKOUT.getColumnIndex())
                     table.getColumnModel().getColumn(i).setCellEditor(dce);
             }
-            table.getColumnModel().getColumn(12).setCellEditor(new TimestampCellEditor(new JTextField()));
-            table.getColumnModel().getColumn(13).setCellEditor(new TimestampCellEditor(new JTextField()));
+            table.getColumnModel().getColumn(SessionTableModel.Columns.START.getColumnIndex()).setCellEditor(new TimestampCellEditor(new JTextField()));
+            table.getColumnModel().getColumn(SessionTableModel.Columns.STOP.getColumnIndex()).setCellEditor(new TimestampCellEditor(new JTextField()));
 
         }
         
@@ -152,6 +152,7 @@ public class SessionTableHelper
         // Get maximum width of column data
         for (int r = 0; r < table.getRowCount(); r++) {
             renderer = table.getCellRenderer(r, vColIndex);
+            System.out.println("COL: "+vColIndex+" and ROW: "+r+"   "+renderer.toString());
             comp     = renderer.getTableCellRendererComponent(table, table.getValueAt(r, vColIndex), false, false,
                     r, vColIndex);
             width = Math.max(width, comp.getPreferredSize().width);

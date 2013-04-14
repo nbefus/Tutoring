@@ -33,22 +33,22 @@ public class SessionTableModel extends AbstractTableModel {
     
     public enum Columns
     {
-        ID(0, "First Name", String.class),
-        CLIENTFIRSTNAME(1, "Last Name", String.class),
-        CLIENTLASTNAME(2,"Phone", String.class),
-        CLIENTPHONE(3, "Last Name", String.class),
+        ID(0, "ID", Integer.class),
+        CLIENTFIRSTNAME(1, "First Name", String.class),
+        CLIENTLASTNAME(2,"Last Name", String.class),
+        CLIENTPHONE(3, "Phone", String.class),
         CLIENTEMAIL(4, "Email", String.class),
         COURSE(5, "Course", String.class),
         LEVEL(6, "Level", Integer.class),
         TEACHER(7, "Teacher", String.class),
-        CATEGORY(8, "Category", String.class),
+        CATEGORY(8, "Cat.", String.class),
         NOTES(9, "Notes", String.class),
         PARAPROFESSIONAL(10, "Paraprofessional", String.class),
         GC(11, "GC", Boolean.class),
-        ENTEREDDATE(12, "Entered Date", Timestamp.class),
-        START(13, "Start Session", Timestamp.class),
-        STOP(14, "Stop Session", Timestamp.class),
-        MIN(15, "Min. Passed", Integer.class),
+        ENTEREDDATE(12, "Date", Timestamp.class),
+        START(13, "Start", Timestamp.class),
+        STOP(14, "Stop", Timestamp.class),
+        MIN(15, "Min.", Integer.class),
         LOCATION(16, "Location", String.class),
         CREATOR(17, "Creator", String.class),
         WALKOUT(18, "Walkout", Boolean.class);
@@ -100,7 +100,7 @@ public class SessionTableModel extends AbstractTableModel {
          columnNames=generateColumns();
     }
     public SessionTableModel(){
-        
+        columnNames=generateColumns();
     }
     
     private String[] generateColumns()
@@ -110,6 +110,7 @@ public class SessionTableModel extends AbstractTableModel {
         for(int i=0; i<c.length; i++)
         {
             columnNames[c[i].getColumnIndex()] = c[i].getDisplayName();
+            System.out.println("COLUMN NAME: "+columnNames[c[i].getColumnIndex()]);
         }
         
         return columnNames;
@@ -352,38 +353,39 @@ public class SessionTableModel extends AbstractTableModel {
             case 7:
                 return ts.getCourseID().getTeacherID().getfName() + " "+ts.getCourseID().getTeacherID().getlName();
             case 8:
-                return ts.getNotes(); 
+                return ts.getCourseID().getSubjectID().getCategoryID().getName();
             case 9:
-                return ts.getParaprofessionalID().getfName() + " "+ts.getParaprofessionalID().getlName();
+                return ts.getNotes(); 
             case 10:
-                return ts.isGrammarCheck();
+                return ts.getParaprofessionalID().getfName() + " "+ts.getParaprofessionalID().getlName();
             case 11:
-                return ts.getTimeAndDateEntered();
+                return ts.isGrammarCheck();
             case 12:
+                return ts.getTimeAndDateEntered();
+            case 13:
                 if(ts.getSessionStart() != null)
                     return ts.getSessionStart();
                 else
                     return Timestamp.valueOf("9999-12-31 12:00:00");
-            case 13:
+            case 14:
                 if(ts.getSessionStart() != null)
                     return ts.getSessionEnd();
                 else
                     return Timestamp.valueOf("9999-12-31 12:00:00");
-            case 14:
+            case 15:
                 if(ts.getSessionStart() != null && ts.getSessionEnd() == null)
                     return minutesOf(new Date(ts.getSessionStart().getTime()), new Date());
                 else if(ts.getSessionStart() != null && ts.getSessionEnd() != null)
                     return minutesOf(new Date(ts.getSessionStart().getTime()), new Date(ts.getSessionEnd().getTime()));
                 else
                     return 0;
-            case 15:
-                return ts.getLocationID().getName();
             case 16:
-                return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
+                return ts.getLocationID().getName();
             case 17:
-                return ts.isWalkout();
+                return ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
             case 18:
-                return ts.getCourseID().getSubjectID().getCategoryID().getName();
+                return ts.isWalkout();
+            
            }
            return null;
    }
