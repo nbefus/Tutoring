@@ -108,14 +108,19 @@ public class Login
             loginFeedback = "Username and passwords match.";
             return loginFeedback;
         }
-        else if((usernameStatus == false) )
+        else if((usernameStatus == false) && (passwordStatus == true))
         {
             loginFeedback = "The username that you entered was not found.";
             return loginFeedback;
         }
-        else if(passwordStatus == false)
+        else if(passwordStatus == false && (usernameStatus == true))
         {
             loginFeedback = "The password that you entered is invalid.";
+            return loginFeedback;
+        }
+        else if(loginStatus == false)
+        {
+            loginFeedback = "Please recheck your typing and try again. Remember, your password is case sensitive.";
             return loginFeedback;
         }
         
