@@ -50,6 +50,9 @@ public class Data
        private static ArrayList<Teacher> teacherLast;
        private static ArrayList<Role> roles;
        
+       private static ArrayList<Paraprofessional> tutorFirst;
+       private static ArrayList<Paraprofessional> tutorLast;
+       
        private static ArrayList<String> locationslist;// = new ArrayList<String>();
        private static  ArrayList<String> tutorslist;// = new ArrayList<String>();
        private static ArrayList<String> teacherslist;// = new ArrayList<String>();
@@ -60,7 +63,13 @@ public class Data
    
        private static ArrayList<String> teacherfirstlist;
        private static ArrayList<String> teacherlastlist;
+       private static ArrayList<String> tutorsfirstlist;
+       private static ArrayList<String> tutorslastlist;
        private static ArrayList<String> roleslist;
+       
+       private static ArrayList<String> multicategorylist;
+
+    
        
     public Data(boolean initializeAll)
     {
@@ -82,6 +91,9 @@ public class Data
        categories = (ArrayList<Category>)HibernateTest.select("from Category as c order by c.name");
        levels = (ArrayList<Course>)HibernateTest.select("from Course as c order by c.level");
        
+       tutorFirst = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as t order by t.fName");
+       tutorLast = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as t order by t.lName");
+       
        locationslist = new ArrayList<String>();
        tutorslist = new ArrayList<String>();
        teacherslist = new ArrayList<String>();
@@ -92,6 +104,11 @@ public class Data
        teacherfirstlist = new ArrayList<String>();
        roleslist = new ArrayList<String>();
        
+       tutorsfirstlist = new ArrayList<String>();
+       tutorslastlist = new ArrayList<String>();
+       
+       multicategorylist = new ArrayList<String>();
+       
        roles = (ArrayList<Role>)HibernateTest.select("from Role as r order by r.type");
 
        for(int i=0; i<clientFirst.size(); i++)
@@ -99,6 +116,13 @@ public class Data
            
        for(int i=0; i<clientLast.size(); i++)
             clientslast.add(clientLast.get(i).getlName());
+       
+       for(int i=0; i<tutorFirst.size(); i++)
+           tutorsfirstlist.add(tutorFirst.get(i).getfName());
+           
+       for(int i=0; i<tutorLast.size(); i++)
+            tutorslastlist.add(tutorLast.get(i).getlName());
+       
        
        for(int i=0; i<clientPhone.size(); i++)
             clientsphone.add(clientPhone.get(i).getPhone()+"");
@@ -140,6 +164,8 @@ public class Data
         
        for(int i=0; i<subjects.size(); i++)
            subjectslist.add(subjects.get(i).getAbbrevName());
+       
+       multicategorylist = createMultiCat(categorieslist.size(), null);
        /*
         if(initializeAll)
         {
@@ -214,6 +240,38 @@ public class Data
 
         return true;
     }*/
+    
+    public static ArrayList<String> createMultiCat(int n,ArrayList<String> ps)
+    {
+        if(n<0)
+        {
+            return null;
+        }
+        
+        if(n==0)
+        {
+            if(ps==null)
+                ps=new ArrayList();
+            ps.add(" ");
+            return ps;
+        }
+        
+        ps=createMultiCat(n-1, ps);
+        
+        ArrayList<String> tmp=new ArrayList<String>();
+        
+        for(String s:ps)
+        {
+            
+            if(s.equals(" "))
+                tmp.add(categorieslist.get(n-1));
+            else
+                tmp.add(s+" "+categorieslist.get(n-1));
+        }
+        
+        ps.addAll(tmp);
+        return ps;
+    }
     
     public ParaprofessionalSession checkValidSession(ParaprofessionalSession ps)
     {
@@ -431,6 +489,26 @@ public class Data
      */
     public static ArrayList<String> getRoleslist() {
         return roleslist;
+    }
+    /**
+     * @return the multicategorylist
+     */
+    public static ArrayList<String> getMulticategorylist() {
+        return multicategorylist;
+    }
+
+    /**
+     * @return the tutorsfirstlist
+     */
+    public static ArrayList<String> getTutorsfirstlist() {
+        return tutorsfirstlist;
+    }
+
+    /**
+     * @return the tutorslastlist
+     */
+    public static ArrayList<String> getTutorslastlist() {
+        return tutorslastlist;
     }
 
 }

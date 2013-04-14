@@ -93,7 +93,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="currentSessionsPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="831" max="32767" attributes="0"/>
+                      <EmptySpace pref="784" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -226,7 +226,7 @@
                           <Component id="sessionendLabel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="sessionssessionendField" min="-2" pref="142" max="-2" attributes="0"/>
-                          <EmptySpace pref="85" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="gcCheck" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="walkoutCheck" min="-2" max="-2" attributes="0"/>
@@ -589,7 +589,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
                       <Component id="createAgendaPanel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="355" max="32767" attributes="0"/>
+                      <EmptySpace pref="339" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -669,7 +669,7 @@
                           <Component id="jScrollPane3" min="-2" pref="387" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="deleteAgendaButton" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="723" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="705" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1522,6 +1522,8 @@
                       <Component id="sessionsRadio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="teacherRadio" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="paraprofessionalRadio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -1535,6 +1537,7 @@
                           <Component id="courseRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="sessionsRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="teacherRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="paraprofessionalRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="searchclientPanel" min="-2" max="-2" attributes="0"/>
@@ -1568,7 +1571,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="currentSessionsPanel1" min="-2" pref="213" max="-2" attributes="0"/>
-                      <EmptySpace pref="360" max="32767" attributes="0"/>
+                      <EmptySpace pref="251" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1760,7 +1763,7 @@
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="searchwalkoutCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="22" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2145,34 +2148,34 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="searchcourseCombo1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="searchparaprofessionalfirstCombo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="levelLabel3" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="searchlevelCombo1" min="-2" pref="114" max="-2" attributes="0"/>
+                                  <Component id="searchparaprofessionallastCombo" min="-2" pref="114" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="teacherLabel3" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="searchsessionstartField2" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="searchparaprofessionalhireField" min="-2" pref="142" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="categoryLabel3" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="searchsessionstartField3" min="-2" pref="142" max="-2" attributes="0"/>
+                                  <Component id="searchparaprofessionalterminationField" min="-2" pref="142" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                  <Component id="searchcategoryparaprofessionalCombo" min="-2" pref="161" max="-2" attributes="0"/>
+                                  <Component id="searchparaprofessionalcategoryCombo" min="-2" pref="161" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="searchclockedinCombo" min="-2" max="-2" attributes="0"/>
+                          <Component id="searchparaprofessionalclockedinCombo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="searchroleCombo" min="-2" pref="135" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="searchparaprofessionalroleCombo" min="-2" pref="135" max="-2" attributes="0"/>
+                          <EmptySpace pref="105" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2181,22 +2184,22 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="courseLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchcourseCombo1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalfirstCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="levelLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchlevelCombo1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionallastCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="teacherLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="categoryLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchroleCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchsessionstartField2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchsessionstartField3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalroleCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalhireField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalterminationField" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchclockedinCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalclockedinCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="levelLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="searchcategoryparaprofessionalCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchparaprofessionalcategoryCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -2209,7 +2212,7 @@
                     <Property name="text" type="java.lang.String" value="First Name:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="searchcourseCombo1">
+                <Component class="javax.swing.JComboBox" name="searchparaprofessionalfirstCombo">
                   <Properties>
                     <Property name="editable" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -2222,7 +2225,7 @@
                     <Property name="text" type="java.lang.String" value="Last Name:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="searchlevelCombo1">
+                <Component class="javax.swing.JComboBox" name="searchparaprofessionallastCombo">
                   <Properties>
                     <Property name="editable" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -2245,7 +2248,7 @@
                     <Property name="text" type="java.lang.String" value="Role:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="searchroleCombo">
+                <Component class="javax.swing.JComboBox" name="searchparaprofessionalroleCombo">
                   <Properties>
                     <Property name="editable" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -2253,7 +2256,7 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="searchcategoryparaprofessionalCombo">
+                <Component class="javax.swing.JComboBox" name="searchparaprofessionalcategoryCombo">
                   <Properties>
                     <Property name="editable" type="boolean" value="true"/>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -2266,12 +2269,12 @@
                     <Property name="text" type="java.lang.String" value="Category:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="searchsessionstartField2">
+                <Component class="javax.swing.JTextField" name="searchparaprofessionalhireField">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm aa"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="searchsessionstartField3">
+                <Component class="javax.swing.JTextField" name="searchparaprofessionalterminationField">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm aa"/>
                   </Properties>
@@ -2281,7 +2284,7 @@
                     <Property name="text" type="java.lang.String" value="Clocked In:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="searchclockedinCombo">
+                <Component class="javax.swing.JComboBox" name="searchparaprofessionalclockedinCombo">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="3">
@@ -2315,7 +2318,7 @@
                           <Component id="levelLabel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="searchlnameteacherCombo" min="-2" pref="114" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="952" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2552,6 +2555,17 @@
                 <Property name="text" type="java.lang.String" value="Teacher"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JRadioButton" name="paraprofessionalRadio">
+              <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection component="buttonGroup1" type="bean"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Paraprofessional"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paraprofessionalRadioActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JScrollPane" name="jScrollPane9">
@@ -2744,7 +2758,7 @@
                                       </Group>
                                       <Component id="generalReportLoadButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="1193" max="32767" attributes="0"/>
+                                  <EmptySpace pref="1151" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
@@ -2759,7 +2773,7 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="10" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jScrollPane12" min="-2" pref="79" max="-2" attributes="0"/>
@@ -2784,7 +2798,7 @@
                                   <Component id="generalReportEndField" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="generalReportLoadButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="126" max="32767" attributes="0"/>
+                                  <EmptySpace pref="105" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">

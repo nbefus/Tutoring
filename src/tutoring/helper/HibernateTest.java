@@ -164,8 +164,11 @@ public class HibernateTest {
             }
 
             for (int i = 0; i < row.length; i++) {
-                data[count][i] = row[i].toString();
-                System.out.print("\t\t" + row[i] + "--" + row[i].getClass().toString());
+                if(row[i] != null)
+                    data[count][i] = row[i].toString();
+                else
+                    data[count][i] = "";
+               // System.out.print("\t\t" + row[i] + "--" + row[i].getClass().toString());
             }
 
             count++;
