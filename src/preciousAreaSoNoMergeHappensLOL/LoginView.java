@@ -9,7 +9,6 @@ import tutoring.ui.*;
 
 public class LoginView extends javax.swing.JFrame 
 {
-
     public LoginView() 
     {
         initComponents();
@@ -36,6 +35,8 @@ public class LoginView extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(577, 476));
+        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -52,7 +53,7 @@ public class LoginView extends javax.swing.JFrame
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 515, Short.MAX_VALUE)
+            .add(0, 573, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -71,7 +72,7 @@ public class LoginView extends javax.swing.JFrame
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 371, Short.MAX_VALUE)
+            .add(0, 344, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.LINE_END);
@@ -168,7 +169,7 @@ public class LoginView extends javax.swing.JFrame
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 371, Short.MAX_VALUE)
+            .add(0, 344, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel6, java.awt.BorderLayout.LINE_START);
