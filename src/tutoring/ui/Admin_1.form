@@ -26,7 +26,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="adminPanel" alignment="0" max="32767" attributes="0"/>
+          <Component id="adminPanel" alignment="0" pref="1466" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -40,7 +40,734 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JScrollPane" name="AdminScrollPanel">
+        <Container class="javax.swing.JPanel" name="sessionsPanel">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Sessions">
+                <Property name="tabTitle" type="java.lang.String" value="Sessions"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="currentSessionsPanel" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="sessionsaddSessionbutton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                              <Component id="sessionsclearButton" min="-2" pref="76" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="otherInfoPanel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="courseInfoPanel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="studentInfoPanel1" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="209" max="-2" attributes="0"/>
+                      <Component id="autocompleteCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="autocompleteCheck" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="studentInfoPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="courseInfoPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Component id="otherInfoPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="sessionsaddSessionbutton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="sessionsclearButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="currentSessionsPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="831" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="currentSessionsPanel">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Current Sessions"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="sessionsdeleteSessionButton" min="-2" pref="136" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane4" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane4" min="-2" pref="201" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="sessionsdeleteSessionButton" min="-2" pref="29" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="sessionssessionTable">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="4" rowCount="4">
+                            <Column editable="true" title="First" type="java.lang.Object"/>
+                            <Column editable="true" title="Last" type="java.lang.Object"/>
+                            <Column editable="true" title="Email" type="java.lang.Object"/>
+                            <Column editable="true" title="Phone" type="java.lang.Object"/>
+                          </Table>
+                        </Property>
+                        <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Component class="javax.swing.JButton" name="sessionsdeleteSessionButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Delete Session"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sessionsdeleteSessionButtonActionPerformed"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JButton" name="sessionsaddSessionbutton">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="66" red="33" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Add Session"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sessionsaddSessionbuttonMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sessionsaddSessionbuttonActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="sessionsclearButton">
+              <Properties>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="0" red="99" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Clear"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="sessionsclearButtonMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sessionsclearButtonActionPerformed"/>
+              </Events>
+            </Component>
+            <Container class="javax.swing.JPanel" name="otherInfoPanel">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Other Information"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="locationLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionslocationCombo" min="-2" pref="140" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="creatorLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionscreatorCombo" min="-2" pref="148" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="notesLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsnotesField" min="-2" pref="191" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionstartLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionssessionstartField" min="-2" pref="142" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionendLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionssessionendField" min="-2" pref="142" max="-2" attributes="0"/>
+                          <EmptySpace pref="121" max="32767" attributes="0"/>
+                          <Component id="gcCheck" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="walkoutCheck" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="locationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionslocationCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="creatorLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionscreatorCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="notesLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsnotesField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionstartLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionssessionstartField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="gcCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="walkoutCheck" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionendLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionssessionendField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="18" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="locationLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Location:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionslocationCombo">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="creatorLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Creator:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="notesLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Notes:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="sessionsnotesField">
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="gcCheck">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="GC"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="walkoutCheck">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Walkout"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="sessionstartLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Session Start:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="sessionssessionstartField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm aa"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionscreatorCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="sessionendLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Session End:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="sessionssessionendField">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm:ss aa"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="courseInfoPanel">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Course Information"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="courseLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="sessionscourseCombo" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="levelLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="sessionslevelCombo" min="-2" pref="114" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="teacherLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsteacherCombo" min="-2" pref="243" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="categoryLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionscategoryCombo" min="-2" pref="148" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                          <Component id="ParaprofessionalLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsparaprofessionalCombo" min="-2" pref="148" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="courseLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionscourseCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="levelLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionslevelCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="teacherLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsteacherCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="categoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionscategoryCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsparaprofessionalCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="ParaprofessionalLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="18" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="courseLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Course:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionscourseCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="levelLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Course#:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionslevelCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="teacherLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Teacher:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionsteacherCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sessionsteacherComboActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="categoryLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Category:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionscategoryCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionsparaprofessionalCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="ParaprofessionalLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Paraprofessional:"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="studentInfoPanel1">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Student Information"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="fnameLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsfnameCombo" min="-2" pref="152" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="lnameLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionslnameCombo" min="-2" pref="156" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="emailLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsemailCombo" min="-2" pref="188" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="phoneLabel3" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="sessionsphoneCombo" min="-2" pref="174" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="phoneLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="emailLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionslnameCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lnameLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsfnameCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fnameLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsemailCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sessionsphoneCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="fnameLabel3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="First Name:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionsfnameCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lnameLabel3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Last Name:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionslnameCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="emailLabel3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Email:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionsemailCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="phoneLabel3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Phone:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="sessionsphoneCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JCheckBox" name="autocompleteCheck">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="AutoComplete"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autocompleteCheckActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="agendaPanel">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                <TitledBorder title="Agenda"/>
+              </Border>
+            </Property>
+          </Properties>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Agenda">
+                <Property name="tabTitle" type="java.lang.String" value="Agenda"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                      <Component id="createAgendaPanel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="391" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="createAgendaPanel" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="createAgendaPanel">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Create New Agenda"/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="agendaCategoryLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="agendaCategoryCombo" min="-2" pref="123" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="agendaDateLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="dateField" min="-2" pref="167" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jScrollPane5" min="-2" pref="450" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="submitbutton" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jScrollPane3" alignment="1" min="-2" pref="934" max="-2" attributes="0"/>
+                              <Component id="deleteAgendaButton" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jScrollPane5" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="agendaCategoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="agendaCategoryCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="agendaDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dateField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="submitbutton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cancelButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" pref="387" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="deleteAgendaButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="723" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="agendaCategoryLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Category:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="agendaCategoryCombo">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="agendaDateLabel">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Date:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="dateField">
+                </Component>
+                <Component class="javax.swing.JLabel" name="dateLabel">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Lucida Grande" size="12" style="0"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="66" green="66" red="66" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="(mm/dd/yyyy hh:mm a.a.)"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTextArea" name="agendaTextArea">
+                      <Properties>
+                        <Property name="columns" type="int" value="20"/>
+                        <Property name="rows" type="int" value="5"/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Component class="javax.swing.JButton" name="submitbutton">
+                  <Properties>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="66" red="33" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Submit"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="cancelButton">
+                  <Properties>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="0" red="99" type="rgb"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Cancel"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="agendaTable">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="4" rowCount="4">
+                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                          </Table>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Component class="javax.swing.JButton" name="deleteAgendaButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Delete Agenda"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JScrollPane" name="adminScrollPanel">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Sessions / Agenda">
@@ -57,76 +784,51 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="175" max="-2" attributes="0"/>
-                                          <Component id="autocompleteCheck" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Component id="clearButton" min="-2" pref="76" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="addSessionbutton" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="otherInfoPanel1" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="courseInfoPanel1" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="studentInfoPanel" alignment="1" max="32767" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="futureSessionsPanel" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="sessionsTablePanel" alignment="0" max="32767" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="createAgendaPanel2" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="addSessionbutton2" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="clearButton2" min="-2" pref="76" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="126" max="-2" attributes="0"/>
-                                  <Component id="createAgendaPanel1" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="agendaPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="studentInfoPanel2" alignment="1" max="32767" attributes="0"/>
+                              <Component id="courseInfoPanel2" alignment="0" max="32767" attributes="0"/>
+                              <Component id="otherInfoPanel2" alignment="0" max="32767" attributes="0"/>
+                              <Component id="sessionsTablePanel" alignment="1" max="32767" attributes="0"/>
+                              <Component id="agendaPanel2" alignment="1" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="113" max="32767" attributes="0"/>
+                          <EmptySpace pref="1243" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="autocompleteCheck" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="studentInfoPanel" min="-2" max="-2" attributes="0"/>
+                          <Component id="studentInfoPanel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="courseInfoPanel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="courseInfoPanel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="otherInfoPanel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="otherInfoPanel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="addSessionbutton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="clearButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="addSessionbutton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="clearButton2" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="sessionsTablePanel" min="-2" pref="298" max="-2" attributes="0"/>
+                          <Component id="sessionsTablePanel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="createAgendaPanel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="futureSessionsPanel" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="createAgendaPanel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="agendaPanel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="95" max="32767" attributes="0"/>
+                          <Component id="agendaPanel2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="528" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Container class="javax.swing.JPanel" name="studentInfoPanel">
+                <Container class="javax.swing.JPanel" name="studentInfoPanel2">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -139,9 +841,9 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
                               <Component id="fnameLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="fnameCombo" min="-2" pref="152" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="lnameLabel" min="-2" max="-2" attributes="0"/>
@@ -151,10 +853,10 @@
                               <Component id="emailLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="emailCombo" min="-2" pref="188" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                               <Component id="phoneLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="phoneCombo" min="-2" pref="174" max="-2" attributes="0"/>
+                              <Component id="phoneCombo" min="-2" pref="295" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -232,7 +934,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="courseInfoPanel1">
+                <Container class="javax.swing.JPanel" name="courseInfoPanel2">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -245,26 +947,22 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="133" max="-2" attributes="0"/>
+                              <Component id="courseLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="courseCombo2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                              <Component id="levelLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="courseLabel7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="courseCombo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="levelLabel8" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="levelCombo" min="-2" pref="114" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="teacherLabel5" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="teacherCombo" min="-2" pref="243" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="categoryLabel4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="categoryCombo" min="-2" pref="148" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                              <Component id="ParaprofessionalLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="paraprofessionalCombo" min="-2" pref="148" max="-2" attributes="0"/>
+                              <Component id="levelCombo2" min="-2" pref="114" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                              <Component id="teacherLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="teacherCombo2" min="-2" pref="203" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                              <Component id="categoryLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="categoryCombo2" min="-2" pref="148" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -273,16 +971,14 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="courseLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="courseCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="levelLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="levelCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="teacherLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="teacherCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="categoryLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="categoryCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="paraprofessionalCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="ParaprofessionalLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="courseLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="courseCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="levelLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="levelCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="teacherLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="teacherCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="categoryLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="categoryCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="18" max="32767" attributes="0"/>
                           </Group>
@@ -290,12 +986,12 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="courseLabel7">
+                    <Component class="javax.swing.JLabel" name="courseLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Course:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="courseCombo">
+                    <Component class="javax.swing.JComboBox" name="courseCombo2">
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -303,12 +999,12 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="levelLabel8">
+                    <Component class="javax.swing.JLabel" name="levelLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Course#:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="levelCombo">
+                    <Component class="javax.swing.JComboBox" name="levelCombo2">
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -316,12 +1012,12 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="teacherLabel5">
+                    <Component class="javax.swing.JLabel" name="teacherLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Teacher:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="teacherCombo">
+                    <Component class="javax.swing.JComboBox" name="teacherCombo2">
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -329,38 +1025,25 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teacherComboActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teacherCombo2ActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="categoryLabel4">
+                    <Component class="javax.swing.JLabel" name="categoryLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Category:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="categoryCombo">
+                    <Component class="javax.swing.JComboBox" name="categoryCombo2">
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="0"/>
                         </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="paraprofessionalCombo">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="true"/>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="0"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="ParaprofessionalLabel2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Paraprofessional:"/>
                       </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="otherInfoPanel1">
+                <Container class="javax.swing.JPanel" name="otherInfoPanel2">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -373,31 +1056,32 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="125" max="-2" attributes="0"/>
+                              <Component id="locationLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="locationLabel3" min="-2" max="-2" attributes="0"/>
+                              <Component id="locationCombo2" min="-2" pref="140" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                              <Component id="creatorLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="locationCombo" min="-2" pref="140" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="creatorLabel3" min="-2" max="-2" attributes="0"/>
+                              <Component id="creatorField2" min="-2" pref="160" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="notesLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="creatorCombo" min="-2" pref="148" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="notesLabel3" min="-2" max="-2" attributes="0"/>
+                              <Component id="notesField2" min="-2" pref="191" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <Component id="scheduleLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="notesField" min="-2" pref="191" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="sessionstartLabel3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="sessionstartField" min="-2" pref="142" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="sessionendLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="sessionendField" min="-2" pref="142" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="gcCheck1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="walkoutCheck1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="58" max="32767" attributes="0"/>
+                              <Component id="futureField2" min="-2" pref="142" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="gcCheck2" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                                      <Component id="futureCheck2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="walkoutCheck2" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="49" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -405,91 +1089,91 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="locationLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="locationCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="creatorLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="creatorCombo" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="notesLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="notesField" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sessionstartLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sessionstartField" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="gcCheck1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="walkoutCheck1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sessionendLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sessionendField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="creatorLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="creatorField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="notesLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="notesField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="scheduleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="futureField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="locationLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="locationCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="18" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="gcCheck2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="futureCheck2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="walkoutCheck2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="locationLabel3">
+                    <Component class="javax.swing.JLabel" name="locationLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Location:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="locationCombo">
+                    <Component class="javax.swing.JComboBox" name="locationCombo2">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                           <StringArray count="0"/>
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="creatorLabel3">
+                    <Component class="javax.swing.JLabel" name="creatorLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Creator:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="notesLabel3">
+                    <Component class="javax.swing.JTextField" name="creatorField2">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="creatorField2ActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="notesLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Notes:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="notesField">
+                    <Component class="javax.swing.JTextField" name="notesField2">
                     </Component>
-                    <Component class="javax.swing.JCheckBox" name="gcCheck1">
+                    <Component class="javax.swing.JCheckBox" name="gcCheck2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="GC"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JCheckBox" name="walkoutCheck1">
+                    <Component class="javax.swing.JCheckBox" name="walkoutCheck2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Walkout"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="sessionstartLabel3">
+                    <Component class="javax.swing.JCheckBox" name="futureCheck2">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Session Start:"/>
+                        <Property name="text" type="java.lang.String" value="Future"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="futureCheck2ActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="scheduleLabel">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Schedule:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="sessionstartField">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm aa"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="creatorCombo">
-                      <Properties>
-                        <Property name="editable" type="boolean" value="true"/>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="0"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="sessionendLabel2">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Session End:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="sessionendField">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="dd/mm/yyyy hh:mm:ss aa"/>
-                      </Properties>
+                    <Component class="javax.swing.JTextField" name="futureField2">
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="addSessionbutton">
+                <Component class="javax.swing.JButton" name="addSessionbutton2">
                   <Properties>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="66" red="33" type="rgb"/>
@@ -497,11 +1181,10 @@
                     <Property name="text" type="java.lang.String" value="Add Session"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addSessionbuttonMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addSessionbuttonActionPerformed"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="addSessionbutton2MouseClicked"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="clearButton">
+                <Component class="javax.swing.JButton" name="clearButton2">
                   <Properties>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="0" green="0" red="99" type="rgb"/>
@@ -509,8 +1192,8 @@
                     <Property name="text" type="java.lang.String" value="Clear"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clearButtonMouseClicked"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearButtonActionPerformed"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clearButton2MouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearButton2ActionPerformed"/>
                   </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="sessionsTablePanel">
@@ -531,7 +1214,7 @@
                                   <Component id="sessionsTableScrollPanel" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="deleteSessionButton" min="-2" pref="136" max="-2" attributes="0"/>
+                                      <Component id="deleteSessionButton2" min="-2" pref="136" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -541,11 +1224,11 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="sessionsTableScrollPanel" min="-2" pref="229" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteSessionButton" min="-2" pref="29" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                              <Component id="sessionsTableScrollPanel" min="-2" pref="337" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="deleteSessionButton2" min="-2" pref="29" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -575,88 +1258,14 @@
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Component class="javax.swing.JButton" name="deleteSessionButton">
+                    <Component class="javax.swing.JButton" name="deleteSessionButton2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Delete Session"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteSessionButtonActionPerformed"/>
-                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="futureSessionsPanel">
-                  <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Future Sessions"/>
-                      </Border>
-                    </Property>
-                  </Properties>
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="appointmentsTableScrollPanel" alignment="0" pref="1288" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="deleteSessionButton3" min="-2" pref="136" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="appointmentsTableScrollPanel" min="-2" pref="179" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteSessionButton3" min="-2" pref="29" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Container class="javax.swing.JScrollPane" name="appointmentsTableScrollPanel">
-                      <AuxValues>
-                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                      </AuxValues>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                      <SubComponents>
-                        <Component class="javax.swing.JTable" name="appointmentsTable">
-                          <Properties>
-                            <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                              <Table columnCount="4" rowCount="4">
-                                <Column editable="true" title="First" type="java.lang.Object"/>
-                                <Column editable="true" title="Last" type="java.lang.Object"/>
-                                <Column editable="true" title="Email" type="java.lang.Object"/>
-                                <Column editable="true" title="Phone" type="java.lang.Object"/>
-                              </Table>
-                            </Property>
-                            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                              <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                            </Property>
-                          </Properties>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Component class="javax.swing.JButton" name="deleteSessionButton3">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Delete Session"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteSessionButton3ActionPerformed"/>
-                      </Events>
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="createAgendaPanel1">
+                <Container class="javax.swing.JPanel" name="createAgendaPanel2">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -669,53 +1278,54 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="cancelButton1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="submitbutton1" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
+                              <Component id="agendaCategoryLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="agendaCategoryCombo2" min="-2" pref="123" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="agendaDateLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="dateLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
-                                      <Component id="agendaCategoryLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="agendaCategoryCombo1" min="-2" pref="123" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="agendaDateLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="dateLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="dateField1" min="-2" pref="167" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="agendaTextAreaScrollPanel" min="-2" pref="588" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="dateField2" min="-2" pref="167" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="agendaTextAreaScrollPanel" min="-2" pref="588" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="29" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="submitbutton2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="cancelButton2" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="dateLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="dateLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="agendaTextAreaScrollPanel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                      <Component id="agendaCategoryLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="agendaCategoryCombo1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="agendaDateLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dateField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="agendaTextAreaScrollPanel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="submitbutton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cancelButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="agendaCategoryLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="agendaCategoryCombo2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="agendaDateLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="dateField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="cancelButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="submitbutton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -723,12 +1333,12 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="agendaCategoryLabel1">
+                    <Component class="javax.swing.JLabel" name="agendaCategoryLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Category:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JComboBox" name="agendaCategoryCombo1">
+                    <Component class="javax.swing.JComboBox" name="agendaCategoryCombo2">
                       <Properties>
                         <Property name="editable" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -736,14 +1346,14 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="agendaDateLabel1">
+                    <Component class="javax.swing.JLabel" name="agendaDateLabel2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Date:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="dateField1">
+                    <Component class="javax.swing.JTextField" name="dateField2">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="dateLabel1">
+                    <Component class="javax.swing.JLabel" name="dateLabel2">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Lucida Grande" size="12" style="0"/>
@@ -754,7 +1364,7 @@
                         <Property name="text" type="java.lang.String" value="(mm/dd/yyyy hh:mm a.a.)"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="cancelButton1">
+                    <Component class="javax.swing.JButton" name="cancelButton2">
                       <Properties>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="0" green="0" red="99" type="rgb"/>
@@ -762,7 +1372,7 @@
                         <Property name="text" type="java.lang.String" value="Cancel"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="submitbutton1">
+                    <Component class="javax.swing.JButton" name="submitbutton2">
                       <Properties>
                         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="ff" green="66" red="33" type="rgb"/>
@@ -777,7 +1387,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="agendaTextArea1">
+                        <Component class="javax.swing.JTextArea" name="agendaTextArea2">
                           <Properties>
                             <Property name="columns" type="int" value="20"/>
                             <Property name="rows" type="int" value="5"/>
@@ -787,7 +1397,7 @@
                     </Container>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="agendaPanel1">
+                <Container class="javax.swing.JPanel" name="agendaPanel2">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -802,10 +1412,10 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="agendaTableScrollPanel" alignment="0" pref="1294" max="32767" attributes="0"/>
+                                  <Component id="agendaTableScrollPanel" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="deleteAgendaButton1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="deleteAgendaButton2" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -815,16 +1425,16 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="agendaTableScrollPanel" min="-2" pref="204" max="-2" attributes="0"/>
+                              <Component id="agendaTableScrollPanel" min="-2" pref="312" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteAgendaButton1" min="-2" max="-2" attributes="0"/>
+                              <Component id="deleteAgendaButton2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JButton" name="deleteAgendaButton1">
+                    <Component class="javax.swing.JButton" name="deleteAgendaButton2">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Delete Agenda"/>
                       </Properties>
@@ -836,7 +1446,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JTable" name="agendaTable1">
+                        <Component class="javax.swing.JTable" name="agendaTable2">
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="4" rowCount="4">
@@ -852,15 +1462,6 @@
                     </Container>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JCheckBox" name="autocompleteCheck">
-                  <Properties>
-                    <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="AutoComplete"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autocompleteCheckActionPerformed"/>
-                  </Events>
-                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -1965,6 +2566,121 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="paraprofessionalRadioActionPerformed"/>
               </Events>
             </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JScrollPane" name="jScrollPane9">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="tab7">
+                <Property name="tabTitle" type="java.lang.String" value="tab7"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="reportPanel">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jScrollPane2" min="-2" pref="275" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="jScrollPane1" min="-2" pref="1103" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="372" max="-2" attributes="0"/>
+                                          <Component id="downloadButton" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <Component id="thechartPanel" alignment="0" min="-2" pref="1335" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="42" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="thechartPanel" pref="1478" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="jScrollPane1" min="-2" pref="189" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="downloadButton" min="-2" pref="39" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jScrollPane2" min="-2" pref="257" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JButton" name="downloadButton">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Download"/>
+                  </Properties>
+                </Component>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="reportTable">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="4" rowCount="4">
+                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                          </Table>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                  <AuxValues>
+                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                  </AuxValues>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JList" name="reportList">
+                      <Properties>
+                        <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
+                          <StringArray count="0"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="thechartPanel">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout"/>
+                </Container>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JScrollPane" name="jScrollPane10">
