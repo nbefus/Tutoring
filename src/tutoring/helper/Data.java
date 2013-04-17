@@ -7,6 +7,8 @@ package tutoring.helper;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import tutoring.entity.*;
 
 /**
@@ -70,7 +72,11 @@ public class Data
        private static ArrayList<String> multicategorylist;
 
     
-       
+       private static ArrayList<String> combinedcourselist;
+
+    public static ArrayList<String> getCombinedcourselist() {
+        return combinedcourselist;
+    }
     public Data(boolean initializeAll)
     {
        clientFirst = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
@@ -108,28 +114,56 @@ public class Data
        tutorslastlist = new ArrayList<String>();
        
        multicategorylist = new ArrayList<String>();
+       combinedcourselist = new ArrayList<String>();
+       
+       List result =  HibernateTest.regularSelect("select abbrevName, level, fName, lName from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID");
+       
+       Iterator it = result.iterator();
+       while (it.hasNext()) {
+            Object[] row = (Object[]) it.next();
+            String line = "";
+            for (int i = 0; i < row.length; i++) {
+                System.out.print("\t\t" + row[i]);
+                line += row[i]+" ";
+            }
+            line = line.substring(0, line.length()-1);
+            combinedcourselist.add(line);
+            System.out.println();
+        }
+        
+       for(int i=0; i<combinedcourselist.size(); i++)
+           System.out.println("!!!!!!!!!!!!!!"+combinedcourselist.get(i).toString());
+      
        
        roles = (ArrayList<Role>)HibernateTest.select("from Role as r order by r.type");
 
        for(int i=0; i<clientFirst.size(); i++)
            clientsfirst.add(clientFirst.get(i).getfName());
-           
+       for(int i=0; i<clientLast.size(); i++)
+            clientslast.add(clientFirst.get(i).getlName());
+      
+       for(int i=0; i<clientPhone.size(); i++)
+            clientsphone.add(clientFirst.get(i).getPhone()+"");
+       
+       for(int i=0; i<clientEmail.size(); i++)
+            clientsemail.add(clientFirst.get(i).getEmail());
+        
+       /*
        for(int i=0; i<clientLast.size(); i++)
             clientslast.add(clientLast.get(i).getlName());
-       
-       for(int i=0; i<tutorFirst.size(); i++)
-           tutorsfirstlist.add(tutorFirst.get(i).getfName());
-           
-       for(int i=0; i<tutorLast.size(); i++)
-            tutorslastlist.add(tutorLast.get(i).getlName());
-       
-       
+      
        for(int i=0; i<clientPhone.size(); i++)
             clientsphone.add(clientPhone.get(i).getPhone()+"");
        
        for(int i=0; i<clientEmail.size(); i++)
             clientsemail.add(clientEmail.get(i).getEmail());
-
+*/
+        for(int i=0; i<tutorFirst.size(); i++)
+           tutorsfirstlist.add(tutorFirst.get(i).getfName());
+           
+       for(int i=0; i<tutorLast.size(); i++)
+            tutorslastlist.add(tutorLast.get(i).getlName());
+       
        
        
        for(int i=0; i<locations.size(); i++)

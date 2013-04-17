@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -26,18 +27,13 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.text.JTextComponent;
-import tutoring.entity.Category;
 import tutoring.entity.Client;
-import tutoring.entity.Course;
-import tutoring.entity.Paraprofessional;
-import tutoring.entity.Subject;
-import tutoring.entity.Teacher;
 
 /**
  *
  * @author Nathaniel
  */
-public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, MouseListener, ItemListener
+public class UltimateAutoCompleteClientComplete implements KeyListener, ActionListener, MouseListener, ItemListener
 {
     private ArrayList<ArrayList<String>> keywords;
     private JComboBox[] boxes;
@@ -45,26 +41,22 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     private boolean[] zeroIndexSel;
     private boolean[] firstClick;
     private int[] lastSize;
-    ArrayList<Course> courses;
-    ArrayList<Teacher> teachers;
-    ArrayList<Subject> subjects;
-    ArrayList<Category> categories;
-    ArrayList<Paraprofessional> paraprofessionals;
-    
+    ArrayList<Client> clientsFirst;
+    ArrayList<Client> clientsLast;
+    ArrayList<Client> clientsEmail;
+    ArrayList<Client> clientsPhone;
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
     
     private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
     private ArrayList<String> activeBoxValues = new ArrayList<String>();
     
-    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Subject> subjects, ArrayList<Category> categories, ArrayList<Paraprofessional> paraprofessionals) {
+    public UltimateAutoCompleteClientComplete(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
         this.keywords = keywords;
         this.boxes = boxes;
-        
-        this.courses = courses;
-        this.teachers = teachers;
-        this.subjects = subjects;
-        this.categories = categories;
-        this.paraprofessionals = paraprofessionals;
+        this.clientsFirst = clientsFirst;
+        this.clientsLast = clientsLast;
+        this.clientsPhone = clientsPhone;
+        this.clientsEmail = clientsEmail;
         
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
@@ -98,54 +90,31 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     } 
     
     
-    
-    
-    
- 
-    
-    
-    
-    
-    /*
-    
-    public void updateOther(int activeBoxIndex)
+    public void noMore()
     {
-        if(activeBoxIndex == 0)// && !firstClick[activeBoxIndex])
+        for(int i=0; i<boxes.length; i++)
         {
-            System.out.println("UPDATE LAST");
-            int index = keywords.get(activeBoxIndex).indexOf(((MutableComboBoxModel)boxes[activeBoxIndex].getModel()).getSelectedItem());
-            if(index != -1)
-            {
-                String text = ((JTextComponent)boxes[1].getEditor().getEditorComponent()).getText();
-                if(!text.equals(clientsFirst.get(index).getlName()+""))
-                {
-                    ((JTextComponent)boxes[1].getEditor().getEditorComponent()).setText(clientsFirst.get(index).getlName()+"");
-                    System.out.println("UPDATED Last with "+clientsLast.get(index).getlName());
-                    updatelist(1, true);
-                }
-                else
-                    System.out.println("NO NEED");
-            }
+           // Arrays.sort(keywords[i]);
+          MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
+
+             for ( int j = 0; j <= mcbm.getSize(); j++ ) {
+            Object element = mcbm.getElementAt(0);
+            mcbm.removeElement( element );
         }
-        if(activeBoxIndex == 1)// && !firstClick[activeBoxIndex])
-        {
-            System.out.println("UPDATE FIrSt");
-            int index = keywords.get(activeBoxIndex).indexOf(((MutableComboBoxModel)boxes[activeBoxIndex].getModel()).getSelectedItem());
-            if(index != -1)
-            {
-                String text = ((JTextComponent)boxes[0].getEditor().getEditorComponent()).getText();
-                if(!text.equals(clientsFirst.get(index).getfName()+""))
-                {
-                    ((JTextComponent)boxes[0].getEditor().getEditorComponent()).setText(clientsLast.get(index).getfName()+"");
-                    System.out.println("UPDATED FIrSt with "+clientsLast.get(index).getfName());
-                    updatelist(0, true);
-                }
-                else
-                    System.out.println("NO NEED");
-            }
+             ((DefaultComboBoxModel)boxes[i].getModel()).removeAllElements();
+             System.out.println(mcbm.getSize());
+            //
+            
+            boxes[i].getEditor().getEditorComponent().removeKeyListener(this);
+            boxes[i].getEditor().getEditorComponent().removeMouseListener(this);
+
+            removePopupMouseListener(boxes[i]);
+            boxes[i].removeActionListener(this);
+            ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText("");
         }
-        
-    }*/
+        matches = null;
+    }
+    
     
     public void updateList(int activeBoxIndex, boolean updatedOtherBoxes)
     {
@@ -242,6 +211,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
                        // System.out.println("CONTAINS: "+keywords[i]);
                     }
+            
                 }
             }
         }
@@ -268,7 +238,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     }
     
         //jcb.setMaximumRowCount(mcbm.getSize());
-    if(!firstClick[activeBoxIndex] && mcbm.getSize()>0)
+    if(mcbm.getSize()>0)
             boxes[activeBoxIndex].setSelectedIndex(0);
         else
             System.out.println("FIRST CLICK OR MCBM <=0");
@@ -283,9 +253,11 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     
     public void setActiveValues(int activeBoxIndex, String value)
     {
+        
         if(!activeBoxIndexes.contains(activeBoxIndex))
         {
             activeBoxIndexes.add(activeBoxIndex);
+            
             activeBoxValues.add(value);
         }
         else
@@ -309,11 +281,9 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     public void restartActiveValues()
     {
         activeBoxValues.removeAll(activeBoxValues);//.set(activeBoxIndexes.activeBoxIndex, text);
-            activeBoxIndexes.removeAll(activeBoxIndexes);//.add(mcbm.getSelectedItem().toString());
-            
+        activeBoxIndexes.removeAll(activeBoxIndexes);//.add(mcbm.getSelectedItem().toString());
     }
     
- 
     public void updateOtherList()
     {
         
@@ -321,13 +291,13 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         { 
             MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
             
-            if(!activeBoxIndexes.contains(i) && activeBoxIndexes.size()> 0)//ns
+            if(activeBoxIndexes.size()> 0 && (!activeBoxIndexes.contains(i) || (activeBoxIndexes.size()-2 >= 0 &&(i == activeBoxIndexes.get(activeBoxIndexes.size()-2)))))//ns
             {
                 System.out.println("MORE CHARS");
                 int max = matches.get(i).size();
                 Object[] values = matches.get(i).toArray();
 
-                System.out.println("UPDATE LAST");
+                //System.out.println("UPDATE LAST");
                 ArrayList<Integer> indexesOfValue = new ArrayList<Integer>();
                 
                // for(int j=0; j<activeBoxIndexes.size(); j++)
@@ -346,16 +316,15 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                     String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
                     String stringToFind;
                     if(i == 0)
-                        stringToFind = subjects.get(indexesOfValue.get(indexesOfValue.size()-1)).getAbbrevName();
+                        stringToFind = clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
                     else if(i == 1)
-                        stringToFind = courses.get(indexesOfValue.get(indexesOfValue.size()-1)).getLevel()+"";
-                    else// if(i == 2)
-                        stringToFind = teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName()+" "+teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
-                 //   else if(i == 3)
-                 //       stringToFind = categories.get(indexesOfValue.get(indexesOfValue.size()-1)).getName();
-                 //   else
-                 //       stringToFind = paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName() + " " + paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
+                    else if(i == 2)
+                        stringToFind = clientsPhone.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail()+"";
+                    else
+                        stringToFind = clientsEmail.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
                     
+                    System.out.println("STRING TO FIND: "+stringToFind + " other text "+otherText);
                     if(!otherText.equals(stringToFind))
                     {
                         //clear matches
@@ -378,82 +347,50 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                         {
 
                             j++;
+                            if(j< keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size())
+                                System.out.println(j+" j "+ keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) +" "+find);
                            // System.out.println("Checking keyword"+j+ "  " + keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j));
                             if(j < keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() && keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find))
                             {
-                                System.out.println("keywords: "+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) + " has "+find);
-                                /*
-                                String element;
-                                if(activeBoxIndex != 1)
-                                    element = clientsFirst.get(j).getlName();
-                                else
-                                    element = clientsLast.get(j).getfName();
-                                */
-                              //  Course celement;
-                                Subject selement;
-                                Teacher telement;
-                                
-                                Course celement;
-                                //Paraprofessional pelement;
-                                
+                                System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
+
+                                Client celement;
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
-                                {
-                                    selement =  subjects.get(j);// clientsFirst.get(j);
-                                }
+                                    celement = clientsFirst.get(j);
                                 else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 1)
-                                    celement = courses.get(j);// clientsLast.get(j);
+                                    celement = clientsLast.get(j);
                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)
-                                    telement = teachers.get(j); ///clientsPhone.get(j);
-                               // else
-                               //     celement = clientsEmail.get(j);
+                                    celement = clientsPhone.get(j);
+                                else
+                                    celement = clientsEmail.get(j);
                                 
-                                System.out.println("Client element is "+celement.getfName()+" "+celement.getlName());
+                                //System.out.println("Client element is "+celement.getfName()+" "+celement.getlName());
                                 boolean containsAll = true;
                                 for(int k=0; k<activeBoxValues.size(); k++)
                                 {
                                     String elementk = activeBoxValues.get(k);
-                                    System.out.println("Checking "+activeBoxValues.get(k));
+                                    System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size());
                                     if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.getfName()))
-                                            containsAll = false;
+                                    {
+                                        containsAll = false;
+                                        System.out.println("Did not eqal: "+celement.getfName());
+                                    }
+                                            
                                     if(activeBoxIndexes.get(k) == 1 && !elementk.equals(celement.getlName()))
+                                    {
                                             containsAll = false;
+                                            System.out.println("Did not eqal: "+celement.getlName());
+                                    }
                                     if(activeBoxIndexes.get(k) == 2 && !elementk.equals(celement.getPhone()+""))
+                                    {
                                             containsAll = false;
+                                            System.out.println("Did not eqal: "+celement.getPhone());
+                                    }
                                     if(activeBoxIndexes.get(k) == 3 && !elementk.equals(celement.getEmail()))
+                                    {
                                             containsAll = false;
-                                    
-                                    
-                                    
-                                    /*
-                                    System.out.println("Checking "+activeBoxValues.get(k));
-                                    
-                                    String elementk;
-                                    if(activeBoxIndexes.get(k) == 0)
-                                    {
-                                        elementk = activeBoxValues.get(k);
-                                        if(elementk.equals(celement.getfName()))
-                                        {
-                                            mcbm.addElement(celement.getlName());
-
-                                            matches.get(i).add(celement.getlName());
-                                            System.out.println("FOUND AND ADDED FOR LNAME: "+celement.getlName());
-                                        }
+                                            System.out.println("Did not eqal: "+celement.getEmail());
                                     }
-                                    else// if(activeBoxIndexes.get(k) == 1)
-                                    {
-                                        elementk = activeBoxValues.get(k);//clientsLast.get(j).getfName();
-                                        if(elementk.equals(celement.getlName()))
-                                        {
-                                            mcbm.addElement(celement.getfName());
-
-                                            matches.get(i).add(celement.getfName());
-                                            System.out.println("FOUND AND ADDED FOR FNAME: "+celement.getfName());
-                                        }
-                                    }
-                                    */
-                                    
-                                    
-                                    //if(element)
                                 }
                                 
                                 if(containsAll)
@@ -542,9 +479,9 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
             String text = ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).getText();
 
-            System.out.println("CURRENT SELECTION: "+boxes[activeBoxIndex].getSelectedIndex());
-            if(boxes[activeBoxIndex].getSelectedIndex() > -1)
-                System.out.println("WITH" +boxes[activeBoxIndex].getSelectedItem().toString());
+            //System.out.println("CURRENT SELECTION: "+boxes[activeBoxIndex].getSelectedIndex());
+            //if(boxes[activeBoxIndex].getSelectedIndex() > -1)
+             //   System.out.println("WITH" +boxes[activeBoxIndex].getSelectedItem().toString());
             if (evt.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 isUpdating[activeBoxIndex] = true;
@@ -726,6 +663,27 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                 JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
 
                 scroller.getViewport().getView().addMouseListener(listener());
+//                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
+        }
+        catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     private void removePopupMouseListener(JComboBox box) {
+        try {
+                  Field popupInBasicComboBoxUI = BasicComboBoxUI.class.getDeclaredField("popup");
+                popupInBasicComboBoxUI.setAccessible(true);
+                BasicComboPopup popup = (BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI());
+                
+                Field scrollerInBasicComboPopup = BasicComboPopup.class.getDeclaredField("scroller");
+                scrollerInBasicComboPopup.setAccessible(true);
+                JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
+
+                scroller.getViewport().getView().removeMouseListener(listener());
 //                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
         }
         catch (NoSuchFieldException e) {

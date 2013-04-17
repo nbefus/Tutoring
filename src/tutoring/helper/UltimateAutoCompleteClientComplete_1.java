@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -26,18 +27,13 @@ import javax.swing.MutableComboBoxModel;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.text.JTextComponent;
-import tutoring.entity.Category;
 import tutoring.entity.Client;
-import tutoring.entity.Course;
-import tutoring.entity.Paraprofessional;
-import tutoring.entity.Subject;
-import tutoring.entity.Teacher;
 
 /**
  *
  * @author Nathaniel
  */
-public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, MouseListener, ItemListener
+public class UltimateAutoCompleteClientComplete_1 implements KeyListener, ActionListener, MouseListener, ItemListener
 {
     private ArrayList<ArrayList<String>> keywords;
     private JComboBox[] boxes;
@@ -45,26 +41,22 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     private boolean[] zeroIndexSel;
     private boolean[] firstClick;
     private int[] lastSize;
-    ArrayList<Course> courses;
-    ArrayList<Teacher> teachers;
-    ArrayList<Subject> subjects;
-    ArrayList<Category> categories;
-    ArrayList<Paraprofessional> paraprofessionals;
-    
+    //ArrayList<Client> clientsFirst;
+    //ArrayList<Client> clientsLast;
+    //ArrayList<Client> clientsEmail;
+    //ArrayList<Client> clientsPhone;
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
     
     private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
     private ArrayList<String> activeBoxValues = new ArrayList<String>();
     
-    public UltimateAutoCompleteCourse(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Subject> subjects, ArrayList<Category> categories, ArrayList<Paraprofessional> paraprofessionals) {
+    public UltimateAutoCompleteClientComplete_1(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
         this.keywords = keywords;
         this.boxes = boxes;
-        
-        this.courses = courses;
-        this.teachers = teachers;
-        this.subjects = subjects;
-        this.categories = categories;
-        this.paraprofessionals = paraprofessionals;
+       // this.clientsFirst = clientsFirst;
+       // this.clientsLast = clientsLast;
+       // this.clientsPhone = clientsPhone;
+       // this.clientsEmail = clientsEmail;
         
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
@@ -90,7 +82,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
             addPopupMouseListener(boxes[i]);
             boxes[i].addActionListener(this);
 
-            boxes[i].setMaximumRowCount(5);
+            boxes[i].setMaximumRowCount(10);
             
         }
         for(int i=0; i<boxes.length; i++)
@@ -98,54 +90,31 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     } 
     
     
-    
-    
-    
- 
-    
-    
-    
-    
-    /*
-    
-    public void updateOther(int activeBoxIndex)
+    public void noMore()
     {
-        if(activeBoxIndex == 0)// && !firstClick[activeBoxIndex])
+        for(int i=0; i<boxes.length; i++)
         {
-            System.out.println("UPDATE LAST");
-            int index = keywords.get(activeBoxIndex).indexOf(((MutableComboBoxModel)boxes[activeBoxIndex].getModel()).getSelectedItem());
-            if(index != -1)
-            {
-                String text = ((JTextComponent)boxes[1].getEditor().getEditorComponent()).getText();
-                if(!text.equals(clientsFirst.get(index).getlName()+""))
-                {
-                    ((JTextComponent)boxes[1].getEditor().getEditorComponent()).setText(clientsFirst.get(index).getlName()+"");
-                    System.out.println("UPDATED Last with "+clientsLast.get(index).getlName());
-                    updatelist(1, true);
-                }
-                else
-                    System.out.println("NO NEED");
-            }
+           // Arrays.sort(keywords[i]);
+          MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
+
+             for ( int j = 0; j <= mcbm.getSize(); j++ ) {
+            Object element = mcbm.getElementAt(0);
+            mcbm.removeElement( element );
         }
-        if(activeBoxIndex == 1)// && !firstClick[activeBoxIndex])
-        {
-            System.out.println("UPDATE FIrSt");
-            int index = keywords.get(activeBoxIndex).indexOf(((MutableComboBoxModel)boxes[activeBoxIndex].getModel()).getSelectedItem());
-            if(index != -1)
-            {
-                String text = ((JTextComponent)boxes[0].getEditor().getEditorComponent()).getText();
-                if(!text.equals(clientsFirst.get(index).getfName()+""))
-                {
-                    ((JTextComponent)boxes[0].getEditor().getEditorComponent()).setText(clientsLast.get(index).getfName()+"");
-                    System.out.println("UPDATED FIrSt with "+clientsLast.get(index).getfName());
-                    updatelist(0, true);
-                }
-                else
-                    System.out.println("NO NEED");
-            }
+             ((DefaultComboBoxModel)boxes[i].getModel()).removeAllElements();
+             System.out.println(mcbm.getSize());
+            //
+            
+            boxes[i].getEditor().getEditorComponent().removeKeyListener(this);
+            boxes[i].getEditor().getEditorComponent().removeMouseListener(this);
+
+            removePopupMouseListener(boxes[i]);
+            boxes[i].removeActionListener(this);
+            ((JTextComponent)boxes[i].getEditor().getEditorComponent()).setText("");
         }
-        
-    }*/
+        matches = null;
+    }
+    
     
     public void updateList(int activeBoxIndex, boolean updatedOtherBoxes)
     {
@@ -242,6 +211,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
                        // System.out.println("CONTAINS: "+keywords[i]);
                     }
+            
                 }
             }
         }
@@ -268,7 +238,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     }
     
         //jcb.setMaximumRowCount(mcbm.getSize());
-    if(!firstClick[activeBoxIndex] && mcbm.getSize()>0)
+    if(mcbm.getSize()>0)
             boxes[activeBoxIndex].setSelectedIndex(0);
         else
             System.out.println("FIRST CLICK OR MCBM <=0");
@@ -283,9 +253,11 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     
     public void setActiveValues(int activeBoxIndex, String value)
     {
+        
         if(!activeBoxIndexes.contains(activeBoxIndex))
         {
             activeBoxIndexes.add(activeBoxIndex);
+            
             activeBoxValues.add(value);
         }
         else
@@ -309,11 +281,9 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
     public void restartActiveValues()
     {
         activeBoxValues.removeAll(activeBoxValues);//.set(activeBoxIndexes.activeBoxIndex, text);
-            activeBoxIndexes.removeAll(activeBoxIndexes);//.add(mcbm.getSelectedItem().toString());
-            
+        activeBoxIndexes.removeAll(activeBoxIndexes);//.add(mcbm.getSelectedItem().toString());
     }
     
- 
     public void updateOtherList()
     {
         
@@ -321,13 +291,13 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
         { 
             MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
             
-            if(!activeBoxIndexes.contains(i) && activeBoxIndexes.size()> 0)//ns
+            if(activeBoxIndexes.size()> 0 && (!activeBoxIndexes.contains(i) || (activeBoxIndexes.size()-2 >= 0 &&(i == activeBoxIndexes.get(activeBoxIndexes.size()-2)))))//ns
             {
                 System.out.println("MORE CHARS");
                 int max = matches.get(i).size();
                 Object[] values = matches.get(i).toArray();
 
-                System.out.println("UPDATE LAST");
+                //System.out.println("UPDATE LAST");
                 ArrayList<Integer> indexesOfValue = new ArrayList<Integer>();
                 
                // for(int j=0; j<activeBoxIndexes.size(); j++)
@@ -346,16 +316,15 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                     String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
                     String stringToFind;
                     if(i == 0)
-                        stringToFind = subjects.get(indexesOfValue.get(indexesOfValue.size()-1)).getAbbrevName();
+                        stringToFind = keywords.get(1).get(indexesOfValue.get(indexesOfValue.size()-1));//.getlName();
                     else if(i == 1)
-                        stringToFind = courses.get(indexesOfValue.get(indexesOfValue.size()-1)).getLevel()+"";
-                    else// if(i == 2)
-                        stringToFind = teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName()+" "+teachers.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
-                 //   else if(i == 3)
-                 //       stringToFind = categories.get(indexesOfValue.get(indexesOfValue.size()-1)).getName();
-                 //   else
-                 //       stringToFind = paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName() + " " + paraprofessionals.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                        stringToFind = keywords.get(2).get(indexesOfValue.get(indexesOfValue.size()-1));//.getPhone()+"";
+                    else if(i == 2)
+                        stringToFind = keywords.get(3).get(indexesOfValue.get(indexesOfValue.size()-1));//.getEmail()+"";
+                    else
+                        stringToFind = keywords.get(0).get(indexesOfValue.get(indexesOfValue.size()-1));//.getfName();
                     
+                    System.out.println("STRING TO FIND: "+stringToFind + "other text "+otherText);
                     if(!otherText.equals(stringToFind))
                     {
                         //clear matches
@@ -377,117 +346,85 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                         while(moreResults)
                         {
 
+                            //Missing 1 befus befus
                             j++;
+                            if(j< keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size())
+                                System.out.println(j+" j "+ keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) +" "+find);
                            // System.out.println("Checking keyword"+j+ "  " + keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j));
                             if(j < keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() && keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find))
                             {
-                                System.out.println("keywords: "+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) + " has "+find);
-                                /*
-                                String element;
-                                if(activeBoxIndex != 1)
-                                    element = clientsFirst.get(j).getlName();
-                                else
-                                    element = clientsLast.get(j).getfName();
-                                */
-                              //  Course celement;
-                                Subject selement;
-                                Teacher telement;
-                                
-                                Course celement;
-                                //Paraprofessional pelement;
-                                
+                               System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
+
+                                String celement;
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
-                                {
-                                    selement =  subjects.get(j);// clientsFirst.get(j);
-                                }
+                                    celement = keywords.get(0).get(j);
                                 else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 1)
-                                    celement = courses.get(j);// clientsLast.get(j);
+                                    celement = keywords.get(1).get(j);
                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)
-                                    telement = teachers.get(j); ///clientsPhone.get(j);
-                               // else
-                               //     celement = clientsEmail.get(j);
+                                    celement = keywords.get(2).get(j);
+                                else
+                                    celement = keywords.get(3).get(j);
                                 
-                                System.out.println("Client element is "+celement.getfName()+" "+celement.getlName());
+                                System.out.println("Client element is "+keywords.get(0).get(j)+" "+keywords.get(1).get(j)+ " "+keywords.get(2).get(j) + " "+keywords.get(3).get(j));
                                 boolean containsAll = true;
                                 for(int k=0; k<activeBoxValues.size(); k++)
                                 {
                                     String elementk = activeBoxValues.get(k);
-                                    System.out.println("Checking "+activeBoxValues.get(k));
-                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.getfName()))
-                                            containsAll = false;
-                                    if(activeBoxIndexes.get(k) == 1 && !elementk.equals(celement.getlName()))
-                                            containsAll = false;
-                                    if(activeBoxIndexes.get(k) == 2 && !elementk.equals(celement.getPhone()+""))
-                                            containsAll = false;
-                                    if(activeBoxIndexes.get(k) == 3 && !elementk.equals(celement.getEmail()))
-                                            containsAll = false;
-                                    
-                                    
-                                    
-                                    /*
-                                    System.out.println("Checking "+activeBoxValues.get(k));
-                                    
-                                    String elementk;
-                                    if(activeBoxIndexes.get(k) == 0)
+                                    System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size());
+                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(keywords.get(0).get(j)))
                                     {
-                                        elementk = activeBoxValues.get(k);
-                                        if(elementk.equals(celement.getfName()))
-                                        {
-                                            mcbm.addElement(celement.getlName());
-
-                                            matches.get(i).add(celement.getlName());
-                                            System.out.println("FOUND AND ADDED FOR LNAME: "+celement.getlName());
-                                        }
+                                            containsAll = false;
+                                            System.out.println("DID not equal "+keywords.get(0).get(j));
                                     }
-                                    else// if(activeBoxIndexes.get(k) == 1)
+                                    if(activeBoxIndexes.get(k) == 1 && !elementk.equals(keywords.get(1).get(j)))
                                     {
-                                        elementk = activeBoxValues.get(k);//clientsLast.get(j).getfName();
-                                        if(elementk.equals(celement.getlName()))
-                                        {
-                                            mcbm.addElement(celement.getfName());
-
-                                            matches.get(i).add(celement.getfName());
-                                            System.out.println("FOUND AND ADDED FOR FNAME: "+celement.getfName());
-                                        }
+                                            containsAll = false;
+                                            System.out.println("DID not equal "+keywords.get(1).get(j));
                                     }
-                                    */
-                                    
-                                    
-                                    //if(element)
+                                    if(activeBoxIndexes.get(k) == 2 && !elementk.equals(keywords.get(2).get(j)))
+                                    {
+                                            containsAll = false;
+                                            System.out.println("DID not equal "+keywords.get(2).get(j));
+                                    }
+                                    if(activeBoxIndexes.get(k) == 3 && !elementk.equals(keywords.get(3).get(j)))
+                                    {
+                                            containsAll = false;
+                                            System.out.println("DID not equal "+keywords.get(3).get(j));
+                                    }
                                 }
                                 
                                 if(containsAll)
                                 {
                                     System.out.print("Passed test and added to "+i);
-                                    if(i == 0 && !matches.get(i).contains(celement.getfName()))
+                                    if(i == 0 && !matches.get(i).contains(keywords.get(0).get(j)))
                                     {
-                                        System.out.println(celement.getfName());
-                                        mcbm.addElement(celement.getfName());
+                                        System.out.println(keywords.get(0).get(j));
+                                        mcbm.addElement(keywords.get(0).get(j));
 
-                                        matches.get(i).add(celement.getfName());
+                                        matches.get(i).add(keywords.get(0).get(j));
                                     }
-                                    else if(i == 1 && !matches.get(i).contains(celement.getlName()))
+                                    else if(i == 1 && !matches.get(i).contains(keywords.get(1).get(j)))
                                     {
-                                        System.out.println(celement.getlName());
-                                        mcbm.addElement(celement.getlName());
+                                        System.out.println(keywords.get(1).get(j));
+                                        mcbm.addElement(keywords.get(1).get(j));
 
-                                        matches.get(i).add(celement.getlName());
+                                        matches.get(i).add(keywords.get(1).get(j));
                                     }
-                                    else if(i==2 && !matches.get(i).contains(celement.getPhone()))
+                                    else if(i==2 && !matches.get(i).contains(keywords.get(2).get(j)))
                                     {
-                                        System.out.println(celement.getPhone());
-                                        mcbm.addElement(celement.getPhone());
+                                        System.out.println(keywords.get(2).get(j));
+                                        mcbm.addElement(keywords.get(2).get(j));
 
-                                        matches.get(i).add(celement.getPhone()+"");
+                                        matches.get(i).add(keywords.get(2).get(j));
                                     }
-                                    else if(i==3 && !matches.get(i).contains(celement.getEmail()))
+                                    else if(i==3 && !matches.get(i).contains(keywords.get(3).get(j)))
                                     {
                                         
                                        
-                                        System.out.println(celement.getEmail());
-                                            mcbm.addElement(celement.getEmail());
+                                        System.out.println(keywords.get(3).get(j));
+                                            mcbm.addElement(keywords.get(3).get(j));
 
-                                            matches.get(i).add(celement.getEmail());
+                                            matches.get(i).add(keywords.get(3).get(j));
                                         
                                     }
                                     System.out.println("END");
@@ -501,7 +438,7 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                                 moreResults = false;
                         }
 
-                        boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
+                      //  boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
 
                         //updatelist(1, true);
                     }
@@ -542,9 +479,9 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
 
             String text = ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).getText();
 
-            System.out.println("CURRENT SELECTION: "+boxes[activeBoxIndex].getSelectedIndex());
-            if(boxes[activeBoxIndex].getSelectedIndex() > -1)
-                System.out.println("WITH" +boxes[activeBoxIndex].getSelectedItem().toString());
+            //System.out.println("CURRENT SELECTION: "+boxes[activeBoxIndex].getSelectedIndex());
+            //if(boxes[activeBoxIndex].getSelectedIndex() > -1)
+             //   System.out.println("WITH" +boxes[activeBoxIndex].getSelectedItem().toString());
             if (evt.getKeyCode() == KeyEvent.VK_DOWN)
             {
                 isUpdating[activeBoxIndex] = true;
@@ -726,6 +663,27 @@ public class UltimateAutoCompleteCourse implements KeyListener, ActionListener, 
                 JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
 
                 scroller.getViewport().getView().addMouseListener(listener());
+//                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
+        }
+        catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     private void removePopupMouseListener(JComboBox box) {
+        try {
+                  Field popupInBasicComboBoxUI = BasicComboBoxUI.class.getDeclaredField("popup");
+                popupInBasicComboBoxUI.setAccessible(true);
+                BasicComboPopup popup = (BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI());
+                
+                Field scrollerInBasicComboPopup = BasicComboPopup.class.getDeclaredField("scroller");
+                scrollerInBasicComboPopup.setAccessible(true);
+                JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
+
+                scroller.getViewport().getView().removeMouseListener(listener());
 //                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
         }
         catch (NoSuchFieldException e) {

@@ -39,7 +39,7 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIA_1 extends javax.swing.JFrame {
+public class SIA_1_1 extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -102,7 +102,7 @@ public class SIA_1 extends javax.swing.JFrame {
     }
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientNew uacc;
-    public SIA_1() 
+    public SIA_1_1() 
     {
         initComponents();
         
@@ -138,9 +138,9 @@ public class SIA_1 extends javax.swing.JFrame {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       UltimateAutoCompleteClientComplete_1 uaa = new UltimateAutoCompleteClientComplete_1(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
-      Timestamp now = new Timestamp((new Date()).getTime());
+       Timestamp now = new Timestamp((new Date()).getTime());
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
@@ -978,7 +978,7 @@ public class SIA_1 extends javax.swing.JFrame {
             cultimateList.add(Data.getLevelslist());
             cultimateList.add(Data.getLocationslist());
             cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getTeacherslist());
+            cultimateList.add(Data.getCombinedcourselist());
             uac = new UltimateAutoComplete(cultimateList, boxes);
         }
     }//GEN-LAST:event_autocompleteCheckActionPerformed
@@ -1314,7 +1314,7 @@ public class SIA_1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA_1().setVisible(true);
+                new SIA_1_1().setVisible(true);
             }
         });
     }
