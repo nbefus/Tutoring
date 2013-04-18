@@ -897,7 +897,7 @@
                                       <Component id="clearButton1" min="-2" pref="76" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="searchAddRestrictionsButton" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                                      <EmptySpace type="separate" pref="70" max="32767" attributes="0"/>
                                       <Component id="searchsearchButton" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="528" max="-2" attributes="0"/>
                                   </Group>
@@ -970,7 +970,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="currentSessionsPanel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="302" max="32767" attributes="0"/>
+                      <EmptySpace pref="205" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2042,7 +2042,7 @@
                                       </Group>
                                       <Component id="generalReportLoadButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="1193" max="32767" attributes="0"/>
+                                  <EmptySpace pref="1151" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
@@ -2057,7 +2057,7 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="10" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jScrollPane12" min="-2" pref="79" max="-2" attributes="0"/>
@@ -2082,7 +2082,7 @@
                                   <Component id="generalReportEndField" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="generalReportLoadButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="126" max="32767" attributes="0"/>
+                                  <EmptySpace pref="105" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">

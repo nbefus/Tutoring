@@ -4,34 +4,18 @@
  */
 package preciousAreaSoNoMergeHappensLOL;
 
-import tutoring.ui.*;
-import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.GradientPaint;
-import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import org.jfree.chart.ChartFactory;
@@ -50,23 +34,11 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
-import tutoring.entity.Category;
-import tutoring.entity.Client;
-import tutoring.entity.Course;
-import tutoring.entity.Location;
-import tutoring.entity.Paraprofessional;
-import tutoring.entity.ParaprofessionalSession;
-import tutoring.entity.Subject;
-import tutoring.entity.Teacher;
-import tutoring.helper.ComboBoxCellEditor;
+import preciousAreaSoNoMergeHappensLOL.Admin33.ComboBoxesIndexes;
 import tutoring.helper.Data;
 import tutoring.helper.HibernateTest;
-import tutoring.helper.MinuteCellRenderer;
-import tutoring.helper.MinuteUpdate;
 import tutoring.helper.RestrictionListModel;
 import tutoring.helper.SessionTableModel;
-import tutoring.helper.TimestampCellEditor;
-import tutoring.helper.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
 import tutoring.helper.UltimateAutoCompleteClientNew;
 import tutoring.helper.Validate;
@@ -75,7 +47,7 @@ import tutoring.helper.Validate;
  *
  * @author shohe_i
  */
-public class Admin extends javax.swing.JFrame {
+public class Admin33 extends javax.swing.JFrame {
 
     /**
      * Creates new form Admin
@@ -160,7 +132,7 @@ public class Admin extends javax.swing.JFrame {
             return "";
         }
     }
-    public Admin() {
+    public Admin33() {
         initComponents();
        // setUpReportTab();
         setUpSearchTab();
@@ -399,15 +371,15 @@ public class Admin extends javax.swing.JFrame {
 
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         chart.setBorderVisible(false);
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(Admin33.this.getBackground());
         plot.setStartAngle(290);
         plot.setOutlineVisible(false);
         plot.setDirection(Rotation.CLOCKWISE);
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(Admin33.this.getBackground());
         plot.setForegroundAlpha(0.75f);
         
         LegendTitle lt = chart.getLegend();
-        lt.setBackgroundPaint(Admin.this.getBackground());
+        lt.setBackgroundPaint(Admin33.this.getBackground());
         lt.setBorder(0, 0, 0, 0);
         //lt.setBackgroundPaint(null);
         return chart;
@@ -432,11 +404,11 @@ public class Admin extends javax.swing.JFrame {
         // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
         // set the background color for the chart...
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(Admin33.this.getBackground());
 
         // get a reference to the plot for further customisation...
         final CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(Admin33.this.getBackground());
         plot.setDomainGridlinePaint(Color.black);
         plot.setRangeGridlinePaint(Color.black);
         plot.setOutlineVisible(false);
@@ -2747,13 +2719,13 @@ public class Admin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin33.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin33.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin33.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Admin33.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -2763,7 +2735,7 @@ public class Admin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new Admin().setVisible(true);
+                new Admin33().setVisible(true);
             }
         });
     }
