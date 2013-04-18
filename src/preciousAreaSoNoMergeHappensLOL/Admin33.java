@@ -717,6 +717,7 @@ public class Admin33 extends javax.swing.JFrame {
         generalChartPanelRight2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         adminPanel.setBackground(new java.awt.Color(255, 255, 255));
 
