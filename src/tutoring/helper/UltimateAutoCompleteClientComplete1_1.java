@@ -360,7 +360,7 @@ public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, Actio
                         boolean moreResults = true;
                         int j = indexesOfValue.get(indexesOfValue.size()-1)-1;
                         String find = activeBoxValues.get(activeBoxValues.size()-1);
-                        
+                        char splitChar = ',';
                         while(moreResults)
                         {
                             System.out.println("J by itesel: "+j);
@@ -373,6 +373,8 @@ public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, Actio
                                 System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
 
                                 String celement = reference.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).get(j);
+                                for(int z=0; z<celement.split(""+splitChar).length; z++)
+                                    System.out.println("CELEMENT: :: "+celement.split(""+splitChar)[z]);
                                 /*
                                 Client celement;
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
@@ -391,13 +393,13 @@ public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, Actio
                                     String elementk = activeBoxValues.get(k);
                                     System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size());
                                     
-                                    for(int m=0; m<celement.split("|").length; m++)
+                                    for(int m=0; m<celement.split(""+splitChar).length; m++)
                                     {
                                         //System.out.println("KEYWORDS SIZE: "+keywords.get(m).size());
-                                        if(activeBoxIndexes.get(k) == m && !elementk.equals(celement.split("|")[m]))
+                                        if(activeBoxIndexes.get(k) == m && !elementk.equals(celement.split(""+splitChar)[m]))
                                         {
                                                 containsAll = false;
-                                                //System.out.println("DID not equal "+keywords.get(0).get(j));
+                                                System.out.println("DID not equal "+celement.split(""+splitChar)[m]);
                                         }
                                     }
                                     
@@ -430,13 +432,13 @@ public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, Actio
                                 {
                                     System.out.print("Passed test and added to "+i);
                                     
-                                    for(int k=0; k<celement.split("|").length; k++)
+                                    for(int k=0; k<celement.split(""+splitChar).length; k++)
                                     {
-                                        if(i == k && !matches.get(i).contains(celement.split("|")[k]))
+                                        if(i == k && !matches.get(i).contains(celement.split(""+splitChar)[k]))
                                         {
-                                            mcbm.addElement(celement.split("|")[k]);
+                                            mcbm.addElement(celement.split(""+splitChar)[k]);
 
-                                            matches.get(i).add(celement.split("|")[k]);
+                                            matches.get(i).add(celement.split(""+splitChar)[k]);
                                         }
                                     }
                                     
@@ -482,8 +484,13 @@ public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, Actio
                                 moreResults = false;
                         }
 
+                        try{
                         boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
-
+                        }
+                        catch(Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                         //updatelist(1, true);
                     }
                     else
