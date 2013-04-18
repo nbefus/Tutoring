@@ -138,15 +138,39 @@ public class SIA_1_1 extends javax.swing.JFrame {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
        
-        ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
+       ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
 
-       cultimateList2.add(Data.getFnameOrderedList());
-       cultimateList2.add(Data.getLnameOrderedList());
-       cultimateList2.add(Data.getPhoneOrderedList());
-       cultimateList2.add(Data.getEmailOrderedList());
+       cultimateList1.add(Data.getFnameOrderedList());
+       cultimateList1.add(Data.getLnameOrderedList());
+       cultimateList1.add(Data.getPhoneOrderedList());
+       cultimateList1.add(Data.getEmailOrderedList());
 
-       UltimateAutoCompleteClientComplete_1 uaa = new UltimateAutoCompleteClientComplete_1(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       UltimateAutoCompleteClientComplete1_1 uaa = new UltimateAutoCompleteClientComplete1_1(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
+       
+       JComboBox[] cboxes2 = new  JComboBox[3];
+       cboxes2[0]=courseCombo;
+       cboxes2[1]=levelCombo;
+       cboxes2[2]=teacherCombo;
+       //cboxes[3]=emailCombo;
+       
+       ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
+
+       cultimateList2.add(Data.getSubjectslist());
+       cultimateList2.add(Data.getLevelslist());
+       cultimateList2.add(Data.getTeacherslist());
+       //cultimateList.add(Data.getClientsemail());
+       
+       ArrayList<ArrayList<String>> cultimateList22 = new ArrayList<ArrayList<String>>();
+
+       cultimateList22.add(Data.getSubjectOrderedList());
+       cultimateList22.add(Data.getLevelOrderedList());
+       cultimateList22.add(Data.getTeacherOrderedList());
+      // cultimateList2.add(Data.getEmailOrderedList());
+
+       UltimateAutoCompleteClientComplete1_1 uaa2 = new UltimateAutoCompleteClientComplete1_1(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      
+       
        Timestamp now = new Timestamp((new Date()).getTime());
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
