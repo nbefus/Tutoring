@@ -286,16 +286,23 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
     
     public void updateOtherList()
     {
-        
+         for(int i=0; i<activeBoxIndexes.size(); i++)
+        {
+            System.out.println("ABI/V: "+activeBoxIndexes.get(i) + "  "+activeBoxValues.get(i));
+        }
         for(int i=0; i<boxes.length; i++)
         { 
             MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
-            
+            System.out.println("I: "+i);
             if(activeBoxIndexes.size()> 0 && (!activeBoxIndexes.contains(i) || (activeBoxIndexes.size()-2 >= 0 &&(i == activeBoxIndexes.get(activeBoxIndexes.size()-2)))))//ns
             {
-                System.out.println("MORE CHARS");
+                
                 int max = matches.get(i).size();
+                System.out.println("MAX: "+max);
                 Object[] values = matches.get(i).toArray();
+                
+                for(int z=0; z<values.length; z++)
+                    System.out.println("VALUES: "+values[z]);
 
                 //System.out.println("UPDATE LAST");
                 ArrayList<Integer> indexesOfValue = new ArrayList<Integer>();
@@ -303,7 +310,8 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                // for(int j=0; j<activeBoxIndexes.size(); j++)
                // {
                 System.out.println("VALUE ENTERED IS: "+activeBoxValues.get(activeBoxValues.size()-1));
-                    indexesOfValue.add(keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1)));
+                indexesOfValue.add(keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1)));
+                System.out.println("INDEX OF VALUE: "+keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1)));
                // }
                    //int index= keywords.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).indexOf(activeBoxValues.get(activeBoxValues.size()-1));
                 
@@ -345,7 +353,7 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                         
                         while(moreResults)
                         {
-
+                            System.out.println("J by itesel: "+j);
                             j++;
                             if(j< keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size())
                                 System.out.println(j+" j "+ keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) +" "+find);
@@ -364,7 +372,7 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                                 else
                                     celement = clientsEmail.get(j);
                                 
-                                //System.out.println("Client element is "+celement.getfName()+" "+celement.getlName());
+                                System.out.println("Client element is "+celement.getfName()+" "+celement.getlName() + " "+celement.getPhone() + " "+celement.getEmail());
                                 boolean containsAll = true;
                                 for(int k=0; k<activeBoxValues.size(); k++)
                                 {

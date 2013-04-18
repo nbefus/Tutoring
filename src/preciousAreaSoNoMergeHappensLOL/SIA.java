@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.ui;
+package preciousAreaSoNoMergeHappensLOL;
 
 import UIs.*;
 import java.awt.Color;
@@ -39,7 +39,7 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIA_1_1 extends javax.swing.JFrame {
+public class SIA extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -102,7 +102,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
     }
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientNew uacc;
-    public SIA_1_1() 
+    public SIA() 
     {
         initComponents();
         
@@ -137,17 +137,10 @@ public class SIA_1_1 extends javax.swing.JFrame {
        cultimateList.add(Data.getClientslast());
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
-       
-        ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
 
-       cultimateList2.add(Data.getFnameOrderedList());
-       cultimateList2.add(Data.getLnameOrderedList());
-       cultimateList2.add(Data.getPhoneOrderedList());
-       cultimateList2.add(Data.getEmailOrderedList());
-
-       UltimateAutoCompleteClientComplete_1 uaa = new UltimateAutoCompleteClientComplete_1(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
-       Timestamp now = new Timestamp((new Date()).getTime());
+      Timestamp now = new Timestamp((new Date()).getTime());
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
@@ -985,7 +978,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
             cultimateList.add(Data.getLevelslist());
             cultimateList.add(Data.getLocationslist());
             cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getCombinedcourselist());
+            cultimateList.add(Data.getTeacherslist());
             uac = new UltimateAutoComplete(cultimateList, boxes);
         }
     }//GEN-LAST:event_autocompleteCheckActionPerformed
@@ -1321,7 +1314,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA_1_1().setVisible(true);
+                new SIA().setVisible(true);
             }
         });
     }

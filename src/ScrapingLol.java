@@ -97,7 +97,6 @@ public class ScrapingLol {
                   {     writer.write(value);
                         writer.newLine();
                   }
-                  
               }
           }
          //System.out.println(line.trim());

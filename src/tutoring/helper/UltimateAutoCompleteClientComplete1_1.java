@@ -33,31 +33,34 @@ import tutoring.entity.Client;
  *
  * @author Nathaniel
  */
-public class UltimateAutoCompleteClientComplete_1 implements KeyListener, ActionListener, MouseListener, ItemListener
+public class UltimateAutoCompleteClientComplete1_1 implements KeyListener, ActionListener, MouseListener, ItemListener
 {
     private ArrayList<ArrayList<String>> keywords;
+    private ArrayList<ArrayList<String>> reference;
     private JComboBox[] boxes;
     private boolean[] isUpdating;
     private boolean[] zeroIndexSel;
     private boolean[] firstClick;
     private int[] lastSize;
-    //ArrayList<Client> clientsFirst;
-    //ArrayList<Client> clientsLast;
-    //ArrayList<Client> clientsEmail;
-    //ArrayList<Client> clientsPhone;
+   /* ArrayList<Client> clientsFirst;
+    ArrayList<Client> clientsLast;
+    ArrayList<Client> clientsEmail;
+    ArrayList<Client> clientsPhone;*/
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
     
     private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
     private ArrayList<String> activeBoxValues = new ArrayList<String>();
     
-    public UltimateAutoCompleteClientComplete_1(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
+    public UltimateAutoCompleteClientComplete1_1(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<ArrayList<String>>reference)// ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
+    {
         this.keywords = keywords;
         this.boxes = boxes;
-       // this.clientsFirst = clientsFirst;
-       // this.clientsLast = clientsLast;
-       // this.clientsPhone = clientsPhone;
-       // this.clientsEmail = clientsEmail;
-        
+        this.reference = reference;
+        /*this.clientsFirst = clientsFirst;
+        this.clientsLast = clientsLast;
+        this.clientsPhone = clientsPhone;
+        this.clientsEmail = clientsEmail;
+        */
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
         firstClick = new boolean[boxes.length];
@@ -82,7 +85,7 @@ public class UltimateAutoCompleteClientComplete_1 implements KeyListener, Action
             addPopupMouseListener(boxes[i]);
             boxes[i].addActionListener(this);
 
-            boxes[i].setMaximumRowCount(10);
+            boxes[i].setMaximumRowCount(5);
             
         }
         for(int i=0; i<boxes.length; i++)
@@ -286,14 +289,14 @@ public class UltimateAutoCompleteClientComplete_1 implements KeyListener, Action
     
     public void updateOtherList()
     {
-        for(int i=0; i<activeBoxIndexes.size(); i++)
+         for(int i=0; i<activeBoxIndexes.size(); i++)
         {
             System.out.println("ABI/V: "+activeBoxIndexes.get(i) + "  "+activeBoxValues.get(i));
         }
         for(int i=0; i<boxes.length; i++)
         { 
             MutableComboBoxModel mcbm = (MutableComboBoxModel)boxes[i].getModel();
-           System.out.println("I: "+i);
+            System.out.println("I: "+i);
             if(activeBoxIndexes.size()> 0 && (!activeBoxIndexes.contains(i) || (activeBoxIndexes.size()-2 >= 0 &&(i == activeBoxIndexes.get(activeBoxIndexes.size()-2)))))//ns
             {
                 
@@ -324,21 +327,22 @@ public class UltimateAutoCompleteClientComplete_1 implements KeyListener, Action
                     String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
                     String stringToFind;
                     
-                    
-                    if(i != boxes.length-1)
+                     if(i != boxes.length-1)
                         stringToFind = keywords.get(i+1).get(indexesOfValue.get(indexesOfValue.size()-1));//.getlName();
                     else
                         stringToFind = keywords.get(0).get(indexesOfValue.get(indexesOfValue.size()-1));
                     
-                    
-                    /*else if(i == 1)
-                        stringToFind = keywords.get(2).get(indexesOfValue.get(indexesOfValue.size()-1));//.getPhone()+"";
+                     /*
+                    if(i == 0)
+                        stringToFind = reference.get(max)//clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                    else if(i == 1)
+                        stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
                     else if(i == 2)
-                        stringToFind = keywords.get(3).get(indexesOfValue.get(indexesOfValue.size()-1));//.getEmail()+"";
+                        stringToFind = clientsPhone.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail()+"";
                     else
-                        stringToFind = keywords.get(0).get(indexesOfValue.get(indexesOfValue.size()-1));//.getfName();
+                        stringToFind = clientsEmail.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
                     */
-                    System.out.println("STRING TO FIND: "+stringToFind + "other text "+otherText);
+                    System.out.println("STRING TO FIND: "+stringToFind + " other text "+otherText);
                     if(!otherText.equals(stringToFind))
                     {
                         //clear matches
@@ -354,131 +358,131 @@ public class UltimateAutoCompleteClientComplete_1 implements KeyListener, Action
                       //  System.out.println("UPDATED Last in other with "+clientsFirst.get(index).getlName());
 
                         boolean moreResults = true;
-                        //int j = indexesOfValue.get(indexesOfValue.size()-1)-1;
-                        int j = -1;
+                        int j = indexesOfValue.get(indexesOfValue.size()-1)-1;
                         String find = activeBoxValues.get(activeBoxValues.size()-1);
                         
                         while(moreResults)
                         {
-
-                            //System.out.println("J by itesel: "+j);
-                            //Missing 1 befus befus
+                            System.out.println("J by itesel: "+j);
                             j++;
                             if(j< keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size())
                                 System.out.println(j+" j "+ keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j) +" "+find);
                            // System.out.println("Checking keyword"+j+ "  " + keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j));
                             if(j < keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() && keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find))
                             {
-                               //System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
+                                System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
 
-                               /*
-                                String celement;
+                                String celement = reference.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).get(j);
+                                /*
+                                Client celement;
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
-                                    celement = keywords.get(0).get(j);
+                                    celement = clientsFirst.get(j);
                                 else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 1)
-                                    celement = keywords.get(1).get(j);
+                                    celement = clientsLast.get(j);
                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)
-                                    celement = keywords.get(2).get(j);
+                                    celement = clientsPhone.get(j);
                                 else
-                                    celement = keywords.get(3).get(j);*/
+                                    celement = clientsEmail.get(j);*/
                                 
-                              //  System.out.println("Client element is "+keywords.get(0).get(j)+" "+keywords.get(1).get(j)+ " "+keywords.get(2).get(j) + " "+keywords.get(3).get(j));
+                                System.out.println("Client element is "+celement);
                                 boolean containsAll = true;
                                 for(int k=0; k<activeBoxValues.size(); k++)
                                 {
                                     String elementk = activeBoxValues.get(k);
-                                    System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size() + " "+activeBoxIndexes.size());
+                                    System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size());
                                     
-                                    for(int m=0; m<keywords.size(); m++)
+                                    for(int m=0; m<celement.split("|").length; m++)
                                     {
-                                        System.out.println("KEYWORDS SIZE: "+keywords.get(m).size());
-                                        if(activeBoxIndexes.get(k) == m && !elementk.equals(keywords.get(m).get(j)))
+                                        //System.out.println("KEYWORDS SIZE: "+keywords.get(m).size());
+                                        if(activeBoxIndexes.get(k) == m && !elementk.equals(celement.split("|")[m]))
                                         {
                                                 containsAll = false;
                                                 //System.out.println("DID not equal "+keywords.get(0).get(j));
                                         }
                                     }
+                                    
                                     /*
-                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(keywords.get(0).get(j)))
+                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.split("|")[0]))//celement.getfName()))
                                     {
-                                            containsAll = false;
-                                            System.out.println("DID not equal "+keywords.get(0).get(j));
+                                        containsAll = false;
+                                        System.out.println("Did not eqal: "+celement.getfName());
                                     }
-                                    if(activeBoxIndexes.get(k) == 1 && !elementk.equals(keywords.get(1).get(j)))
+                                            
+                                    if(activeBoxIndexes.get(k) == 1 && !elementk.equals(celement.getlName()))
                                     {
                                             containsAll = false;
-                                            System.out.println("DID not equal "+keywords.get(1).get(j));
+                                            System.out.println("Did not eqal: "+celement.getlName());
                                     }
-                                    if(activeBoxIndexes.get(k) == 2 && !elementk.equals(keywords.get(2).get(j)))
+                                    if(activeBoxIndexes.get(k) == 2 && !elementk.equals(celement.getPhone()+""))
                                     {
                                             containsAll = false;
-                                            System.out.println("DID not equal "+keywords.get(2).get(j));
+                                            System.out.println("Did not eqal: "+celement.getPhone());
                                     }
-                                    if(activeBoxIndexes.get(k) == 3 && !elementk.equals(keywords.get(3).get(j)))
+                                    if(activeBoxIndexes.get(k) == 3 && !elementk.equals(celement.getEmail()))
                                     {
                                             containsAll = false;
-                                            System.out.println("DID not equal "+keywords.get(3).get(j));
-                                    }*/
+                                            System.out.println("Did not eqal: "+celement.getEmail());
+                                    }
+                                    */
                                 }
                                 
                                 if(containsAll)
                                 {
                                     System.out.print("Passed test and added to "+i);
                                     
-                                    for(int k=0; k<keywords.size(); k++)
+                                    for(int k=0; k<celement.split("|").length; k++)
                                     {
-                                        if(i == k && !matches.get(i).contains(keywords.get(k).get(j)))
+                                        if(i == k && !matches.get(i).contains(celement.split("|")[k]))
                                         {
-                                            mcbm.addElement(keywords.get(k).get(j));
+                                            mcbm.addElement(celement.split("|")[k]);
 
-                                            matches.get(i).add(keywords.get(k).get(j));
+                                            matches.get(i).add(celement.split("|")[k]);
                                         }
                                     }
-                                    /*
                                     
-                                    if(i == 0 && !matches.get(i).contains(keywords.get(0).get(j)))
+                                    /*
+                                    if(i == 0 && !matches.get(i).contains(celement.getfName()))
                                     {
-                                        System.out.println(keywords.get(0).get(j));
-                                        mcbm.addElement(keywords.get(0).get(j));
+                                        System.out.println(celement.getfName());
+                                        mcbm.addElement(celement.getfName());
 
-                                        matches.get(i).add(keywords.get(0).get(j));
+                                        matches.get(i).add(celement.getfName());
                                     }
-                                    else if(i == 1 && !matches.get(i).contains(keywords.get(1).get(j)))
+                                    else if(i == 1 && !matches.get(i).contains(celement.getlName()))
                                     {
-                                        System.out.println(keywords.get(1).get(j));
-                                        mcbm.addElement(keywords.get(1).get(j));
+                                        System.out.println(celement.getlName());
+                                        mcbm.addElement(celement.getlName());
 
-                                        matches.get(i).add(keywords.get(1).get(j));
+                                        matches.get(i).add(celement.getlName());
                                     }
-                                    else if(i==2 && !matches.get(i).contains(keywords.get(2).get(j)))
+                                    else if(i==2 && !matches.get(i).contains(celement.getPhone()))
                                     {
-                                        System.out.println(keywords.get(2).get(j));
-                                        mcbm.addElement(keywords.get(2).get(j));
+                                        System.out.println(celement.getPhone());
+                                        mcbm.addElement(celement.getPhone());
 
-                                        matches.get(i).add(keywords.get(2).get(j));
+                                        matches.get(i).add(celement.getPhone()+"");
                                     }
-                                    else if(i==3 && !matches.get(i).contains(keywords.get(3).get(j)))
+                                    else if(i==3 && !matches.get(i).contains(celement.getEmail()))
                                     {
                                         
                                        
-                                        System.out.println(keywords.get(3).get(j));
-                                            mcbm.addElement(keywords.get(3).get(j));
+                                        System.out.println(celement.getEmail());
+                                            mcbm.addElement(celement.getEmail());
 
-                                            matches.get(i).add(keywords.get(3).get(j));
+                                            matches.get(i).add(celement.getEmail());
                                         
                                     }*/
                                     System.out.println("END");
                                 }
                                 
                                 //System.out.println("FOUND AND ADDED: "+clientsFirst.get(j).getlName());
-                                
-                                
+                                                              
                             }
-                            else if(j >= keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size())
+                            else
                                 moreResults = false;
                         }
 
-                      //  boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
+                        boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
 
                         //updatelist(1, true);
                     }
