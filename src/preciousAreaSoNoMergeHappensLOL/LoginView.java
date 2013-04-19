@@ -1,22 +1,19 @@
 package preciousAreaSoNoMergeHappensLOL;
-import java.awt.event.KeyEvent;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-import tutoring.ui.*;
 
-public class LoginView extends javax.swing.JFrame 
+import java.awt.event.KeyEvent;
+
+public class LoginView extends javax.swing.JFrame
 {
-    public LoginView() 
+
+    public LoginView()
     {
         initComponents();
-        
+
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
@@ -34,7 +31,6 @@ public class LoginView extends javax.swing.JFrame
         jPanel6 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(577, 476));
         setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
@@ -42,9 +38,10 @@ public class LoginView extends javax.swing.JFrame
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        errorLabel.setForeground(new java.awt.Color(204, 0, 0));
+        errorLabel.setBackground(new java.awt.Color(255, 255, 255));
+        errorLabel.setFont(new java.awt.Font("Lucida Grande", 2, 12)); // NOI18N
+        errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        errorLabel.setEnabled(false);
         jPanel1.add(errorLabel, java.awt.BorderLayout.PAGE_START);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -53,11 +50,11 @@ public class LoginView extends javax.swing.JFrame
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 573, Short.MAX_VALUE)
+            .add(0, 608, Short.MAX_VALUE)
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 100, Short.MAX_VALUE)
+            .add(0, 0, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel7, java.awt.BorderLayout.PAGE_END);
@@ -72,7 +69,7 @@ public class LoginView extends javax.swing.JFrame
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 344, Short.MAX_VALUE)
+            .add(0, 438, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.LINE_END);
@@ -87,8 +84,10 @@ public class LoginView extends javax.swing.JFrame
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setText("Username:");
 
-        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 usernameFieldKeyPressed(evt);
             }
         });
@@ -97,8 +96,10 @@ public class LoginView extends javax.swing.JFrame
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         passwordLabel.setText("Password:");
 
-        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 passwordFieldKeyPressed(evt);
             }
         });
@@ -106,14 +107,23 @@ public class LoginView extends javax.swing.JFrame
         loginButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         loginButton.setForeground(new java.awt.Color(0, 153, 0));
         loginButton.setText("Login");
-        loginButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loginButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loginButtonActionPerformed(evt);
             }
         });
 
         logoIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/preciousAreaSoNoMergeHappensLOL/pmslogo.PNG"))); // NOI18N
+        logoIcon.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                logoIconMouseClicked(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -138,7 +148,7 @@ public class LoginView extends javax.swing.JFrame
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
                 .add(logoIcon, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 233, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(6, 6, 6)
+                .add(0, 0, 0)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(usernameLabel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 28, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(usernameField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
@@ -160,43 +170,58 @@ public class LoginView extends javax.swing.JFrame
         jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setPreferredSize(new java.awt.Dimension(103, 332));
 
         org.jdesktop.layout.GroupLayout jPanel6Layout = new org.jdesktop.layout.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 100, Short.MAX_VALUE)
+            .add(0, 103, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 344, Short.MAX_VALUE)
+            .add(0, 438, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel6, java.awt.BorderLayout.LINE_START);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        
-        login = new Login(usernameField.getText(),passwordField.getText());
+
+        login = new Login(usernameField.getText(), passwordField.getText());
         errorLabel.setText(login.loginFeedback());
-        
-        if(login.isLoggedIn())
+
+        if (login.isLoggedIn())
         {
-            if(login.getRole().getType().equalsIgnoreCase("SIA"))
+            if (login.getRole().getType().equalsIgnoreCase("SIA"))
             {
-                
+
                 SIA sia = new SIA();
                 sia.show();
                 this.setVisible(false);
-                
-            }
-            else if(login.getRole().getType().equalsIgnoreCase("ADMIN"))
+
+            } else if (login.getRole().getType().equalsIgnoreCase("ADMIN"))
             {
-                Admin admin = new Admin();
+                Admin33 admin = new Admin33();
                 admin.show();
                 this.setVisible(false);
             }
@@ -204,20 +229,35 @@ public class LoginView extends javax.swing.JFrame
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void usernameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            loginButtonActionPerformed((java.awt.event.ActionEvent)loginButton.getAction());
+            loginButtonActionPerformed((java.awt.event.ActionEvent) loginButton.getAction());
         }
     }//GEN-LAST:event_usernameFieldKeyPressed
 
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-            loginButtonActionPerformed((java.awt.event.ActionEvent)loginButton.getAction());
+            loginButtonActionPerformed((java.awt.event.ActionEvent) loginButton.getAction());
         }
     }//GEN-LAST:event_passwordFieldKeyPressed
 
-    public static void main(String args[]) 
+    private void logoIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoIconMouseClicked
+        if (count == 3)
+        {
+            count = 0;
+            //go to SignInSignOutView
+            SignInSignOut siso = new SignInSignOut();
+            siso.show();
+            this.setVisible(false);
+
+        } else
+        {
+            count++;
+        }
+    }//GEN-LAST:event_logoIconMouseClicked
+
+    public static void main(String args[])
     {
         /*
          * Set the Nimbus look and feel
@@ -228,35 +268,42 @@ public class LoginView extends javax.swing.JFrame
          * default look and feel. For details see
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    
+
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        } catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        java.awt.EventQueue.invokeLater(new Runnable() 
+        java.awt.EventQueue.invokeLater(new Runnable()
         {
-
             @Override
-            public void run() 
+            public void run()
             {
                 new LoginView().setVisible(true);
             }
         });
     }
+    static int count = 0;
     private Login login = new Login();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLabel;

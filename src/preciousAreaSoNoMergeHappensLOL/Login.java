@@ -1,10 +1,12 @@
 package preciousAreaSoNoMergeHappensLOL;
+
 import java.util.ArrayList;
 import tutoring.entity.*;
 import tutoring.helper.HibernateTest;
 
-public class Login 
+public class Login
 {
+
     private String username = null;
     private String password = null;
     private boolean loginStatus = false;
@@ -14,119 +16,111 @@ public class Login
     final private ArrayList<User> list = (ArrayList<User>) HibernateTest.select("from User");
     private String realPassword = null;
     private Role role = null;
-    
+
     public Login(String username, String password)
     {
         this.username = username;
         this.password = password;
         login();
     }
-    
+
     public Login()
     {
-        
     }
-    
+
     public void setUsername(String username)
     {
         this.username = username;
     }
-    
+
     public void setPassword(String password)
     {
         this.password = password;
     }
-    
+
     public final boolean login()
     {
         usernameStatus = lookUpUser();
         passwordStatus = lookUpPassword();
-        
-        if((usernameStatus == true) && (passwordStatus == true))
+
+        if ((usernameStatus == true) && (passwordStatus == true))
         {
             loginStatus = true;
             return loginStatus;
-        }
-        else 
+        } else
         {
             loginStatus = false;
             return loginStatus;
         }
-       
+
     }
-    
+
     public boolean isLoggedIn()
     {
         return loginStatus;
     }
-    
+
     public Role getRole()
     {
-        if(loginStatus)
+        if (loginStatus)
         {
             return role;
         }
-        
+
         return role; //should be null if none
     }
-    
+
     private boolean lookUpUser()
     {
         boolean userFound = false;
-        
-        for (int i = 0; i < list.size(); i++) 
-        {           
-            if(username.equals(list.get(i).getUserName()))
+
+        for (int i = 0; i < list.size(); i++)
+        {
+            if (username.equals(list.get(i).getUserName()))
             {
-               userFound = true;
-               realPassword = list.get(i).getPassword();
-               role = list.get(i).getRoleID();
-               return userFound;
+                userFound = true;
+                realPassword = list.get(i).getPassword();
+                role = list.get(i).getRoleID();
+                return userFound;
             }
         }
-        
+
         return userFound;
     }
-    
+
     private boolean lookUpPassword()
     {
         boolean passwordFound = false;
 
-        if(password.equals(realPassword))
+        if (password.equals(realPassword))
         {
-           passwordFound = true;
-           return passwordFound;
+            passwordFound = true;
+            return passwordFound;
         }
-        
+
         return passwordFound;
     }
-    
+
     public String loginFeedback()
     {
-        if(loginStatus == true)
+        if (loginStatus == true)
         {
             loginFeedback = "Username and passwords match.";
             return loginFeedback;
-        }
-        else if((usernameStatus == false) && (passwordStatus == true))
+        } else if ((usernameStatus == false) && (passwordStatus == true))
         {
             loginFeedback = "The username that you entered was not found.";
             return loginFeedback;
-        }
-        else if(passwordStatus == false && (usernameStatus == true))
+        } else if (passwordStatus == false && (usernameStatus == true))
         {
             loginFeedback = "The password that you entered is invalid.";
             return loginFeedback;
-        }
-        else if(loginStatus == false)
+        } else if (loginStatus == false)
         {
             loginFeedback = "Please recheck your typing and try again. Remember, your password is case sensitive.";
             return loginFeedback;
         }
-        
+
         return loginFeedback;
     }
-    
-
-    
 }
