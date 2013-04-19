@@ -40,7 +40,7 @@ import tutoring.helper.HibernateTest;
 import tutoring.helper.RestrictionListModel;
 import tutoring.helper.SessionTableModel;
 import tutoring.helper.UltimateAutoComplete;
-import tutoring.helper.UltimateAutoCompleteClientNew;
+import tutoring.old.UltimateAutoCompleteClientOld;
 import tutoring.helper.Validate;
 
 
@@ -55,7 +55,7 @@ public class Admin33 extends javax.swing.JFrame {
      * Creates new form Admin
      */
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
+    private UltimateAutoCompleteClientOld uacc;
     DefaultListModel dlm = new DefaultListModel();
     RestrictionListModel restrictHelper;
     
@@ -2662,7 +2662,7 @@ public class Admin33 extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-            uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+            uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
 
         }
         else

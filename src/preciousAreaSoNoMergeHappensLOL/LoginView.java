@@ -196,7 +196,7 @@ public class LoginView extends javax.swing.JFrame
             }
             else if(login.getRole().getType().equalsIgnoreCase("ADMIN"))
             {
-                Admin admin = new Admin();
+                AdminView admin = new AdminView();
                 admin.show();
                 this.setVisible(false);
             }

@@ -4,6 +4,7 @@
  */
 package preciousAreaSoNoMergeHappensLOL;
 
+import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
@@ -101,7 +102,7 @@ public class SIA extends javax.swing.JFrame {
         }
     }
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
+    private UltimateAutoCompleteClientOld uacc;
     public SIA() 
     {
         initComponents();
@@ -138,7 +139,7 @@ public class SIA extends javax.swing.JFrame {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
       Timestamp now = new Timestamp((new Date()).getTime());
        
@@ -949,7 +950,7 @@ public class SIA extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+           uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
            
         }
         else
