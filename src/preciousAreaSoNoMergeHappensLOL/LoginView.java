@@ -1,6 +1,7 @@
 package preciousAreaSoNoMergeHappensLOL;
 
 import java.awt.event.KeyEvent;
+import tutoring.ui.AdminView;
 
 public class LoginView extends javax.swing.JFrame
 {
