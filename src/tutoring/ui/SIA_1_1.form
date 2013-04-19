@@ -27,7 +27,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="SIAPannel" alignment="0" max="32767" attributes="0"/>
+          <Component id="SIAPannel" alignment="0" pref="1390" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -87,7 +87,7 @@
                           <Component id="autocompleteCheck" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="paraprofessionalInfoPanel" pref="0" max="32767" attributes="0"/>
+                              <Component id="paraprofessionalInfoPanel" max="32767" attributes="0"/>
                               <Component id="studentInfoPanel" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>

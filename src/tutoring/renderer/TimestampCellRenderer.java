@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.helper;
+package tutoring.renderer;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -21,11 +21,11 @@ import tutoring.helper.SessionTableModel.Columns;
  */
 public class TimestampCellRenderer extends DefaultTableCellRenderer
 {
-    boolean showDate;
+    boolean isFutureSession;
     
-    public TimestampCellRenderer(boolean showDate)
+    public TimestampCellRenderer(boolean isFutureSession)
     {
-        this.showDate = showDate;
+        this.isFutureSession = isFutureSession;
     }
     
     @Override
@@ -42,7 +42,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                 {
                     //System.out.println("WORKING");
                     
-                    this.setText("Start");
+                    this.setText("Starts");
                     
                     if(isSelected)
                     {
@@ -121,7 +121,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
             {
                 System.out.println("getTableCellRendererComponent");
                 String date;
-                if(!showDate)
+                if(!isFutureSession)
                     date = new SimpleDateFormat("hh:mm aa").format((Date)o);
                 else
                     date = new SimpleDateFormat("MM/dd/yyyy hh:mm aa").format((Date)o);
@@ -146,10 +146,19 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                 System.out.println(o.toString() + " value");
             else
                 System.out.println("NULL NULL");
-            this.setText("<html><div style=\"text-align: center;\">STOP</div></html>");
+            if(!isFutureSession)
+            {
+                this.setText("STOP");
+                setBackground(Color.red);
+            }
+            else
+            {
+                this.setText("Start");
+                setBackground(Color.green);
+            }
             
             setForeground(t.getSelectionForeground());
-            setBackground(Color.red);
+            
             setBorder(new MatteBorder(3,3,3,3,Color.black));
         }
         

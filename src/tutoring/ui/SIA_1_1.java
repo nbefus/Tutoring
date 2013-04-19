@@ -4,6 +4,7 @@
  */
 package tutoring.ui;
 
+import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
@@ -101,7 +102,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
         }
     }
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
+    private UltimateAutoCompleteClientOld uacc;
     public SIA_1_1() 
     {
         initComponents();
@@ -145,7 +146,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
        cultimateList1.add(Data.getPhoneOrderedList());
        cultimateList1.add(Data.getEmailOrderedList());
 
-       UltimateAutoCompleteClientComplete1_1 uaa = new UltimateAutoCompleteClientComplete1_1(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       UltimateAutoAutoComplete uaa = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
        
        JComboBox[] cboxes2 = new  JComboBox[3];
@@ -168,7 +169,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
        cultimateList22.add(Data.getTeacherOrderedList());
       // cultimateList2.add(Data.getEmailOrderedList());
 
-       UltimateAutoCompleteClientComplete1_1 uaa2 = new UltimateAutoCompleteClientComplete1_1(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       UltimateAutoAutoComplete uaa2 = new UltimateAutoAutoComplete(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
        
        Timestamp now = new Timestamp((new Date()).getTime());
@@ -980,7 +981,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+           uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
            
         }
         else
@@ -1329,13 +1330,13 @@ public class SIA_1_1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

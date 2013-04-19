@@ -4,6 +4,7 @@
  */
 package tutoring.ui;
 
+import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
@@ -38,7 +39,7 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIA extends javax.swing.JFrame {
+public class SIAOld extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -98,8 +99,8 @@ public class SIA extends javax.swing.JFrame {
         }
     }
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
-    public SIA() 
+    private UltimateAutoCompleteClientOld uacc;
+    public SIAOld() 
     {
         initComponents();
         
@@ -133,7 +134,7 @@ public class SIA extends javax.swing.JFrame {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
       Timestamp now = new Timestamp((new Date()).getTime());
        
@@ -894,7 +895,7 @@ public class SIA extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+           uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
            
         }
         else
@@ -1183,13 +1184,13 @@ public class SIA extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -1199,7 +1200,7 @@ public class SIA extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA().setVisible(true);
+                new SIAOld().setVisible(true);
             }
         });
     }

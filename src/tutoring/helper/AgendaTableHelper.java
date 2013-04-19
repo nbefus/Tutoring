@@ -33,17 +33,15 @@ import javax.swing.table.TableColumn;
  *
  * @author Nathaniel
  */
-public class SessionTableHelper 
+public class AgendaTableHelper 
 {
     private JTable table;
-    private boolean isFutureSession;
     
-    public SessionTableHelper(JTable table, boolean isFutureSession)
+    public AgendaTableHelper(JTable table)
     {
         this.table = table;
-        this.isFutureSession = isFutureSession;
-        System.out.println("SESSION HELPER ISFUTURESESSION : "+isFutureSession);
-        table.setModel(new SessionTableModel(isFutureSession));
+       
+        table.setModel(new AgendaTableModel());
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 11));
         
@@ -72,48 +70,36 @@ public class SessionTableHelper
     
     public void setTableRendersAndEditors(boolean doubleClickBringsInfoUpTop, DefaultCellEditor dce)
     {
-        DefaultCellEditor singleclick = new DefaultCellEditor(new JCheckBox());
-        singleclick.setClickCountToStart(2);
+       // DefaultCellEditor singleclick = new DefaultCellEditor(new JCheckBox());
+       // singleclick.setClickCountToStart(2);
         // DefaultCellEditor singleclickCombo = new DefaultCellEditor(new JComboBox());
         //singleclickCombo.setClickCountToStart(2);
         //set the editor as default on every column
    
        
         
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.setAutoCreateRowSorter(true);
         table.setFillsViewportHeight(true);
         
-        table.getColumnModel().getColumn(SessionTableModel.Columns.WALKOUT.getColumnIndex()).setCellEditor(singleclick);
+        //table.getColumnModel().getColumn(SessionTableModel.Columns.WALKOUT.getColumnIndex()).setCellEditor(singleclick);
         
        // sessionsTable.getColumnModel().getColumn(10).setCellRenderer(new TimestampCellRenderer());
 
-        table.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer(isFutureSession));
-        table.getColumnModel().getColumn(SessionTableModel.Columns.MIN.getColumnIndex()).setCellRenderer(new MinuteCellRenderer(isFutureSession));
+        //table.setDefaultRenderer(Timestamp.class, new TimestampCellRenderer(false));
+        //table.getColumnModel().getColumn(SessionTableModel.Columns.MIN.getColumnIndex()).setCellRenderer(new MinuteCellRenderer(isFutureSession));
         
-        if(!doubleClickBringsInfoUpTop)
-        {
-            table.setDefaultEditor(Timestamp.class, new TimestampCellEditor(new JTextField()));
-            
-            table.getColumnModel().getColumn(4).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-            table.getColumnModel().getColumn(3).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-            table.getColumnModel().getColumn(2).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-            table.getColumnModel().getColumn(1).setCellEditor(new ComboBoxCellEditor(new JComboBox()));
-            table.setDefaultEditor(Boolean.class, singleclick);
-        }
-        else
-        {
-            for(int i=0; i<table.getColumnCount(); i++)
-            {
-                if(i!=SessionTableModel.Columns.START.getColumnIndex() && i!=SessionTableModel.Columns.STOP.getColumnIndex() && i!=SessionTableModel.Columns.ENTEREDDATE.getColumnIndex() && i != SessionTableModel.Columns.GC.getColumnIndex() && i !=SessionTableModel.Columns.WALKOUT.getColumnIndex())
-                    table.getColumnModel().getColumn(i).setCellRenderer(new FontCellRenderer());
-                if(i !=SessionTableModel.Columns.WALKOUT.getColumnIndex())
-                    table.getColumnModel().getColumn(i).setCellEditor(dce);
-            }
-            table.getColumnModel().getColumn(SessionTableModel.Columns.START.getColumnIndex()).setCellEditor(new TimestampCellEditor(new JTextField()));
-            table.getColumnModel().getColumn(SessionTableModel.Columns.STOP.getColumnIndex()).setCellEditor(new TimestampCellEditor(new JTextField()));
+       
 
+        for(int i=0; i<table.getColumnCount(); i++)
+        {
+           // if(i != AgendaTableModel.Columns.DATE.getColumnIndex())
+                table.getColumnModel().getColumn(i).setCellRenderer(new FontCellRenderer());
+
+            table.getColumnModel().getColumn(i).setCellEditor(dce);
         }
+        
+        
         
         
 

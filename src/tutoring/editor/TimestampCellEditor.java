@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.helper;
+package tutoring.editor;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -144,6 +144,8 @@ public class TimestampCellEditor extends DefaultCellEditor
                 System.out.println("OHHHHHHH here");
                 return super.stopCellEditing();
             }
+            /*
+            
             System.out.println("stopCellEditing");
             String[] split;
             sdf.setLenient(false);
@@ -180,6 +182,7 @@ public class TimestampCellEditor extends DefaultCellEditor
                 throw new Exception();
             //Calendar c = Calendar.getInstance();
             //c.setTimeInMillis(t.getTime());
+            */
             
         } catch (Exception e) {
             jf.setBorder(red);

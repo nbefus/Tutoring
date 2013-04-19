@@ -16,8 +16,8 @@ import tutoring.old.AutoComplete;
 import tutoring.helper.AutoCompleteComboBox;
 import tutoring.old.FakeValues;
 import tutoring.helper.SessionTableModel;
-import tutoring.helper.TimestampCellEditor;
-import tutoring.helper.TimestampCellRenderer;
+import tutoring.editor.TimestampCellEditor;
+import tutoring.renderer.TimestampCellRenderer;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.

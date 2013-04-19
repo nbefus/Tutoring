@@ -4,10 +4,14 @@
  */
 package tutoring.ui;
 
+import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.FontMetrics;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -21,25 +25,21 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
-import tutoring.entity.Category;
-import tutoring.entity.Client;
-import tutoring.entity.Course;
-import tutoring.entity.Location;
-import tutoring.entity.Paraprofessional;
-import tutoring.entity.ParaprofessionalSession;
-import tutoring.entity.Subject;
-import tutoring.entity.Teacher;
+import tutoring.entity.*;
 import tutoring.helper.*;
 
 /**
  *
  * @author shohe_i
  */
-public class SIA_1 extends javax.swing.JFrame {
+public class SIAView extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -53,12 +53,12 @@ public class SIA_1 extends javax.swing.JFrame {
         CPHONE(2,"Phone", "phone", 'd'),
         CEMAIL(3, "Email", "email", 'd'),
         //CATEGORY(4, "Category", "name", 'a'),
-        COURSE(4, "Course", "abbrevName", 's'),
-        CREATOR(5, "Creator", "", 'e'),
-        LEVEL(6, "Level", "level", 'c'),
-        LOCATION(7, "Location", "location",'l'),
-        PARAPROFESSIONAL(8, "Tutor","", 'p'),
-        TEACHER(9, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't');
+        COURSE(0, "Course", "abbrevName", 's'),
+        CREATOR(0, "Creator", "", 'e'),
+        LEVEL(1, "Level", "level", 'c'),
+        LOCATION(1, "Location", "location",'l'),
+        PARAPROFESSIONAL(2, "Tutor","", 'p'),
+        TEACHER(2, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't');
         
         private int indexOfCombo;
         private String displayName;
@@ -100,9 +100,13 @@ public class SIA_1 extends javax.swing.JFrame {
             return "";
         }
     }
-    private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
-    public SIA_1() 
+    private UltimateAutoComplete uac;
+    
+    UltimateAutoAutoComplete uaacClient; 
+
+    UltimateAutoAutoComplete uaacCourse;
+    
+    public SIAView() 
     {
         initComponents();
         
@@ -110,8 +114,12 @@ public class SIA_1 extends javax.swing.JFrame {
         sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
         
-        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable);
-        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable);
+        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable, false);
+        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable, true);
+        AgendaTableHelper tableHelperAgenda = new AgendaTableHelper(agendaTable);
+         tableHelperAgenda.allowScrollingOnTable();
+       
+        tableHelperAgenda.increaseRowHeight(12);
         
         tableHelperFuture.allowScrollingOnTable();
         tableHelperFuture.increaseRowHeight(12);
@@ -125,7 +133,7 @@ public class SIA_1 extends javax.swing.JFrame {
        Data d = new Data(false);
        
        //Clients autocomplete
-       JComboBox[] cboxes = new  JComboBox[4];
+      JComboBox[] cboxes = new  JComboBox[4];
        cboxes[0]=fnameCombo;
        cboxes[1]=lnameCombo;
        cboxes[2]=phoneCombo;
@@ -137,10 +145,56 @@ public class SIA_1 extends javax.swing.JFrame {
        cultimateList.add(Data.getClientslast());
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
+       
+       ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       cultimateList1.add(Data.getFnameOrderedList());
+       cultimateList1.add(Data.getLnameOrderedList());
+       cultimateList1.add(Data.getPhoneOrderedList());
+       cultimateList1.add(Data.getEmailOrderedList());
+
+       uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
-      Timestamp now = new Timestamp((new Date()).getTime());
+       
+       JComboBox[] cboxes2 = new  JComboBox[3];
+       cboxes2[0]=courseCombo;
+       cboxes2[1]=levelCombo;
+       cboxes2[2]=teacherCombo;
+       //cboxes[3]=emailCombo;
+       
+       ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
+
+       cultimateList2.add(Data.getSubjectslist());
+       cultimateList2.add(Data.getLevelslist());
+       cultimateList2.add(Data.getTeacherslist());
+
+       ArrayList<ArrayList<String>> cultimateList22 = new ArrayList<ArrayList<String>>();
+
+       cultimateList22.add(Data.getSubjectOrderedList());
+       cultimateList22.add(Data.getLevelOrderedList());
+       cultimateList22.add(Data.getTeacherOrderedList());
+
+       uaacCourse = new UltimateAutoAutoComplete(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      
+       
+       JComboBox[] boxes3 = new  JComboBox[3];
+        
+        boxes3[0]=creatorCombo;
+        boxes3[1]=locationCombo;
+        boxes3[2]=paraprofessionalCombo;
+
+        ArrayList<ArrayList<String>> cultimateList3 = new ArrayList<ArrayList<String>>();
+        
+        cultimateList3.add(Data.getTutorslist());
+        cultimateList3.add(Data.getLocationslist());
+        cultimateList3.add(Data.getTutorslist());
+       
+        uac = new UltimateAutoComplete(cultimateList3, boxes3);
+            
+            
+        clearComboBoxes();
+      
+        Timestamp now = new Timestamp((new Date()).getTime());
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
@@ -187,33 +241,90 @@ public class SIA_1 extends javax.swing.JFrame {
         //2- Taking an instance of class contains your repeated method.
         MinuteUpdate min = new MinuteUpdate((SessionTableModel)sessionsTable.getModel());
  
- 
-        //TimerTask is a class implements Runnable interface so
-        //You have to override run method with your certain code black
- 
-        //Second Parameter is the specified the Starting Time for your timer in
-        //MilliSeconds or Date
- 
-        //Third Parameter is the specified the Period between consecutive
-        //calling for the method.
- 
+        MinuteUpdate min2 = new MinuteUpdate((SessionTableModel)appointmentsTable.getModel());
+
         timer.schedule(min, 0, 60000);
+        timer.schedule(min2, 0, 60000);
         
         
         
+        DefaultCellEditor dce = makeEditSessionCellEditor();
+        setUpAgenda();
+        tableHelper.setTableRendersAndEditors(true, dce);
+        tableHelperFuture.setTableRendersAndEditors(true, dce);
+        tableHelperAgenda.setTableRendersAndEditors(true, dce);
+        //tableHelperAgenda.autoResizeColWidth();
+        tableHelper.autoResizeColWidth();
+        tableHelperFuture.autoResizeColWidth();
+        //tableHelper.fasterScrolling(20);
+            
+    SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
+    
+    }
+    
+    
+    
+    public void setUpAgenda()
+    {
+        
+        Timestamp now = new Timestamp((new Date()).getTime());
+        
+        ArrayList<Agenda> agenda = (ArrayList<Agenda>)HibernateTest.select("from Agenda as a where a.date >= '2012-04-18'");
+
+        if(agenda.size() > 0)
+        {          
+            
+            for(int i=0; i<agenda.size(); i++)
+            {
+                
+                Agenda a = agenda.get(i);
+                ((AgendaTableModel) agendaTable.getModel()).addRow(a);
+                System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType());
+                
+            }
+            
+            agendaTable.repaint();
+            
+            /*agendaTable = new JTable(new DefaultTableModel(null,new Object[]{"Agenda ID", "Date", "Notes", "Type"}));
+            DefaultTableModel dtm = (DefaultTableModel) agendaTable.getModel();
+            
+            for(int i=0; i<agenda.size(); i++)
+            {
+                
+                Agenda a = agenda.get(i);
+                dtm.addRow(new Object[]{a.getAgendaID(), a.getDate(), a.getNotes(), a.getAgendaCategoryID().getType()});
+                System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType() +" "+ dtm.getColumnCount() + " "+dtm.getRowCount());
+                
+            }
+                //model.addRow(new Object[] {""); 
+            
+            agendaTable.setModel(dtm);
+            dtm.fireTableDataChanged();
+            agendaTable.invalidate();
+            agendaTable.repaint();*/
+        }
+        else
+            System.out.println("EEEMMMMMMPPPPPPTTYYYYY");
+        
+        System.out.println("AGENDA AGENDA AGENDA AGENDA AGENDA DONE DONE DONE DONE DONE");
+        
+    }
+    
+    public DefaultCellEditor makeEditSessionCellEditor()
+    {
         DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
         {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                         boolean isSelected, int row, int column) 
             {
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.TEACHER.getColumnIndex()).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LEVEL.getColumnIndex()).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.COURSE.getColumnIndex()).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTEMAIL.getColumnIndex()).toString(), ComboBoxesIndexes.CEMAIL.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTPHONE.getColumnIndex()).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTLASTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTFIRSTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
+                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.TEACHER.getColumnIndex()).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
+                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LEVEL.getColumnIndex()).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
+                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.COURSE.getColumnIndex()).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
+                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTEMAIL.getColumnIndex()).toString(), ComboBoxesIndexes.CEMAIL.getBoxIndex());
+                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTPHONE.getColumnIndex()).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
+                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTLASTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
+                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTFIRSTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
                 //uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CATEGORY.getColumnIndex()).toString(), ComboBoxesIndexes.CATEGORY.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.PARAPROFESSIONAL.getColumnIndex()).toString(), ComboBoxesIndexes.PARAPROFESSIONAL.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LOCATION.getColumnIndex()).toString(), ComboBoxesIndexes.LOCATION.getBoxIndex());
@@ -223,8 +334,8 @@ public class SIA_1 extends javax.swing.JFrame {
                 
                 notesField.setText(table.getValueAt(row, SessionTableModel.Columns.NOTES.getColumnIndex()).toString());
                 
-                System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, SessionTableModel.Columns.START.getColumnIndex()));
-                System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, SessionTableModel.Columns.STOP.getColumnIndex()));
+               // System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, SessionTableModel.Columns.START.getColumnIndex()));
+               // System.out.println("LKJDSFLDSJLKDSJFLKSDJF DSLJDSFLKDSJ "+table.getValueAt(row, SessionTableModel.Columns.STOP.getColumnIndex()));
                                
                 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
                
@@ -250,18 +361,17 @@ public class SIA_1 extends javax.swing.JFrame {
             }
         };
         
-        tableHelper.setTableRendersAndEditors(true, dce, false);
-        tableHelperFuture.setTableRendersAndEditors(true, dce, true);
-        tableHelper.autoResizeColWidth();
-        //tableHelper.fasterScrolling(20);
-            
-    SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
+        return dce;
     }
     
     public void clearComboBoxes()
     {
          for(int i=0; i<uac.getBoxesLength(); i++)
             uac.setComboValue("", i);
+         for(int i=0; i<uaacClient.getBoxesLength(); i++)
+            uaacClient.setComboValue("", i);
+         for(int i=0; i<uaacCourse.getBoxesLength(); i++)
+            uaacCourse.setComboValue("", i);
     }
 
     /**
@@ -271,7 +381,8 @@ public class SIA_1 extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         SIAPannel = new javax.swing.JTabbedPane();
         SIAScrollPanel = new javax.swing.JScrollPane();
@@ -304,6 +415,7 @@ public class SIA_1 extends javax.swing.JFrame {
         editSaveButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
         addSessionbutton = new javax.swing.JButton();
+        newStudentButton = new javax.swing.JButton();
         sessionsTablePanel = new javax.swing.JPanel();
         sessionsTableScrollPanel = new javax.swing.JScrollPane();
         sessionsTable = new javax.swing.JTable();
@@ -312,21 +424,11 @@ public class SIA_1 extends javax.swing.JFrame {
         appointmentsTableScrollPanel = new javax.swing.JScrollPane();
         appointmentsTable = new javax.swing.JTable();
         deleteSessionButton1 = new javax.swing.JButton();
-        createAgendaPanel = new javax.swing.JPanel();
-        agendaCategoryLabel = new javax.swing.JLabel();
-        agendaCategoryCombo = new javax.swing.JComboBox();
-        agendaDateLabel = new javax.swing.JLabel();
-        dateField = new javax.swing.JTextField();
-        dateLabel = new javax.swing.JLabel();
-        cancelButton = new javax.swing.JButton();
-        submitbutton = new javax.swing.JButton();
-        agendaTextAreaScrollPanel = new javax.swing.JScrollPane();
-        agendaTextArea = new javax.swing.JTextArea();
         agendaPanel = new javax.swing.JPanel();
         deleteAgendaButton = new javax.swing.JButton();
         agendaTableScrollPanel = new javax.swing.JScrollPane();
         agendaTable = new javax.swing.JTable();
-        autocompleteCheck = new javax.swing.JCheckBox();
+        addAgendaItemButton = new javax.swing.JButton();
         paraprofessionalInfoPanel = new javax.swing.JPanel();
         ParaprofessionalLabel = new javax.swing.JLabel();
         paraprofessionalCombo = new javax.swing.JComboBox();
@@ -410,8 +512,10 @@ public class SIA_1 extends javax.swing.JFrame {
         teacherLabel.setText("Teacher*");
 
         teacherCombo.setEditable(true);
-        teacherCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        teacherCombo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 teacherComboActionPerformed(evt);
             }
         });
@@ -461,36 +565,55 @@ public class SIA_1 extends javax.swing.JFrame {
 
         sessionendField.setText("dd/mm/yyyy hh:mm:ss aa");
 
-        editSaveButton.setText("Save");
-        editSaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editSaveButton.setText("Save/Edit");
+        editSaveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 editSaveButtonActionPerformed(evt);
             }
         });
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
         clearButton.setText("Clear");
-        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 clearButtonMouseClicked(evt);
             }
         });
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearButtonActionPerformed(evt);
             }
         });
 
         addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
         addSessionbutton.setText("Add Session");
-        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 addSessionbuttonMouseClicked(evt);
             }
         });
-        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addSessionbutton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 addSessionbuttonActionPerformed(evt);
+            }
+        });
+
+        newStudentButton.setText("New Student");
+        newStudentButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                newStudentButtonActionPerformed(evt);
             }
         });
 
@@ -515,13 +638,15 @@ public class SIA_1 extends javax.swing.JFrame {
                 .add(gcCheck)
                 .add(18, 18, 18)
                 .add(walkoutCheck)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(editSaveButton)
-                .add(18, 18, 18)
+                .add(27, 27, 27)
                 .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(newStudentButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 111, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(editSaveButton)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(addSessionbutton)
-                .addContainerGap())
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         otherInfoPanelLayout.setVerticalGroup(
             otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -538,28 +663,33 @@ public class SIA_1 extends javax.swing.JFrame {
                     .add(walkoutCheck)
                     .add(editSaveButton)
                     .add(clearButton)
-                    .add(addSessionbutton))
+                    .add(addSessionbutton)
+                    .add(newStudentButton))
                 .add(0, 0, 0))
         );
 
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "First", "Last", "Email", "Phone"
             }
         ));
         sessionsTableScrollPanel.setViewportView(sessionsTable);
 
         deleteSessionButton.setText("Delete Session");
-        deleteSessionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButtonActionPerformed(evt);
             }
         });
@@ -570,12 +700,11 @@ public class SIA_1 extends javax.swing.JFrame {
             sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsTablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(sessionsTableScrollPanel)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsTablePanelLayout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(sessionsTableScrollPanel)
                 .addContainerGap())
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsTablePanelLayout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         sessionsTablePanelLayout.setVerticalGroup(
             sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -590,21 +719,25 @@ public class SIA_1 extends javax.swing.JFrame {
         futureSessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
 
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "First", "Last", "Email", "Phone"
             }
         ));
         appointmentsTableScrollPanel.setViewportView(appointmentsTable);
 
         deleteSessionButton1.setText("Delete Session");
-        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButton1ActionPerformed(evt);
             }
         });
@@ -631,91 +764,34 @@ public class SIA_1 extends javax.swing.JFrame {
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        createAgendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Create New Agenda"));
-
-        agendaCategoryLabel.setText("Category:");
-
-        agendaCategoryCombo.setEditable(true);
-
-        agendaDateLabel.setText("Date:");
-
-        dateLabel.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        dateLabel.setForeground(new java.awt.Color(102, 102, 102));
-        dateLabel.setText("(mm/dd/yyyy hh:mm a.a.)");
-
-        cancelButton.setForeground(new java.awt.Color(153, 0, 0));
-        cancelButton.setText("Cancel");
-
-        submitbutton.setForeground(new java.awt.Color(51, 102, 255));
-        submitbutton.setText("Submit");
-
-        agendaTextArea.setColumns(20);
-        agendaTextArea.setRows(5);
-        agendaTextAreaScrollPanel.setViewportView(agendaTextArea);
-
-        org.jdesktop.layout.GroupLayout createAgendaPanelLayout = new org.jdesktop.layout.GroupLayout(createAgendaPanel);
-        createAgendaPanel.setLayout(createAgendaPanelLayout);
-        createAgendaPanelLayout.setHorizontalGroup(
-            createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(createAgendaPanelLayout.createSequentialGroup()
-                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                    .add(createAgendaPanelLayout.createSequentialGroup()
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(cancelButton)
-                        .add(18, 18, 18)
-                        .add(submitbutton))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, createAgendaPanelLayout.createSequentialGroup()
-                        .add(101, 101, 101)
-                        .add(agendaCategoryLabel)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(agendaCategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 123, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(agendaDateLabel)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(dateLabel)
-                            .add(createAgendaPanelLayout.createSequentialGroup()
-                                .add(dateField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 167, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(agendaTextAreaScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 588, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        createAgendaPanelLayout.setVerticalGroup(
-            createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(createAgendaPanelLayout.createSequentialGroup()
-                .add(dateLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(agendaTextAreaScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                        .add(agendaCategoryLabel)
-                        .add(agendaCategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(agendaDateLabel)
-                        .add(dateField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 10, Short.MAX_VALUE)
-                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(submitbutton)
-                    .add(cancelButton))
-                .addContainerGap())
-        );
-
         agendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Agendas"));
 
-        deleteAgendaButton.setText("Delete Agenda");
+        deleteAgendaButton.setText("Delete Item");
 
         agendaTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         agendaTableScrollPanel.setViewportView(agendaTable);
         agendaTable.getAccessibleContext().setAccessibleParent(agendaPanel);
+
+        addAgendaItemButton.setText("Add Item");
+        addAgendaItemButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addAgendaItemButtonActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout agendaPanelLayout = new org.jdesktop.layout.GroupLayout(agendaPanel);
         agendaPanel.setLayout(agendaPanelLayout);
@@ -727,6 +803,8 @@ public class SIA_1 extends javax.swing.JFrame {
                     .add(agendaTableScrollPanel)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, agendaPanelLayout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
+                        .add(addAgendaItemButton)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(deleteAgendaButton)))
                 .addContainerGap())
         );
@@ -735,17 +813,11 @@ public class SIA_1 extends javax.swing.JFrame {
             .add(agendaPanelLayout.createSequentialGroup()
                 .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 204, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(deleteAgendaButton)
+                .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(deleteAgendaButton)
+                    .add(addAgendaItemButton))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        autocompleteCheck.setSelected(true);
-        autocompleteCheck.setText("AutoComplete");
-        autocompleteCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                autocompleteCheckActionPerformed(evt);
-            }
-        });
 
         paraprofessionalInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Paraprofesional Information"));
 
@@ -762,7 +834,7 @@ public class SIA_1 extends javax.swing.JFrame {
                 .add(ParaprofessionalLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         paraprofessionalInfoPanelLayout.setVerticalGroup(
             paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -810,9 +882,9 @@ public class SIA_1 extends javax.swing.JFrame {
             .add(creatorInfoPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(creatorLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(19, 19, 19))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         creatorInfoPanelLayout.setVerticalGroup(
             creatorInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -830,33 +902,28 @@ public class SIA_1 extends javax.swing.JFrame {
             .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                        .add(175, 175, 175)
-                        .add(autocompleteCheck))
-                    .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                         .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(locationInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(creatorInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                        .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .add(0, 0, 0))
+                    .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(0, 83, Short.MAX_VALUE))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                .add(autocompleteCheck)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addContainerGap()
                 .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                    .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
@@ -865,15 +932,13 @@ public class SIA_1 extends javax.swing.JFrame {
                     .add(locationInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 17, Short.MAX_VALUE)
-                .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 298, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 308, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         SIAScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -884,15 +949,47 @@ public class SIA_1 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1426, Short.MAX_VALUE)
+            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1443, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel)
+            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1104, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
+        
+        int[] selectedRows = sessionsTable.getSelectedRows();
+
+        ((SessionTableModel) appointmentsTable.getModel()).deleteRows(selectedRows);
+    }//GEN-LAST:event_deleteSessionButton1ActionPerformed
+
+    private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
+        int[] selectedRows = sessionsTable.getSelectedRows();
+
+        ((SessionTableModel)sessionsTable.getModel()).deleteRows(selectedRows);
+    }//GEN-LAST:event_deleteSessionButtonActionPerformed
+
+    private void newStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStudentButtonActionPerformed
+
+        NewClientObject ndo = new NewClientObject(new Frame(),true);
+        ndo.setVisible(true);
+        //ndo.setLocationRelativeTo(null);
+
+    }//GEN-LAST:event_newStudentButtonActionPerformed
+
+    private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
+        //Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
+        //Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
+        //Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
+        getParaprofessionalSession(false);
+    }//GEN-LAST:event_addSessionbuttonActionPerformed
+
+    private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addSessionbuttonMouseClicked
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         clearComboBoxes();
@@ -902,100 +999,36 @@ public class SIA_1 extends javax.swing.JFrame {
         notesField.setText("");
         gcCheck.setSelected(false);
         walkoutCheck.setSelected(false);
-        
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_clearButtonMouseClicked
 
-    private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addSessionbuttonMouseClicked
+    private void editSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSaveButtonActionPerformed
+
+        //Check for errors and then save to database
+        boolean updated = getParaprofessionalSession(true);
+
+        if(updated)
+            editSaveButton.setVisible(false);
+    }//GEN-LAST:event_editSaveButtonActionPerformed
 
     private void teacherComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_teacherComboActionPerformed
 
-    private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
-        int[] selectedRows = sessionsTable.getSelectedRows();
-        
-        ((SessionTableModel)sessionsTable.getModel()).deleteRows(selectedRows);
-    }//GEN-LAST:event_deleteSessionButtonActionPerformed
+    private void addAgendaItemButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAgendaItemButtonActionPerformed
+    {//GEN-HEADEREND:event_addAgendaItemButtonActionPerformed
 
-    private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
-//Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
-        //Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
-        //Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
-        getParaprofessionalSession();
-    }//GEN-LAST:event_addSessionbuttonActionPerformed
+        NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, Data.getAgendaCategoryList());
+        ndo.setVisible(true);
+        //ndo.setLocationRelativeTo(null);
 
-    private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
-        
-        if(autocompleteCheck.isSelected())
-        {
-            uac.noMore();
-            //Clients autocomplete
-            JComboBox[] cboxes = new  JComboBox[4];
-            cboxes[0]=fnameCombo;
-            cboxes[1]=lnameCombo;
-            cboxes[2]=phoneCombo;
-            cboxes[3]=emailCombo;
-
-            ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-
-            cultimateList.add(Data.getClientsfirst());
-            cultimateList.add(Data.getClientslast());
-            cultimateList.add(Data.getClientsphone());
-            cultimateList.add(Data.getClientsemail());
-
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
-           
-        }
-        else
-        {
-            uacc.noMore();
-            
-            JComboBox[] boxes = new  JComboBox[10];
-            boxes[0]=fnameCombo;
-            boxes[1]=lnameCombo;
-            boxes[2]=phoneCombo;
-            boxes[3]=emailCombo;
-            boxes[4]=courseCombo;
-            boxes[5]=creatorCombo;
-            boxes[6]=levelCombo;
-            boxes[7]=locationCombo;
-            boxes[8]=paraprofessionalCombo;
-            boxes[9]=teacherCombo;
-
-            ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-            cultimateList.add(Data.getClientsfirst());
-            cultimateList.add(Data.getClientslast());
-            cultimateList.add(Data.getClientsphone());
-            cultimateList.add(Data.getClientsemail());
-            cultimateList.add(Data.getSubjectslist());
-            cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getLevelslist());
-            cultimateList.add(Data.getLocationslist());
-            cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getTeacherslist());
-            uac = new UltimateAutoComplete(cultimateList, boxes);
-        }
-    }//GEN-LAST:event_autocompleteCheckActionPerformed
-
-    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteSessionButton1ActionPerformed
-
-    private void editSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editSaveButtonActionPerformed
-        
-        //Check for errors and then save to database
-        
-        editSaveButton.setVisible(false);
-    }//GEN-LAST:event_editSaveButtonActionPerformed
+    }//GEN-LAST:event_addAgendaItemButtonActionPerformed
 
     
-    private void getParaprofessionalSession()
+    private boolean getParaprofessionalSession(boolean isUpdating)
     {
         try
         {
@@ -1014,8 +1047,8 @@ public class SIA_1 extends javax.swing.JFrame {
             fnameCombo.setBorder(null);
             lnameCombo.setBorder(null);
             locationCombo.setBorder(null);
-            sessionendField.setBorder(new MatteBorder(0,0,0,0,Color.red));
-            sessionstartField.setBorder(new MatteBorder(0,0,0,0,Color.red));
+            sessionendField.setBorder(null);
+            sessionstartField.setBorder(null);
             studentInfoPanel.repaint();
             otherInfoPanel.repaint();
             courseInfoPanel.repaint();
@@ -1124,8 +1157,9 @@ public class SIA_1 extends javax.swing.JFrame {
                     sessionEnd = new Timestamp(sdf.parse(sessionendField.getText().trim()).getTime());
             }
             
-            if(!hasSessionStart || !hasSessionEnd)
+            if((!hasSessionStart || !hasSessionEnd) || (!hasSessionStart && hasSessionEnd))
                 throw new ParseException("parse exception with timestamp", 0);
+                
  
             boolean walkout = walkoutCheck.isSelected();
 
@@ -1151,9 +1185,6 @@ public class SIA_1 extends javax.swing.JFrame {
             ArrayList<Client> clients = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
 
             ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location as l where l.name='"+location.trim()+"'");
-
-          //  ArrayList<Term> terms = (ArrayList<Term>)HibernateTest.select("from Term as t where t.name='"+term.trim()+"'");
-
 
             courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
@@ -1216,25 +1247,57 @@ public class SIA_1 extends javax.swing.JFrame {
                 sessionEndString = " is null";
             
             ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0), locations.get(0), creators.get(0), now, sessionStart, sessionEnd, GC, notes, walkout);
-            HibernateTest.create(ps);
-
-            System.out.println("NOW: "+now.toString());
-            String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
-
-            System.out.println(query);
-            ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
-
-            if(sessions.size() <=0)
+            
+            if(!isUpdating)
             {
-                System.out.println("SESSION WAS NOT CREATED ERROR");
+                HibernateTest.create(ps);
+
+                System.out.println("NOW: "+now.toString());
+                String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
+
+                System.out.println(query);
+                ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
+
+                if(sessions.size() <=0)
+                {
+                    System.out.println("SESSION WAS NOT CREATED ERROR");
+                }
+                else
+                {
+
+                    System.out.println("ID: "+sessions.get(0).getParaprofessionalSessionID());
+                }
+                ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(0));
             }
             else
             {
                 
-                System.out.println("ID: "+sessions.get(0).getParaprofessionalSessionID());
+
+                System.out.println("NOW: "+now.toString());
+                String query = "from ParaprofessionalSession as ps where ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
+
+                System.out.println(query);
+                ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
+
+                if(sessions.size() <=0)
+                {
+                    System.out.println("SESSION WAS NOT CREATED ERROR");
+                }
+                else if(sessions.size() > 1)
+                {
+                    System.out.println("ID: "+sessions.get(0).getParaprofessionalSessionID());
+                }
+                else
+                {
+                    ps.setParaprofessionalSessionID(sessions.get(0).getParaprofessionalSessionID());
+                    HibernateTest.update(ps);
+                    //!!!
+                    //Call reload data
+                    //!!!
+                    //Remove when finished
+                }
             }
-            
-            ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(0));
+
             sessionsTable.repaint();
             
             Thread thread = new Thread(){
@@ -1267,13 +1330,14 @@ public class SIA_1 extends javax.swing.JFrame {
             };
 
             thread.start();
+            return true;
         }
         catch(Exception e)
         {
             System.out.println("ERROR ADDING SESSION"+e.getMessage() +"\n\n");
             e.printStackTrace();
-        }
-         
+            return false;
+        } 
     }
     
 
@@ -1298,13 +1362,13 @@ public class SIA_1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SIA.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SIAOld.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -1314,7 +1378,7 @@ public class SIA_1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA_1().setVisible(true);
+                new SIAView().setVisible(true);
             }
         });
     }
@@ -1322,29 +1386,20 @@ public class SIA_1 extends javax.swing.JFrame {
     private javax.swing.JLabel ParaprofessionalLabel;
     private javax.swing.JTabbedPane SIAPannel;
     private javax.swing.JScrollPane SIAScrollPanel;
+    private javax.swing.JButton addAgendaItemButton;
     private javax.swing.JButton addSessionbutton;
-    private javax.swing.JComboBox agendaCategoryCombo;
-    private javax.swing.JLabel agendaCategoryLabel;
-    private javax.swing.JLabel agendaDateLabel;
     private javax.swing.JPanel agendaPanel;
     private javax.swing.JTable agendaTable;
     private javax.swing.JScrollPane agendaTableScrollPanel;
-    private javax.swing.JTextArea agendaTextArea;
-    private javax.swing.JScrollPane agendaTextAreaScrollPanel;
     private javax.swing.JTable appointmentsTable;
     private javax.swing.JScrollPane appointmentsTableScrollPanel;
-    private javax.swing.JCheckBox autocompleteCheck;
-    private javax.swing.JButton cancelButton;
     private javax.swing.JButton clearButton;
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JPanel courseInfoPanel;
     private javax.swing.JLabel courseLabel;
-    private javax.swing.JPanel createAgendaPanel;
     private javax.swing.JComboBox creatorCombo;
     private javax.swing.JPanel creatorInfoPanel;
     private javax.swing.JLabel creatorLabel;
-    private javax.swing.JTextField dateField;
-    private javax.swing.JLabel dateLabel;
     private javax.swing.JButton deleteAgendaButton;
     private javax.swing.JButton deleteSessionButton;
     private javax.swing.JButton deleteSessionButton1;
@@ -1362,6 +1417,7 @@ public class SIA_1 extends javax.swing.JFrame {
     private javax.swing.JComboBox locationCombo;
     private javax.swing.JPanel locationInfoPanel;
     private javax.swing.JLabel locationLabel;
+    private javax.swing.JButton newStudentButton;
     private javax.swing.JTextField notesField;
     private javax.swing.JLabel notesLabel;
     private javax.swing.JPanel otherInfoPanel;
@@ -1378,7 +1434,6 @@ public class SIA_1 extends javax.swing.JFrame {
     private javax.swing.JTextField sessionstartField;
     private javax.swing.JLabel sessionstartLabel;
     private javax.swing.JPanel studentInfoPanel;
-    private javax.swing.JButton submitbutton;
     private javax.swing.JComboBox teacherCombo;
     private javax.swing.JLabel teacherLabel;
     private javax.swing.JCheckBox walkoutCheck;

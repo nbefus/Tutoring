@@ -33,31 +33,34 @@ import tutoring.entity.Client;
  *
  * @author Nathaniel
  */
-public class UltimateAutoCompleteClientComplete implements KeyListener, ActionListener, MouseListener, ItemListener
+public class UltimateAutoAutoComplete implements KeyListener, ActionListener, MouseListener, ItemListener
 {
     private ArrayList<ArrayList<String>> keywords;
+    private ArrayList<ArrayList<String>> reference;
     private JComboBox[] boxes;
     private boolean[] isUpdating;
     private boolean[] zeroIndexSel;
     private boolean[] firstClick;
     private int[] lastSize;
-    ArrayList<Client> clientsFirst;
+   /* ArrayList<Client> clientsFirst;
     ArrayList<Client> clientsLast;
     ArrayList<Client> clientsEmail;
-    ArrayList<Client> clientsPhone;
+    ArrayList<Client> clientsPhone;*/
     ArrayList<ArrayList<String>> matches = new ArrayList<ArrayList<String>>();
     
     private ArrayList<Integer> activeBoxIndexes = new ArrayList<Integer>();
     private ArrayList<String> activeBoxValues = new ArrayList<String>();
     
-    public UltimateAutoCompleteClientComplete(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
+    public UltimateAutoAutoComplete(ArrayList<ArrayList<String>>keywords, JComboBox[] boxes, ArrayList<ArrayList<String>>reference)// ArrayList<Client> clientsFirst, ArrayList<Client> clientsLast, ArrayList<Client> clientsPhone, ArrayList<Client> clientsEmail ) {
+    {
         this.keywords = keywords;
         this.boxes = boxes;
-        this.clientsFirst = clientsFirst;
+        this.reference = reference;
+        /*this.clientsFirst = clientsFirst;
         this.clientsLast = clientsLast;
         this.clientsPhone = clientsPhone;
         this.clientsEmail = clientsEmail;
-        
+        */
         isUpdating = new boolean[boxes.length];
         zeroIndexSel = new boolean[boxes.length];
         firstClick = new boolean[boxes.length];
@@ -323,15 +326,22 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                 {
                     String otherText = ((JTextComponent)boxes[i].getEditor().getEditorComponent()).getText();
                     String stringToFind;
+                    
+                     if(i != boxes.length-1)
+                        stringToFind = keywords.get(i+1).get(indexesOfValue.get(indexesOfValue.size()-1));//.getlName();
+                    else
+                        stringToFind = keywords.get(0).get(indexesOfValue.get(indexesOfValue.size()-1));
+                    
+                     /*
                     if(i == 0)
-                        stringToFind = clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
+                        stringToFind = reference.get(max)//clientsFirst.get(indexesOfValue.get(indexesOfValue.size()-1)).getlName();
                     else if(i == 1)
                         stringToFind = clientsLast.get(indexesOfValue.get(indexesOfValue.size()-1)).getPhone()+"";
                     else if(i == 2)
                         stringToFind = clientsPhone.get(indexesOfValue.get(indexesOfValue.size()-1)).getEmail()+"";
                     else
                         stringToFind = clientsEmail.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
-                    
+                    */
                     System.out.println("STRING TO FIND: "+stringToFind + " other text "+otherText);
                     if(!otherText.equals(stringToFind))
                     {
@@ -350,7 +360,7 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                         boolean moreResults = true;
                         int j = indexesOfValue.get(indexesOfValue.size()-1)-1;
                         String find = activeBoxValues.get(activeBoxValues.size()-1);
-                        
+                        char splitChar = ',';
                         while(moreResults)
                         {
                             System.out.println("J by itesel: "+j);
@@ -362,6 +372,10 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                             {
                                 System.out.println("FIND: "+find + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).size() + "--"+keywords.get(activeBoxIndexes.get(activeBoxValues.size()-1)).get(j).equals(find));
 
+                                String celement = reference.get(activeBoxIndexes.get(activeBoxIndexes.size()-1)).get(j);
+                                for(int z=0; z<celement.split(""+splitChar).length; z++)
+                                    System.out.println("CELEMENT: :: "+celement.split(""+splitChar)[z]);
+                                /*
                                 Client celement;
                                 if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 0)//(i == 1)
                                     celement = clientsFirst.get(j);
@@ -370,15 +384,27 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                                else if(activeBoxIndexes.get(activeBoxIndexes.size()-1) == 2)
                                     celement = clientsPhone.get(j);
                                 else
-                                    celement = clientsEmail.get(j);
+                                    celement = clientsEmail.get(j);*/
                                 
-                                System.out.println("Client element is "+celement.getfName()+" "+celement.getlName() + " "+celement.getPhone() + " "+celement.getEmail());
+                                System.out.println("Client element is "+celement);
                                 boolean containsAll = true;
                                 for(int k=0; k<activeBoxValues.size(); k++)
                                 {
                                     String elementk = activeBoxValues.get(k);
                                     System.out.println("Checking "+activeBoxValues.get(k)+" " + activeBoxValues.size());
-                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.getfName()))
+                                    
+                                    for(int m=0; m<celement.split(""+splitChar).length; m++)
+                                    {
+                                        //System.out.println("KEYWORDS SIZE: "+keywords.get(m).size());
+                                        if(activeBoxIndexes.get(k) == m && !elementk.equals(celement.split(""+splitChar)[m]))
+                                        {
+                                                containsAll = false;
+                                                System.out.println("DID not equal "+celement.split(""+splitChar)[m]);
+                                        }
+                                    }
+                                    
+                                    /*
+                                    if(activeBoxIndexes.get(k) == 0 && !elementk.equals(celement.split("|")[0]))//celement.getfName()))
                                     {
                                         containsAll = false;
                                         System.out.println("Did not eqal: "+celement.getfName());
@@ -399,11 +425,27 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                                             containsAll = false;
                                             System.out.println("Did not eqal: "+celement.getEmail());
                                     }
+                                    */
                                 }
                                 
                                 if(containsAll)
                                 {
                                     System.out.print("Passed test and added to "+i);
+                                    
+                                    for(int k=0; k<celement.split(""+splitChar).length; k++)
+                                    {
+                                        if(i == k && !matches.get(i).contains(celement.split(""+splitChar)[k]))
+                                        {
+                                            //if(celement.split(""+splitChar)[k].length() == 0)
+                                            //    celement.split(""+splitChar)[k] = "-";
+                                            
+                                            mcbm.addElement(celement.split(""+splitChar)[k]);
+
+                                            matches.get(i).add(celement.split(""+splitChar)[k]);
+                                        }
+                                    }
+                                    
+                                    /*
                                     if(i == 0 && !matches.get(i).contains(celement.getfName()))
                                     {
                                         System.out.println(celement.getfName());
@@ -434,20 +476,27 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
 
                                             matches.get(i).add(celement.getEmail());
                                         
-                                    }
+                                    }*/
                                     System.out.println("END");
                                 }
                                 
                                 //System.out.println("FOUND AND ADDED: "+clientsFirst.get(j).getlName());
-                                
-                                
+                                                              
                             }
                             else
                                 moreResults = false;
                         }
 
-                        boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
-
+                        for(int y=0; y<mcbm.getSize(); y++)
+                            System.out.println("*"+matches.get(i).get(y)+"*");
+                        //try{
+                        System.out.println("i:"+i);
+                            boxes[i].setSelectedIndex(0);//mcbm.setSelectedItem(0);
+                        //}
+                        //catch(Exception e)
+                       // {
+                        //    e.printStackTrace();
+                        //}
                         //updatelist(1, true);
                     }
                     else
@@ -768,6 +817,21 @@ public class UltimateAutoCompleteClientComplete implements KeyListener, ActionLi
                 //System.out.println("mouseExited");
             }
         };
+    }
+    
+    public void setComboValue(String value, int indexOfBox)
+    {
+        ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
+        updateList(indexOfBox, false);
+        ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
+        //KeyEvent ke = new KeyEvent(boxes[indexOfBox].getEditor().getEditorComponent(),0,0,0,KeyEvent.VK_BACK_SPACE);
+        //keyReleased(ke);
+        firstClick[indexOfBox] = true;
+    }
+    
+    public int getBoxesLength()
+    {
+        return boxes.length;
     }
     
 }

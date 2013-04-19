@@ -57,148 +57,146 @@ import tutoring.entity.Paraprofessional;
 import tutoring.entity.ParaprofessionalSession;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
-import tutoring.helper.ComboBoxCellEditor;
+import tutoring.editor.ComboBoxCellEditor;
 import tutoring.helper.Data;
 import tutoring.helper.HibernateTest;
-import tutoring.helper.MinuteCellRenderer;
+import tutoring.renderer.MinuteCellRenderer;
 import tutoring.helper.MinuteUpdate;
 import tutoring.helper.RestrictionListModel;
 import tutoring.helper.SessionTableModel;
-import tutoring.helper.TimestampCellEditor;
-import tutoring.helper.TimestampCellRenderer;
+import tutoring.editor.TimestampCellEditor;
+import tutoring.renderer.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
-import tutoring.helper.UltimateAutoCompleteClientNew;
+import tutoring.old.UltimateAutoCompleteClientOld;
 import tutoring.helper.Validate;
 
 /**
  *
  * @author shohe_i
  */
-public class Admin extends javax.swing.JFrame {
+public class AdminView extends javax.swing.JFrame
+{
 
     /**
      * Creates new form Admin
      */
-    private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
+    private UltimateAutoComplete uac;
+    private UltimateAutoCompleteClientOld uacc;
     DefaultListModel dlm = new DefaultListModel();
     RestrictionListModel restrictHelper;
-    
-    
+
     public enum ComboBoxesIndexes
     {
         /* search
          * boxes[0]=searchfnameCombo;
-        boxes[1]=searchlnameCombo;
-        boxes[2]=searchphoneCombo;
-        boxes[3]=searchemailCombo;
-        boxes[4]=searchcategorysessionCombo;
-        boxes[5]=searchcourseCombo;
-        boxes[6]=searchcreatorCombo;
-        boxes[7]=searchlevelCombo;
-        boxes[8]=searchlocationCombo;
-        boxes[9]=searchparaprofessionalCombo;
-        boxes[10]=searchteacherCombo;
+         boxes[1]=searchlnameCombo;
+         boxes[2]=searchphoneCombo;
+         boxes[3]=searchemailCombo;
+         boxes[4]=searchcategorysessionCombo;
+         boxes[5]=searchcourseCombo;
+         boxes[6]=searchcreatorCombo;
+         boxes[7]=searchlevelCombo;
+         boxes[8]=searchlocationCombo;
+         boxes[9]=searchparaprofessionalCombo;
+         boxes[10]=searchteacherCombo;
          */
+
         CFNAME(0, "First Name", "fname", 'd'),
         CLNAME(1, "Last Name", "lname", 'd'),
-        CPHONE(2,"Phone", "phone", 'd'),
+        CPHONE(2, "Phone", "phone", 'd'),
         CEMAIL(3, "Email", "email", 'd'),
         CATEGORY(4, "Category", "name", 'a'),
         COURSE(5, "Course", "abbrevName", 's'),
         CREATOR(6, "Creator", "", 'e'),
         LEVEL(7, "Level", "level", 'c'),
-        LOCATION(8, "Location", "location",'l'),
-        PARAPROFESSIONAL(9, "Tutor","", 'p'),
+        LOCATION(8, "Location", "location", 'l'),
+        PARAPROFESSIONAL(9, "Tutor", "", 'p'),
         TEACHER(10, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't'),
-        PFNAME(11, "First Name","fname", 'p'),
-        PLNAME(12, "Last Name","lname", 'p'),
+        PFNAME(11, "First Name", "fname", 'p'),
+        PLNAME(12, "Last Name", "lname", 'p'),
         PROLE(13, "Role", "type", 'r'),
-        PCATEGORY(14, "Category","name", 'a'),
-        PTERMINATIONDATE(15, "Termination Date","terminationDate", 'p'),
-        PHIREDATE(16, "Hire Date","", 'p'),
-        PCLOCKEDIN(17, "In?","isClockedIn", 'p');
-        
+        PCATEGORY(14, "Category", "name", 'a'),
+        PTERMINATIONDATE(15, "Termination Date", "terminationDate", 'p'),
+        PHIREDATE(16, "Hire Date", "", 'p'),
+        PCLOCKEDIN(17, "In?", "isClockedIn", 'p');
         private int indexOfCombo;
         private String displayName;
         private String databaseName;
         private char letter;
-        
-	private ComboBoxesIndexes(int i, String displayName, String databaseName, char letter) {
-		indexOfCombo = i;
-                this.displayName = displayName;
-                this.databaseName = databaseName;
-                this.letter = letter;
-	}
-        
+
+        private ComboBoxesIndexes(int i, String displayName, String databaseName, char letter)
+        {
+            indexOfCombo = i;
+            this.displayName = displayName;
+            this.databaseName = databaseName;
+            this.letter = letter;
+        }
+
         public char getLetter()
         {
             return letter;
         }
- 
-	public int getBoxIndex() {
-		return indexOfCombo;
-	}
-        
-        public String getDisplayName() {
-		return displayName;
-	}
-        
+
+        public int getBoxIndex()
+        {
+            return indexOfCombo;
+        }
+
+        public String getDisplayName()
+        {
+            return displayName;
+        }
+
         public String getDatabaseName()
         {
             return databaseName;
         }
-        
+
         public String getDatabaseName(String DisplayName)
         {
             ComboBoxesIndexes[] components = ComboBoxesIndexes.class.getEnumConstants();
-            for(int i=0; i< components.length; i++)
-                if(components[i].getDisplayName().equalsIgnoreCase(DisplayName))
+            for (int i = 0; i < components.length; i++)
+            {
+                if (components[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
                     return components[i].getDatabaseName();
-            
+                }
+            }
+
             return "";
         }
     }
-    public Admin() {
+
+    public AdminView()
+    {
         initComponents();
-       // setUpReportTab();
+        // setUpReportTab();
         setUpSearchTab();
         setUpGeneralReportTab();
     }
-    
 
     public void setUpGeneralReportTab()
     {
-        
+
 
         String[][] data = HibernateTest.getDataFromRegularQuery(
-                "SELECT "+
+                "SELECT "
+                + "abbrevName,"
+                + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
+                + "Sum(IF( TIMESTAMPDIFF("
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "
+                + "SUM(walkout) as 'Walkouts', "
+                + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "
+                + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "
+                + "FROM ParaprofessionalSession ps "
+                + "join Course c on ps.courseID=c.courseID "
+                + "join Subject s on c.subjectID=s.subjectID "
+                + "group by abbrevName");
 
-                "abbrevName,"+
-
-                "COUNT(paraprofessionalSessionID) as 'Total Sessions',"+
-
-                "Sum(IF( TIMESTAMPDIFF("+
-                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "+
-
-                "Sum(IF( TIMESTAMPDIFF( "+
-                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "+
-
-                "SUM(walkout) as 'Walkouts', "+
-
-                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "+
-
-                "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "+
-
-                "FROM ParaprofessionalSession ps "+
-                "join Course c on ps.courseID=c.courseID "+
-                "join Subject s on c.subjectID=s.subjectID "+
-
-                "group by abbrevName"
-                );
-        
         String[][] categoryData = HibernateTest.getDataFromRegularQuery(
                 "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
                 + " from ParaprofessionalSession ps"
@@ -206,236 +204,239 @@ public class Admin extends javax.swing.JFrame {
                 + " join Subject s on course.subjectID=s.subjectID"
                 + " join Category c on s.categoryID=c.categoryID"
                 + " group by c.name");
-        
+
         String[][] otherValues = HibernateTest.getDataFromRegularQuery(
-                "SELECT "+
-                
-                "SUM(walkout) as 'Walkouts', "+
-                
-                "COUNT(paraprofessionalID) as 'Total Students',"+
+                "SELECT "
+                + "SUM(walkout) as 'Walkouts', "
+                + "COUNT(paraprofessionalID) as 'Total Students',"
+                + "Sum(IF( TIMESTAMPDIFF("
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "
+                + "FROM ParaprofessionalSession ps");
 
-                "Sum(IF( TIMESTAMPDIFF("+
-                "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "+
-
-                "FROM ParaprofessionalSession ps");
-        
         String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
-                "SELECT "+
-                
-                "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"+
-                " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"+
-                " AS '<10 Min. Sessions', "+
-                
-                 "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"+
-                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"+
-                " AS '10-24 Min. Sessions', "+
-                
-                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"+
-                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"+
-                " AS '25-35 Min. Sessions', "+
-                
-                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"+
-                " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"+
-                " AS '36-60 Min. Sessions', "+
-                "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 60"+
-                ", 1, 0))"+
-                " AS '>60 Min. Sessions' "+
+                "SELECT "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
+                + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
+                + " AS '<10 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
+                + " AS '10-24 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
+                + " AS '25-35 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
+                + " AS '36-60 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 60"
+                + ", 1, 0))"
+                + " AS '>60 Min. Sessions' "
+                + "FROM ParaprofessionalSession ps");
 
-                "FROM ParaprofessionalSession ps");
-        
         displayCharts(data, categoryData, otherValues, studentMinutes);
-        
+
 
 
         // String[] columns = new String[c.size()];
         // for(int i=0; i<c.size(); i++)
         //     columns[i]=(String)c.get(i);
-         
+
 
     }
-    
+
     private void displayCharts(String[][] generalData, String[][] categoryData, String[][] otherValues, String[][] studentMinutes)
     {
-          String[] columns = {"Subject","Total Sessions", "30-min. Sessions","Avg. Session/Visit","Total Wait Time", "Avg. Wait Time"};
-
-         DefaultTableModel dtm = new DefaultTableModel();
-         dtm.setDataVector(generalData, columns);
-         generalReportTable.setModel(dtm);
-
-         String[] columns1 = {"Category","# of Sessions"};
-
-         DefaultTableModel dtm1 = new DefaultTableModel();
-         dtm1.setDataVector(categoryData, columns1);
-         generalReportTable3.setModel(dtm1);
-         
-         String[] columns2 = {"Walkouts","Total Students","Total Sessions"};
-
-         DefaultTableModel dtm2 = new DefaultTableModel();
-         dtm2.setDataVector(otherValues, columns2);
-         generalReportTable2.setModel(dtm2);
-         
-         String[] columns3 = {"<10 Min.","10-25 Min.","25-35 Min.", "36-60 Min.", ">60 Min."};
-
-         DefaultTableModel dtm3 = new DefaultTableModel();
-         dtm3.setDataVector(studentMinutes, columns3);
-         generalReportTable4.setModel(dtm3);
-
-
-
-         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
-         DefaultCategoryDataset barDataset1 = new DefaultCategoryDataset();
-         DefaultCategoryDataset barDataset2 = new DefaultCategoryDataset();
-         DefaultCategoryDataset barDataset3 = new DefaultCategoryDataset();
-         
-         DefaultPieDataset pieDataset = new DefaultPieDataset();
-         DefaultPieDataset pieDataset1 = new DefaultPieDataset();
-         DefaultPieDataset pieDataset2 = new DefaultPieDataset();
-         
-         String series = "Category";
-        
-
-         // String[] categories = new String[data.length];
-         // for(int i=0; i<data.length; i++)
-         //     categories[i] = data[i][1];
-
-         for(int i=0; i<categoryData.length; i++)
-         {
-             barDataset1.addValue(Double.parseDouble(categoryData[i][1]), series, categoryData[i][0]);
-             pieDataset1.setValue(categoryData[i][0], Double.parseDouble(categoryData[i][1]));
-         }
-         
-         for(int i=0; i<columns2.length; i++)
-         {
-            barDataset2.addValue(Double.parseDouble(otherValues[0][i]), series, columns2[i]);
-         }
-         
-         for(int i=0; i<columns3.length; i++)
-         {
-            barDataset3.addValue(Double.parseDouble(studentMinutes[0][i]), series, columns3[i]);
-            pieDataset2.setValue(columns3[i], Double.parseDouble(studentMinutes[0][i]));
-         }
-         
-        for(int i=0; i<generalData.length; i++)
+        String[] columns =
         {
-            System.out.println(Double.parseDouble(generalData[i][1])+" + "+generalData[i][0]);
-            barDataset.addValue(Double.parseDouble(generalData[i][1]), series, generalData[i][0]);
-            pieDataset.setValue(generalData[i][0], Double.parseDouble(generalData[i][1]));
-            
-            
+            "Subject", "Total Sessions", "30-min. Sessions", "Avg. Session/Visit", "Total Wait Time", "Avg. Wait Time"
+        };
+
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setDataVector(generalData, columns);
+        generalReportTable.setModel(dtm);
+
+        String[] columns1 =
+        {
+            "Category", "# of Sessions"
+        };
+
+        DefaultTableModel dtm1 = new DefaultTableModel();
+        dtm1.setDataVector(categoryData, columns1);
+        generalReportTable3.setModel(dtm1);
+
+        String[] columns2 =
+        {
+            "Walkouts", "Total Students", "Total Sessions"
+        };
+
+        DefaultTableModel dtm2 = new DefaultTableModel();
+        dtm2.setDataVector(otherValues, columns2);
+        generalReportTable2.setModel(dtm2);
+
+        String[] columns3 =
+        {
+            "<10 Min.", "10-25 Min.", "25-35 Min.", "36-60 Min.", ">60 Min."
+        };
+
+        DefaultTableModel dtm3 = new DefaultTableModel();
+        dtm3.setDataVector(studentMinutes, columns3);
+        generalReportTable4.setModel(dtm3);
+
+
+
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset1 = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset2 = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset3 = new DefaultCategoryDataset();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        DefaultPieDataset pieDataset1 = new DefaultPieDataset();
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();
+
+        String series = "Category";
+
+
+        // String[] categories = new String[data.length];
+        // for(int i=0; i<data.length; i++)
+        //     categories[i] = data[i][1];
+
+        for (int i = 0; i < categoryData.length; i++)
+        {
+            barDataset1.addValue(Double.parseDouble(categoryData[i][1]), series, categoryData[i][0]);
+            pieDataset1.setValue(categoryData[i][0], Double.parseDouble(categoryData[i][1]));
         }
 
-        final JFreeChart barChart = createChart(barDataset, "Total Student Sessions by Subject","# of Student Sessions","Subject",false, Color.green, Color.gray);
+        for (int i = 0; i < columns2.length; i++)
+        {
+            barDataset2.addValue(Double.parseDouble(otherValues[0][i]), series, columns2[i]);
+        }
+
+        for (int i = 0; i < columns3.length; i++)
+        {
+            barDataset3.addValue(Double.parseDouble(studentMinutes[0][i]), series, columns3[i]);
+            pieDataset2.setValue(columns3[i], Double.parseDouble(studentMinutes[0][i]));
+        }
+
+        for (int i = 0; i < generalData.length; i++)
+        {
+            System.out.println(Double.parseDouble(generalData[i][1]) + " + " + generalData[i][0]);
+            barDataset.addValue(Double.parseDouble(generalData[i][1]), series, generalData[i][0]);
+            pieDataset.setValue(generalData[i][0], Double.parseDouble(generalData[i][1]));
+
+
+        }
+
+        final JFreeChart barChart = createChart(barDataset, "Total Student Sessions by Subject", "# of Student Sessions", "Subject", false, Color.green, Color.gray);
         final ChartPanel barChartPanel = new ChartPanel(barChart);
         barChartPanel.setPreferredSize(generalChartPanelLong.getSize());
-        System.out.println(barChartPanel.getPreferredSize().height + " "+barChartPanel.getPreferredSize().width);
+        System.out.println(barChartPanel.getPreferredSize().height + " " + barChartPanel.getPreferredSize().width);
         generalChartPanelLong.removeAll();
         generalChartPanelLong.add(barChartPanel);
         generalChartPanelLong.validate();
-        
-        
-        final JFreeChart barChart1 = createChart(barDataset1, "Total Student Sessions by Category","# of Student Sessions","Category",false, Color.blue, Color.gray);
+
+
+        final JFreeChart barChart1 = createChart(barDataset1, "Total Student Sessions by Category", "# of Student Sessions", "Category", false, Color.blue, Color.gray);
         final ChartPanel barChartPanel1 = new ChartPanel(barChart1);
         barChartPanel1.setPreferredSize(generalChartPanelLeft2.getSize());
-        System.out.println(barChartPanel1.getPreferredSize().height + " "+barChartPanel1.getPreferredSize().width);
+        System.out.println(barChartPanel1.getPreferredSize().height + " " + barChartPanel1.getPreferredSize().width);
         generalChartPanelLeft2.removeAll();
         generalChartPanelLeft2.add(barChartPanel1);
         generalChartPanelLeft2.validate();
-        
-       final JFreeChart barChart2 = createChart(barDataset2, "Other Information","Total #","Statistic",false, Color.red, Color.gray);
+
+        final JFreeChart barChart2 = createChart(barDataset2, "Other Information", "Total #", "Statistic", false, Color.red, Color.gray);
         final ChartPanel barChartPanel2 = new ChartPanel(barChart2);
         barChartPanel2.setPreferredSize(generalChartPanelMid2.getSize());
-        System.out.println(barChartPanel2.getPreferredSize().height + " "+barChartPanel2.getPreferredSize().width);
+        System.out.println(barChartPanel2.getPreferredSize().height + " " + barChartPanel2.getPreferredSize().width);
         generalChartPanelMid2.removeAll();
         generalChartPanelMid2.add(barChartPanel2);
         generalChartPanelMid2.validate();
-        
-        final JFreeChart barChart3 = createChart(barDataset3, "Session Length Overview","# of Sessions of Length","Length Period",false, Color.gray, Color.white);
+
+        final JFreeChart barChart3 = createChart(barDataset3, "Session Length Overview", "# of Sessions of Length", "Length Period", false, Color.gray, Color.white);
         final ChartPanel barChartPanel3 = new ChartPanel(barChart3);
         barChartPanel3.setPreferredSize(generalChartPanelRight2.getSize());
-        System.out.println(barChartPanel3.getPreferredSize().height + " "+barChartPanel3.getPreferredSize().width);
+        System.out.println(barChartPanel3.getPreferredSize().height + " " + barChartPanel3.getPreferredSize().width);
         generalChartPanelRight2.removeAll();
         generalChartPanelRight2.add(barChartPanel3);
         generalChartPanelRight2.validate();
-        
-        
+
+
         final JFreeChart pieChart = createChart(pieDataset, "Total Student Sessions by Subject");
         final ChartPanel pieChartPanel = new ChartPanel(pieChart);
         pieChartPanel.setPreferredSize(generalChartPanelLeft.getSize());
-        System.out.println(pieChartPanel.getPreferredSize().height + " "+pieChartPanel.getPreferredSize().width);
+        System.out.println(pieChartPanel.getPreferredSize().height + " " + pieChartPanel.getPreferredSize().width);
         generalChartPanelLeft.removeAll();
         generalChartPanelLeft.add(pieChartPanel);
         generalChartPanelLeft.validate();
-        
+
         final JFreeChart pieChart1 = createChart(pieDataset1, "Total Student Sessions by Category");
         final ChartPanel pieChartPanel1 = new ChartPanel(pieChart1);
         pieChartPanel1.setPreferredSize(generalChartPanelRight.getSize());
-        System.out.println(pieChartPanel1.getPreferredSize().height + " "+pieChartPanel1.getPreferredSize().width);
+        System.out.println(pieChartPanel1.getPreferredSize().height + " " + pieChartPanel1.getPreferredSize().width);
         generalChartPanelRight.removeAll();
         generalChartPanelRight.add(pieChartPanel1);
         generalChartPanelRight.validate();
-        
+
         final JFreeChart pieChart2 = createChart(pieDataset2, "Total Student Sessions by Length");
         final ChartPanel pieChartPanel2 = new ChartPanel(pieChart2);
         pieChartPanel2.setPreferredSize(generalChartPanelMid.getSize());
-        System.out.println(pieChartPanel2.getPreferredSize().height + " "+pieChartPanel2.getPreferredSize().width);
+        System.out.println(pieChartPanel2.getPreferredSize().height + " " + pieChartPanel2.getPreferredSize().width);
         generalChartPanelMid.removeAll();
         generalChartPanelMid.add(pieChartPanel2);
         generalChartPanelMid.validate();
-        
-       // thechartPanel1.validate();
-      //  reportPanel1.validate();
-       // jScrollPane10.validate();
+
+        // thechartPanel1.validate();
+        //  reportPanel1.validate();
+        // jScrollPane10.validate();
     }
-    
-    private JFreeChart createChart(PieDataset dataset, String title) {
-        
-        JFreeChart chart = ChartFactory.createPieChart3D(title,          // chart title
-            dataset,                // data
-            true,                   // include legend
-            true,
-            false);
+
+    private JFreeChart createChart(PieDataset dataset, String title)
+    {
+
+        JFreeChart chart = ChartFactory.createPieChart3D(title, // chart title
+                dataset, // data
+                true, // include legend
+                true,
+                false);
 
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         chart.setBorderVisible(false);
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(AdminView.this.getBackground());
         plot.setStartAngle(290);
         plot.setOutlineVisible(false);
         plot.setDirection(Rotation.CLOCKWISE);
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(AdminView.this.getBackground());
         plot.setForegroundAlpha(0.75f);
-        
+
         LegendTitle lt = chart.getLegend();
-        lt.setBackgroundPaint(Admin.this.getBackground());
+        lt.setBackgroundPaint(AdminView.this.getBackground());
         lt.setBorder(0, 0, 0, 0);
         //lt.setBackgroundPaint(null);
         return chart;
     }
-    
-   
-    
-    private JFreeChart createChart(final CategoryDataset dataset, final String title, final String xText, final String yText, final boolean showLegend, Color start, Color end) {
-        
+
+    private JFreeChart createChart(final CategoryDataset dataset, final String title, final String xText, final String yText, final boolean showLegend, Color start, Color end)
+    {
+
         // create the chart...
         final JFreeChart chart = ChartFactory.createBarChart(
-            title,         // chart title
-            xText,               // domain axis label
-            yText,                  // range axis label
-            dataset,                  // data
-            PlotOrientation.VERTICAL, // orientation
-            showLegend,                     // include legend
-            true,                     // tooltips?
-            false                     // URLs?
-        );
+                title, // chart title
+                xText, // domain axis label
+                yText, // range axis label
+                dataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                showLegend, // include legend
+                true, // tooltips?
+                false // URLs?
+                );
 
         // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
         // set the background color for the chart...
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(AdminView.this.getBackground());
 
         // get a reference to the plot for further customisation...
         final CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(AdminView.this.getBackground());
         plot.setDomainGridlinePaint(Color.black);
         plot.setRangeGridlinePaint(Color.black);
         plot.setOutlineVisible(false);
@@ -446,45 +447,41 @@ public class Admin extends javax.swing.JFrame {
         // disable bar outlines...
         final BarRenderer renderer = (BarRenderer) plot.getRenderer();
         renderer.setDrawBarOutline(false);
-        
+
         // set up gradient paints for series...
         final GradientPaint gp0 = new GradientPaint(
-            0.0f, 0.0f, start, 
-            0.0f, 0.0f, end
-        );
+                0.0f, 0.0f, start,
+                0.0f, 0.0f, end);
         /*
-        final GradientPaint gp1 = new GradientPaint(
-            0.0f, 0.0f, Color.green, 
-            0.0f, 0.0f, Color.lightGray
-        );
-        final GradientPaint gp2 = new GradientPaint(
-            0.0f, 0.0f, Color.red, 
-            0.0f, 0.0f, Color.lightGray
-        );*/
+         final GradientPaint gp1 = new GradientPaint(
+         0.0f, 0.0f, Color.green, 
+         0.0f, 0.0f, Color.lightGray
+         );
+         final GradientPaint gp2 = new GradientPaint(
+         0.0f, 0.0f, Color.red, 
+         0.0f, 0.0f, Color.lightGray
+         );*/
         renderer.setSeriesPaint(0, gp0);
         /*
-        renderer.setSeriesPaint(1, gp1);
-        renderer.setSeriesPaint(2, gp2);*/
+         renderer.setSeriesPaint(1, gp1);
+         renderer.setSeriesPaint(2, gp2);*/
 
         final CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setCategoryLabelPositions(
-            CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
-        );
+                CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
         // OPTIONAL CUSTOMISATION COMPLETED.
-        
+
         return chart;
     }
-    
-    
-    
+
     public void setUpSearchTab()
     {
         //ComboBoxesIndexes.class.getEnumConstants();
         //BASED ON TABLE SEARCHING..
-        
- 
+
+
         searchList.setModel(dlm);
-        
+
         searchclientPanel.setVisible(true);
         searchcoursePanel.setVisible(false);
         searchsessionPanel.setVisible(false);
@@ -492,30 +489,30 @@ public class Admin extends javax.swing.JFrame {
         searchteacherPanel.setVisible(false);
         searchagendaPanel.setVisible(false);
         searchsubjectPanel.setVisible(false);
-        
+
         Data d = new Data(false);
-        
-        JComboBox[] boxes = new  JComboBox[15];
-        boxes[0]=searchfnameCombo;
-        boxes[1]=searchlnameCombo;
-        boxes[2]=searchphoneCombo;
-        boxes[3]=searchemailCombo;
-        boxes[4]=searchcategorysessionCombo;
-        boxes[5]=searchcourseCombo;
-        boxes[6]=searchcreatorCombo;
-        boxes[7]=searchlevelCombo;
-        boxes[8]=searchlocationCombo;
-        boxes[9]=searchparaprofessionalCombo;
-        boxes[10]=searchteacherCombo;
-        boxes[11]=searchparaprofessionalfirstCombo;
-        boxes[12]=searchparaprofessionallastCombo;
-        boxes[13]=searchparaprofessionalroleCombo;
+
+        JComboBox[] boxes = new JComboBox[15];
+        boxes[0] = searchfnameCombo;
+        boxes[1] = searchlnameCombo;
+        boxes[2] = searchphoneCombo;
+        boxes[3] = searchemailCombo;
+        boxes[4] = searchcategorysessionCombo;
+        boxes[5] = searchcourseCombo;
+        boxes[6] = searchcreatorCombo;
+        boxes[7] = searchlevelCombo;
+        boxes[8] = searchlocationCombo;
+        boxes[9] = searchparaprofessionalCombo;
+        boxes[10] = searchteacherCombo;
+        boxes[11] = searchparaprofessionalfirstCombo;
+        boxes[12] = searchparaprofessionallastCombo;
+        boxes[13] = searchparaprofessionalroleCombo;
         //boxes[14]=searchparaprofessionalhireField;
         //boxes[15]=searchparaprofessionalterminationField;
-        boxes[14]=searchparaprofessionalcategoryCombo;
-        
-       
-        
+        boxes[14] = searchparaprofessionalcategoryCombo;
+
+
+
 
         ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
         cultimateList.add(Data.getClientsfirst());
@@ -534,29 +531,27 @@ public class Admin extends javax.swing.JFrame {
         cultimateList.add(Data.getRoleslist());
         cultimateList.add(Data.getMulticategorylist());
         uac = new UltimateAutoComplete(cultimateList, boxes);
-        
-        clientRadio.setSelected(true);
-        
-        //String[] restrictions = new String[4];
-        
-        /*restrictions[0]="First Name is any";
-        restrictions[1]="Last Name is any";
-        restrictions[2]="Phone is any";
-        restrictions[3]="Email is any";*/
 
-       // for(int i=0; i<restrictions.length; i++)
-           // dlm.addElement(restrictions[i]);
-        
+        clientRadio.setSelected(true);
+
+        //String[] restrictions = new String[4];
+
+        /*restrictions[0]="First Name is any";
+         restrictions[1]="Last Name is any";
+         restrictions[2]="Phone is any";
+         restrictions[3]="Email is any";*/
+
+        // for(int i=0; i<restrictions.length; i++)
+        // dlm.addElement(restrictions[i]);
+
         dlm.addElement("Search for all records");
         restrictHelper = new RestrictionListModel(dlm);//, restrictions);
     }
-    
+
     public void setUpSessionsTab()
     {
-        
     }
-    
-   
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1182,9 +1177,6 @@ public class Admin extends javax.swing.JFrame {
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                                .add(175, 175, 175)
-                                .add(autocompleteCheck))
                             .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                                 .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                                     .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -1203,7 +1195,10 @@ public class Admin extends javax.swing.JFrame {
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                         .add(126, 126, 126)
                         .add(createAgendaPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(agendaPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(agendaPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
+                        .add(322, 322, 322)
+                        .add(autocompleteCheck)))
                 .addContainerGap(113, Short.MAX_VALUE))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
@@ -1816,7 +1811,7 @@ public class Admin extends javax.swing.JFrame {
                                 .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(18, 18, 18)
                                 .add(searchAddRestrictionsButton)
-                                .add(18, 18, Short.MAX_VALUE)
+                                .add(18, 70, Short.MAX_VALUE)
                                 .add(searchsearchButton)
                                 .add(528, 528, 528))
                             .add(sessionsPanel1Layout.createSequentialGroup()
@@ -1876,7 +1871,7 @@ public class Admin extends javax.swing.JFrame {
                         .add(searchclearrestrictionsButton)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -1987,7 +1982,7 @@ public class Admin extends javax.swing.JFrame {
                                 .add(21, 21, 21)
                                 .add(jLabel6)))
                         .add(generalReportLoadButton))
-                    .addContainerGap(1193, Short.MAX_VALUE)))
+                    .addContainerGap(1151, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(185, 185, 185)
@@ -1997,7 +1992,7 @@ public class Admin extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2019,7 +2014,7 @@ public class Admin extends javax.swing.JFrame {
                     .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(18, 18, 18)
                     .add(generalReportLoadButton)
-                    .addContainerGap(126, Short.MAX_VALUE)))
+                    .addContainerGap(105, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(16, 16, 16)
@@ -2117,7 +2112,8 @@ public class Admin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void generalReportLoadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generalReportLoadButtonActionPerformed
-        try{
+        try
+        {
             String begin = generalReportBeginField.getText().trim();
             String end = generalReportEndField.getText().trim();
 
@@ -2126,109 +2122,89 @@ public class Admin extends javax.swing.JFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
             Timestamp beginDate = null;
             Timestamp endDate = null;
-            if(isDateBegin)
-            beginDate = new Timestamp(sdf.parse(begin).getTime());
-            if(isDateEnd)
-            endDate = new Timestamp(sdf.parse(end).getTime());
+            if (isDateBegin)
+            {
+                beginDate = new Timestamp(sdf.parse(begin).getTime());
+            }
+            if (isDateEnd)
+            {
+                endDate = new Timestamp(sdf.parse(end).getTime());
+            }
 
-            if(beginDate != null && endDate != null && beginDate.before(endDate))
+            if (beginDate != null && endDate != null && beginDate.before(endDate))
             {
                 String[][] data = HibernateTest.getDataFromRegularQuery(
-                    "SELECT "+
-
-                    "abbrevName,"+
-
-                    "COUNT(paraprofessionalSessionID) as 'Total Sessions',"+
-
-                    "Sum(IF( TIMESTAMPDIFF("+
-                    "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                    "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "+
-
-                    "Sum(IF( TIMESTAMPDIFF( "+
-                    "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                    "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "+
-
-                    "SUM(walkout) as 'Walkouts', "+
-
-                    "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "+
-
-                    "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "+
-
-                    "FROM ParaprofessionalSession ps "+
-                    "join Course c on ps.courseID=c.courseID "+
-                    "join Subject s on c.subjectID=s.subjectID "+
-
-                    "where "+
-                    "timeAndDateEntered "+
-                    "between "+
-                    "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
-
-                    "group by abbrevName"
-                );
+                        "SELECT "
+                        + "abbrevName,"
+                        + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
+                        + "Sum(IF( TIMESTAMPDIFF("
+                        + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                        + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "
+                        + "Sum(IF( TIMESTAMPDIFF( "
+                        + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                        + "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "
+                        + "SUM(walkout) as 'Walkouts', "
+                        + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "
+                        + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "
+                        + "FROM ParaprofessionalSession ps "
+                        + "join Course c on ps.courseID=c.courseID "
+                        + "join Subject s on c.subjectID=s.subjectID "
+                        + "where "
+                        + "timeAndDateEntered "
+                        + "between "
+                        + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                        + "group by abbrevName");
 
                 String[][] categoryData = HibernateTest.getDataFromRegularQuery(
-                    "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
-                    + " from ParaprofessionalSession ps"
-                    + " join Course course on course.courseID=ps.courseID"
-                    + " join Subject s on course.subjectID=s.subjectID"
-                    + " join Category c on s.categoryID=c.categoryID"
-                    +"where "+
-                    "timeAndDateEntered "+
-                    "between "+
-                    "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
-
-                    " group by c.name");
+                        "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
+                        + " from ParaprofessionalSession ps"
+                        + " join Course course on course.courseID=ps.courseID"
+                        + " join Subject s on course.subjectID=s.subjectID"
+                        + " join Category c on s.categoryID=c.categoryID"
+                        + "where "
+                        + "timeAndDateEntered "
+                        + "between "
+                        + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                        + " group by c.name");
 
                 String[][] otherValues = HibernateTest.getDataFromRegularQuery(
-                    "SELECT "+
-
-                    "SUM(walkout) as 'Walkouts', "+
-
-                    "COUNT(paraprofessionalID) as 'Total Students',"+
-
-                    "Sum(IF( TIMESTAMPDIFF("+
-                    "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "+
-                    "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions', "+
-
-                    "where "+
-                    "timeAndDateEntered "+
-                    "between "+
-                    "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
-
-                    "FROM ParaprofessionalSession ps");
+                        "SELECT "
+                        + "SUM(walkout) as 'Walkouts', "
+                        + "COUNT(paraprofessionalID) as 'Total Students',"
+                        + "Sum(IF( TIMESTAMPDIFF("
+                        + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                        + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions', "
+                        + "where "
+                        + "timeAndDateEntered "
+                        + "between "
+                        + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                        + "FROM ParaprofessionalSession ps");
 
                 String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
-                    "SELECT "+
-
-                    "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"+
-                    " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"+
-                    " AS '<10 Min. Sessions', "+
-
-                    "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"+
-                    " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"+
-                    " AS '10-24 Min. Sessions', "+
-
-                    "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"+
-                    " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"+
-                    " AS '25-35 Min. Sessions', "+
-
-                    "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"+
-                    " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"+
-                    " AS '36-60 Min. Sessions', "+
-
-                    "where "+
-                    "timeAndDateEntered "+
-                    "between "+
-                    "'"+beginDate.toString()+"' and '"+endDate.toString()+"'"+
-
-                    "FROM ParaprofessionalSession ps");
+                        "SELECT "
+                        + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
+                        + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
+                        + " AS '<10 Min. Sessions', "
+                        + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
+                        + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
+                        + " AS '10-24 Min. Sessions', "
+                        + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
+                        + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
+                        + " AS '25-35 Min. Sessions', "
+                        + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
+                        + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
+                        + " AS '36-60 Min. Sessions', "
+                        + "where "
+                        + "timeAndDateEntered "
+                        + "between "
+                        + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                        + "FROM ParaprofessionalSession ps");
 
                 displayCharts(data, categoryData, otherValues, studentMinutes);
 
             }
 
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             System.out.println("EXCEPTION on load");
         }
@@ -2237,7 +2213,7 @@ public class Admin extends javax.swing.JFrame {
 
     private void paraprofessionalRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paraprofessionalRadioActionPerformed
         System.out.println("ACTION ON CLIENT RADIO");
-        if(paraprofessionalRadio.isSelected())
+        if (paraprofessionalRadio.isSelected())
         {
             searchclientPanel.setVisible(false);
             searchcoursePanel.setVisible(false);
@@ -2250,14 +2226,14 @@ public class Admin extends javax.swing.JFrame {
             dlm.clear();
 
             /*
-            String[] restrictions = new String[4];
-            restrictions[0]="First Name is any";
-            restrictions[1]="Last Name is any";
-            restrictions[2]="Phone is any";
-            restrictions[3]="Email is any";
+             String[] restrictions = new String[4];
+             restrictions[0]="First Name is any";
+             restrictions[1]="Last Name is any";
+             restrictions[2]="Phone is any";
+             restrictions[3]="Email is any";
 
-            for(int i=0; i<restrictions.length; i++)
-            dlm.addElement(restrictions[i]);*/
+             for(int i=0; i<restrictions.length; i++)
+             dlm.addElement(restrictions[i]);*/
 
             dlm.addElement("Search for all records");
             // restrictHelper.setRestrictions(restrictions);
@@ -2268,7 +2244,7 @@ public class Admin extends javax.swing.JFrame {
     private void courseRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseRadioActionPerformed
 
         System.out.println("ACTION ON COURSE RADIO");
-        if(courseRadio.isSelected())
+        if (courseRadio.isSelected())
         {
             searchclientPanel.setVisible(false);
             searchcoursePanel.setVisible(true);
@@ -2280,13 +2256,13 @@ public class Admin extends javax.swing.JFrame {
 
             dlm.clear();
             /*
-            String[] restrictions = new String[3];
-            restrictions[0]="Course is any";
-            restrictions[1]="Course# is any";
-            restrictions[2]="Teacher is any";
+             String[] restrictions = new String[3];
+             restrictions[0]="Course is any";
+             restrictions[1]="Course# is any";
+             restrictions[2]="Teacher is any";
 
-            for(int i=0; i<restrictions.length; i++)
-            dlm.addElement(restrictions[i]);*/
+             for(int i=0; i<restrictions.length; i++)
+             dlm.addElement(restrictions[i]);*/
 
             // restrictHelper.setRestrictions(restrictions);
 
@@ -2297,7 +2273,7 @@ public class Admin extends javax.swing.JFrame {
     private void clientRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientRadioActionPerformed
 
         System.out.println("ACTION ON CLIENT RADIO");
-        if(clientRadio.isSelected())
+        if (clientRadio.isSelected())
         {
             searchclientPanel.setVisible(true);
             searchcoursePanel.setVisible(false);
@@ -2310,14 +2286,14 @@ public class Admin extends javax.swing.JFrame {
             dlm.clear();
 
             /*
-            String[] restrictions = new String[4];
-            restrictions[0]="First Name is any";
-            restrictions[1]="Last Name is any";
-            restrictions[2]="Phone is any";
-            restrictions[3]="Email is any";
+             String[] restrictions = new String[4];
+             restrictions[0]="First Name is any";
+             restrictions[1]="Last Name is any";
+             restrictions[2]="Phone is any";
+             restrictions[3]="Email is any";
 
-            for(int i=0; i<restrictions.length; i++)
-            dlm.addElement(restrictions[i]);*/
+             for(int i=0; i<restrictions.length; i++)
+             dlm.addElement(restrictions[i]);*/
 
             dlm.addElement("Search for all records");
             // restrictHelper.setRestrictions(restrictions);
@@ -2328,10 +2304,10 @@ public class Admin extends javax.swing.JFrame {
 
     private void searchclearrestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchclearrestrictionsButtonActionPerformed
         /*
-        String[] restrictions = restrictHelper.getRestrictions();
+         String[] restrictions = restrictHelper.getRestrictions();
 
-        for(int i=0; i<restrictions.length; i++)
-        dlm.set(i, restrictions[i]);*/
+         for(int i=0; i<restrictions.length; i++)
+         dlm.set(i, restrictions[i]);*/
 
         dlm.clear();
         dlm.addElement("Search for all records");
@@ -2341,10 +2317,14 @@ public class Admin extends javax.swing.JFrame {
     private void searchresetrestrictionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchresetrestrictionButtonActionPerformed
 
         //dlm.set(searchList.getSelectedIndex(), restrictHelper.getRestrictionAt(searchList.getSelectedIndex()));
-        if(searchList.getSelectedIndex() > 1 && dlm.size()-1 == searchList.getSelectedIndex() )
-        dlm.setElementAt(dlm.getElementAt(dlm.size()-2).toString().substring(0, dlm.getElementAt(dlm.size()-2).toString().length()-3), dlm.size()-2);
-        if(searchList.getSelectedIndex() > 0)
-        dlm.removeElement(searchList.getSelectedValue());
+        if (searchList.getSelectedIndex() > 1 && dlm.size() - 1 == searchList.getSelectedIndex())
+        {
+            dlm.setElementAt(dlm.getElementAt(dlm.size() - 2).toString().substring(0, dlm.getElementAt(dlm.size() - 2).toString().length() - 3), dlm.size() - 2);
+        }
+        if (searchList.getSelectedIndex() > 0)
+        {
+            dlm.removeElement(searchList.getSelectedValue());
+        }
 
     }//GEN-LAST:event_searchresetrestrictionButtonActionPerformed
 
@@ -2352,30 +2332,30 @@ public class Admin extends javax.swing.JFrame {
 
         ArrayList<String> restrictions = new ArrayList<String>();
         ArrayList<String> displayNames = new ArrayList<String>();
-        if(clientRadio.isSelected())
+        if (clientRadio.isSelected())
         {
 
-            String fname = ((JTextComponent)searchfnameCombo.getEditor().getEditorComponent()).getText();
-            String lname = ((JTextComponent)searchlnameCombo.getEditor().getEditorComponent()).getText();
-            String phone = ((JTextComponent)searchphoneCombo.getEditor().getEditorComponent()).getText();
-            String email = ((JTextComponent)searchemailCombo.getEditor().getEditorComponent()).getText();
+            String fname = ((JTextComponent) searchfnameCombo.getEditor().getEditorComponent()).getText();
+            String lname = ((JTextComponent) searchlnameCombo.getEditor().getEditorComponent()).getText();
+            String phone = ((JTextComponent) searchphoneCombo.getEditor().getEditorComponent()).getText();
+            String email = ((JTextComponent) searchemailCombo.getEditor().getEditorComponent()).getText();
 
-            if(fname.length() > 0)
+            if (fname.length() > 0)
             {
                 restrictions.add(fname);
                 displayNames.add(ComboBoxesIndexes.CFNAME.getDisplayName());
             }
-            if(lname.length() > 0)
+            if (lname.length() > 0)
             {
                 restrictions.add(lname);
                 displayNames.add(ComboBoxesIndexes.CLNAME.getDisplayName());
             }
-            if(phone.length() > 0)
+            if (phone.length() > 0)
             {
                 restrictions.add(phone);
                 displayNames.add(ComboBoxesIndexes.CPHONE.getDisplayName());
             }
-            if(email.length() > 0)
+            if (email.length() > 0)
             {
                 restrictions.add(email);
                 displayNames.add(ComboBoxesIndexes.CEMAIL.getDisplayName());
@@ -2383,90 +2363,88 @@ public class Admin extends javax.swing.JFrame {
 
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-            restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
-            restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
-            restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
-            restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);*/
-        }
-        else if(courseRadio.isSelected())
+             restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
+             restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
+             restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
+             restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);*/
+        } else if (courseRadio.isSelected())
         {
 
-            String teacher = ((JTextComponent)searchteacherCombo.getEditor().getEditorComponent()).getText();
-            String subject = ((JTextComponent)searchcourseCombo.getEditor().getEditorComponent()).getText();
-            String level = ((JTextComponent)searchlevelCombo.getEditor().getEditorComponent()).getText();
+            String teacher = ((JTextComponent) searchteacherCombo.getEditor().getEditorComponent()).getText();
+            String subject = ((JTextComponent) searchcourseCombo.getEditor().getEditorComponent()).getText();
+            String level = ((JTextComponent) searchlevelCombo.getEditor().getEditorComponent()).getText();
 
-            if(teacher.length() > 0)
+            if (teacher.length() > 0)
             {
                 restrictions.add(teacher);
                 displayNames.add(ComboBoxesIndexes.TEACHER.getDisplayName());
             }
-            if(subject.length() > 0)
+            if (subject.length() > 0)
             {
                 restrictions.add(subject);
                 displayNames.add(ComboBoxesIndexes.COURSE.getDisplayName());
             }
-            if(level.length() > 0)
+            if (level.length() > 0)
             {
                 restrictions.add(level);
                 displayNames.add(ComboBoxesIndexes.LEVEL.getDisplayName());
             }
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-            restrictHelper.setListElement(subject, 0);
-            restrictHelper.setListElement(level, 1);
-            restrictHelper.setListElement(teacher, 2);*/
-        }
-        else if(paraprofessionalRadio.isSelected())
+             restrictHelper.setListElement(subject, 0);
+             restrictHelper.setListElement(level, 1);
+             restrictHelper.setListElement(teacher, 2);*/
+        } else if (paraprofessionalRadio.isSelected())
         {
 
-            String fname = ((JTextComponent)searchparaprofessionalfirstCombo.getEditor().getEditorComponent()).getText();
-            String lname = ((JTextComponent)searchparaprofessionallastCombo.getEditor().getEditorComponent()).getText();
-            String role = ((JTextComponent)searchparaprofessionalroleCombo.getEditor().getEditorComponent()).getText();
+            String fname = ((JTextComponent) searchparaprofessionalfirstCombo.getEditor().getEditorComponent()).getText();
+            String lname = ((JTextComponent) searchparaprofessionallastCombo.getEditor().getEditorComponent()).getText();
+            String role = ((JTextComponent) searchparaprofessionalroleCombo.getEditor().getEditorComponent()).getText();
             String hireDate = searchparaprofessionalhireField.getText();
             String terminationDate = searchparaprofessionalterminationField.getText();
             String isClockedIn = searchparaprofessionalclockedinCombo.getSelectedItem().toString();
-            String category = ((JTextComponent)searchparaprofessionalcategoryCombo.getEditor().getEditorComponent()).getText();
+            String category = ((JTextComponent) searchparaprofessionalcategoryCombo.getEditor().getEditorComponent()).getText();
 
-            if(fname.length() > 0)
+            if (fname.length() > 0)
             {
                 restrictions.add(fname);
                 displayNames.add(ComboBoxesIndexes.PFNAME.getDisplayName());
             }
-            if(lname.length() > 0)
+            if (lname.length() > 0)
             {
                 restrictions.add(lname);
                 displayNames.add(ComboBoxesIndexes.PLNAME.getDisplayName());
             }
-            if(role.length() > 0)
+            if (role.length() > 0)
             {
                 restrictions.add(role);
                 displayNames.add(ComboBoxesIndexes.PROLE.getDisplayName());
             }
-            if(hireDate.length() > 0)
+            if (hireDate.length() > 0)
             {
                 restrictions.add(hireDate);
                 displayNames.add(ComboBoxesIndexes.PHIREDATE.getDisplayName());
             }
-            if(terminationDate.length() > 0)
+            if (terminationDate.length() > 0)
             {
                 restrictions.add(terminationDate);
                 displayNames.add(ComboBoxesIndexes.PTERMINATIONDATE.getDisplayName());
             }
-            if(isClockedIn.length() > 0)
+            if (isClockedIn.length() > 0)
             {
                 restrictions.add(isClockedIn);
                 displayNames.add(ComboBoxesIndexes.PCLOCKEDIN.getDisplayName());
             }
-            if(category.length() > 0)
+            if (category.length() > 0)
             {
                 restrictions.add(category);
                 displayNames.add(ComboBoxesIndexes.PCATEGORY.getDisplayName());
             }
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-            restrictHelper.setListElement(subject, 0);
-            restrictHelper.setListElement(level, 1);
-            restrictHelper.setListElement(teacher, 2);*/
+             restrictHelper.setListElement(subject, 0);
+             restrictHelper.setListElement(level, 1);
+             restrictHelper.setListElement(teacher, 2);*/
         }
 
         System.out.println("DONE searchaddrestriciton");
@@ -2488,41 +2466,43 @@ public class Admin extends javax.swing.JFrame {
 
     private void searchsearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchsearchButtonActionPerformed
 
-        String[] columns = {"fname","lname","phone","email"};
+        String[] columns =
+        {
+            "fname", "lname", "phone", "email"
+        };
         String table = "Client";
         char letter = 'c';
         String join;
 
-        DefaultCellEditor dce =null;
+        DefaultCellEditor dce = null;
 
-        if(clientRadio.isSelected())
+        if (clientRadio.isSelected())
         {
             columns = new String[4];
-            columns[0]="fname";
-            columns[1]="lname";
-            columns[2]="phone";
-            columns[3]="email";
+            columns[0] = "fname";
+            columns[1] = "lname";
+            columns[2] = "phone";
+            columns[3] = "email";
             table = "Client";
             letter = 'c';
 
             dce = new DefaultCellEditor(new JTextField())
             {
-
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                    boolean isSelected, int row, int column)
+                        boolean isSelected, int row, int column)
                 {
                     /* boxes[0]=searchfnameCombo;
-                    boxes[1]=searchlnameCombo;
-                    boxes[2]=searchphoneCombo;
-                    boxes[3]=searchemailCombo;
-                    boxes[4]=searchcategoryCombo;
-                    boxes[5]=searchcourseCombo;
-                    boxes[6]=searchcreatorCombo;
-                    boxes[7]=searchlevelCombo;
-                    boxes[8]=searchlocationCombo;
-                    boxes[9]=searchparaprofessionalCombo;
-                    boxes[10]=searchteacherCombo;*/
+                     boxes[1]=searchlnameCombo;
+                     boxes[2]=searchphoneCombo;
+                     boxes[3]=searchemailCombo;
+                     boxes[4]=searchcategoryCombo;
+                     boxes[5]=searchcourseCombo;
+                     boxes[6]=searchcreatorCombo;
+                     boxes[7]=searchlevelCombo;
+                     boxes[8]=searchlocationCombo;
+                     boxes[9]=searchparaprofessionalCombo;
+                     boxes[10]=searchteacherCombo;*/
 
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
                     uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
@@ -2532,28 +2512,26 @@ public class Admin extends javax.swing.JFrame {
                     return null;
                 }
             };
-        }
-        else if(courseRadio.isSelected())
+        } else if (courseRadio.isSelected())
         {
             columns = new String[3];
-            columns[0]="s.abbrevName";
-            columns[1]="c.level";
-            columns[2]="concat_ws(' ', t.fname, t.lname) as 'Teacher Name'";
+            columns[0] = "s.abbrevName";
+            columns[1] = "c.level";
+            columns[2] = "concat_ws(' ', t.fname, t.lname) as 'Teacher Name'";
 
             char lCourse = ComboBoxesIndexes.LEVEL.getLetter();
             char lTeacher = ComboBoxesIndexes.TEACHER.getLetter();
             char lSubject = ComboBoxesIndexes.COURSE.getLetter();
 
-            table = "Course as "+lCourse;
+            table = "Course as " + lCourse;
 
-            table += " join Teacher as "+lTeacher+" on "+lCourse+".teacherID="+lTeacher+".teacherID join Subject "+lSubject+" on "+lCourse+".subjectID="+lSubject+".subjectID";
+            table += " join Teacher as " + lTeacher + " on " + lCourse + ".teacherID=" + lTeacher + ".teacherID join Subject " + lSubject + " on " + lCourse + ".subjectID=" + lSubject + ".subjectID";
 
             dce = new DefaultCellEditor(new JTextField())
             {
-
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                    boolean isSelected, int row, int column)
+                        boolean isSelected, int row, int column)
                 {
 
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
@@ -2563,32 +2541,30 @@ public class Admin extends javax.swing.JFrame {
                     return null;
                 }
             };
-        }
-        else if(paraprofessionalRadio.isSelected())
+        } else if (paraprofessionalRadio.isSelected())
         {
             columns = new String[7];
-            columns[0]="fname";
-            columns[1]="lname";
-            columns[2]="hireDate";
-            columns[3]="terminationDate";
-            columns[4]="isClockedIn";
-            columns[5]="type";
-            columns[6]="name";
+            columns[0] = "fname";
+            columns[1] = "lname";
+            columns[2] = "hireDate";
+            columns[3] = "terminationDate";
+            columns[4] = "isClockedIn";
+            columns[5] = "type";
+            columns[6] = "name";
 
             char lParaprofessional = ComboBoxesIndexes.PARAPROFESSIONAL.getLetter();
             char lCategory = ComboBoxesIndexes.PCATEGORY.getLetter();
             char lRole = ComboBoxesIndexes.PROLE.getLetter();
 
-            table = "Paraprofessional as "+lParaprofessional;//+lCourse;
+            table = "Paraprofessional as " + lParaprofessional;//+lCourse;
 
-            table += " join Role as "+lRole+" on "+lParaprofessional+".roleID="+lRole+".roleID join ParaprofessionalCategory as pc on pc.paraprofessionalID="+lParaprofessional+".paraprofessionalID join Category as "+lCategory+" on "+lCategory+".categoryID=pc.categoryID";
+            table += " join Role as " + lRole + " on " + lParaprofessional + ".roleID=" + lRole + ".roleID join ParaprofessionalCategory as pc on pc.paraprofessionalID=" + lParaprofessional + ".paraprofessionalID join Category as " + lCategory + " on " + lCategory + ".categoryID=pc.categoryID";
 
             dce = new DefaultCellEditor(new JTextField())
             {
-
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                    boolean isSelected, int row, int column)
+                        boolean isSelected, int row, int column)
                 {
 
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
@@ -2601,22 +2577,24 @@ public class Admin extends javax.swing.JFrame {
             };
         }
 
-        String fullQuery=null;
+        String fullQuery = null;
 
         /*
-        if(clientRadio.isSelected())
-        fullQuery = restrictHelper.createClientQuery(columns, table, letter);
-        else if(courseRadio.isSelected())
-        fullQuery = restrictHelper.createCourseQuery(columns);*/
+         if(clientRadio.isSelected())
+         fullQuery = restrictHelper.createClientQuery(columns, table, letter);
+         else if(courseRadio.isSelected())
+         fullQuery = restrictHelper.createCourseQuery(columns);*/
 
         fullQuery = restrictHelper.createQuery(columns, table);
 
-        System.out.println("QUERY: "+fullQuery);
+        System.out.println("QUERY: " + fullQuery);
 
         HibernateTest.fillTableWithQuery(fullQuery, searchsearchTable, columns);
 
-        for(int i=0; i<searchsearchTable.getColumnCount(); i++)
-        searchsearchTable.getColumnModel().getColumn(i).setCellEditor(dce);
+        for (int i = 0; i < searchsearchTable.getColumnCount(); i++)
+        {
+            searchsearchTable.getColumnModel().getColumn(i).setCellEditor(dce);
+        }
 
     }//GEN-LAST:event_searchsearchButtonActionPerformed
 
@@ -2638,11 +2616,6 @@ public class Admin extends javax.swing.JFrame {
 
     private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
         //ADDING A SESSION
-        
-        
-        
-        
-        
     }//GEN-LAST:event_addSessionbuttonActionPerformed
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
@@ -2656,7 +2629,7 @@ public class Admin extends javax.swing.JFrame {
     private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
         int[] selectedRows = sessionsTable.getSelectedRows();
 
-        ((SessionTableModel)sessionsTable.getModel()).deleteRows(selectedRows);
+        ((SessionTableModel) sessionsTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteSessionButtonActionPerformed
 
     private void deleteSessionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton3ActionPerformed
@@ -2665,15 +2638,15 @@ public class Admin extends javax.swing.JFrame {
 
     private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
 
-        if(autocompleteCheck.isSelected())
+        if (autocompleteCheck.isSelected())
         {
             uac.noMore();
             //Clients autocomplete
-            JComboBox[] cboxes = new  JComboBox[4];
-            cboxes[0]=fnameCombo;
-            cboxes[1]=lnameCombo;
-            cboxes[2]=phoneCombo;
-            cboxes[3]=emailCombo;
+            JComboBox[] cboxes = new JComboBox[4];
+            cboxes[0] = fnameCombo;
+            cboxes[1] = lnameCombo;
+            cboxes[2] = phoneCombo;
+            cboxes[3] = emailCombo;
 
             ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
 
@@ -2682,25 +2655,24 @@ public class Admin extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-            uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+            uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
 
-        }
-        else
+        } else
         {
             uacc.noMore();
 
-            JComboBox[] boxes = new  JComboBox[11];
-            boxes[0]=fnameCombo;
-            boxes[1]=lnameCombo;
-            boxes[2]=phoneCombo;
-            boxes[3]=emailCombo;
-            boxes[4]=categoryCombo;
-            boxes[5]=courseCombo;
-            boxes[6]=creatorCombo;
-            boxes[7]=levelCombo;
-            boxes[8]=locationCombo;
-            boxes[9]=paraprofessionalCombo;
-            boxes[10]=teacherCombo;
+            JComboBox[] boxes = new JComboBox[11];
+            boxes[0] = fnameCombo;
+            boxes[1] = lnameCombo;
+            boxes[2] = phoneCombo;
+            boxes[3] = emailCombo;
+            boxes[4] = categoryCombo;
+            boxes[5] = courseCombo;
+            boxes[6] = creatorCombo;
+            boxes[7] = levelCombo;
+            boxes[8] = locationCombo;
+            boxes[9] = paraprofessionalCombo;
+            boxes[10] = teacherCombo;
 
             ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
             cultimateList.add(Data.getClientsfirst());
@@ -2718,17 +2690,19 @@ public class Admin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_autocompleteCheckActionPerformed
 
-    
-    
     public void clearComboBoxes()
     {
-         for(int i=0; i<uac.getBoxesLength(); i++)
+        for (int i = 0; i < uac.getBoxesLength(); i++)
+        {
             uac.setComboValue("", i);
+        }
     }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         /*
          * Set the Nimbus look and feel
          */
@@ -2738,31 +2712,39 @@ public class Admin extends javax.swing.JFrame {
          * default look and feel. For details see
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex)
+        {
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex)
+        {
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex)
+        {
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /*
          * Create and display the form
          */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new Admin().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
+                new AdminView().setVisible(true);
             }
         });
     }

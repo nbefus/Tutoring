@@ -7,7 +7,7 @@ package tutoring.helper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
-import tutoring.ui.Admin;
+import tutoring.ui.AdminView;
 
 /**
  *
@@ -240,7 +240,7 @@ public class RestrictionListModel
             {
                 String[] expression = split[i].split("=");
 
-                query += Admin.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + " and ";
+                query += AdminView.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + " and ";
             }
             System.out.println("QUERY BEFORE MINUS: "+query);
             query = query.substring(0, query.length()-5);
@@ -255,7 +255,7 @@ public class RestrictionListModel
             String[] expression = value.split("=");
             System.out.println(expression[0]);
 
-            query += Admin.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + "";
+            query += AdminView.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + "";
             
             if(or)
                 query = query+" OR";

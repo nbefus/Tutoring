@@ -259,7 +259,7 @@ public class ScrapingLol {
     {
         System.out.println(autoIncValTeach+ lname +" "+fname + " "+abbrev + " "+level + " "+autoIncValSub);
 
-        Teacher t = new Teacher(autoIncValTeach++, lname, fname);
+        Teacher t = new Teacher(++autoIncValTeach, lname, fname);
         Subject s = new Subject(++autoIncValSub, abbrev.trim(), categories.get(categories.size()-1));
 
         Course course = new Course(t, s, level);
@@ -315,8 +315,6 @@ public class ScrapingLol {
                   s.setSubjectID(autoIncValSub);
                   autoIncValSub++;
                   System.out.println("AUTO INC SUBJECTS inside: "+autoIncValSub);
-
-
               }
               else
               {

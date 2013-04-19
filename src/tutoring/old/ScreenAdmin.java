@@ -1,6 +1,9 @@
 package tutoring.old;
 
 
+import tutoring.editor.TimestampCellEditor;
+import tutoring.editor.ComboBoxCellEditor;
+import tutoring.renderer.TimestampCellRenderer;
 import java.awt.FontMetrics;
 import java.sql.Timestamp;
 import java.util.ArrayList;
