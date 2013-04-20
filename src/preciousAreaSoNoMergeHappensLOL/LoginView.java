@@ -216,7 +216,7 @@ public class LoginView extends javax.swing.JFrame
             if (login.getRole().getType().equalsIgnoreCase("SIA"))
             {
 
-                SIA sia = new SIA();
+                SIAView sia = new SIAView();
                 sia.show();
                 this.setVisible(false);
 
