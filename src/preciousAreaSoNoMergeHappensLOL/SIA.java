@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.ui;
+package preciousAreaSoNoMergeHappensLOL;
 
+import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,7 +40,7 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIA_1 extends javax.swing.JFrame {
+public class SIA extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -101,8 +102,8 @@ public class SIA_1 extends javax.swing.JFrame {
         }
     }
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
-    public SIA_1() 
+    private UltimateAutoCompleteClientOld uacc;
+    public SIA() 
     {
         initComponents();
         
@@ -138,7 +139,7 @@ public class SIA_1 extends javax.swing.JFrame {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
       Timestamp now = new Timestamp((new Date()).getTime());
        
@@ -949,7 +950,7 @@ public class SIA_1 extends javax.swing.JFrame {
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+           uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
            
         }
         else
@@ -1314,7 +1315,7 @@ public class SIA_1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA_1().setVisible(true);
+                new SIA().setVisible(true);
             }
         });
     }

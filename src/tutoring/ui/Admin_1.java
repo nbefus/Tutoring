@@ -57,30 +57,30 @@ import tutoring.entity.Paraprofessional;
 import tutoring.entity.ParaprofessionalSession;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
-import tutoring.helper.ComboBoxCellEditor;
+import tutoring.editor.ComboBoxCellEditor;
 import tutoring.helper.Data;
 import tutoring.helper.HibernateTest;
-import tutoring.helper.MinuteCellRenderer;
+import tutoring.renderer.MinuteCellRenderer;
 import tutoring.helper.MinuteUpdate;
 import tutoring.helper.RestrictionListModel;
 import tutoring.helper.SessionTableModel;
-import tutoring.helper.TimestampCellEditor;
-import tutoring.helper.TimestampCellRenderer;
+import tutoring.editor.TimestampCellEditor;
+import tutoring.renderer.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
-import tutoring.helper.UltimateAutoCompleteClientNew;
+import tutoring.old.UltimateAutoCompleteClientOld;
 import tutoring.helper.Validate;
 
 /**
  *
  * @author shohe_i
  */
-public class Admin extends javax.swing.JFrame {
+public class Admin_1 extends javax.swing.JFrame {
 
     /**
      * Creates new form Admin
      */
     private UltimateAutoComplete uac; 
-    private UltimateAutoCompleteClientNew uacc;
+    private UltimateAutoCompleteClientOld uacc;
     DefaultListModel dlm = new DefaultListModel();
     RestrictionListModel restrictHelper;
     
@@ -159,7 +159,7 @@ public class Admin extends javax.swing.JFrame {
             return "";
         }
     }
-    public Admin() {
+    public Admin_1() {
         initComponents();
        // setUpReportTab();
         setUpSearchTab();
@@ -398,15 +398,15 @@ public class Admin extends javax.swing.JFrame {
 
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         chart.setBorderVisible(false);
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(Admin_1.this.getBackground());
         plot.setStartAngle(290);
         plot.setOutlineVisible(false);
         plot.setDirection(Rotation.CLOCKWISE);
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(Admin_1.this.getBackground());
         plot.setForegroundAlpha(0.75f);
         
         LegendTitle lt = chart.getLegend();
-        lt.setBackgroundPaint(Admin.this.getBackground());
+        lt.setBackgroundPaint(Admin_1.this.getBackground());
         lt.setBorder(0, 0, 0, 0);
         //lt.setBackgroundPaint(null);
         return chart;
@@ -515,11 +515,11 @@ public class Admin extends javax.swing.JFrame {
         // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
         // set the background color for the chart...
-        chart.setBackgroundPaint(Admin.this.getBackground());
+        chart.setBackgroundPaint(Admin_1.this.getBackground());
 
         // get a reference to the plot for further customisation...
         final CategoryPlot plot = chart.getCategoryPlot();
-        plot.setBackgroundPaint(Admin.this.getBackground());
+        plot.setBackgroundPaint(Admin_1.this.getBackground());
         plot.setDomainGridlinePaint(Color.black);
         plot.setRangeGridlinePaint(Color.black);
         plot.setOutlineVisible(false);
@@ -805,7 +805,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
       
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
@@ -2988,7 +2988,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
 
-           uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+           uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
            
         }
         else
@@ -3564,13 +3564,13 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Admin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -3580,7 +3580,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new Admin().setVisible(true);
+                new Admin_1().setVisible(true);
             }
         });
     }

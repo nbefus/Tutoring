@@ -1,6 +1,7 @@
 package preciousAreaSoNoMergeHappensLOL;
 
 import java.awt.event.KeyEvent;
+import tutoring.ui.AdminView;
 
 public class LoginView extends javax.swing.JFrame
 {
@@ -221,7 +222,7 @@ public class LoginView extends javax.swing.JFrame
 
             } else if (login.getRole().getType().equalsIgnoreCase("ADMIN"))
             {
-                Admin33 admin = new Admin33();
+                AdminView admin = new AdminView();
                 admin.show();
                 this.setVisible(false);
             }

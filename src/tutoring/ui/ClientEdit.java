@@ -10,7 +10,7 @@ import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import tutoring.entity.Client;
 import tutoring.helper.Data;
-import tutoring.helper.UltimateAutoCompleteClientNew;
+import tutoring.old.UltimateAutoCompleteClientOld;
 import tutoring.helper.Validate;
 
 /**
@@ -40,7 +40,7 @@ public class ClientEdit extends javax.swing.JPanel {
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-       UltimateAutoCompleteClientNew uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       UltimateAutoCompleteClientOld uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
     }
 

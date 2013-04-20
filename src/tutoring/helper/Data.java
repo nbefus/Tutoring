@@ -69,9 +69,17 @@ public class Data {
     private static ArrayList<String> lnameOrderedList;// = setUpList("select fname, lname, phone, email from Client order by lname");
     private static ArrayList<String> phoneOrderedList;// = setUpList("select fname, lname, phone, email from Client order by phone");
     private static ArrayList<String> emailOrderedList;
-
+    private static ArrayList<String> agendaCategoryList;
     public static ArrayList<String> getCombinedcourselist() {
         return combinedcourselist;
+    }
+
+    /**
+     * @return the agendaCategoryList
+     */
+    public static ArrayList<String> getAgendaCategoryList()
+    {
+        return agendaCategoryList;
     }
 
     public Data(boolean initializeAll) {
@@ -164,8 +172,14 @@ public class Data {
 
         /* 
          */
-
-
+        
+        ArrayList<AgendaCategory> cats = (ArrayList<AgendaCategory>)HibernateTest.select("from AgendaCategory");
+        agendaCategoryList = new ArrayList<String>();
+        for(int i=0; i<cats.size(); i++)
+        {
+            agendaCategoryList.add(cats.get(i).getType());
+            System.out.println("HOSIDHOHIWOEHFOIWHEOHFOWHOEIOJOWIEJFOWEJOEJWFOJEWOIJOJOIJOJOJ howie");
+        }
 
         for (int i = 0; i < tutorFirst.size(); i++) {
             tutorsfirstlist.add(tutorFirst.get(i).getfName());
@@ -277,6 +291,8 @@ public class Data {
             String line = "";
             for (int i = 0; i < row.length; i++) {
                 // System.out.print("\t\t*" + row[i]+"*");
+                if(row[i].toString().length() == 0)
+                    row[i]="NONE";
                 line += row[i] + "" + separator;
 
                 if (index == i) {

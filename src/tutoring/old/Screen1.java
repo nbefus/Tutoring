@@ -1,6 +1,9 @@
 package tutoring.old;
 
 
+import tutoring.editor.TimestampCellEditor;
+import tutoring.editor.ComboBoxCellEditor;
+import tutoring.renderer.TimestampCellRenderer;
 import java.awt.FontMetrics;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -204,7 +207,7 @@ public class Screen1 extends javax.swing.JFrame
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
 
-      UltimateAutoCompleteClientNew uacc = new UltimateAutoCompleteClientNew(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      UltimateAutoCompleteClientOld uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
