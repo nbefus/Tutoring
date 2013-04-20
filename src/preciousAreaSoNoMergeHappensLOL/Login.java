@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import tutoring.entity.*;
 import tutoring.helper.HibernateTest;
 
+/**
+ *
+ * @author pres_is
+ */
 public class Login
 {
 
@@ -27,7 +31,14 @@ public class Login
     public Login()
     {
     }
+    
+    /***
 
+    * This is a sample Java Comment
+
+    *
+
+    */
     public void setUsername(String username)
     {
         this.username = username;
