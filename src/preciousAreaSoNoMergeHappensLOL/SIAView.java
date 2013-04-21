@@ -1095,7 +1095,6 @@ public final class SIAView extends javax.swing.JFrame
             sessionstartField.setBorder(null);
             studentInfoPanel.repaint();
             courseInfoPanel.repaint();
-            creatorInfoPanel.repaint();
             paraprofessionalInfoPanel.repaint();
 
             //courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
@@ -1232,7 +1231,6 @@ public final class SIAView extends javax.swing.JFrame
 
             courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-            creatorInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
 
 
@@ -1260,7 +1258,6 @@ public final class SIAView extends javax.swing.JFrame
             if (creators.size() <= 0 && creatorPanelCheck)
             {
                 System.out.println("Creators less than 1");
-                creatorInfoPanel.setBackground(Color.red);
             }
             if (clients.size() <= 0 && clientPanelCheck)
             {
@@ -1354,7 +1351,6 @@ public final class SIAView extends javax.swing.JFrame
                         //sessionsAndAgendaPanel.setBackground(new Color( 0,colorOfGreen,0));
                         courseInfoPanel.setBackground(new Color(0, colorOfGreen, 0));
                         studentInfoPanel.setBackground(new Color(0, colorOfGreen, 0));
-                        creatorInfoPanel.setBackground(new Color(0, colorOfGreen, 0));
                         paraprofessionalInfoPanel.setBackground(new Color(0, colorOfGreen, 0));
                         colorOfGreen += 2;
                         try
@@ -1367,7 +1363,6 @@ public final class SIAView extends javax.swing.JFrame
                     //sessionsAndAgendaPanel.setBackground(sessionsTablePanel.getBackground());
                     courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                     studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-                    creatorInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                     paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                 }
             };
