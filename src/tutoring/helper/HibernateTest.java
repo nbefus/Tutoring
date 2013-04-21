@@ -23,7 +23,8 @@ import tutoring.util.HibernateUtil;
  */
 public class HibernateTest {
 
-    public static void joinExample() {
+    
+    public static void joinExampleOld() {
         SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
@@ -49,7 +50,7 @@ public class HibernateTest {
         sessFact.close();
     }
 
-    public static List select(String sqlQuery) {
+    public static List selectOld(String sqlQuery) {
         Transaction trns = null;
         List result = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -89,7 +90,7 @@ public class HibernateTest {
          sessFact.close();*/
     }
 
-    public static List regularSelect(String sqlQuery) {
+    public static List regularSelectOld(String sqlQuery) {
         Transaction trns = null;
         List result = null;
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();//.openSession();
@@ -131,7 +132,7 @@ public class HibernateTest {
          sessFact.close();*/
     }
 
-    public static void update(Object obj) {
+    public static void updateOld(Object obj) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
 
@@ -144,7 +145,7 @@ public class HibernateTest {
         factory.close();
     }
 
-    public static void create(Object obj) {
+    public static void createOld(Object obj) {
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -170,7 +171,7 @@ public class HibernateTest {
         //sessFact.close();
     }
 
-    public static void batchCreate(Object[] obj) {
+    public static void batchCreateOld(Object[] obj) {
         Transaction trns = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
@@ -203,7 +204,7 @@ public class HibernateTest {
         sessFact.close();*/
     }
 
-    public static void delete(Object obj) {
+    public static void deleteOld(Object obj) {
         SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
@@ -215,8 +216,8 @@ public class HibernateTest {
 
     }
 
-    public static void fillTableWithQuery(String query, JTable table, String[] columns) {
-        List l = HibernateTest.regularSelect(query);
+    public static void fillTableWithQueryOld(String query, JTable table, String[] columns) {
+        List l = DatabaseHelper.selectAll(query);
         //List c = HibernateTest.regularSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'User'");
 
         String[][] data = null;
@@ -248,37 +249,5 @@ public class HibernateTest {
         table.setModel(dtm);
     }
     
-    public static String[][] getDataFromRegularQuery(String query)
-    {
-        System.out.println(query);
-        List l = HibernateTest.regularSelect(query);
-        //List c = HibernateTest.regularSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'User'");
-
-        String[][] data = null;
-        boolean firstTime = true;
-        Iterator it = l.iterator();
-
-        int count = 0;
-         while(it.hasNext()) {
-            Object[] row = (Object[]) it.next();
-
-            if(firstTime)
-            {
-                data = new String[l.size()][row.length];
-                firstTime = false;
-            }
-
-            for(int i=0; i<row.length; i++)
-            {
-                data[count][i] = row[i].toString();
-                System.out.print("\t\t"+row[i]+"--"+row[i].getClass().toString());
-            }
-
-
-
-            count++;
-         }
-         
-         return data;
-    }
+    
 }

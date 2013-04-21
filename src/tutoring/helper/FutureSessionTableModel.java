@@ -116,6 +116,7 @@ public class FutureSessionTableModel extends AbstractTableModel {
                    // tutorSessions.get(r)
 
                     ParaprofessionalSession ts = tutorSessions.get(r);
+                    /*
                     switch (c) {
                     case 0: 
                         break;
@@ -191,7 +192,7 @@ public class FutureSessionTableModel extends AbstractTableModel {
                         break;
                     case 17:
                         ts.getCourseID().getSubjectID().getCategoryID().getName();
-                   }
+                   }*/
                    // fireTableCellUpdated(r, c);
                     fireTableDataChanged();
                    //return null;

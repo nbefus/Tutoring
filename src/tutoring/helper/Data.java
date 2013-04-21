@@ -106,6 +106,8 @@ public class Data {
         
         char separator = ',';
         
+        DatabaseHelper.open();
+        
         subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
         System.out.println("1111111111111111111111");
         
@@ -126,16 +128,16 @@ System.out.println("1111111111111111111111");
 
         ;*/
 
-        locations = (ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");System.out.println("1111111111111111111111");
-        tutors = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as p order by p.fName");System.out.println("1111111111111111111111");
-        subjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s order by s.abbrevName");System.out.println("1111111111111111111111");
-        teacherFirst = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.fName");System.out.println("1111111111111111111111");
-        teacherLast = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.lName");System.out.println("1111111111111111111111");
-        categories = (ArrayList<Category>) HibernateTest.select("from Category as c order by c.name");System.out.println("1111111111111111111111");
-        levels = (ArrayList<Course>) HibernateTest.select("from Course as c order by c.level");System.out.println("1111111111111111111111");
+        locations = Location.selectAllLocation("order by "+Location.LocationTable.NAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");System.out.println("1111111111111111111111");
+        tutors = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as p order by p.fName");System.out.println("1111111111111111111111");
+        subjects = Subject.selectAllSubjects("order by "+Subject.SubjectTable.ABBREVNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Subject>) HibernateTest.select("from Subject as s order by s.abbrevName");System.out.println("1111111111111111111111");
+        teacherFirst = Teacher.selectAllTeacher("order by "+Teacher.TeacherTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.fName");System.out.println("1111111111111111111111");
+        teacherLast = Teacher.selectAllTeacher("order by "+Teacher.TeacherTable.LNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.lName");System.out.println("1111111111111111111111");
+        categories = Category.selectAllCategory("order by "+Category.CategoryTable.NAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Category>) HibernateTest.select("from Category as c order by c.name");System.out.println("1111111111111111111111");
+        levels = Course.selectAllCourse("order by "+Course.CourseTable.LEVEL.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Course>) HibernateTest.select("from Course as c order by c.level");System.out.println("1111111111111111111111");
 
-        tutorFirst = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.fName");System.out.println("1111111111111111111111");
-        tutorLast = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.lName");System.out.println("1111111111111111111111");
+        tutorFirst = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.fName");System.out.println("1111111111111111111111");
+        tutorLast = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.LNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.lName");System.out.println("1111111111111111111111");
 
         
 
@@ -146,7 +148,7 @@ System.out.println("1111111111111111111111");
         }
 
 
-        roles = (ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");System.out.println("1111111111111111111111 DONEDONE DONE");
+        roles = null;//(ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");System.out.println("1111111111111111111111 DONEDONE DONE");
 
         /*
          for(int i=0; i<clientFirst.size(); i++)
@@ -177,7 +179,7 @@ System.out.println("1111111111111111111111");
         /* 
          */
         
-        ArrayList<AgendaCategory> cats = (ArrayList<AgendaCategory>)HibernateTest.select("from AgendaCategory");
+        ArrayList<AgendaCategory> cats = AgendaCategory.selectAllAgendaCategory("", DatabaseHelper.getConnection());//(ArrayList<AgendaCategory>)HibernateTest.select("from AgendaCategory");
         agendaCategoryList = new ArrayList<String>();
         for(int i=0; i<cats.size(); i++)
         {
@@ -229,11 +231,11 @@ System.out.println("1111111111111111111111");
 
 
 
-
+/*
 
         for (int i = 0; i < roles.size(); i++) {
             roleslist.add(roles.get(i).getType());
-        }
+        }*/
 
 
 
@@ -257,7 +259,7 @@ System.out.println("1111111111111111111111");
          users = (ArrayList<User>)HibernateTest.select("from User");
          }*/
     }
-
+/*
     public ArrayList<String> setUpListOld(String query) {
         List result = HibernateTest.regularSelect(query);
         ArrayList<String> arraylist = new ArrayList<String>();
@@ -268,13 +270,7 @@ System.out.println("1111111111111111111111");
             for (int i = 0; i < row.length; i++) {
                 // System.out.print("\t\t*" + row[i]+"*");
                 line += row[i] + ",";
-                /*
-                 if(i==0)
-                 subjectslist.add(row[i].toString());
-                 else if(i==1)
-                 levelslist.add(row[i].toString());
-                 else if(i==2)
-                 teacherslist.add(row[i]+" "+row[i+1]);*/
+              
             }
             line = line.substring(0, line.length() - 1);
             //System.out.println(line);
@@ -282,10 +278,10 @@ System.out.println("1111111111111111111111");
             // System.out.println();
         }
         return arraylist;
-    }
+    }*/
 
     public ArrayList<String> setUpList(String query, int index, char separator, ArrayList<String> singleton) {
-        List result = HibernateTest.regularSelect(query);
+        List result = DatabaseHelper.selectAll(query);
         ArrayList<String> arraylist = new ArrayList<String>();
         Iterator it = result.iterator();
         while (it.hasNext()) {
@@ -309,7 +305,7 @@ System.out.println("1111111111111111111111");
         }
         return arraylist;
     }
-
+/*
     public boolean checkCourse(Course c) {
         ArrayList<Subject> csubjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='" + c.getSubjectID().getAbbrevName().trim() + "'");
 
@@ -329,7 +325,7 @@ System.out.println("1111111111111111111111");
         // Update database with new Course??
 
         return true;
-    }
+    }*/
 
     /*
      public boolean checkClient(Client c)
@@ -388,7 +384,7 @@ System.out.println("1111111111111111111111");
         ps.addAll(tmp);
         return ps;
     }
-
+/*
     public ParaprofessionalSession checkValidSession(ParaprofessionalSession ps) {
         ArrayList<Subject> csubjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='" + ps.getCourseID().getSubjectID().getAbbrevName().trim() + "'");
 
@@ -438,15 +434,16 @@ System.out.println("1111111111111111111111");
         ParaprofessionalSession paraSession = new ParaprofessionalSession(-1, cparaprofessionals.get(0), cclients.get(0), ccourses.get(0), clocations.get(0), ccreators.get(0), now, null, null, ps.isGrammarCheck(), ps.getNotes(), false);
 
         return paraSession;
-    }
+    }*/
 
+    /*
     public void updateSubjectsFromID(int id) {
         ArrayList<Subject> updatedSubjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s where s.subjectID > " + id);
         for (int i = 0; i < updatedSubjects.size(); i++) {
             getSubjects().add(updatedSubjects.get(i));
         }
     }
-
+*/
     /*
      public ArrayList<Subject> getSubjects() {
      return subjects;

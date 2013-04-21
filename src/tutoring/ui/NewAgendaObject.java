@@ -17,7 +17,9 @@ import javax.swing.border.MatteBorder;
 import tutoring.entity.Agenda;
 import tutoring.entity.AgendaCategory;
 import tutoring.entity.Client;
+import tutoring.entity.ParaprofessionalSession;
 import tutoring.entity.User;
+import tutoring.helper.DatabaseHelper;
 import tutoring.helper.HibernateTest;
 
 /**
@@ -57,8 +59,7 @@ public class NewAgendaObject extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         createAgendaPanel = new javax.swing.JPanel();
@@ -85,20 +86,16 @@ public class NewAgendaObject extends javax.swing.JDialog {
 
         cancelButton.setForeground(new java.awt.Color(153, 0, 0));
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
 
         submitbutton.setForeground(new java.awt.Color(51, 102, 255));
         submitbutton.setText("Create");
-        submitbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        submitbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitbuttonActionPerformed(evt);
             }
         });
@@ -141,7 +138,7 @@ public class NewAgendaObject extends javax.swing.JDialog {
             createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(createAgendaPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(agendaCategoryLabel)
                     .add(agendaCategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -155,7 +152,7 @@ public class NewAgendaObject extends javax.swing.JDialog {
                     .add(jLabel3)
                     .add(agendaTextAreaScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(cancelButton)
                     .add(submitbutton))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -212,7 +209,8 @@ public class NewAgendaObject extends javax.swing.JDialog {
             }
             
             boolean goodCategory = true;
-            ArrayList<AgendaCategory> cat = (ArrayList<AgendaCategory>)HibernateTest.select("from AgendaCategory as ac where ac.type='"+category+"'");
+            DatabaseHelper.open();
+            ArrayList<AgendaCategory> cat = (ArrayList<AgendaCategory>)AgendaCategory.selectAllAgendaCategory("where "+AgendaCategory.AgendaCategoryTable.TYPE.getWithAlias()+"='"+category+"'", DatabaseHelper.getConnection());
             
             if(cat.size() != 1)
             {
@@ -231,7 +229,9 @@ public class NewAgendaObject extends javax.swing.JDialog {
             if(goodCategory && goodDate && goodNotes)
             {
                 Agenda a = new Agenda(-1, d, notes, cat.get(0));
-                HibernateTest.create(a);
+                DatabaseHelper.insert(Agenda.getValues(a), Agenda.AgendaTable.getTable());
+
+                //HibernateTest.create(a);
                 //Reload data and table
                 JOptionPane.showMessageDialog(null, "The agenda item was successfully created!");
                 close();
@@ -241,6 +241,10 @@ public class NewAgendaObject extends javax.swing.JDialog {
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, "The agenda item was NOT created! Please try again!");
+        }
+        finally
+        {
+            DatabaseHelper.close();
         }
 
 

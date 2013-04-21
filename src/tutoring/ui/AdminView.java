@@ -67,6 +67,7 @@ import tutoring.helper.MinuteUpdate;
 import tutoring.helper.RestrictionListModel;
 import tutoring.helper.SessionTableModel;
 import tutoring.editor.TimestampCellEditor;
+import tutoring.helper.DatabaseHelper;
 import tutoring.renderer.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
 import tutoring.old.UltimateAutoCompleteClientOld;
@@ -181,7 +182,8 @@ public class AdminView extends javax.swing.JFrame
     {
 
 
-        String[][] data = HibernateTest.getDataFromRegularQuery(
+        DatabaseHelper.open();
+        String[][] data = DatabaseHelper.getDataFromRegularQuery(
                 "SELECT "
                 + "abbrevName,"
                 + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
@@ -199,7 +201,7 @@ public class AdminView extends javax.swing.JFrame
                 + "join Subject s on c.subjectID=s.subjectID "
                 + "group by abbrevName");
 
-        String[][] categoryData = HibernateTest.getDataFromRegularQuery(
+        String[][] categoryData = DatabaseHelper.getDataFromRegularQuery(
                 "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
                 + " from ParaprofessionalSession ps"
                 + " join Course course on course.courseID=ps.courseID"
@@ -207,7 +209,7 @@ public class AdminView extends javax.swing.JFrame
                 + " join Category c on s.categoryID=c.categoryID"
                 + " group by c.name");
 
-        String[][] otherValues = HibernateTest.getDataFromRegularQuery(
+        String[][] otherValues = DatabaseHelper.getDataFromRegularQuery(
                 "SELECT "
                 + "SUM(walkout) as 'Walkouts', "
                 + "COUNT(paraprofessionalID) as 'Total Students',"
@@ -216,7 +218,7 @@ public class AdminView extends javax.swing.JFrame
                 + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "
                 + "FROM ParaprofessionalSession ps");
 
-        String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
+        String[][] studentMinutes = DatabaseHelper.getDataFromRegularQuery(
                 "SELECT "
                 + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
                 + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
@@ -235,8 +237,9 @@ public class AdminView extends javax.swing.JFrame
                 + " AS '>60 Min. Sessions' "
                 + "FROM ParaprofessionalSession ps");
 
+        DatabaseHelper.close();
         displayCharts(data, categoryData, otherValues, studentMinutes);
-
+        
 
 
         // String[] columns = new String[c.size()];
@@ -2152,7 +2155,8 @@ public class AdminView extends javax.swing.JFrame
 
             if (beginDate != null && endDate != null && beginDate.before(endDate))
             {
-                String[][] data = HibernateTest.getDataFromRegularQuery(
+                DatabaseHelper.open();
+                String[][] data = DatabaseHelper.getDataFromRegularQuery(
                         "SELECT "
                         + "abbrevName,"
                         + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
@@ -2174,32 +2178,32 @@ public class AdminView extends javax.swing.JFrame
                         + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
                         + "group by abbrevName");
 
-                String[][] categoryData = HibernateTest.getDataFromRegularQuery(
+                String[][] categoryData = DatabaseHelper.getDataFromRegularQuery(
                         "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
                         + " from ParaprofessionalSession ps"
                         + " join Course course on course.courseID=ps.courseID"
                         + " join Subject s on course.subjectID=s.subjectID"
-                        + " join Category c on s.categoryID=c.categoryID"
+                        + " join Category c on s.categoryID=c.categoryID "
                         + "where "
                         + "timeAndDateEntered "
                         + "between "
                         + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
                         + " group by c.name");
 
-                String[][] otherValues = HibernateTest.getDataFromRegularQuery(
+                String[][] otherValues = DatabaseHelper.getDataFromRegularQuery(
                         "SELECT "
                         + "SUM(walkout) as 'Walkouts', "
-                        + "COUNT(paraprofessionalID) as 'Total Students',"
+                        + "COUNT(paraprofessionalID) as 'Total Students', "
                         + "Sum(IF( TIMESTAMPDIFF("
                         + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
-                        + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions', "
+                        + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "+ "FROM ParaprofessionalSession "
                         + "where "
                         + "timeAndDateEntered "
                         + "between "
                         + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
-                        + "FROM ParaprofessionalSession ps");
+                        );
 
-                String[][] studentMinutes = HibernateTest.getDataFromRegularQuery(
+                String[][] studentMinutes = DatabaseHelper.getDataFromRegularQuery(
                         "SELECT "
                         + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
                         + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
@@ -2212,13 +2216,14 @@ public class AdminView extends javax.swing.JFrame
                         + " AS '25-35 Min. Sessions', "
                         + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
                         + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
-                        + " AS '36-60 Min. Sessions', "
+                        + " AS '36-60 Min. Sessions' "+ "FROM ParaprofessionalSession ps "
                         + "where "
                         + "timeAndDateEntered "
                         + "between "
                         + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
-                        + "FROM ParaprofessionalSession ps");
+                        );
 
+                DatabaseHelper.close();
                 displayCharts(data, categoryData, otherValues, studentMinutes);
 
             }
@@ -2608,8 +2613,9 @@ public class AdminView extends javax.swing.JFrame
 
         System.out.println("QUERY: " + fullQuery);
 
-        HibernateTest.fillTableWithQuery(fullQuery, searchsearchTable, columns);
-
+        DatabaseHelper.open();
+        DatabaseHelper.fillTableWithQuery(fullQuery, searchsearchTable, columns);
+        DatabaseHelper.close();
         for (int i = 0; i < searchsearchTable.getColumnCount(); i++)
         {
             searchsearchTable.getColumnModel().getColumn(i).setCellEditor(dce);

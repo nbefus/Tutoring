@@ -19,7 +19,7 @@ public class ParaprofessionalCategory implements Serializable{
         this.paraprofessionalID = paraprofessional;
         this.categoryID = category;
     }
-      public ParaprofessionalCategory()
+    public ParaprofessionalCategory()
     {
         
     }

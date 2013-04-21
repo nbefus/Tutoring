@@ -9,8 +9,10 @@ import java.awt.Window;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
+import tutoring.entity.Agenda;
 import tutoring.entity.Client;
 import tutoring.entity.User;
+import tutoring.helper.DatabaseHelper;
 import tutoring.helper.HibernateTest;
 
 /**
@@ -269,17 +271,27 @@ public class NewClientObject extends javax.swing.JDialog {
                     emailField.setBorder(new MatteBorder(3,3,3,3,Color.red));
             }
             
-            if(lname.length() > 1 && fname.length() > 1 && goodPhone && goodEmail)
+            if(lname.length() > 0 && fname.length() > 0 && goodPhone && goodEmail)
             {
                 Client c = new Client(-1, fname, lname, email, phone);
-                HibernateTest.create(c);
-                JOptionPane.showMessageDialog(null, "Student created successfully!");
+                DatabaseHelper.open();
+                boolean inserted = DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
+                
+                //HibernateTest.create(c);
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "Student created successfully!");
+                else
+                    JOptionPane.showMessageDialog(null, "Not created successfully");
                 close();
             }
         }
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, "Not created successfully");
+        }
+        finally
+        {
+            DatabaseHelper.close();
         }
 
     }//GEN-LAST:event_createButtonActionPerformed

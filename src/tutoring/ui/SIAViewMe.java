@@ -34,18 +34,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+
 import tutoring.entity.*;
 import tutoring.helper.*;
-import tutoring.util.HibernateUtil;
+
 
 /**
  *
  * @author shohe_i
  */
-public class SIAView extends javax.swing.JFrame {
+public class SIAViewMe extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -112,7 +110,7 @@ public class SIAView extends javax.swing.JFrame {
 
     UltimateAutoAutoComplete uaacCourse;
     
-    public SIAView() 
+    public SIAViewMe() 
     {
         initComponents();
         
@@ -136,6 +134,7 @@ public class SIAView extends javax.swing.JFrame {
        
        // sessionsTable.setCellSelectionEnabled(true);
 
+        DatabaseHelper.open();
         
        Data d = new Data(false);
        System.out.println("DATA");
@@ -251,11 +250,15 @@ System.out.println("Done list 4");
             session.close();
         }*/
         
-        System.out.println("SESSIONS");
+       System.out.println("SESSIONS");
        
-       ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
+       String sessStartCol = ParaprofessionalSession.ParaSessTable.SESSIONSTART.getWithAlias();
+       String sessEndCol = ParaprofessionalSession.ParaSessTable.SESSIONEND.getWithAlias();
+       String walkoutCol = ParaprofessionalSession.ParaSessTable.WALKOUT.getWithAlias();
+       
+      String currentSessionsWhere = " where ("+sessStartCol+" IS NULL or ("+sessStartCol+" <= '"+now.toString()+"' and "+sessEndCol+" IS NULL)) AND "+walkoutCol+"='false'";
 
-       
+       ArrayList<ParaprofessionalSession> sessions = ParaprofessionalSession.selectAllParaprofessionalSession(currentSessionsWhere,DatabaseHelper.getConnection());
         if(sessions.size() > 0)
         {
             for(int i=0; i<sessions.size(); i++)
@@ -267,8 +270,10 @@ System.out.println("Done list 4");
         }
         
         System.out.println("SESSIONS AGIAN");
-        ArrayList<ParaprofessionalSession> futureSessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NOT NULL and ps.sessionEnd IS NULL) AND ps.sessionStart >= '"+now.toString()+"' AND walkout='false'");
+        
+        String futureSessionsWhere = " where ("+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NULL) AND "+sessStartCol+" >= '"+now.toString()+"' AND "+walkoutCol+"='false'";
 
+        ArrayList<ParaprofessionalSession> futureSessions = ParaprofessionalSession.selectAllParaprofessionalSession(futureSessionsWhere, DatabaseHelper.getConnection());
         if(futureSessions.size() > 0)
         {
             for(int i=0; i<futureSessions.size(); i++)
@@ -319,6 +324,7 @@ System.out.println("Done list 4");
             
     SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
     
+    DatabaseHelper.close();
     }
     
     
@@ -328,7 +334,9 @@ System.out.println("Done list 4");
         
         Timestamp now = new Timestamp((new Date()).getTime());
         
-        ArrayList<Agenda> agenda = (ArrayList<Agenda>)HibernateTest.select("from Agenda as a where a.date >= '2012-04-18'");
+        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= '2012-04-18'";
+
+        ArrayList<Agenda> agenda = Agenda.selectAllAgenda(fromCurrentDateWhere, DatabaseHelper.getConnection());
 
         if(agenda.size() > 0)
         {          
@@ -440,8 +448,7 @@ System.out.println("Done list 4");
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         SIAPannel = new javax.swing.JTabbedPane();
         SIAScrollPanel = new javax.swing.JScrollPane();
@@ -571,10 +578,8 @@ System.out.println("Done list 4");
         teacherLabel.setText("Teacher*");
 
         teacherCombo.setEditable(true);
-        teacherCombo.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        teacherCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 teacherComboActionPerformed(evt);
             }
         });
@@ -625,53 +630,41 @@ System.out.println("Done list 4");
         sessionendField.setText("dd/mm/yyyy hh:mm:ss aa");
 
         editSaveButton.setText("Save/Edit");
-        editSaveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        editSaveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 editSaveButtonActionPerformed(evt);
             }
         });
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
         clearButton.setText("Clear");
-        clearButton.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clearButtonMouseClicked(evt);
             }
         });
-        clearButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
             }
         });
 
         addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
         addSessionbutton.setText("Add Session");
-        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addSessionbuttonMouseClicked(evt);
             }
         });
-        addSessionbutton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addSessionbuttonActionPerformed(evt);
             }
         });
 
         newStudentButton.setText("New Student");
-        newStudentButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        newStudentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newStudentButtonActionPerformed(evt);
             }
         });
@@ -730,25 +723,21 @@ System.out.println("Done list 4");
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "First", "Last", "Email", "Phone"
             }
         ));
         sessionsTableScrollPanel.setViewportView(sessionsTable);
 
         deleteSessionButton.setText("Delete Session");
-        deleteSessionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteSessionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteSessionButtonActionPerformed(evt);
             }
         });
@@ -778,25 +767,21 @@ System.out.println("Done list 4");
         futureSessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
 
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "First", "Last", "Email", "Phone"
             }
         ));
         appointmentsTableScrollPanel.setViewportView(appointmentsTable);
 
         deleteSessionButton1.setText("Delete Session");
-        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteSessionButton1ActionPerformed(evt);
             }
         });
@@ -828,15 +813,13 @@ System.out.println("Done list 4");
         deleteAgendaButton.setText("Delete Item");
 
         agendaTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -844,10 +827,8 @@ System.out.println("Done list 4");
         agendaTable.getAccessibleContext().setAccessibleParent(agendaPanel);
 
         addAgendaItemButton.setText("Add Item");
-        addAgendaItemButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        addAgendaItemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addAgendaItemButtonActionPerformed(evt);
             }
         });
@@ -975,7 +956,7 @@ System.out.println("Done list 4");
                     .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .add(0, 83, Short.MAX_VALUE))
+                .add(0, 165, Short.MAX_VALUE))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -991,13 +972,13 @@ System.out.println("Done list 4");
                     .add(locationInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 34, Short.MAX_VALUE)
                 .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 308, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         SIAScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -1008,11 +989,11 @@ System.out.println("Done list 4");
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1443, Short.MAX_VALUE)
+            .add(SIAPannel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1104, Short.MAX_VALUE)
+            .add(SIAPannel)
         );
 
         pack();
@@ -1089,6 +1070,7 @@ System.out.println("Done list 4");
     
     private boolean getParaprofessionalSession(boolean isUpdating)
     {
+        
         try
         {
             boolean clientPanelCheck = true;
@@ -1224,26 +1206,39 @@ System.out.println("Done list 4");
 
            // String term = jComboBoxTerm.getSelectedItem().toString();
 
-            ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='"+course+"'");
+            String abbrevNameString = Subject.SubjectTable.ABBREVNAME.getWithAlias();
+            String teachFNameString = Teacher.TeacherTable.FNAME.getWithAlias();
+            String teachLNameString = Teacher.TeacherTable.LNAME.getWithAlias();
+            String subjectIDString = Course.CourseTable.SUBJECTID.getWithAlias();
+            String paraFNameString = Paraprofessional.ParaTable.FNAME.getWithAlias();
+            String paraLNameString = Paraprofessional.ParaTable.LNAME.getWithAlias();
+            String teachIDString = Course.CourseTable.TEACHERID.getWithAlias();
+            String levelString = Course.CourseTable.LEVEL.getWithAlias();
+            String clientFNameString = Client.ClientTable.FNAME.getWithAlias();
+            String clientLNameString = Client.ClientTable.LNAME.getWithAlias();
             
-            ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where concat(concat(t.fName,' '),t.lName)='"+tname.trim()+"'");
+            DatabaseHelper.open();
+
+            ArrayList<Subject> subjects =(ArrayList<Subject>) Subject.selectAllSubjects("where "+abbrevNameString+"='"+course+"'", DatabaseHelper.getConnection());
+            
+            ArrayList<Teacher> teachers = (ArrayList<Teacher>) Teacher.selectAllTeacher("where concat(concat("+teachFNameString+",' '),"+teachLNameString+")='"+tname.trim()+"'", DatabaseHelper.getConnection());
             ArrayList<Course> courses = null;
             try
             {
-                courses = (ArrayList<Course>)HibernateTest.select("from Course as c where c.subjectID="+subjects.get(0).getSubjectID()+" and c.teacherID="+teachers.get(0).getTeacherID() + " and c.level="+intLevel.intValue());
+                courses = (ArrayList<Course>)Course.selectAllCourse("where "+subjectIDString+"="+subjects.get(0).getSubjectID()+" and "+teachIDString+"="+teachers.get(0).getTeacherID() + " and "+levelString+"="+intLevel.intValue(), DatabaseHelper.getConnection());
             }
             catch(Exception z)
             {
                 courses = new ArrayList<Course>();
                 //coursePanelCheck = true;
             }
-            ArrayList<Paraprofessional> paraprofessionals = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where concat(concat(p.fName,' '),p.lName)='"+pName.trim()+"'");
+            ArrayList<Paraprofessional> paraprofessionals = (ArrayList<Paraprofessional>)Paraprofessional.selectAllParaprofessional("where concat(concat("+paraFNameString+",' '),"+paraLNameString+")='"+pName.trim()+"'", DatabaseHelper.getConnection());
 
-            ArrayList<Paraprofessional> creators = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where concat(concat(p.fName,' '),p.lName)='"+cName.trim()+"'");
+            ArrayList<Paraprofessional> creators = (ArrayList<Paraprofessional>)Paraprofessional.selectAllParaprofessional("where concat(concat("+paraFNameString+",' '),"+paraLNameString+")='"+cName.trim()+"'", DatabaseHelper.getConnection());
 
-            ArrayList<Client> clients = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
+            ArrayList<Client> clients = (ArrayList<Client>)Client.selectAllClients("where "+clientFNameString+"='"+clientFName.trim()+"' and "+clientLNameString+"='"+clientLName.trim()+"'", DatabaseHelper.getConnection());
 
-            ArrayList<Location> locations = (ArrayList<Location>)HibernateTest.select("from Location as l where l.name='"+location.trim()+"'");
+            ArrayList<Location> locations = (ArrayList<Location>)Location.selectAllLocation("where "+Location.LocationTable.NAME.getWithAlias()+"='"+location.trim()+"'", DatabaseHelper.getConnection());
 
             courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
@@ -1306,16 +1301,27 @@ System.out.println("Done list 4");
                 sessionEndString = " is null";
             
             ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0), locations.get(0), creators.get(0), now, sessionStart, sessionEnd, GC, notes, walkout);
-            
+            String paraIDString = ParaprofessionalSession.ParaSessTable.PARAPROFESSIONALID.getWithAlias();
+            String courseIDString = ParaprofessionalSession.ParaSessTable.COURSEID.getWithAlias();
+            String locationIDString = ParaprofessionalSession.ParaSessTable.LOCATIONID.getWithAlias();
+            String creatorIDString = ParaprofessionalSession.ParaSessTable.PARAPROFESSIONALCREATORID.getWithAlias();
+            String enteredString = ParaprofessionalSession.ParaSessTable.TIMEANDDATEENTERED.getWithAlias();
+            String sessStartString = ParaprofessionalSession.ParaSessTable.SESSIONSTART.getWithAlias();
+            String sessEndString = ParaprofessionalSession.ParaSessTable.SESSIONEND.getWithAlias();
+            String gcString = ParaprofessionalSession.ParaSessTable.GRAMMARCHECK.getWithAlias();
+            String walkoutString = ParaprofessionalSession.ParaSessTable.WALKOUT.getWithAlias();
+            String notesString = ParaprofessionalSession.ParaSessTable.NOTES.getWithAlias();
+            String clientIDString = ParaprofessionalSession.ParaSessTable.CLIENTID.getWithAlias();
             if(!isUpdating)
             {
-                HibernateTest.create(ps);
+                DatabaseHelper.insert(ParaprofessionalSession.getValues(ps), ParaprofessionalSession.ParaSessTable.getTable());
+               // HibernateTest.create(ps);
 
                 System.out.println("NOW: "+now.toString());
-                String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
-
+                
+                String query =  "where "+paraIDString+"="+paraprofessionals.get(0).getParaprofessionalID()+" and "+clientIDString+"="+clients.get(0).getClientID()+" and "+courseIDString+"="+courses.get(0).getCourseID()+" and "+locationIDString+"="+locations.get(0).getLocationID()+" and "+creatorIDString+"="+creators.get(0).getParaprofessionalID()+" and "+enteredString+"='"+now.toString()+"' and "+sessStartString+""+sessionStartString+" and "+sessEndString+""+sessionEndString+" and "+gcString+"="+GC+" and "+notesString+"='"+notes+"' and "+walkoutString+"="+walkout;
                 System.out.println(query);
-                ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
+                ArrayList<ParaprofessionalSession> sessions = ParaprofessionalSession.selectAllParaprofessionalSession(query, DatabaseHelper.getConnection()); // (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
 
                 if(sessions.size() <=0)
                 {
@@ -1333,10 +1339,12 @@ System.out.println("Done list 4");
                 
 
                 System.out.println("NOW: "+now.toString());
-                String query = "from ParaprofessionalSession as ps where ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
+                String query =  "where "+clientIDString+"="+clients.get(0).getClientID()+" and "+courseIDString+"="+courses.get(0).getCourseID()+" and "+locationIDString+"="+locations.get(0).getLocationID()+" and "+creatorIDString+"="+creators.get(0).getParaprofessionalID()+" and "+enteredString+"='"+now.toString()+"' and "+sessStartString+""+sessionStartString+" and "+sessEndString+""+sessionEndString+" and "+gcString+"="+GC+" and "+notesString+"='"+notes+"' and "+walkoutString+"="+walkout;
+
+               // String query = "where ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
 
                 System.out.println(query);
-                ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
+                ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)ParaprofessionalSession.selectAllParaprofessionalSession(query,DatabaseHelper.getConnection());
 
                 if(sessions.size() <=0)
                 {
@@ -1349,7 +1357,9 @@ System.out.println("Done list 4");
                 else
                 {
                     ps.setParaprofessionalSessionID(sessions.get(0).getParaprofessionalSessionID());
-                    HibernateTest.update(ps);
+                    
+                    DatabaseHelper.update(ParaprofessionalSession.getValues(ps), ParaprofessionalSession.ParaSessTable.getTable());
+                    //HibernateTest.update(ps);
                     //!!!
                     //Call reload data
                     //!!!
@@ -1397,6 +1407,11 @@ System.out.println("Done list 4");
             e.printStackTrace();
             return false;
         } 
+        finally
+        {
+            DatabaseHelper.close();
+        }
+        
     }
     
 
@@ -1437,7 +1452,7 @@ System.out.println("Done list 4");
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIAView().setVisible(true);
+                new SIAViewMe().setVisible(true);
             }
         });
     }

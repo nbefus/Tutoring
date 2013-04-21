@@ -90,9 +90,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="agendaCategoryLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="agendaCategoryCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="agendaCategoryCombo" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -107,7 +107,7 @@
                       <Component id="agendaTextAreaScrollPanel" min="-2" pref="90" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="cancelButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="submitbutton" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
