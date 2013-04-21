@@ -215,12 +215,13 @@ public class ParaprofessionalSession {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+    /*
     
     @Override
     public String toString()
     {
         return paraprofessionalSessionID + " " + paraprofessionalID.toString() + " " + clientID.toString() + " " + locationID.toString() + " " + paraprofessionalCreatorID.toString() + " " + timeAndDateEntered.toString() + " " + sessionStart.toGMTString() + " " + sessionEnd.toGMTString() + " " + grammarCheck + " " + notes + " " + walkout;
-    }
+    }*/
     
      public boolean isWalkout() {
         return walkout;

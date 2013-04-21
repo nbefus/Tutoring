@@ -14,7 +14,7 @@
         <property name="notes" type="string">
             <column name="notes" length="100" not-null="true" />
         </property>
-        <many-to-one name="agendaCategoryID" class="tutoring.entity.AgendaCategory" fetch="select">
+        <many-to-one name="agendaCategoryID" class="tutoring.entity.AgendaCategory" fetch="join" lazy="false">
             <column name="agendaCategoryID" not-null="true" />
         </many-to-one>
     </class>

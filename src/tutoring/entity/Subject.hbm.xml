@@ -8,7 +8,7 @@
             <column name="subjectID" />
             <generator class="identity" />
         </id>
-        <many-to-one name="categoryID" class="tutoring.entity.Category" fetch="select">
+        <many-to-one name="categoryID" class="tutoring.entity.Category" fetch="join" lazy="false">
             <column name="categoryID" not-null="true" />
         </many-to-one>
         <property name="abbrevName" type="string">

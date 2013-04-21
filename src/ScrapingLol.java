@@ -40,7 +40,7 @@ public class ScrapingLol {
     
     private static int autoIncValSub = 1;
     private static int autoIncValTeach = 1;
-
+private static int autoIncValCourse = 1;
     private static ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject");
     private static ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher");
     private static ArrayList<Course> courses = (ArrayList<Course>)HibernateTest.select("from Course");
@@ -167,6 +167,11 @@ public class ScrapingLol {
             System.out.println("AUTO INC SUBJECTS: "+autoIncValSub);
         }
         
+        if(courses.size() > 0)
+        {
+            autoIncValCourse = courses.get(courses.size()-1).getCourseID();
+        }
+        
         for(int i=0; i<termCodes.length; i++)
         {
              URL url = new URL("http://apps.hpu.edu/cis/web/index.php/search/search?term="+termCodes[i]);
@@ -262,7 +267,7 @@ public class ScrapingLol {
         Teacher t = new Teacher(++autoIncValTeach, lname, fname);
         Subject s = new Subject(++autoIncValSub, abbrev.trim(), categories.get(categories.size()-1));
 
-        Course course = new Course(t, s, level);
+        Course course = new Course(++autoIncValCourse, t, s, level);
 
        int hasSubject = containsSubject(subjects, s);
        int hasTeacher = containsTeacher(teachers, t);
@@ -335,17 +340,39 @@ public class ScrapingLol {
               System.out.println("SAME Subject "+autoIncValSub);
           }
 
+          
+          if(courses.size() < 1)
+            {
+                HibernateTest.create(course);
+                //System.out.println("AUTO INC Teachers inside before: "+autoIncValTeach);
+                autoIncValCourse = ((Course)(HibernateTest.select("from Course as c where c.teacherID="+t.getTeacherID()+" and c.subjectID="+s.getSubjectID()+" and c.level="+course.getLevel())).get(0)).getCourseID();
+
+                course.setCourseID(autoIncValCourse);
+                autoIncValCourse++;
+               // System.out.println("AUTO INC Teachers inside: "+autoIncValTeach);
+
+            }
+            else
+            {
+                newcourses.add(course);
+                //System.out.println("NEW TEACHER: "+t.getTeacherID()+fname+ "  "+lname);
+            }
+
+            courses.add(course);
+            
           //HibernateTest.create(course);
-          courses.add(course);
-          newcourses.add(course);
+         // courses.add(course);
+          //newcourses.add(course);
           
           System.out.println("***"+t.getTeacherID()+ t.getlName() +" "+t.getfName() + " "+s.getSubjectID()+ " " + s.getAbbrevName() + " "+course.getCourseID()+" " +course.getLevel());
           //System.out.println("Inserted course: "+course.getLevel());
        }
        else
        {
+           course.setCourseID(courses.get(hasCourse).getCourseID());
            autoIncValSub--;
            autoIncValTeach--;
+           autoIncValCourse--;
        }
     }
 }

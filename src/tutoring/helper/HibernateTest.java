@@ -50,13 +50,31 @@ public class HibernateTest {
     }
 
     public static List select(String sqlQuery) {
-        SessionFactory sessFact = HibernateUtil.getSessionFactory();
+        Transaction trns = null;
+        List result = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        //if(session == null)
+        //    session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            Query query = session.createQuery(sqlQuery);
+            result = query.list();
+            //result.toString();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        
+        
+      /*  SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
         Query query = sess.createQuery(sqlQuery);
         List result = query.list();
-        //sess.close();
-        //sessFact.close();
+        sess.close();
+        sessFact.close();*/
         return result;
         /*
          Iterator it = result.iterator();
@@ -72,11 +90,30 @@ public class HibernateTest {
     }
 
     public static List regularSelect(String sqlQuery) {
-        SessionFactory sessFact = HibernateUtil.getSessionFactory();
+        Transaction trns = null;
+        List result = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();//.openSession();
+       // if(session == null)
+        //    session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            Query query = session.createSQLQuery(sqlQuery);
+            
+            result = query.list();
+           // result.toString();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+           session.flush();
+           session.close();
+        }
+        
+        
+       /* SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         Transaction tr = sess.beginTransaction();
         Query query = sess.createSQLQuery(sqlQuery);
-        List result = query.list();
+        List result = query.list();*/
 
         //sess.close();
         //sessFact.close();
@@ -108,30 +145,62 @@ public class HibernateTest {
     }
 
     public static void create(Object obj) {
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            session.save(obj);
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        /*
         SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         org.hibernate.Transaction tr = sess.beginTransaction();
 
         sess.save(obj);
-        tr.commit();
+        tr.commit();*/
         //sessFact.close();
     }
 
     public static void batchCreate(Object[] obj) {
+        Transaction trns = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            for (int i = 0; i < obj.length; i++) {
+            session.save(obj[i]);
+            if (i % 50 == 0 && i != 0) {
+                session.flush();
+                session.clear();
+            }
+        }
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (trns != null) {
+                trns.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        /*
         SessionFactory sessFact = HibernateUtil.getSessionFactory();
         Session sess = sessFact.getCurrentSession();
         org.hibernate.Transaction tr = sess.beginTransaction();
 
-        for (int i = 0; i < obj.length; i++) {
-            sess.save(obj[i]);
-            if (i % 50 == 0 && i != 0) {
-                sess.flush();
-                sess.clear();
-            }
-        }
+        
 
         tr.commit();
-        sessFact.close();
+        sessFact.close();*/
     }
 
     public static void delete(Object obj) {

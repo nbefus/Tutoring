@@ -14,7 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
-import tutoring.ui.ClientEdit;
+import tutoring.old.ClientEdit;
 
 /**
  *

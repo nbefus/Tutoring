@@ -17,7 +17,7 @@
         <property name="password" type="string">
             <column name="password" length="50" not-null="true" />
         </property>
-        <many-to-one name="roleID" class="tutoring.entity.Role" fetch="select">
+        <many-to-one name="roleID" class="tutoring.entity.Role" fetch="join" lazy="false">
             <column name="roleID" not-null="true" />
         </many-to-one>
     </class>

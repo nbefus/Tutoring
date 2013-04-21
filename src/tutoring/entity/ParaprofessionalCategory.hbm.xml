@@ -10,10 +10,10 @@
         </composite-id>-->
         
         <composite-id>
-            <key-many-to-one name="paraprofessionalID" class="tutoring.entity.Paraprofessional">
+            <key-many-to-one name="paraprofessionalID" class="tutoring.entity.Paraprofessional" lazy="false">
                 <column name="paraprofessionalID" />
             </key-many-to-one>
-            <key-many-to-one name="categoryID" class="tutoring.entity.Category">
+            <key-many-to-one name="categoryID" class="tutoring.entity.Category" lazy="false">
                 <column name="categoryID" /> 
            </key-many-to-one>
         </composite-id>

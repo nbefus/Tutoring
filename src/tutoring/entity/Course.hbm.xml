@@ -8,10 +8,10 @@
             <column name="courseId" />
             <generator class="identity" />
         </id>
-        <many-to-one name="teacherID" class="tutoring.entity.Teacher" fetch="select">
+        <many-to-one name="teacherID" class="tutoring.entity.Teacher" fetch="join" lazy="false">
             <column name="teacherID" not-null="true" />
         </many-to-one>
-        <many-to-one name="subjectID" class="tutoring.entity.Subject" fetch="select">
+        <many-to-one name="subjectID" class="tutoring.entity.Subject" fetch="join" lazy="false">
             <column name="subjectID" not-null="true" />
         </many-to-one>
         <property name="level" type="int">

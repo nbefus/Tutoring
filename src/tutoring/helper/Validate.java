@@ -4,11 +4,16 @@
  */
 package tutoring.helper;
 
+import java.awt.Color;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.border.MatteBorder;
+import javax.swing.text.JTextComponent;
 import tutoring.entity.Client;
 import tutoring.entity.Course;
 import tutoring.entity.Location;
@@ -42,6 +47,146 @@ public class Validate
         if(HibernateTest.regularSelect("from Course as c join Teacher as t on c.teacherID=t.teacherID join Subject as s on c.subjectID=s.subjectID where c.level='"+c.getLevel()+"' and t.lName='"+c.getTeacherID().getlName()+"' and t.fname="+c.getTeacherID().getlName()+" s.abbrevName='"+c.getSubjectID().getAbbrevName()+"'").size() > 0)
             return true;
         return false;
+    }
+    
+    public static void createClient(JComboBox fnameField, JComboBox lnameField, JComboBox phoneField, JComboBox emailField)
+    {
+        try
+        {
+            fnameField.setBorder(null);
+            lnameField.setBorder(null);
+            phoneField.setBorder(null);
+            emailField.setBorder(null);
+            
+            String fname = ((JTextComponent)fnameField.getEditor().getEditorComponent()).getText().trim();
+            String lname = ((JTextComponent)lnameField.getEditor().getEditorComponent()).getText().trim();
+            String phone = ((JTextComponent)phoneField.getEditor().getEditorComponent()).getText().trim();
+            String email = ((JTextComponent)emailField.getEditor().getEditorComponent()).getText().trim();
+
+            if(fname.length() < 1)
+            {
+                fnameField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+
+            if(lname.length() < 1)
+            {
+                lnameField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+
+            boolean goodPhone = true;
+            
+            if(phone.length() > 1)
+            {
+                for(int i=0; i<phone.length(); i++)
+                    if(!(phone.charAt(i) == '-' || Character.isDigit(phone.charAt(i))))
+                        goodPhone = false;
+                
+                String checkSlashes = phone.replaceAll("-", "");
+                
+                if(phone.length()-checkSlashes.length() != 2)
+                    goodPhone = false;
+                
+                if(!goodPhone)
+                    phoneField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+   
+            boolean goodEmail = true;
+            
+            
+            if(email.length() > 4)
+            {
+                int atSign = email.indexOf("@");
+                int dot = email.indexOf(".");
+                
+                if(dot == -1 || atSign == -1)
+                        goodEmail = false;
+                
+                if(!goodEmail)
+                    emailField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+            
+            if(lname.length() > 1 && fname.length() > 1 && goodPhone && goodEmail)
+            {
+                Client c = new Client(-1, fname, lname, email, phone);
+                HibernateTest.create(c);
+                JOptionPane.showMessageDialog(null, "Student created successfully!");
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Not created successfully");
+        }
+
+    }
+    
+    public static void createCourse(JComboBox courseField, JComboBox levelField, JComboBox teacherField)
+    {
+        try
+        {
+            courseField.setBorder(null);
+            levelField.setBorder(null);
+            teacherField.setBorder(null);
+            
+            String course = ((JTextComponent)courseField.getEditor().getEditorComponent()).getText().trim();
+            String level = ((JTextComponent)levelField.getEditor().getEditorComponent()).getText().trim();
+            String teacher = ((JTextComponent)teacherField.getEditor().getEditorComponent()).getText().trim();
+
+            boolean goodCourse = true;
+            ArrayList<Subject> subject = null;
+            if(course.length() < 1)
+            {
+                goodCourse = false;
+                courseField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+            else if(course.length() > 0)
+            {
+                subject = (ArrayList<Subject>) HibernateTest.select("from Course as c where c.abbrevName='"+course+"'");
+                if(subject.size() != 1)
+                    goodCourse = false;
+            }
+
+            boolean goodLevel = true;
+            if(level.length() < 1)
+            {
+                goodLevel = false;
+                levelField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+            else if(level.length() > 0)
+            {
+                for(int i=0; i<level.length(); i++)
+                    if(!Character.isDigit(level.charAt(i)))
+                    {
+                        levelField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+                        goodLevel = false;
+                    }
+            }
+
+            boolean goodTeacher = true;
+            ArrayList<Teacher> teachers = null;
+            if(teacher.length() < 1)
+            {
+                goodTeacher = false;
+                teacherField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+            }
+            else if(teacher.length() > 0)
+            {
+                teachers = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t where concat(concat(t.fName,' '),t.lName)='"+teacher+"'");
+                if(teachers.size() != 1)
+                    goodTeacher = false;
+            }
+
+            if(goodTeacher && goodCourse && goodLevel)
+            {
+                Course c = new Course(teachers.get(0), subject.get(0), Integer.parseInt(level));
+                HibernateTest.create(c);
+                JOptionPane.showMessageDialog(null, "Student created successfully!");
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Not created successfully");
+        }
+
     }
     
     public static boolean validateTimestamp(String t)

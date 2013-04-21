@@ -16,16 +16,17 @@ public class Course
     private Subject subjectID;    // foreign key
     private int level;
 
-    public Course(Teacher teacher, Subject subject, int level) {
+    public Course(int course, Teacher teacher, Subject subject, int level) {
+        this.courseID = course;
         this.teacherID = teacher;
         this.subjectID = subject;
         this.level = level;
     }
-      public Course()
+    
+    public Course()
     {
         
     }
-    
 
     /**
      * @return the teacherID

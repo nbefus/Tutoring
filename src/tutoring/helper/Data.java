@@ -105,14 +105,18 @@ public class Data {
         clientsemail = new ArrayList<String>();
         
         char separator = ',';
+        
         subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
+        System.out.println("1111111111111111111111");
+        
         levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
+        System.out.println("1111111111111111111111");
         teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist);
-
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+System.out.println("1111111111111111111111");
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);System.out.println("1111111111111111111111");
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);System.out.println("1111111111111111111111");
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);System.out.println("1111111111111111111111");
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);System.out.println("1111111111111111111111");
 
     /*
         clientFirst = (ArrayList<Client>) HibernateTest.select("from Client as c order by c.fName");
@@ -122,16 +126,16 @@ public class Data {
 
         ;*/
 
-        locations = (ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");
-        tutors = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as p order by p.fName");
-        subjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s order by s.abbrevName");
-        teacherFirst = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.fName");
-        teacherLast = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.lName");
-        categories = (ArrayList<Category>) HibernateTest.select("from Category as c order by c.name");
-        levels = (ArrayList<Course>) HibernateTest.select("from Course as c order by c.level");
+        locations = (ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");System.out.println("1111111111111111111111");
+        tutors = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as p order by p.fName");System.out.println("1111111111111111111111");
+        subjects = (ArrayList<Subject>) HibernateTest.select("from Subject as s order by s.abbrevName");System.out.println("1111111111111111111111");
+        teacherFirst = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.fName");System.out.println("1111111111111111111111");
+        teacherLast = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.lName");System.out.println("1111111111111111111111");
+        categories = (ArrayList<Category>) HibernateTest.select("from Category as c order by c.name");System.out.println("1111111111111111111111");
+        levels = (ArrayList<Course>) HibernateTest.select("from Course as c order by c.level");System.out.println("1111111111111111111111");
 
-        tutorFirst = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.fName");
-        tutorLast = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.lName");
+        tutorFirst = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.fName");System.out.println("1111111111111111111111");
+        tutorLast = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.lName");System.out.println("1111111111111111111111");
 
         
 
@@ -142,7 +146,7 @@ public class Data {
         }
 
 
-        roles = (ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");
+        roles = (ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");System.out.println("1111111111111111111111 DONEDONE DONE");
 
         /*
          for(int i=0; i<clientFirst.size(); i++)
@@ -188,9 +192,7 @@ public class Data {
         for (int i = 0; i < tutorLast.size(); i++) {
             tutorslastlist.add(tutorLast.get(i).getlName());
         }
-
-
-
+        
         for (int i = 0; i < locations.size(); i++) {
             locationslist.add(locations.get(i).getName());
         }

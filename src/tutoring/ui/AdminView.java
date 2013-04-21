@@ -25,10 +25,12 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -710,6 +712,8 @@ public class AdminView extends javax.swing.JFrame
         sessionsRadio = new javax.swing.JRadioButton();
         teacherRadio = new javax.swing.JRadioButton();
         paraprofessionalRadio = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
         reportPanel1 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -1199,7 +1203,7 @@ public class AdminView extends javax.swing.JFrame
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                         .add(322, 322, 322)
                         .add(autocompleteCheck)))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1787,6 +1791,15 @@ public class AdminView extends javax.swing.JFrame
             }
         });
 
+        jButton1.setText("Create");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Save/Edit");
+
         org.jdesktop.layout.GroupLayout sessionsPanel1Layout = new org.jdesktop.layout.GroupLayout(sessionsPanel1);
         sessionsPanel1.setLayout(sessionsPanel1Layout);
         sessionsPanel1Layout.setHorizontalGroup(
@@ -1811,9 +1824,13 @@ public class AdminView extends javax.swing.JFrame
                                 .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(18, 18, 18)
                                 .add(searchAddRestrictionsButton)
-                                .add(18, 70, Short.MAX_VALUE)
+                                .add(18, 72, Short.MAX_VALUE)
                                 .add(searchsearchButton)
-                                .add(528, 528, 528))
+                                .add(18, 18, 18)
+                                .add(jButton1)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                .add(jButton2)
+                                .add(354, 354, 354))
                             .add(sessionsPanel1Layout.createSequentialGroup()
                                 .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(searchresetrestrictionButton)
@@ -1864,14 +1881,16 @@ public class AdminView extends javax.swing.JFrame
                         .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(searchsearchButton)
                             .add(searchAddRestrictionsButton)
-                            .add(clearButton1))
+                            .add(clearButton1)
+                            .add(jButton1)
+                            .add(jButton2))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(searchresetrestrictionButton)
                         .add(18, 18, 18)
                         .add(searchclearrestrictionsButton)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -1982,7 +2001,7 @@ public class AdminView extends javax.swing.JFrame
                                 .add(21, 21, 21)
                                 .add(jLabel6)))
                         .add(generalReportLoadButton))
-                    .addContainerGap(1151, Short.MAX_VALUE)))
+                    .addContainerGap(1193, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(185, 185, 185)
@@ -1992,7 +2011,7 @@ public class AdminView extends javax.swing.JFrame
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(10, Short.MAX_VALUE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2014,7 +2033,7 @@ public class AdminView extends javax.swing.JFrame
                     .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(18, 18, 18)
                     .add(generalReportLoadButton)
-                    .addContainerGap(105, Short.MAX_VALUE)))
+                    .addContainerGap(126, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(16, 16, 16)
@@ -2638,58 +2657,23 @@ public class AdminView extends javax.swing.JFrame
 
     private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
 
-        if (autocompleteCheck.isSelected())
-        {
-            uac.noMore();
-            //Clients autocomplete
-            JComboBox[] cboxes = new JComboBox[4];
-            cboxes[0] = fnameCombo;
-            cboxes[1] = lnameCombo;
-            cboxes[2] = phoneCombo;
-            cboxes[3] = emailCombo;
-
-            ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-
-            cultimateList.add(Data.getClientsfirst());
-            cultimateList.add(Data.getClientslast());
-            cultimateList.add(Data.getClientsphone());
-            cultimateList.add(Data.getClientsemail());
-
-            uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
-
-        } else
-        {
-            uacc.noMore();
-
-            JComboBox[] boxes = new JComboBox[11];
-            boxes[0] = fnameCombo;
-            boxes[1] = lnameCombo;
-            boxes[2] = phoneCombo;
-            boxes[3] = emailCombo;
-            boxes[4] = categoryCombo;
-            boxes[5] = courseCombo;
-            boxes[6] = creatorCombo;
-            boxes[7] = levelCombo;
-            boxes[8] = locationCombo;
-            boxes[9] = paraprofessionalCombo;
-            boxes[10] = teacherCombo;
-
-            ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-            cultimateList.add(Data.getClientsfirst());
-            cultimateList.add(Data.getClientslast());
-            cultimateList.add(Data.getClientsphone());
-            cultimateList.add(Data.getClientsemail());
-            cultimateList.add(Data.getCategorieslist());
-            cultimateList.add(Data.getSubjectslist());
-            cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getLevelslist());
-            cultimateList.add(Data.getLocationslist());
-            cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getTeacherslist());
-            uac = new UltimateAutoComplete(cultimateList, boxes);
-        }
     }//GEN-LAST:event_autocompleteCheckActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        
+        if(clientRadio.isSelected())
+        {
+            Validate.createClient(searchfnameCombo, searchlnameCombo, searchphoneCombo, searchemailCombo);
+        }
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+   
+    
+    
+    
     public void clearComboBoxes()
     {
         for (int i = 0; i < uac.getBoxesLength(); i++)
@@ -2817,6 +2801,8 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JTable generalReportTable2;
     private javax.swing.JTable generalReportTable3;
     private javax.swing.JTable generalReportTable4;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

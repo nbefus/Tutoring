@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.ui;
+package tutoring.old;
 
 import java.awt.Window;
 import java.util.ArrayList;

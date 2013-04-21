@@ -165,6 +165,7 @@ public class AutoCompleteComboBox extends JComboBox implements KeyListener, Acti
     @Override
     public void keyReleased(KeyEvent evt) 
     {
+        
         if(firstClick && evt.getKeyCode() != KeyEvent.VK_TAB)
         {
             firstClick=false;
@@ -195,6 +196,7 @@ public class AutoCompleteComboBox extends JComboBox implements KeyListener, Acti
             //jcb.setPopupVisible(true);
             jcb.showPopup();
             ((JTextComponent)jcb.getEditor().getEditorComponent()).setText(text);
+           
 
             int size = jcb.getModel().getSize();
 

@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.ui;
+package tutoring.old;
 
+import tutoring.old.SIAOld;
 import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
@@ -11,6 +12,7 @@ import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.event.MouseWheelListener;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,24 +41,26 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIAOld extends javax.swing.JFrame {
+public class SIA_1_1 extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
      */
+    
+    
     public enum ComboBoxesIndexes
     {   
         CFNAME(0, "First Name", "fname", 'd'),
         CLNAME(1, "Last Name", "lname", 'd'),
         CPHONE(2,"Phone", "phone", 'd'),
         CEMAIL(3, "Email", "email", 'd'),
-        CATEGORY(4, "Category", "name", 'a'),
-        COURSE(5, "Course", "abbrevName", 's'),
-        CREATOR(6, "Creator", "", 'e'),
-        LEVEL(7, "Level", "level", 'c'),
-        LOCATION(8, "Location", "location",'l'),
-        PARAPROFESSIONAL(9, "Tutor","", 'p'),
-        TEACHER(10, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't');
+        //CATEGORY(4, "Category", "name", 'a'),
+        COURSE(4, "Course", "abbrevName", 's'),
+        CREATOR(5, "Creator", "", 'e'),
+        LEVEL(6, "Level", "level", 'c'),
+        LOCATION(7, "Location", "location",'l'),
+        PARAPROFESSIONAL(8, "Tutor","", 'p'),
+        TEACHER(9, "Teacher", "concat_ws(' ', t.fname, t.lname)", 't');
         
         private int indexOfCombo;
         private String displayName;
@@ -100,10 +104,12 @@ public class SIAOld extends javax.swing.JFrame {
     }
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientOld uacc;
-    public SIAOld() 
+    public SIA_1_1() 
     {
         initComponents();
         
+        sessionstartField.setText("mm/dd/yyyy hh:mm aa");
+        sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
         
         SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable);
@@ -133,10 +139,41 @@ public class SIAOld extends javax.swing.JFrame {
        cultimateList.add(Data.getClientslast());
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
+       
+       ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
 
-      uacc = new UltimateAutoCompleteClientOld(cultimateList, cboxes, Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+       cultimateList1.add(Data.getFnameOrderedList());
+       cultimateList1.add(Data.getLnameOrderedList());
+       cultimateList1.add(Data.getPhoneOrderedList());
+       cultimateList1.add(Data.getEmailOrderedList());
+
+       UltimateAutoAutoComplete uaa = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
-      Timestamp now = new Timestamp((new Date()).getTime());
+       
+       JComboBox[] cboxes2 = new  JComboBox[3];
+       cboxes2[0]=courseCombo;
+       cboxes2[1]=levelCombo;
+       cboxes2[2]=teacherCombo;
+       //cboxes[3]=emailCombo;
+       
+       ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
+
+       cultimateList2.add(Data.getSubjectslist());
+       cultimateList2.add(Data.getLevelslist());
+       cultimateList2.add(Data.getTeacherslist());
+       //cultimateList.add(Data.getClientsemail());
+       
+       ArrayList<ArrayList<String>> cultimateList22 = new ArrayList<ArrayList<String>>();
+
+       cultimateList22.add(Data.getSubjectOrderedList());
+       cultimateList22.add(Data.getLevelOrderedList());
+       cultimateList22.add(Data.getTeacherOrderedList());
+      // cultimateList2.add(Data.getEmailOrderedList());
+
+       UltimateAutoAutoComplete uaa2 = new UltimateAutoAutoComplete(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      
+       
+       Timestamp now = new Timestamp((new Date()).getTime());
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
@@ -210,7 +247,7 @@ public class SIAOld extends javax.swing.JFrame {
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTPHONE.getColumnIndex()).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTLASTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTFIRSTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
-                uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CATEGORY.getColumnIndex()).toString(), ComboBoxesIndexes.CATEGORY.getBoxIndex());
+                //uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CATEGORY.getColumnIndex()).toString(), ComboBoxesIndexes.CATEGORY.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.PARAPROFESSIONAL.getColumnIndex()).toString(), ComboBoxesIndexes.PARAPROFESSIONAL.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LOCATION.getColumnIndex()).toString(), ComboBoxesIndexes.LOCATION.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CREATOR.getColumnIndex()).toString(), ComboBoxesIndexes.CREATOR.getBoxIndex());
@@ -253,6 +290,12 @@ public class SIAOld extends javax.swing.JFrame {
             
     SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
     }
+    
+    public void clearComboBoxes()
+    {
+         for(int i=0; i<uac.getBoxesLength(); i++)
+            uac.setComboValue("", i);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -282,25 +325,18 @@ public class SIAOld extends javax.swing.JFrame {
         levelCombo = new javax.swing.JComboBox();
         teacherLabel = new javax.swing.JLabel();
         teacherCombo = new javax.swing.JComboBox();
-        categoryLabel = new javax.swing.JLabel();
-        categoryCombo = new javax.swing.JComboBox();
-        paraprofessionalCombo = new javax.swing.JComboBox();
-        ParaprofessionalLabel = new javax.swing.JLabel();
         otherInfoPanel = new javax.swing.JPanel();
-        locationLabel = new javax.swing.JLabel();
-        locationCombo = new javax.swing.JComboBox();
-        creatorLabel = new javax.swing.JLabel();
         notesLabel = new javax.swing.JLabel();
         notesField = new javax.swing.JTextField();
         gcCheck = new javax.swing.JCheckBox();
         walkoutCheck = new javax.swing.JCheckBox();
         sessionstartLabel = new javax.swing.JLabel();
         sessionstartField = new javax.swing.JTextField();
-        creatorCombo = new javax.swing.JComboBox();
         sessionendLabel = new javax.swing.JLabel();
         sessionendField = new javax.swing.JTextField();
-        addSessionbutton = new javax.swing.JButton();
+        editSaveButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
+        addSessionbutton = new javax.swing.JButton();
         sessionsTablePanel = new javax.swing.JPanel();
         sessionsTableScrollPanel = new javax.swing.JScrollPane();
         sessionsTable = new javax.swing.JTable();
@@ -324,7 +360,15 @@ public class SIAOld extends javax.swing.JFrame {
         agendaTableScrollPanel = new javax.swing.JScrollPane();
         agendaTable = new javax.swing.JTable();
         autocompleteCheck = new javax.swing.JCheckBox();
-        editSaveButton = new javax.swing.JButton();
+        paraprofessionalInfoPanel = new javax.swing.JPanel();
+        ParaprofessionalLabel = new javax.swing.JLabel();
+        paraprofessionalCombo = new javax.swing.JComboBox();
+        locationInfoPanel = new javax.swing.JPanel();
+        locationCombo = new javax.swing.JComboBox();
+        locationLabel = new javax.swing.JLabel();
+        creatorInfoPanel = new javax.swing.JPanel();
+        creatorCombo = new javax.swing.JComboBox();
+        creatorLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -342,7 +386,7 @@ public class SIAOld extends javax.swing.JFrame {
 
         emailCombo.setEditable(true);
 
-        phoneLabel.setText("Phone");
+        phoneLabel.setText("Telephone");
 
         phoneCombo.setEditable(true);
 
@@ -365,8 +409,8 @@ public class SIAOld extends javax.swing.JFrame {
                 .add(emailCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 188, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(phoneLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 174, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 146, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         studentInfoPanelLayout.setVerticalGroup(
@@ -405,20 +449,12 @@ public class SIAOld extends javax.swing.JFrame {
             }
         });
 
-        categoryLabel.setText("Category*");
-
-        categoryCombo.setEditable(true);
-
-        paraprofessionalCombo.setEditable(true);
-
-        ParaprofessionalLabel.setText("Paraprofessional*");
-
         org.jdesktop.layout.GroupLayout courseInfoPanelLayout = new org.jdesktop.layout.GroupLayout(courseInfoPanel);
         courseInfoPanel.setLayout(courseInfoPanelLayout);
         courseInfoPanelLayout.setHorizontalGroup(
             courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(courseInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(courseLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -429,39 +465,20 @@ public class SIAOld extends javax.swing.JFrame {
                 .add(18, 18, 18)
                 .add(teacherLabel)
                 .add(18, 18, 18)
-                .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(categoryLabel)
-                .add(18, 18, 18)
-                .add(categoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(13, 13, 13)
-                .add(ParaprofessionalLabel)
-                .add(18, 18, 18)
-                .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
         courseInfoPanelLayout.setVerticalGroup(
             courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(courseInfoPanelLayout.createSequentialGroup()
-                .add(courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(courseLabel)
-                    .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(levelLabel)
-                    .add(levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(teacherLabel)
-                    .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(categoryLabel)
-                    .add(categoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(ParaprofessionalLabel))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(courseLabel)
+                .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(levelLabel)
+                .add(levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(teacherLabel)
+                .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
         otherInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Other Information"));
-
-        locationLabel.setText("Location*");
-
-        creatorLabel.setText("Creator*");
 
         notesLabel.setText("Notes");
 
@@ -473,73 +490,14 @@ public class SIAOld extends javax.swing.JFrame {
 
         sessionstartField.setText("dd/mm/yyyy hh:mm aa");
 
-        creatorCombo.setEditable(true);
-
         sessionendLabel.setText("Session End");
 
         sessionendField.setText("dd/mm/yyyy hh:mm:ss aa");
 
-        org.jdesktop.layout.GroupLayout otherInfoPanelLayout = new org.jdesktop.layout.GroupLayout(otherInfoPanel);
-        otherInfoPanel.setLayout(otherInfoPanelLayout);
-        otherInfoPanelLayout.setHorizontalGroup(
-            otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(otherInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(locationLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(creatorLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(notesLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(sessionstartLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(sessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(sessionendLabel)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
-                .add(gcCheck)
-                .add(18, 18, 18)
-                .add(walkoutCheck)
-                .addContainerGap(58, Short.MAX_VALUE))
-        );
-        otherInfoPanelLayout.setVerticalGroup(
-            otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(otherInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(locationLabel)
-                    .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(creatorLabel)
-                    .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(notesLabel)
-                    .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(sessionstartLabel)
-                    .add(sessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(gcCheck)
-                    .add(walkoutCheck)
-                    .add(sessionendLabel)
-                    .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
-        addSessionbutton.setText("Add Session");
-        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addSessionbuttonMouseClicked(evt);
-            }
-        });
-        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
+        editSaveButton.setText("Save");
+        editSaveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addSessionbuttonActionPerformed(evt);
+                editSaveButtonActionPerformed(evt);
             }
         });
 
@@ -555,6 +513,67 @@ public class SIAOld extends javax.swing.JFrame {
                 clearButtonActionPerformed(evt);
             }
         });
+
+        addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
+        addSessionbutton.setText("Add Session");
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addSessionbuttonMouseClicked(evt);
+            }
+        });
+        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addSessionbuttonActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout otherInfoPanelLayout = new org.jdesktop.layout.GroupLayout(otherInfoPanel);
+        otherInfoPanel.setLayout(otherInfoPanelLayout);
+        otherInfoPanelLayout.setHorizontalGroup(
+            otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(otherInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(notesLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 191, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(sessionstartLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(sessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(sessionendLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 158, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(gcCheck)
+                .add(18, 18, 18)
+                .add(walkoutCheck)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(editSaveButton)
+                .add(18, 18, 18)
+                .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(addSessionbutton)
+                .addContainerGap())
+        );
+        otherInfoPanelLayout.setVerticalGroup(
+            otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(otherInfoPanelLayout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(otherInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(notesLabel)
+                    .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(sessionstartLabel)
+                    .add(sessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(sessionendLabel)
+                    .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(gcCheck)
+                    .add(walkoutCheck)
+                    .add(editSaveButton)
+                    .add(clearButton)
+                    .add(addSessionbutton))
+                .add(0, 0, 0))
+        );
 
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
@@ -630,7 +649,7 @@ public class SIAOld extends javax.swing.JFrame {
             .add(futureSessionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(appointmentsTableScrollPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1288, Short.MAX_VALUE)
+                    .add(appointmentsTableScrollPanel)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -692,7 +711,7 @@ public class SIAOld extends javax.swing.JFrame {
                                 .add(dateField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 167, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                                 .add(agendaTextAreaScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 588, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         createAgendaPanelLayout.setVerticalGroup(
             createAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -738,7 +757,7 @@ public class SIAOld extends javax.swing.JFrame {
             .add(agendaPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1294, Short.MAX_VALUE)
+                    .add(agendaTableScrollPanel)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, agendaPanelLayout.createSequentialGroup()
                         .add(0, 0, Short.MAX_VALUE)
                         .add(deleteAgendaButton)))
@@ -761,72 +780,133 @@ public class SIAOld extends javax.swing.JFrame {
             }
         });
 
-        editSaveButton.setText("Save");
-        editSaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editSaveButtonActionPerformed(evt);
-            }
-        });
+        paraprofessionalInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Paraprofesional Information"));
+
+        ParaprofessionalLabel.setText("Paraprofessional*");
+
+        paraprofessionalCombo.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout paraprofessionalInfoPanelLayout = new org.jdesktop.layout.GroupLayout(paraprofessionalInfoPanel);
+        paraprofessionalInfoPanel.setLayout(paraprofessionalInfoPanelLayout);
+        paraprofessionalInfoPanelLayout.setHorizontalGroup(
+            paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(ParaprofessionalLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        paraprofessionalInfoPanelLayout.setVerticalGroup(
+            paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
+                .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(ParaprofessionalLabel))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        locationInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Location Information"));
+
+        locationLabel.setText("Location*");
+
+        org.jdesktop.layout.GroupLayout locationInfoPanelLayout = new org.jdesktop.layout.GroupLayout(locationInfoPanel);
+        locationInfoPanel.setLayout(locationInfoPanelLayout);
+        locationInfoPanelLayout.setHorizontalGroup(
+            locationInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(locationInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(locationLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 140, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        locationInfoPanelLayout.setVerticalGroup(
+            locationInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, locationInfoPanelLayout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(locationInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(locationLabel)
+                    .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        creatorInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Creator Information"));
+
+        creatorCombo.setEditable(true);
+
+        creatorLabel.setText("Creator*");
+
+        org.jdesktop.layout.GroupLayout creatorInfoPanelLayout = new org.jdesktop.layout.GroupLayout(creatorInfoPanel);
+        creatorInfoPanel.setLayout(creatorInfoPanelLayout);
+        creatorInfoPanelLayout.setHorizontalGroup(
+            creatorInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(creatorInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(creatorLabel)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(19, 19, 19))
+        );
+        creatorInfoPanelLayout.setVerticalGroup(
+            creatorInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, creatorInfoPanelLayout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(creatorInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(creatorLabel)
+                    .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+        );
 
         org.jdesktop.layout.GroupLayout sessionsAndAgendaPanelLayout = new org.jdesktop.layout.GroupLayout(sessionsAndAgendaPanel);
         sessionsAndAgendaPanel.setLayout(sessionsAndAgendaPanelLayout);
         sessionsAndAgendaPanelLayout.setHorizontalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .addContainerGap()
+                .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                                .add(175, 175, 175)
-                                .add(autocompleteCheck))
-                            .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                                    .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                    .add(18, 18, 18)
-                                    .add(addSessionbutton)
-                                    .add(18, 18, 18)
-                                    .add(editSaveButton)
-                                    .add(68, 68, 68))
-                                .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                                    .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, otherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(org.jdesktop.layout.GroupLayout.LEADING, courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .add(16, 16, 16)))
-                            .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, futureSessionsPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, sessionsTablePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .add(175, 175, 175)
+                        .add(autocompleteCheck))
+                    .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
-                        .add(126, 126, 126)
-                        .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(agendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+                        .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(locationInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(creatorInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
+                        .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .add(0, 0, 0))
         );
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
                 .add(autocompleteCheck)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+                    .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(creatorInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(locationInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(otherInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(12, 12, 12)
-                .add(sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(addSessionbutton)
-                    .add(clearButton)
-                    .add(editSaveButton))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 17, Short.MAX_VALUE)
                 .add(sessionsTablePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 298, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(futureSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(18, 18, 18)
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         SIAScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -837,18 +917,25 @@ public class SIAOld extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1354, Short.MAX_VALUE)
+            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1426, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(SIAPannel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1389, Short.MAX_VALUE)
+            .add(SIAPannel)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
+        clearComboBoxes();
+        sessionstartField.setText("mm/dd/yyyy hh:mm aa");
+        sessionendField.setText("mm/dd/yyyy hh:mm aa");
+        editSaveButton.setVisible(false);
+        notesField.setText("");
+        gcCheck.setSelected(false);
+        walkoutCheck.setSelected(false);
+        
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
@@ -902,31 +989,29 @@ public class SIAOld extends javax.swing.JFrame {
         {
             uacc.noMore();
             
-            JComboBox[] boxes = new  JComboBox[11];
+            JComboBox[] boxes = new  JComboBox[10];
             boxes[0]=fnameCombo;
             boxes[1]=lnameCombo;
             boxes[2]=phoneCombo;
             boxes[3]=emailCombo;
-            boxes[4]=categoryCombo;
-            boxes[5]=courseCombo;
-            boxes[6]=creatorCombo;
-            boxes[7]=levelCombo;
-            boxes[8]=locationCombo;
-            boxes[9]=paraprofessionalCombo;
-            boxes[10]=teacherCombo;
+            boxes[4]=courseCombo;
+            boxes[5]=creatorCombo;
+            boxes[6]=levelCombo;
+            boxes[7]=locationCombo;
+            boxes[8]=paraprofessionalCombo;
+            boxes[9]=teacherCombo;
 
             ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
             cultimateList.add(Data.getClientsfirst());
             cultimateList.add(Data.getClientslast());
             cultimateList.add(Data.getClientsphone());
             cultimateList.add(Data.getClientsemail());
-            cultimateList.add(Data.getCategorieslist());
             cultimateList.add(Data.getSubjectslist());
             cultimateList.add(Data.getTutorslist());
             cultimateList.add(Data.getLevelslist());
             cultimateList.add(Data.getLocationslist());
             cultimateList.add(Data.getTutorslist());
-            cultimateList.add(Data.getTeacherslist());
+            cultimateList.add(Data.getCombinedcourselist());
             uac = new UltimateAutoComplete(cultimateList, boxes);
         }
     }//GEN-LAST:event_autocompleteCheckActionPerformed
@@ -949,7 +1034,10 @@ public class SIAOld extends javax.swing.JFrame {
         {
             boolean clientPanelCheck = true;
             boolean coursePanelCheck = true;
-            boolean otherPanelCheck = true;
+            boolean paraprofessionalPanelCheck = true;
+            boolean creatorPanelCheck = true;
+            boolean locationPanelCheck = true;
+          //  boolean otherPanelCheck = true;
             
             courseCombo.setBorder(null);
             teacherCombo.setBorder(null);
@@ -959,9 +1047,15 @@ public class SIAOld extends javax.swing.JFrame {
             fnameCombo.setBorder(null);
             lnameCombo.setBorder(null);
             locationCombo.setBorder(null);
+            sessionendField.setBorder(new MatteBorder(0,0,0,0,Color.red));
+            sessionstartField.setBorder(new MatteBorder(0,0,0,0,Color.red));
             studentInfoPanel.repaint();
             otherInfoPanel.repaint();
             courseInfoPanel.repaint();
+            creatorInfoPanel.repaint();
+            paraprofessionalInfoPanel.repaint();
+            locationInfoPanel.repaint();
+            
             //courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             //studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
            // otherInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
@@ -998,14 +1092,14 @@ public class SIAOld extends javax.swing.JFrame {
             if(pName.length() <= 0)
             {
                 paraprofessionalCombo.setBorder(new MatteBorder(3,3,3,3,Color.red));
-                coursePanelCheck = false;
+                paraprofessionalPanelCheck = false;
             }
             
             String cName = ((JTextComponent)creatorCombo.getEditor().getEditorComponent()).getText();
             if(cName.length() <= 0)
             {
                 creatorCombo.setBorder(new MatteBorder(3,3,3,3,Color.red));
-                otherPanelCheck = false;
+                creatorPanelCheck = false;
             }
             
             String clientFName = ((JTextComponent)fnameCombo.getEditor().getEditorComponent()).getText();
@@ -1029,32 +1123,63 @@ public class SIAOld extends javax.swing.JFrame {
             if(location.length() <= 0)
             {
                 locationCombo.setBorder(new MatteBorder(3,3,3,3,Color.red));
-                otherPanelCheck = false;
+                locationPanelCheck = false;
             }
             
-            boolean hasSessionStart = Validate.validateTimestamp(sessionstartField.getText().trim());
-            boolean hasSessionEnd = Validate.validateTimestamp(sessionendField.getText().trim());
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
             Timestamp sessionStart = null;
             Timestamp sessionEnd = null;
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
-            if(hasSessionStart)
-                sessionStart = new Timestamp(sdf.parse(sessionstartField.getText().trim()).getTime());
-            if(hasSessionEnd)
-                sessionEnd = new Timestamp(sdf.parse(sessionendField.getText().trim()).getTime());
-
+            boolean hasSessionStart = true;
+            
+            if(sessionstartField.getText().trim().length() > 0 && !sessionstartField.getText().trim().equals("mm/dd/yyyy hh:mm aa"))
+            {
+                hasSessionStart= Validate.validateTimestamp(sessionstartField.getText().trim());
+ 
+                if(hasSessionStart)
+                    sessionStart = new Timestamp(sdf.parse(sessionstartField.getText().trim()).getTime());
+                else
+                {
+                    sessionstartField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+                }
+            }
+         
+            boolean hasSessionEnd = true;
+            if(sessionendField.getText().trim().length() > 0 && !sessionendField.getText().trim().equals("mm/dd/yyyy hh:mm aa"))
+            {
+                hasSessionEnd = Validate.validateTimestamp(sessionendField.getText().trim());
+                if(!hasSessionEnd)
+                {
+                    sessionendField.setBorder(new MatteBorder(3,3,3,3,Color.red));
+                    
+                }    
+                else
+                    sessionEnd = new Timestamp(sdf.parse(sessionendField.getText().trim()).getTime());
+            }
+            
+            if(!hasSessionStart || !hasSessionEnd)
+                throw new ParseException("parse exception with timestamp", 0);
+ 
             boolean walkout = walkoutCheck.isSelected();
 
            // String term = jComboBoxTerm.getSelectedItem().toString();
 
             ArrayList<Subject> subjects =(ArrayList<Subject>) HibernateTest.select("from Subject as s where s.abbrevName='"+course+"'");
             
-            ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where t.fName + ' ' + t.lName='"+tname.trim()+"'");
+            ArrayList<Teacher> teachers = (ArrayList<Teacher>)HibernateTest.select("from Teacher as t where concat(concat(t.fName,' '),t.lName)='"+tname.trim()+"'");
+            ArrayList<Course> courses = null;
+            try
+            {
+                courses = (ArrayList<Course>)HibernateTest.select("from Course as c where c.subjectID="+subjects.get(0).getSubjectID()+" and c.teacherID="+teachers.get(0).getTeacherID() + " and c.level="+intLevel.intValue());
+            }
+            catch(Exception z)
+            {
+                courses = new ArrayList<Course>();
+                //coursePanelCheck = true;
+            }
+            ArrayList<Paraprofessional> paraprofessionals = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where concat(concat(p.fName,' '),p.lName)='"+pName.trim()+"'");
 
-            ArrayList<Course> courses = (ArrayList<Course>)HibernateTest.select("from Course as c where c.subjectID="+subjects.get(0).getSubjectID()+" and c.teacherID="+teachers.get(0).getTeacherID() + " and c.level="+intLevel.intValue());
-
-            ArrayList<Paraprofessional> paraprofessionals = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where p.fName + ' ' + p.lName='"+pName.trim()+"'");
-
-            ArrayList<Paraprofessional> creators = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where p.fName + ' ' + p.lName='"+cName.trim()+"'");
+            ArrayList<Paraprofessional> creators = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p where concat(concat(p.fName,' '),p.lName)='"+cName.trim()+"'");
 
             ArrayList<Client> clients = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
 
@@ -1066,7 +1191,11 @@ public class SIAOld extends javax.swing.JFrame {
             courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             otherInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+            creatorInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+            paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+            locationInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
             
+               
             System.out.println("CLIENTS SIZE: "+clients.size());
             if(subjects.size() <= 0 && coursePanelCheck)
             {
@@ -1083,35 +1212,47 @@ public class SIAOld extends javax.swing.JFrame {
                 System.out.println("Courses less than 1");
                 courseInfoPanel.setBackground(Color.red);
             }
-            if(paraprofessionals.size() <= 0 && coursePanelCheck)
+            if(paraprofessionals.size() <= 0 && paraprofessionalPanelCheck)
             {
                 System.out.println("Paraprofessionals less than 1");
-                courseInfoPanel.setBackground(Color.red);
+                paraprofessionalInfoPanel.setBackground(Color.red);
             }
-            if(creators.size() <= 0 && otherPanelCheck)
+            if(creators.size() <= 0 && creatorPanelCheck)
             {
                 System.out.println("Creators less than 1");
-                otherInfoPanel.setBackground(Color.red);
+                creatorInfoPanel.setBackground(Color.red);
             }
             if(clients.size() <= 0 && clientPanelCheck)
             {
                 System.out.println("Clients less than 1");
                 studentInfoPanel.setBackground(Color.red);
             }
-            if(locations.size() <= 0 && otherPanelCheck)
+            if(locations.size() <= 0 && locationPanelCheck)
             {
                 System.out.println("Locations less than 1");
-                otherInfoPanel.setBackground(Color.red);
+                locationInfoPanel.setBackground(Color.red);
             }
           //  if(terms.size() <= 0)
           //      System.out.println("Terms less than 1");
             Timestamp now = new Timestamp((new Date()).getTime());
 
+            String sessionStartString;
+            if(sessionStart != null)
+                sessionStartString = "='"+sessionStart+"'";
+            else
+                sessionStartString = " is null";
+            
+            String sessionEndString;
+            if(sessionEnd != null)
+                sessionEndString = "='"+sessionEnd+"'";
+            else
+                sessionEndString = " is null";
+            
             ParaprofessionalSession ps = new ParaprofessionalSession(-1, paraprofessionals.get(0), clients.get(0), courses.get(0), locations.get(0), creators.get(0), now, sessionStart, sessionEnd, GC, notes, walkout);
             HibernateTest.create(ps);
 
             System.out.println("NOW: "+now.toString());
-            String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart='"+sessionStart+"' and ps.sessionEnd='"+sessionEnd+"' and ps.grammarCheck='"+GC+"' and ps.notes='"+notes+"' and ps.walkout='"+walkout+"'";
+            String query = "from ParaprofessionalSession as ps where ps.paraprofessionalID="+paraprofessionals.get(0).getParaprofessionalID()+" and ps.clientID="+clients.get(0).getClientID()+" and ps.courseID="+courses.get(0).getCourseID()+" and ps.locationID="+locations.get(0).getLocationID()+" and ps.paraprofessionalCreatorID="+creators.get(0).getParaprofessionalID()+" and ps.timeAndDateEntered='"+now.toString()+"' and ps.sessionStart"+sessionStartString+" and ps.sessionEnd"+sessionEndString+" and ps.grammarCheck="+GC+" and ps.notes='"+notes+"' and ps.walkout="+walkout;
 
             System.out.println(query);
             ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select(query);
@@ -1139,6 +1280,9 @@ public class SIAOld extends javax.swing.JFrame {
                         courseInfoPanel.setBackground(new Color( 0,colorOfGreen,0));
                         studentInfoPanel.setBackground(new Color(0,colorOfGreen,0));
                         otherInfoPanel.setBackground(new Color(0,colorOfGreen,0));
+                        creatorInfoPanel.setBackground(new Color(0,colorOfGreen,0));
+                        paraprofessionalInfoPanel.setBackground(new Color(0,colorOfGreen,0));
+                        locationInfoPanel.setBackground(new Color(0,colorOfGreen,0));
                         colorOfGreen += 2;
                         try {
                             this.sleep(13);
@@ -1148,7 +1292,10 @@ public class SIAOld extends javax.swing.JFrame {
                     //sessionsAndAgendaPanel.setBackground(sessionsTablePanel.getBackground());
                     courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                     studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-                    otherInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());                
+                    otherInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground()); 
+                    creatorInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+                    paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+                    locationInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                 }
             };
 
@@ -1200,7 +1347,7 @@ public class SIAOld extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIAOld().setVisible(true);
+                new SIA_1_1().setVisible(true);
             }
         });
     }
@@ -1221,14 +1368,13 @@ public class SIAOld extends javax.swing.JFrame {
     private javax.swing.JScrollPane appointmentsTableScrollPanel;
     private javax.swing.JCheckBox autocompleteCheck;
     private javax.swing.JButton cancelButton;
-    private javax.swing.JComboBox categoryCombo;
-    private javax.swing.JLabel categoryLabel;
     private javax.swing.JButton clearButton;
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JPanel courseInfoPanel;
     private javax.swing.JLabel courseLabel;
     private javax.swing.JPanel createAgendaPanel;
     private javax.swing.JComboBox creatorCombo;
+    private javax.swing.JPanel creatorInfoPanel;
     private javax.swing.JLabel creatorLabel;
     private javax.swing.JTextField dateField;
     private javax.swing.JLabel dateLabel;
@@ -1247,11 +1393,13 @@ public class SIAOld extends javax.swing.JFrame {
     private javax.swing.JComboBox lnameCombo;
     private javax.swing.JLabel lnameLabel;
     private javax.swing.JComboBox locationCombo;
+    private javax.swing.JPanel locationInfoPanel;
     private javax.swing.JLabel locationLabel;
     private javax.swing.JTextField notesField;
     private javax.swing.JLabel notesLabel;
     private javax.swing.JPanel otherInfoPanel;
     private javax.swing.JComboBox paraprofessionalCombo;
+    private javax.swing.JPanel paraprofessionalInfoPanel;
     private javax.swing.JComboBox phoneCombo;
     private javax.swing.JLabel phoneLabel;
     private javax.swing.JTextField sessionendField;

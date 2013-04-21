@@ -15,6 +15,7 @@ import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JTextField;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.text.JTextComponent;
 
@@ -189,7 +190,9 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
         }
         if(activeBoxIndex != -1)
         {
-            if(firstClick[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_TAB)
+            int cursorPos = ((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).getCaretPosition();
+
+            if(firstClick[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_TAB && evt.getKeyCode() != KeyEvent.VK_SHIFT)
             {
                 firstClick[activeBoxIndex]=false;
 
@@ -215,6 +218,8 @@ public class UltimateAutoComplete implements KeyListener, ActionListener, MouseL
                 updatelist(activeBoxIndex);
                 boxes[activeBoxIndex].showPopup();
                 ((JTextComponent)boxes[activeBoxIndex].getEditor().getEditorComponent()).setText(text);
+                 if(((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).getText().length() >= cursorPos)
+                    ((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).setCaretPosition(cursorPos);
 
                 int size = boxes[activeBoxIndex].getModel().getSize();
 

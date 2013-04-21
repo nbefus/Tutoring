@@ -4,6 +4,7 @@
  */
 package tutoring.ui;
 
+import tutoring.old.SIAOld;
 import tutoring.old.UltimateAutoCompleteClientOld;
 import UIs.*;
 import java.awt.Color;
@@ -18,6 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.logging.Level;
@@ -32,8 +34,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import tutoring.entity.*;
 import tutoring.helper.*;
+import tutoring.util.HibernateUtil;
 
 /**
  *
@@ -130,8 +136,9 @@ public class SIAView extends javax.swing.JFrame {
        
        // sessionsTable.setCellSelectionEnabled(true);
 
+        
        Data d = new Data(false);
-       
+       System.out.println("DATA");
        //Clients autocomplete
       JComboBox[] cboxes = new  JComboBox[4];
        cboxes[0]=fnameCombo;
@@ -140,19 +147,19 @@ public class SIAView extends javax.swing.JFrame {
        cboxes[3]=emailCombo;
        
        ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-
+System.out.println("LIST1");
        cultimateList.add(Data.getClientsfirst());
        cultimateList.add(Data.getClientslast());
        cultimateList.add(Data.getClientsphone());
        cultimateList.add(Data.getClientsemail());
-       
+       System.out.println("DONE LIST1");
        ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
-
+System.out.println("LIST 2");
        cultimateList1.add(Data.getFnameOrderedList());
        cultimateList1.add(Data.getLnameOrderedList());
        cultimateList1.add(Data.getPhoneOrderedList());
        cultimateList1.add(Data.getEmailOrderedList());
-
+System.out.println("DONE LIST2");
        uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
        
@@ -161,19 +168,19 @@ public class SIAView extends javax.swing.JFrame {
        cboxes2[1]=levelCombo;
        cboxes2[2]=teacherCombo;
        //cboxes[3]=emailCombo;
-       
+       System.out.println("LIST 3");
        ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
 
        cultimateList2.add(Data.getSubjectslist());
        cultimateList2.add(Data.getLevelslist());
        cultimateList2.add(Data.getTeacherslist());
-
+System.out.println("DONE list 3");
        ArrayList<ArrayList<String>> cultimateList22 = new ArrayList<ArrayList<String>>();
-
+System.out.println("LIst 4");
        cultimateList22.add(Data.getSubjectOrderedList());
        cultimateList22.add(Data.getLevelOrderedList());
        cultimateList22.add(Data.getTeacherOrderedList());
-
+System.out.println("Done list 4");
        uaacCourse = new UltimateAutoAutoComplete(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
       
        
@@ -195,9 +202,60 @@ public class SIAView extends javax.swing.JFrame {
         clearComboBoxes();
       
         Timestamp now = new Timestamp((new Date()).getTime());
+        /*
+        Transaction trns = null;
+        ArrayList<ParaprofessionalSession> result = null;
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        //if(session == null)
+        //    session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            trns = session.beginTransaction();
+            Query query = session.createQuery("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
+            result = (ArrayList<ParaprofessionalSession>) query.list();
+            if(result.size() > 0)
+            {
+                for(int i=0; i<result.size(); i++)
+                {
+                    ((SessionTableModel) sessionsTable.getModel()).addRow(result.get(i)); 
+                }
+
+                sessionsTable.repaint();
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }
+        trns = null;
+        result = null;
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            trns = session.beginTransaction();
+            Query query = session.createQuery("from ParaprofessionalSession as ps where (ps.sessionStart IS NOT NULL and ps.sessionEnd IS NULL) AND ps.sessionStart >= '"+now.toString()+"' AND walkout='false'");
+            result = (ArrayList<ParaprofessionalSession>) query.list();
+            
+             if(result.size() > 0)
+            {
+                for(int i=0; i<result.size(); i++)
+                {
+                    ((SessionTableModel) appointmentsTable.getModel()).addRow(result.get(i)); 
+                }
+
+                appointmentsTable.repaint();
+            }
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            session.flush();
+            session.close();
+        }*/
+        
+        System.out.println("SESSIONS");
        
        ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or (ps.sessionStart <= '"+now.toString()+"' and ps.sessionEnd IS NULL)) AND walkout='false'");
 
+       
         if(sessions.size() > 0)
         {
             for(int i=0; i<sessions.size(); i++)
@@ -208,7 +266,7 @@ public class SIAView extends javax.swing.JFrame {
             sessionsTable.repaint();
         }
         
-        
+        System.out.println("SESSIONS AGIAN");
         ArrayList<ParaprofessionalSession> futureSessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NOT NULL and ps.sessionEnd IS NULL) AND ps.sessionStart >= '"+now.toString()+"' AND walkout='false'");
 
         if(futureSessions.size() > 0)
@@ -220,6 +278,7 @@ public class SIAView extends javax.swing.JFrame {
             
             appointmentsTable.repaint();
         }
+        
         
         /*
          ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
@@ -279,7 +338,7 @@ public class SIAView extends javax.swing.JFrame {
                 
                 Agenda a = agenda.get(i);
                 ((AgendaTableModel) agendaTable.getModel()).addRow(a);
-                System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType());
+                //System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType());
                 
             }
             

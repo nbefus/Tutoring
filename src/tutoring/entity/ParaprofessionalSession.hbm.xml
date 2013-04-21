@@ -8,16 +8,16 @@
             <column name="paraprofessionalSessionID" />
             <generator class="identity" />
         </id>
-        <many-to-one name="paraprofessionalID" class="tutoring.entity.Paraprofessional" fetch="select">
+        <many-to-one name="paraprofessionalID" class="tutoring.entity.Paraprofessional" fetch="join" lazy="false">
             <column name="paraprofessionalID" not-null="true" />
         </many-to-one>
-        <many-to-one name="paraprofessionalCreatorID" class="tutoring.entity.Paraprofessional" fetch="select">
+        <many-to-one name="paraprofessionalCreatorID" class="tutoring.entity.Paraprofessional" fetch="join" lazy="false">
             <column name="paraprofessionalCreatorID" not-null="true" />
         </many-to-one>
-        <many-to-one name="clientID" class="tutoring.entity.Client" fetch="select">
+        <many-to-one name="clientID" class="tutoring.entity.Client" fetch="join" lazy="false">
             <column name="clientID" not-null="true" />
         </many-to-one>
-        <many-to-one name="courseID" class="tutoring.entity.Course" fetch="select">
+        <many-to-one name="courseID" class="tutoring.entity.Course" lazy="false" fetch="join">
             <column name="courseID" not-null="true" />
         </many-to-one>
         <property name="timeAndDateEntered" type="timestamp">
@@ -41,7 +41,7 @@
         <!--<many-to-one name="termID" class="tutoring.entity.Term" fetch="select">
             <column name="termID" not-null="true" />
         </many-to-one>-->
-        <many-to-one name="locationID" class="tutoring.entity.Location" fetch="select">
+        <many-to-one name="locationID" class="tutoring.entity.Location" fetch="join" lazy="false">
             <column name="locationID" not-null="true" />
         </many-to-one>
     </class>

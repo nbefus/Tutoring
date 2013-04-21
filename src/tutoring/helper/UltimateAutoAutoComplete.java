@@ -526,7 +526,7 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
         {
             int cursorPos = ((JTextField)boxes[activeBoxIndex].getEditor().getEditorComponent()).getCaretPosition();
             
-            if(firstClick[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_TAB)
+            if(firstClick[activeBoxIndex] && evt.getKeyCode() != KeyEvent.VK_TAB && evt.getKeyCode() != KeyEvent.VK_SHIFT)
             {
                 firstClick[activeBoxIndex]=false;
 

@@ -61,7 +61,7 @@ public class Database {
                 preparedStatement.executeUpdate();
 */
                 preparedStatement = connect
-                    .prepareStatement("SELECT myuser, webpage, datum, summery, COMMENTS from COMMENTS");
+                    .prepareStatement("SELECT * from Course");
                 resultSet = preparedStatement.executeQuery();
                 writeResultSet(resultSet);
 
@@ -72,7 +72,7 @@ public class Database {
                 preparedStatement.setString(1, "Test");
                 preparedStatement.executeUpdate();
 */
-                resultSet = statement.executeQuery("select * from COMMENTS");
+                resultSet = statement.executeQuery("select * from Course");
                 writeMetaData(resultSet);
 
                 
@@ -103,11 +103,12 @@ public class Database {
       private static void writeResultSet(ResultSet resultSet) throws SQLException {
         // ResultSet is initially before the first data set
         while (resultSet.next()) {
+            System.out.println(resultSet.toString());
           // It is possible to get the columns via name
           // also possible to get the columns via the column number
           // which starts at 1
           // e.g. resultSet.getSTring(2);
-          SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+          /*SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
             
           String user = resultSet.getString("myuser");
           String website = resultSet.getString("webpage");
@@ -122,7 +123,8 @@ public class Database {
           System.out.println("Website: " + website);
           System.out.println("Summery: " + summery);
           System.out.println("Date: " + date);
-          System.out.println("Comment: " + comment);
+          System.out.println("Comment: " + comment);*/
+           
         }
       }
 
