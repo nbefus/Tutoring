@@ -293,7 +293,7 @@ System.out.println("1111111111111111111111");
             String line = "";
             for (int i = 0; i < row.length; i++) {
                 // System.out.print("\t\t*" + row[i]+"*");
-                if(row[i].toString().length() == 0)
+                if(row[i] == null || row[i].toString().length() == 0)
                     row[i]="NONE";
                 line += row[i] + "" + separator;
 
