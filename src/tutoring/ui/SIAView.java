@@ -98,6 +98,7 @@ public final class SIAView extends javax.swing.JFrame
     {
         initComponents();
         
+        notesField.setLineWrap(true);
         sessionstartField.setText("mm/dd/yyyy hh:mm aa");
         sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
@@ -408,6 +409,7 @@ System.out.println("Done list 4");
                 
                 editSaveButton.setVisible(true);
                
+                CreatePanel.setSelectedIndex(0);
                 return null;
             }
         };
@@ -464,13 +466,14 @@ System.out.println("Done list 4");
         sessionendLabel = new javax.swing.JLabel();
         sessionendField = new javax.swing.JTextField();
         notesLabel = new javax.swing.JLabel();
-        notesField = new javax.swing.JTextField();
         gcCheck = new javax.swing.JCheckBox();
         walkoutCheck = new javax.swing.JCheckBox();
         locationLabel = new javax.swing.JLabel();
         locationCombo = new javax.swing.JComboBox();
         creatorCombo = new javax.swing.JComboBox();
         creatorLabel = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        notesField = new javax.swing.JTextArea();
         clearButton = new javax.swing.JButton();
         newStudentButton = new javax.swing.JButton();
         editSaveButton = new javax.swing.JButton();
@@ -643,6 +646,10 @@ System.out.println("Done list 4");
 
         creatorLabel.setText("Creator*");
 
+        notesField.setColumns(20);
+        notesField.setRows(5);
+        jScrollPane2.setViewportView(notesField);
+
         org.jdesktop.layout.GroupLayout paraprofessionalInfoPanelLayout = new org.jdesktop.layout.GroupLayout(paraprofessionalInfoPanel);
         paraprofessionalInfoPanel.setLayout(paraprofessionalInfoPanelLayout);
         paraprofessionalInfoPanelLayout.setHorizontalGroup(
@@ -662,28 +669,26 @@ System.out.println("Done list 4");
                         .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(18, 18, 18)
                         .add(notesLabel)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(notesField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(sessionstartLabel)
                     .add(sessionendLabel))
                 .add(4, 4, 4)
-                .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
+                .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(sessionendField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, paraprofessionalInfoPanelLayout.createSequentialGroup()
                         .add(walkoutCheck)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(gcCheck))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionendField)
-                    .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
-                        .add(sessionstartField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 165, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .add(sessionstartField))
+                .add(27, 27, 27))
         );
         paraprofessionalInfoPanelLayout.setVerticalGroup(
             paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, paraprofessionalInfoPanelLayout.createSequentialGroup()
-                .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+            .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
+                .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -698,8 +703,7 @@ System.out.println("Done list 4");
                             .add(locationLabel)
                             .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .add(0, 0, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, notesField)
-                    .add(org.jdesktop.layout.GroupLayout.LEADING, paraprofessionalInfoPanelLayout.createSequentialGroup()
+                    .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(sessionstartLabel)
@@ -713,6 +717,10 @@ System.out.println("Done list 4");
                             .add(walkoutCheck)
                             .add(gcCheck))))
                 .addContainerGap())
+            .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
@@ -780,7 +788,6 @@ System.out.println("Done list 4");
             .add(jPanel2Layout.createSequentialGroup()
                 .add(20, 20, 20)
                 .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(6, 6, 6)
@@ -795,7 +802,7 @@ System.out.println("Done list 4");
                         .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(8, 8, 8)
                         .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(0, 170, Short.MAX_VALUE))
+                .add(0, 176, Short.MAX_VALUE))
         );
 
         CreatePanel.addTab("Create", jPanel2);
@@ -1516,6 +1523,7 @@ System.out.println("Done list 4");
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox levelCombo;
     private javax.swing.JLabel levelLabel;
@@ -1524,7 +1532,7 @@ System.out.println("Done list 4");
     private javax.swing.JComboBox locationCombo;
     private javax.swing.JLabel locationLabel;
     private javax.swing.JButton newStudentButton;
-    private javax.swing.JTextField notesField;
+    private javax.swing.JTextArea notesField;
     private javax.swing.JLabel notesLabel;
     private javax.swing.JComboBox paraprofessionalCombo;
     private javax.swing.JPanel paraprofessionalInfoPanel;
