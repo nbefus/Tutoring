@@ -132,7 +132,7 @@ public class DatabaseHelper
                 String valuesString = "";
                for(int i=1; i<values.length; i++)
                {
-                   System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                   //System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
                    if(values[i] instanceof Integer)
                    {
                        valuesString+=values[i].toString()+",";
@@ -148,7 +148,11 @@ public class DatabaseHelper
                    }
                    else if(values[i] instanceof Boolean)
                    {
-                       valuesString+="'"+values[i].toString()+"',";
+                       valuesString+=values[i].toString()+",";
+                   }
+                   else if(values[i] == null)
+                   {
+                       valuesString+="null,";
                    }
                    else
                        System.out.println("UNKNOWN VALUE TYPE");
@@ -250,7 +254,11 @@ public class DatabaseHelper
                         }
                         else if(values[i] instanceof Boolean)
                         {
-                            valuesString+="'"+values[i].toString()+"', ";
+                            valuesString+=values[i].toString()+", ";
+                        }
+                        else if(values[i] == null)
+                        {
+                            valuesString+="null,";
                         }
                         else
                             System.out.println("UNKNOWN VALUE TYPE" + values[i].getClass().toString());

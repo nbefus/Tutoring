@@ -159,6 +159,7 @@ public class Course
                 String query = "SELECT "+columnSetUp+" FROM Course "+CourseTable.getTableAlias()+" join Teacher "+CourseTable.getTeacherAlias()+" on "+CourseTable.TEACHERID.getWithAlias()+"="+CourseTable.getTeacherAlias()+"."+CourseTable.TEACHERID.getName()+
                         " join Subject "+CourseTable.getSubjectAlias()+" on "+CourseTable.SUBJECTID.getWithAlias()+"="+CourseTable.getSubjectAlias()+"."+CourseTable.SUBJECTID.getName()+" join Category "+CourseTable.getCategoryAlias()+" on "+CourseTable.SUBJECTCATEGORYID.getWithAlias()+" = "+CourseTable.getCategoryAlias()+"."+CourseTable.SUBJECTCATEGORYID.getName();
                 query+= " "+addedSQLToSelect;
+                 System.out.println(query);
                 resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {
                     courses.add(new Course(resultSet.getInt(CourseTable.COURSEID.getWithAlias()), new Teacher(resultSet.getInt(CourseTable.TEACHERID.getWithAlias()), resultSet.getString(CourseTable.TEACHERLNAME.getWithAlias()), resultSet.getString(CourseTable.TEACHERFNAME.getWithAlias())), new Subject(resultSet.getInt(CourseTable.SUBJECTID.getWithAlias()), resultSet.getString(CourseTable.SUBJECTABBREVNAME.getWithAlias()), new Category(resultSet.getInt(CourseTable.SUBJECTCATEGORYID.getWithAlias()),resultSet.getString(CourseTable.SUBJECTCATEGORYNAME.getWithAlias()))), resultSet.getInt(CourseTable.LEVEL.getWithAlias())));

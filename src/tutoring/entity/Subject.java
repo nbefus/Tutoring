@@ -120,12 +120,16 @@ public class Subject {
                 statement = connect.createStatement();
                 String query = "SELECT "+columnSetUp+" from Subject "+SubjectTable.getTableAlias()+" join Category "+SubjectTable.getCategoryAlias()+" on "+SubjectTable.CATEGORYID.getWithAlias()+" = "+SubjectTable.getCategoryAlias()+"."+SubjectTable.CATEGORYID.getName();
                 query+=" "+addedSQLToSelect;
-                resultSet = preparedStatement.executeQuery();
+                System.out.println(query);
+                resultSet = statement.executeQuery(query);
+                System.out.println("GOT RESULT SET");
                 while (resultSet.next()) {
                     
-
+                    System.out.println("NEW SUBJECT");
                     subjects.add(new Subject(resultSet.getInt(SubjectTable.SUBJECTID.getWithAlias()), resultSet.getString(SubjectTable.ABBREVNAME.getWithAlias()), new Category(resultSet.getInt(SubjectTable.CATEGORYID.getWithAlias()), resultSet.getString(SubjectTable.CATEGORYNAME.getWithAlias()))));
+                    
                 }
+                System.out.println(subjects.size());
                 return subjects;
             }
 

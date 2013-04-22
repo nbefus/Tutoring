@@ -1271,8 +1271,9 @@ System.out.println("Done list 4");
     private void newStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStudentButtonActionPerformed
 
         NewClientObject ndo = new NewClientObject(new Frame(), true);
+        ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
-        //ndo.setLocationRelativeTo(null);
+        
 
     }//GEN-LAST:event_newStudentButtonActionPerformed
 
@@ -1488,10 +1489,14 @@ System.out.println("Done list 4");
             ArrayList<Course> courses = null;
             try
             {
-                courses = (ArrayList<Course>)Course.selectAllCourse("where "+subjectIDString+"="+subjects.get(0).getSubjectID()+" and "+teachIDString+"="+teachers.get(0).getTeacherID() + " and "+levelString+"="+intLevel.intValue(), DatabaseHelper.getConnection());
+                String query = "where "+subjectIDString+"="+subjects.get(0).getSubjectID()+" and "+teachIDString+"="+teachers.get(0).getTeacherID() + " and "+levelString+"="+intLevel.intValue();
+                System.out.println(query);
+                courses = (ArrayList<Course>)Course.selectAllCourse(query, DatabaseHelper.getConnection());
+                
             }
             catch(Exception z)
             {
+                z.printStackTrace();
                 courses = new ArrayList<Course>();
                 //coursePanelCheck = true;
             }
@@ -1535,6 +1540,7 @@ System.out.println("Done list 4");
             if(creators.size() <= 0 && creatorPanelCheck)
             {
                 System.out.println("Creators less than 1");
+                creatorCombo.setBorder(new MatteBorder(3,3,3,3,Color.red));
             ///    creatorInfoPanel.setBackground(Color.red);
             }
             if(clients.size() <= 0 && clientPanelCheck)
@@ -1545,6 +1551,7 @@ System.out.println("Done list 4");
             if(locations.size() <= 0 && locationPanelCheck)
             {
                 System.out.println("Locations less than 1");
+                locationCombo.setBorder(new MatteBorder(3,3,3,3,Color.red));
               ///  locationInfoPanel.setBackground(Color.red);
             }
           //  if(terms.size() <= 0)
