@@ -9,11 +9,8 @@ import java.awt.Window;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
-import tutoring.entity.Agenda;
-import tutoring.entity.Client;
-import tutoring.entity.User;
-import tutoring.helper.DatabaseHelper;
-import tutoring.helper.HibernateTest;
+import tutoring.entity.*;
+import tutoring.helper.*;
 
 /**
  *

@@ -2,7 +2,7 @@ package preciousAreaSoNoMergeHappensLOL;
 
 import java.util.ArrayList;
 import tutoring.entity.*;
-import tutoring.helper.HibernateTest;
+import tutoring.helper.DatabaseHelper;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Login
     private boolean usernameStatus = false;
     private boolean passwordStatus = false;
     private String loginFeedback = "Please enter your 'username' and 'password'";
-    final private ArrayList<User> list = (ArrayList<User>) HibernateTest.select("from User");
+    private ArrayList<User> list = null;
     private String realPassword = null;
     private Role role = null;
 
@@ -25,6 +25,9 @@ public class Login
     {
         this.username = username;
         this.password = password;
+        DatabaseHelper.open();
+        list = (ArrayList<User>) User.selectAllUser("", DatabaseHelper.getConnection());
+        DatabaseHelper.close();
         login();
     }
 

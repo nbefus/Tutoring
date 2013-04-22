@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import tutoring.entity.*;
-import tutoring.helper.HibernateTest;
+import tutoring.helper.*;
 
 public class SignInSignOut extends javax.swing.JFrame
 {
@@ -12,6 +12,9 @@ public class SignInSignOut extends javax.swing.JFrame
     public SignInSignOut()
     {
         initComponents();
+        DatabaseHelper.open();
+        list = (ArrayList<Paraprofessional>) Paraprofessional.selectAllParaprofessional("where "+Paraprofessional.ParaTable.TERMINATIONDATE.getWithAlias()+" is null", DatabaseHelper.getConnection());
+        DatabaseHelper.close();
     }
 
     /**
@@ -21,8 +24,7 @@ public class SignInSignOut extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -53,24 +55,18 @@ public class SignInSignOut extends javax.swing.JFrame
 
         nameCombo.setEditable(false);
         nameCombo.setEnabled(true);
-        nameCombo.addPopupMenuListener(new javax.swing.event.PopupMenuListener()
-        {
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt)
-            {
-                nameComboPopupMenuWillBecomeVisible(evt);
+        nameCombo.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt)
-            {
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
                 nameComboPopupMenuWillBecomeInvisible(evt);
             }
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt)
-            {
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                nameComboPopupMenuWillBecomeVisible(evt);
             }
         });
-        nameCombo.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        nameCombo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 nameComboKeyPressed(evt);
             }
         });
@@ -78,10 +74,8 @@ public class SignInSignOut extends javax.swing.JFrame
         signInAndOutButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         signInAndOutButton.setForeground(new java.awt.Color(0, 153, 0));
         signInAndOutButton.setText("Status");
-        signInAndOutButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        signInAndOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signInAndOutButtonActionPerformed(evt);
             }
         });
@@ -178,8 +172,9 @@ public class SignInSignOut extends javax.swing.JFrame
     private void signInAndOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInAndOutButtonActionPerformed
 
         list.get(nameCombo.getSelectedIndex()).setIsClockedIn(!(list.get(nameCombo.getSelectedIndex()).isIsClockedIn()));
-        HibernateTest.update(list.get(nameCombo.getSelectedIndex()));
-
+        DatabaseHelper.open();
+        DatabaseHelper.update(Paraprofessional.getValues(list.get(nameCombo.getSelectedIndex())), Paraprofessional.ParaTable.getTable());
+        DatabaseHelper.close();
         if ((list.get(nameCombo.getSelectedIndex()).isIsClockedIn()) == false)
         {
             signInAndOutButton.setText("Sign In");
@@ -238,7 +233,7 @@ public class SignInSignOut extends javax.swing.JFrame
         });
     }
     private ArrayList listOfParaprofessionals = new ArrayList();
-    private ArrayList<Paraprofessional> list = (ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional where terminationDate is null");
+    private ArrayList<Paraprofessional> list;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tutoring.ui;
+package tutoring.old;
 
 import UIs.*;
 import java.awt.Color;
@@ -69,6 +69,7 @@ import tutoring.renderer.TimestampCellRenderer;
 import tutoring.helper.UltimateAutoComplete;
 import tutoring.old.UltimateAutoCompleteClientOld;
 import tutoring.helper.Validate;
+import tutoring.ui.AdminView;
 
 /**
  *
@@ -1187,7 +1188,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(sessionendLabel)
                 .add(18, 18, 18)
                 .add(sessionssessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 121, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 20, Short.MAX_VALUE)
                 .add(gcCheck)
                 .add(18, 18, 18)
                 .add(walkoutCheck)
@@ -1387,7 +1388,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(sessionsclearButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(831, Short.MAX_VALUE))
+                .addContainerGap(784, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Sessions", sessionsPanel);
@@ -1480,7 +1481,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                 .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 387, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(deleteAgendaButton)
-                .add(0, 723, Short.MAX_VALUE))
+                .add(0, 705, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout agendaPanelLayout = new org.jdesktop.layout.GroupLayout(agendaPanel);
@@ -1490,7 +1491,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
             .add(agendaPanelLayout.createSequentialGroup()
                 .add(112, 112, 112)
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(391, Short.MAX_VALUE))
+                .addContainerGap(375, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -2554,7 +2555,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                         .add(searchclearrestrictionsButton)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(205, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -2724,7 +2725,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                                 .add(21, 21, 21)
                                 .add(jLabel6)))
                         .add(generalReportLoadButton))
-                    .addContainerGap(1193, Short.MAX_VALUE)))
+                    .addContainerGap(1151, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(185, 185, 185)
@@ -2734,7 +2735,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2756,7 +2757,7 @@ for (MouseWheelListener listener : sessionsTableScrollPanel.getMouseWheelListene
                     .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(18, 18, 18)
                     .add(generalReportLoadButton)
-                    .addContainerGap(126, Short.MAX_VALUE)))
+                    .addContainerGap(105, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(16, 16, 16)

@@ -10,17 +10,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
-import tutoring.entity.Agenda;
-import tutoring.entity.AgendaCategory;
-import tutoring.entity.Client;
-import tutoring.entity.ParaprofessionalSession;
-import tutoring.entity.User;
-import tutoring.helper.DatabaseHelper;
-import tutoring.helper.HibernateTest;
+import tutoring.entity.*;
+
+import tutoring.helper.*;
 
 /**
  *

@@ -41,7 +41,7 @@ import tutoring.helper.*;
  *
  * @author shohe_i
  */
-public class SIA_1_1 extends javax.swing.JFrame {
+public class SIA_1_1OLD extends javax.swing.JFrame {
 
     /**
      * Creates new form SIA
@@ -104,7 +104,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
     }
     private UltimateAutoComplete uac; 
     private UltimateAutoCompleteClientOld uacc;
-    public SIA_1_1() 
+    public SIA_1_1OLD() 
     {
         initComponents();
         
@@ -1347,7 +1347,7 @@ public class SIA_1_1 extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new SIA_1_1().setVisible(true);
+                new SIA_1_1OLD().setVisible(true);
             }
         });
     }

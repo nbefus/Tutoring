@@ -110,6 +110,19 @@ public class Paraprofessional
         this.isClockedIn = isClockedIn;
     }
     
+    public static Object[] getValues(Paraprofessional p)
+    {
+        Object[] values = new Object[7];
+        values[0]=p.getParaprofessionalID();
+        values[1]=p.getRoleID();
+        values[2]=p.getlName();
+        values[3]=p.getfName();
+        values[4]=p.getHireDate();
+        values[5]=p.getTerminationDate();
+        values[6]=p.isIsClockedIn();
+        return values;
+    }
+    
     
      public static ArrayList<Paraprofessional> selectAllParaprofessional(String addedSQLToSelect, Connection connect) {
         //Connection connect = null;

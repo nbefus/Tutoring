@@ -4,35 +4,22 @@
  */
 package tutoring.ui;
 
-import UIs.*;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
+
 import java.awt.GradientPaint;
-import java.awt.event.MouseWheelListener;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
+
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
+
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import org.jfree.chart.ChartFactory;
@@ -51,27 +38,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
-import tutoring.entity.Category;
-import tutoring.entity.Client;
-import tutoring.entity.Course;
-import tutoring.entity.Location;
-import tutoring.entity.Paraprofessional;
-import tutoring.entity.ParaprofessionalSession;
-import tutoring.entity.Subject;
-import tutoring.entity.Teacher;
-import tutoring.editor.ComboBoxCellEditor;
-import tutoring.helper.Data;
-import tutoring.helper.HibernateTest;
-import tutoring.renderer.MinuteCellRenderer;
-import tutoring.helper.MinuteUpdate;
-import tutoring.helper.RestrictionListModel;
-import tutoring.helper.SessionTableModel;
-import tutoring.editor.TimestampCellEditor;
-import tutoring.helper.DatabaseHelper;
-import tutoring.renderer.TimestampCellRenderer;
-import tutoring.helper.UltimateAutoComplete;
-import tutoring.old.UltimateAutoCompleteClientOld;
-import tutoring.helper.Validate;
+import tutoring.helper.*;
+import tutoring.entity.*;
 
 /**
  *
@@ -84,7 +52,6 @@ public class AdminView extends javax.swing.JFrame
      * Creates new form Admin
      */
     private UltimateAutoComplete uac;
-    private UltimateAutoCompleteClientOld uacc;
     DefaultListModel dlm = new DefaultListModel();
     RestrictionListModel restrictHelper;
 
