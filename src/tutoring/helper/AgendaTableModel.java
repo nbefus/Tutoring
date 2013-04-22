@@ -104,6 +104,12 @@ public class AgendaTableModel extends AbstractTableModel {
         return columnNames;
     }
     
+    public void deleteAllRows()
+    {
+        agendaItems.removeAll(agendaItems);
+        fireTableDataChanged();
+    }
+    
     /*
     public void addRow(String fname, String lname, Subject subject, int level, Teacher teacher, String notes, Paraprofessional tutor, boolean future, boolean gc)
     {
@@ -176,7 +182,7 @@ public class AgendaTableModel extends AbstractTableModel {
       //  System.out.println(((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")));
       //  if(!(getValueAt(i, j-1) instanceof Timestamp && ((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")) && j == Columns.STOP.getColumnIndex()) && !(getValueAt(i, j) instanceof Timestamp && !((Timestamp)getValueAt(i, j)).equals(Timestamp.valueOf("9999-12-31 12:00:00"))))
       //      return true;
-        return false;
+        return true;
     }
     
     @Override

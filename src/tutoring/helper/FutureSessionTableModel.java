@@ -33,10 +33,10 @@ public class FutureSessionTableModel extends AbstractTableModel {
     
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
 
-    public FutureSessionTableModel(ArrayList<ParaprofessionalSession> list){
+    public FutureSessionTableModel(ArrayList<ParaprofessionalSession> list, String s){
          this.tutorSessions = list;
     }
-    public FutureSessionTableModel(){
+    public FutureSessionTableModel(String s){
         
     }
     
@@ -211,6 +211,7 @@ public class FutureSessionTableModel extends AbstractTableModel {
             {
                 ts.setSessionEnd(new Timestamp((new Date()).getTime()));
                 //HibernateTest.update(ts);
+                
                 tutorSessions.remove(ts);
             }
             

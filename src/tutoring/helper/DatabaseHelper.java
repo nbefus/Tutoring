@@ -113,6 +113,7 @@ public class DatabaseHelper
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List l = new ArrayList();
+        boolean inserted = false;
         
         try {
             // connect way #1
@@ -168,13 +169,13 @@ public class DatabaseHelper
                System.out.println(query);
                 statement.executeUpdate(query);
                 System.out.println("TRUE");
-                
+                inserted = true;
             }
 
         } catch (SQLException ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
-            return false;
+            
         } finally {
             try {
           if (resultSet != null) {
@@ -185,16 +186,18 @@ public class DatabaseHelper
             statement.close();
           }
 
-          return true;
+          
+          
           /*
           if (connect != null) {
             connect.close();
           }*/
         } catch (Exception e) {
-            return false;
+           
         }    
             
         }
+        return inserted;
     }
     
     
@@ -232,11 +235,11 @@ public class DatabaseHelper
                    else
                    {
                        valuesString += columns.get(i)+" = ";
-                        if(values[i] instanceof Integer || values[i] instanceof String)
+                        if(values[i] instanceof Integer)
                         {
                             valuesString+=values[i].toString()+", ";
                         }
-                        else if(values[i] instanceof Timestamp)
+                        else if(values[i] instanceof Timestamp || values[i] instanceof String)
                         {
                             valuesString+="'"+values[i].toString()+"', ";
                         }
@@ -250,14 +253,14 @@ public class DatabaseHelper
                             valuesString+="'"+values[i].toString()+"', ";
                         }
                         else
-                            System.out.println("UNKNOWN VALUE TYPE");
+                            System.out.println("UNKNOWN VALUE TYPE" + values[i].getClass().toString());
                    }
                    if(i == values.length-1)
                        valuesString = valuesString.substring(0, valuesString.length()-2);
                }
                
                String query = "update "+table+" set "+valuesString+" "+whereString;
-               
+               System.out.println(query);
                 statement.executeUpdate(query);
                 
                 return true;

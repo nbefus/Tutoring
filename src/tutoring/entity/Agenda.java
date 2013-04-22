@@ -107,7 +107,7 @@ public class Agenda {
         values[0]=a.getAgendaID();
         values[1]=a.getDate();
         values[2]=a.getNotes();
-        values[3]=a.getAgendaCategoryID();
+        values[3]=a.getAgendaCategoryID().getAgendaCategoryID();
         return values;
     }
 
@@ -147,7 +147,7 @@ public class Agenda {
                 resultSet = statement.executeQuery(query);
 
                 while (resultSet.next()) {
-                    agendas.add(new Agenda(resultSet.getInt(AgendaTable.AGENDACATEGORYID.getWithAlias()), resultSet.getDate(AgendaTable.DATE.getWithAlias()), resultSet.getString(AgendaTable.NOTES.getWithAlias()), new AgendaCategory(resultSet.getInt(AgendaTable.AGENDACATEGORYID.getWithAlias()), resultSet.getString(AgendaTable.AGENDACATEGORYTYPE.getWithAlias()))));
+                    agendas.add(new Agenda(resultSet.getInt(AgendaTable.AGENDAID.getWithAlias()), resultSet.getDate(AgendaTable.DATE.getWithAlias()), resultSet.getString(AgendaTable.NOTES.getWithAlias()), new AgendaCategory(resultSet.getInt(AgendaTable.AGENDACATEGORYID.getWithAlias()), resultSet.getString(AgendaTable.AGENDACATEGORYTYPE.getWithAlias()))));
                 }
                 
                  return agendas;
@@ -176,6 +176,11 @@ public class Agenda {
         }
     }
     
+    @Override
+    public String toString()
+    {
+        return getAgendaID() + " "+getDate()+" "+getNotes()+" "+getAgendaCategoryID();
+    }
     /**
      * @return the agendaID
      */

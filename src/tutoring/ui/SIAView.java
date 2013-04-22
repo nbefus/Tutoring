@@ -103,8 +103,8 @@ public final class SIAView extends javax.swing.JFrame
         sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
         
-        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable, false);
-        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable, true);
+        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable, false, null);
+        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable, true, (SessionTableModel)sessionsTable.getModel());
         AgendaTableHelper tableHelperAgenda = new AgendaTableHelper(agendaTable);
          tableHelperAgenda.allowScrollingOnTable();
        
@@ -298,10 +298,13 @@ System.out.println("Done list 4");
         
         
         DefaultCellEditor dce = makeEditSessionCellEditor();
+        DefaultCellEditor dceAgenda = makeEditAgendaCellEditor();
+        
         setUpAgenda();
+        
         tableHelper.setTableRendersAndEditors(true, dce);
         tableHelperFuture.setTableRendersAndEditors(true, dce);
-        tableHelperAgenda.setTableRendersAndEditors(true, dce);
+        tableHelperAgenda.setTableRendersAndEditors(true, dceAgenda);
         //tableHelperAgenda.autoResizeColWidth();
         tableHelper.autoResizeColWidth();
         tableHelperFuture.autoResizeColWidth();
@@ -312,6 +315,68 @@ System.out.println("Done list 4");
     DatabaseHelper.close();
     }
     
+    
+    public void updateTables()
+    {
+        DatabaseHelper.open();
+        Timestamp now = new Timestamp((new Date()).getTime());
+        String sessStartCol = ParaprofessionalSession.ParaSessTable.SESSIONSTART.getWithAlias();
+       String sessEndCol = ParaprofessionalSession.ParaSessTable.SESSIONEND.getWithAlias();
+       String walkoutCol = ParaprofessionalSession.ParaSessTable.WALKOUT.getWithAlias();
+       
+      String currentSessionsWhere = " where ("+sessStartCol+" IS NULL or ("+sessStartCol+" <= '"+now.toString()+"' and "+sessEndCol+" IS NULL)) AND "+walkoutCol+"='false'";
+((SessionTableModel) sessionsTable.getModel()).deleteAllRows();
+       ArrayList<ParaprofessionalSession> sessions = ParaprofessionalSession.selectAllParaprofessionalSession(currentSessionsWhere,DatabaseHelper.getConnection());
+        if(sessions.size() > 0)
+        {
+            for(int i=0; i<sessions.size(); i++)
+            {
+                ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(i)); 
+                System.out.println("ADDED SESSION");
+            }
+            
+            sessionsTable.repaint();
+        }
+        
+        System.out.println("SESSIONS AGIAN");
+        
+        String futureSessionsWhere = " where ("+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NULL) AND "+sessStartCol+" >= '"+now.toString()+"' AND "+walkoutCol+"='false'";
+
+        SessionTableModel stm = ((SessionTableModel) appointmentsTable.getModel());
+        stm.deleteAllRows();
+        ArrayList<ParaprofessionalSession> futureSessions = ParaprofessionalSession.selectAllParaprofessionalSession(futureSessionsWhere, DatabaseHelper.getConnection());
+        if(futureSessions.size() > 0)
+        {
+            for(int i=0; i<futureSessions.size(); i++)
+            {
+                ((SessionTableModel) appointmentsTable.getModel()).addRow(futureSessions.get(i)); 
+                System.out.println("ADDED FUTURE SESSION");
+            }
+            
+            appointmentsTable.repaint();
+        }
+        
+        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= '2012-04-18'";
+
+        ArrayList<Agenda> agenda = Agenda.selectAllAgenda(fromCurrentDateWhere, DatabaseHelper.getConnection());
+        ((AgendaTableModel) agendaTable.getModel()).deleteAllRows();
+        if(agenda.size() > 0)
+        {          
+            
+            for(int i=0; i<agenda.size(); i++)
+            {
+                
+                Agenda a = agenda.get(i);
+                ((AgendaTableModel) agendaTable.getModel()).addRow(a);
+                //System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType());
+                
+            }
+           
+        agendaTable.repaint();
+        
+        }
+        DatabaseHelper.close();
+    }
     
     
     public void setUpAgenda()
@@ -410,6 +475,41 @@ System.out.println("Done list 4");
                 editSaveButton.setVisible(true);
                
                 CreatePanel.setSelectedIndex(0);
+                return null;
+            }
+        };
+        
+        return dce;
+    }
+    
+    
+    public DefaultCellEditor makeEditAgendaCellEditor()
+    {
+        DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
+        {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                        boolean isSelected, int row, int column) 
+            {
+                SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+                SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+                String type = table.getValueAt(row, AgendaTableModel.Columns.TYPE.getColumnIndex()).toString();
+                String date = "";
+                try{
+                    date= sdfTo.format(sdfFrom.parse(table.getValueAt(row, AgendaTableModel.Columns.DATE.getColumnIndex()).toString()));
+                }
+                catch(Exception e)
+                {
+                    
+                }
+                String notes = table.getValueAt(row, AgendaTableModel.Columns.NOTES.getColumnIndex()).toString();
+                int agendaID =((Integer) table.getValueAt(row, AgendaTableModel.Columns.ID.getColumnIndex())).intValue();
+                
+                NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, Data.getAgendaCategoryList(), type, date, notes, agendaID);
+                ndo.setLocationRelativeTo(null);
+                ndo.setVisible(true);
+                System.out.println("HOPEFULLY NOT HERE YET");
+                updateTables();
                 return null;
             }
         };
@@ -830,6 +930,11 @@ System.out.println("Done list 4");
         });
 
         deleteAgendaButton.setText("Delete Item");
+        deleteAgendaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteAgendaButtonActionPerformed(evt);
+            }
+        });
 
         org.jdesktop.layout.GroupLayout agendaPanelLayout = new org.jdesktop.layout.GroupLayout(agendaPanel);
         agendaPanel.setLayout(agendaPanelLayout);
@@ -1031,7 +1136,7 @@ System.out.println("Done list 4");
 
     private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
 
-        int[] selectedRows = sessionsTable.getSelectedRows();
+        int[] selectedRows =appointmentsTable.getSelectedRows();
 
         ((SessionTableModel) appointmentsTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteSessionButton1ActionPerformed
@@ -1093,12 +1198,21 @@ System.out.println("Done list 4");
     private void addAgendaItemButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAgendaItemButtonActionPerformed
     {//GEN-HEADEREND:event_addAgendaItemButtonActionPerformed
         NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, Data.getAgendaCategoryList());
+        ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
+        System.out.println("HOPEFULLY NOT HERE YET");
+        updateTables();
     }//GEN-LAST:event_addAgendaItemButtonActionPerformed
+
+    private void deleteAgendaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAgendaButtonActionPerformed
+
+        int[] selectedRows = agendaTable.getSelectedRows();
+
+        ((AgendaTableModel) agendaTable.getModel()).deleteRows(selectedRows);
+    }//GEN-LAST:event_deleteAgendaButtonActionPerformed
 
     private boolean getParaprofessionalSession(boolean isUpdating)
     {
-        
         try
         {
             boolean clientPanelCheck = true;

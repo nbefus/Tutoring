@@ -96,6 +96,7 @@ public class SessionTableModel extends AbstractTableModel {
     private boolean isFutureSession;
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
 
+    private SessionTableModel currentSessionModel;
    /* public SessionTableModel(ArrayList<ParaprofessionalSession> list, boolean isFutureSession){
          this.tutorSessions = list;
          columnNames=generateColumns();
@@ -105,6 +106,13 @@ public class SessionTableModel extends AbstractTableModel {
         this.isFutureSession = isFutureSession;
         columnNames=generateColumns();
         
+    }
+    
+    public SessionTableModel(boolean isFutureSession, SessionTableModel currentSessionModel)
+    {
+        this.isFutureSession = isFutureSession;
+        this.currentSessionModel = currentSessionModel;
+        columnNames = generateColumns();
     }
     
     private String[] generateColumns()
@@ -149,6 +157,12 @@ public class SessionTableModel extends AbstractTableModel {
     {
         for(int i=0; i<r.length; i++)
             tutorSessions.remove(r[i]);
+        fireTableDataChanged();
+    }
+    
+    public void deleteAllRows()
+    {
+        tutorSessions.removeAll(tutorSessions);
         fireTableDataChanged();
     }
     
@@ -298,9 +312,14 @@ public class SessionTableModel extends AbstractTableModel {
             ParaprofessionalSession ts = tutorSessions.get(r);
             if(c == Columns.START.getColumnIndex() && !isFutureSession)
                 ts.setSessionStart(new Timestamp((new Date()).getTime()));
-            else if(c == Columns.START.getColumnIndex() && isFutureSession)
+            else if(c == Columns.STOP.getColumnIndex() && isFutureSession)
             {
                 ts.setSessionStart(new Timestamp((new Date()).getTime()));
+                //DatabaseHelper.open();
+                //DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
+                //DatabaseHelper.close();
+                currentSessionModel.addRow(ts);
+                tutorSessions.remove(ts);
                 //HibernateTest.update(ts);
                 //Move into current sessions
                 // by calling a refresh data method

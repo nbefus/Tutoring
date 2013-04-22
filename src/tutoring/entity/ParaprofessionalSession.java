@@ -273,11 +273,11 @@ public class ParaprofessionalSession {
     {
         Object[] values = new Object[12];
         values[0]=ps.getParaprofessionalSessionID();
-        values[1]=ps.getParaprofessionalID();
-        values[2]=ps.getClientID();
-        values[3]=ps.getCourseID();
-        values[4]=ps.getLocationID();
-        values[5]=ps.getParaprofessionalCreatorID();
+        values[1]=ps.getParaprofessionalID().getParaprofessionalID();
+        values[2]=ps.getClientID().getClientID();
+        values[3]=ps.getCourseID().getCourseID();
+        values[4]=ps.getLocationID().getLocationID();
+        values[5]=ps.getParaprofessionalCreatorID().getParaprofessionalID();
         values[6]=ps.getTimeAndDateEntered();
         values[7]=ps.getSessionStart();
         values[8]=ps.getSessionEnd();

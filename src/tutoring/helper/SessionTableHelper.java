@@ -38,12 +38,15 @@ public class SessionTableHelper
     private JTable table;
     private boolean isFutureSession;
     
-    public SessionTableHelper(JTable table, boolean isFutureSession)
+    public SessionTableHelper(JTable table, boolean isFutureSession, SessionTableModel currentSessionTableModel)
     {
         this.table = table;
         this.isFutureSession = isFutureSession;
         System.out.println("SESSION HELPER ISFUTURESESSION : "+isFutureSession);
-        table.setModel(new SessionTableModel(isFutureSession));
+        if(!isFutureSession)
+            table.setModel(new SessionTableModel(isFutureSession));
+        else
+            table.setModel(new SessionTableModel(isFutureSession, currentSessionTableModel));
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 11));
         
