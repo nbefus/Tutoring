@@ -535,7 +535,9 @@ System.out.println("Done list 4");
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -574,10 +576,11 @@ System.out.println("Done list 4");
         creatorLabel = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         notesField = new javax.swing.JTextArea();
+        jPanel5 = new javax.swing.JPanel();
         clearButton = new javax.swing.JButton();
-        newStudentButton = new javax.swing.JButton();
-        editSaveButton = new javax.swing.JButton();
         addSessionbutton = new javax.swing.JButton();
+        editSaveButton = new javax.swing.JButton();
+        newStudentButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         agendaPanel = new javax.swing.JPanel();
         agendaTableScrollPanel = new javax.swing.JScrollPane();
@@ -610,24 +613,44 @@ System.out.println("Done list 4");
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
+        jPanel2.setMinimumSize(new java.awt.Dimension(234, 0));
+        jPanel2.setPreferredSize(new java.awt.Dimension(1111, 449));
 
         studentInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
+        studentInfoPanel.setMaximumSize(new java.awt.Dimension(977, 63));
+        studentInfoPanel.setMinimumSize(new java.awt.Dimension(977, 63));
+        studentInfoPanel.setPreferredSize(new java.awt.Dimension(977, 63));
+        studentInfoPanel.setSize(new java.awt.Dimension(977, 63));
 
         fnameLabel.setText("First Name*");
 
         fnameCombo.setEditable(true);
+        fnameCombo.setMaximumSize(new java.awt.Dimension(141, 28));
+        fnameCombo.setMinimumSize(new java.awt.Dimension(141, 28));
+        fnameCombo.setPreferredSize(new java.awt.Dimension(141, 28));
+        fnameCombo.setSize(new java.awt.Dimension(141, 28));
 
         lnameLabel.setText("Last Name*");
 
         lnameCombo.setEditable(true);
+        lnameCombo.setMaximumSize(new java.awt.Dimension(156, 28));
+        lnameCombo.setMinimumSize(new java.awt.Dimension(156, 28));
+        lnameCombo.setPreferredSize(new java.awt.Dimension(156, 28));
+        lnameCombo.setSize(new java.awt.Dimension(156, 28));
 
         emailLabel.setText("Email");
 
         emailCombo.setEditable(true);
+        emailCombo.setMaximumSize(new java.awt.Dimension(211, 28));
+        emailCombo.setMinimumSize(new java.awt.Dimension(211, 28));
+        emailCombo.setPreferredSize(new java.awt.Dimension(211, 28));
+        emailCombo.setSize(new java.awt.Dimension(211, 28));
 
         phoneLabel.setText("Telephone");
 
         phoneCombo.setEditable(true);
+        phoneCombo.setMaximumSize(new java.awt.Dimension(128, 28));
+        phoneCombo.setSize(new java.awt.Dimension(128, 28));
 
         org.jdesktop.layout.GroupLayout studentInfoPanelLayout = new org.jdesktop.layout.GroupLayout(studentInfoPanel);
         studentInfoPanel.setLayout(studentInfoPanelLayout);
@@ -641,11 +664,11 @@ System.out.println("Done list 4");
                 .add(18, 18, 18)
                 .add(lnameLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(lnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
+                .add(lnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 156, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(emailLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(emailCombo, 0, 196, Short.MAX_VALUE)
+                .add(emailCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(18, 18, 18)
                 .add(phoneLabel)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -655,7 +678,7 @@ System.out.println("Done list 4");
         studentInfoPanelLayout.setVerticalGroup(
             studentInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(studentInfoPanelLayout.createSequentialGroup()
-                .add(5, 5, 5)
+                .add(3, 3, 3)
                 .add(studentInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(fnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(fnameLabel)
@@ -664,26 +687,41 @@ System.out.println("Done list 4");
                     .add(emailLabel)
                     .add(emailCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(phoneLabel)
-                    .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(phoneCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(0, 0, 0))
         );
 
         phoneCombo.getAccessibleContext().setAccessibleParent(studentInfoPanel);
 
         courseInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        courseInfoPanel.setMaximumSize(new java.awt.Dimension(832, 63));
+        courseInfoPanel.setMinimumSize(new java.awt.Dimension(832, 63));
+        courseInfoPanel.setPreferredSize(new java.awt.Dimension(832, 63));
+        courseInfoPanel.setSize(new java.awt.Dimension(832, 63));
 
         courseLabel.setText("Course*");
 
         courseCombo.setEditable(true);
+        courseCombo.setMaximumSize(new java.awt.Dimension(128, 28));
+        courseCombo.setSize(new java.awt.Dimension(128, 28));
 
         levelLabel.setText("Course#*");
 
         levelCombo.setEditable(true);
+        levelCombo.setMaximumSize(new java.awt.Dimension(128, 28));
+        levelCombo.setSize(new java.awt.Dimension(128, 28));
 
         teacherLabel.setText("Teacher*");
 
         teacherCombo.setEditable(true);
-        teacherCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        teacherCombo.setMaximumSize(new java.awt.Dimension(347, 28));
+        teacherCombo.setMinimumSize(new java.awt.Dimension(347, 28));
+        teacherCombo.setPreferredSize(new java.awt.Dimension(347, 28));
+        teacherCombo.setSize(new java.awt.Dimension(347, 28));
+        teacherCombo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 teacherComboActionPerformed(evt);
             }
         });
@@ -709,30 +747,43 @@ System.out.println("Done list 4");
         );
         courseInfoPanelLayout.setVerticalGroup(
             courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(courseInfoPanelLayout.createSequentialGroup()
-                .add(5, 5, 5)
-                .add(courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(courseLabel)
-                    .add(levelLabel)
-                    .add(levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(teacherLabel)
-                    .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+            .add(courseInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                .add(courseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(courseLabel)
+                .add(levelLabel)
+                .add(teacherLabel)
+                .add(teacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, levelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
         paraprofessionalInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Session Information"));
+        paraprofessionalInfoPanel.setMaximumSize(new java.awt.Dimension(832, 155));
+        paraprofessionalInfoPanel.setMinimumSize(new java.awt.Dimension(832, 155));
+        paraprofessionalInfoPanel.setSize(new java.awt.Dimension(832, 155));
 
         ParaprofessionalLabel.setText("Paraprofessional*");
 
         paraprofessionalCombo.setEditable(true);
+        paraprofessionalCombo.setMaximumSize(new java.awt.Dimension(160, 28));
+        paraprofessionalCombo.setMinimumSize(new java.awt.Dimension(160, 28));
+        paraprofessionalCombo.setPreferredSize(new java.awt.Dimension(160, 28));
+        paraprofessionalCombo.setSize(new java.awt.Dimension(160, 28));
 
         sessionstartLabel.setText("Session Start");
 
         sessionstartField.setText("dd/mm/yyyy hh:mm aa");
+        sessionstartField.setMaximumSize(new java.awt.Dimension(156, 28));
+        sessionstartField.setMinimumSize(new java.awt.Dimension(156, 28));
+        sessionstartField.setPreferredSize(new java.awt.Dimension(156, 28));
+        sessionstartField.setSize(new java.awt.Dimension(156, 28));
 
         sessionendLabel.setText("Session End");
 
         sessionendField.setText("dd/mm/yyyy hh:mm:ss aa");
+        sessionendField.setMaximumSize(new java.awt.Dimension(156, 28));
+        sessionendField.setMinimumSize(new java.awt.Dimension(156, 28));
+        sessionendField.setPreferredSize(new java.awt.Dimension(156, 28));
+        sessionendField.setSize(new java.awt.Dimension(156, 28));
 
         notesLabel.setText("Notes");
 
@@ -742,12 +793,26 @@ System.out.println("Done list 4");
 
         locationLabel.setText("Location*");
 
+        locationCombo.setMaximumSize(new java.awt.Dimension(160, 28));
+        locationCombo.setMinimumSize(new java.awt.Dimension(160, 28));
+        locationCombo.setPreferredSize(new java.awt.Dimension(160, 28));
+        locationCombo.setSize(new java.awt.Dimension(160, 28));
+
         creatorCombo.setEditable(true);
+        creatorCombo.setMaximumSize(new java.awt.Dimension(160, 28));
+        creatorCombo.setMinimumSize(new java.awt.Dimension(160, 28));
+        creatorCombo.setPreferredSize(new java.awt.Dimension(160, 28));
+        creatorCombo.setSize(new java.awt.Dimension(160, 28));
 
         creatorLabel.setText("Creator*");
 
         notesField.setColumns(20);
+        notesField.setLineWrap(true);
         notesField.setRows(5);
+        notesField.setMaximumSize(new java.awt.Dimension(185, 116));
+        notesField.setMinimumSize(new java.awt.Dimension(185, 116));
+        notesField.setPreferredSize(new java.awt.Dimension(185, 116));
+        notesField.setSize(new java.awt.Dimension(185, 116));
         jScrollPane2.setViewportView(notesField);
 
         org.jdesktop.layout.GroupLayout paraprofessionalInfoPanelLayout = new org.jdesktop.layout.GroupLayout(paraprofessionalInfoPanel);
@@ -763,26 +828,27 @@ System.out.println("Done list 4");
                         .add(locationLabel)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(creatorCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
-                        .add(paraprofessionalCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 160, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                            .add(paraprofessionalCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(creatorCombo, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(18, 18, 18)
                         .add(notesLabel)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 179, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 185, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(sessionstartLabel)
                     .add(sessionendLabel))
                 .add(4, 4, 4)
                 .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(sessionendField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                    .add(sessionendField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, paraprofessionalInfoPanelLayout.createSequentialGroup()
                         .add(walkoutCheck)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(gcCheck))
-                    .add(sessionstartField))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, sessionstartField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .add(27, 27, 27))
         );
         paraprofessionalInfoPanelLayout.setVerticalGroup(
@@ -802,7 +868,7 @@ System.out.println("Done list 4");
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(locationLabel)
                             .add(locationCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(0, 0, Short.MAX_VALUE))
+                        .add(0, 2, Short.MAX_VALUE))
                     .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -812,76 +878,122 @@ System.out.println("Done list 4");
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(sessionendField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(sessionendLabel))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 13, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .add(paraprofessionalInfoPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(walkoutCheck)
-                            .add(gcCheck))))
+                            .add(gcCheck)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane2))
                 .addContainerGap())
-            .add(paraprofessionalInfoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 85, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel5.setMaximumSize(new java.awt.Dimension(139, 218));
+        jPanel5.setPreferredSize(new java.awt.Dimension(139, 218));
+        jPanel5.setSize(new java.awt.Dimension(139, 218));
+        jPanel5.setLayout(new java.awt.GridBagLayout());
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
         clearButton.setText("Clear");
-        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearButton.setMaximumSize(new java.awt.Dimension(121, 50));
+        clearButton.setMinimumSize(new java.awt.Dimension(121, 50));
+        clearButton.setPreferredSize(new java.awt.Dimension(121, 50));
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 clearButtonMouseClicked(evt);
             }
         });
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearButtonActionPerformed(evt);
             }
         });
-
-        newStudentButton.setText("New Student");
-        newStudentButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newStudentButtonActionPerformed(evt);
-            }
-        });
-
-        editSaveButton.setText("Save/Edit");
-        editSaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editSaveButtonActionPerformed(evt);
-            }
-        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 12);
+        jPanel5.add(clearButton, gridBagConstraints);
 
         addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
         addSessionbutton.setText("Add Session");
-        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        addSessionbutton.setMaximumSize(new java.awt.Dimension(121, 50));
+        addSessionbutton.setMinimumSize(new java.awt.Dimension(121, 50));
+        addSessionbutton.setPreferredSize(new java.awt.Dimension(121, 50));
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 addSessionbuttonMouseClicked(evt);
             }
         });
-        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addSessionbutton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 addSessionbuttonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 12);
+        jPanel5.add(addSessionbutton, gridBagConstraints);
+
+        editSaveButton.setText("Save/Edit");
+        editSaveButton.setMaximumSize(new java.awt.Dimension(121, 44));
+        editSaveButton.setMinimumSize(new java.awt.Dimension(121, 44));
+        editSaveButton.setPreferredSize(new java.awt.Dimension(121, 44));
+        editSaveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                editSaveButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 12);
+        jPanel5.add(editSaveButton, gridBagConstraints);
+
+        newStudentButton.setText("New Student");
+        newStudentButton.setMaximumSize(new java.awt.Dimension(121, 44));
+        newStudentButton.setMinimumSize(new java.awt.Dimension(121, 44));
+        newStudentButton.setPreferredSize(new java.awt.Dimension(121, 44));
+        newStudentButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                newStudentButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 12);
+        jPanel5.add(newStudentButton, gridBagConstraints);
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(179, Short.MAX_VALUE)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                .addContainerGap(82, Short.MAX_VALUE)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                            .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .add(12, 12, 12)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                            .add(addSessionbutton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(clearButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(newStudentButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .add(editSaveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 121, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(279, Short.MAX_VALUE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -890,19 +1002,14 @@ System.out.println("Done list 4");
                 .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(6, 6, 6)
-                        .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(editSaveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(newStudentButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(addSessionbutton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(12, 12, 12)
+                        .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(8, 8, 8)
-                        .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(0, 176, Short.MAX_VALUE))
+                        .add(18, 18, 18)
+                        .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(0, 95, Short.MAX_VALUE))
         );
 
         CreatePanel.addTab("Create", jPanel2);
@@ -910,28 +1017,34 @@ System.out.println("Done list 4");
         agendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Agenda"));
 
         agendaTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         agendaTableScrollPanel.setViewportView(agendaTable);
 
         addAgendaItemButton.setText("Add Item");
-        addAgendaItemButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addAgendaItemButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 addAgendaItemButtonActionPerformed(evt);
             }
         });
 
         deleteAgendaButton.setText("Delete Item");
-        deleteAgendaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteAgendaButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteAgendaButtonActionPerformed(evt);
             }
         });
@@ -941,14 +1054,14 @@ System.out.println("Done list 4");
         agendaPanelLayout.setHorizontalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(agendaPanelLayout.createSequentialGroup()
-                .addContainerGap(222, Short.MAX_VALUE)
+                .addContainerGap(130, Short.MAX_VALUE)
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(agendaPanelLayout.createSequentialGroup()
                         .add(addAgendaItemButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(deleteAgendaButton))
                     .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 892, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(223, Short.MAX_VALUE))
+                .addContainerGap(130, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -959,7 +1072,7 @@ System.out.println("Done list 4");
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(addAgendaItemButton)
                     .add(deleteAgendaButton))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
@@ -988,10 +1101,12 @@ System.out.println("Done list 4");
 
         sessionsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
 
             }
         ));
@@ -1000,8 +1115,10 @@ System.out.println("Done list 4");
         sessionsScrollPane.setViewportView(sessionsTable);
 
         deleteSessionButton.setText("Delete Session");
-        deleteSessionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButtonActionPerformed(evt);
             }
         });
@@ -1015,13 +1132,13 @@ System.out.println("Done list 4");
                 .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(sessionsTablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1312, Short.MAX_VALUE)
+                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
                 .addContainerGap())
         );
         sessionsTablePanelLayout.setVerticalGroup(
             sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsTablePanelLayout.createSequentialGroup()
-                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -1036,18 +1153,22 @@ System.out.println("Done list 4");
 
         appointmentsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
 
             }
         ));
         jScrollPane1.setViewportView(appointmentsTable);
 
         deleteSessionButton1.setText("Delete Session");
-        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButton1ActionPerformed(evt);
             }
         });
@@ -1057,7 +1178,7 @@ System.out.println("Done list 4");
         futureSessionsPanelLayout.setHorizontalGroup(
             futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
-                .add(0, 1196, Short.MAX_VALUE)
+                .add(0, 995, Short.MAX_VALUE)
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(futureSessionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -1067,7 +1188,7 @@ System.out.println("Done list 4");
         futureSessionsPanelLayout.setVerticalGroup(
             futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
@@ -1086,7 +1207,7 @@ System.out.println("Done list 4");
         sessionsAndAgendaPanelLayout.setVerticalGroup(
             sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsAndAgendaPanelLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(13, Short.MAX_VALUE)
                 .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1111,7 +1232,7 @@ System.out.println("Done list 4");
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(0, 0, Short.MAX_VALUE)
                 .add(CreatePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(92, 92, 92))
+                .add(50, 50, 50))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -1636,6 +1757,7 @@ System.out.println("Done list 4");
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
