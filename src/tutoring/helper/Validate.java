@@ -32,7 +32,7 @@ public class Validate
     {
         
     }
-    
+    /*
     public static boolean validateClient(Client c)
     {
         String query = "from Client as c where c.fName='"+c.getfName()+"' and c.lName='"+c.getlName()+"' and c.phone='"+c.getPhone()+"' and c.email='"+c.getEmail()+"'";
@@ -48,7 +48,7 @@ public class Validate
             return true;
         return false;
     }
-    
+    */
     public static void createClient(JComboBox fnameField, JComboBox lnameField, JComboBox phoneField, JComboBox emailField)
     {
         try
@@ -105,10 +105,11 @@ public class Validate
                     emailField.setBorder(new MatteBorder(3,3,3,3,Color.red));
             }
             
-            if(lname.length() > 1 && fname.length() > 1 && goodPhone && goodEmail)
+            if(lname.length() > 0 && fname.length() > 0 && goodPhone && goodEmail)
             {
                 Client c = new Client(-1, fname, lname, email, phone);
-                HibernateTest.create(c);
+                DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
+               // HibernateTest.create(c);
                 JOptionPane.showMessageDialog(null, "Student created successfully!");
             }
         }
@@ -131,6 +132,7 @@ public class Validate
             String level = ((JTextComponent)levelField.getEditor().getEditorComponent()).getText().trim();
             String teacher = ((JTextComponent)teacherField.getEditor().getEditorComponent()).getText().trim();
 
+            DatabaseHelper.open();
             boolean goodCourse = true;
             ArrayList<Subject> subject = null;
             if(course.length() < 1)
@@ -140,7 +142,7 @@ public class Validate
             }
             else if(course.length() > 0)
             {
-                subject = (ArrayList<Subject>) HibernateTest.select("from Course as c where c.abbrevName='"+course+"'");
+                subject = (ArrayList<Subject>) Subject.selectAllSubjects("where "+Subject.SubjectTable.ABBREVNAME.getWithAlias()+"='"+course+"'", DatabaseHelper.getConnection());
                 if(subject.size() != 1)
                     goodCourse = false;
             }
@@ -170,21 +172,27 @@ public class Validate
             }
             else if(teacher.length() > 0)
             {
-                teachers = (ArrayList<Teacher>) HibernateTest.select("from Teacher as t where concat(concat(t.fName,' '),t.lName)='"+teacher+"'");
+                
+                teachers = (ArrayList<Teacher>) Teacher.selectAllTeacher("concat(concat("+Teacher.TeacherTable.FNAME.getWithAlias()+",' '),"+Teacher.TeacherTable.LNAME.getWithAlias()+")='"+teacher+"'", DatabaseHelper.getConnection());
                 if(teachers.size() != 1)
                     goodTeacher = false;
             }
 
             if(goodTeacher && goodCourse && goodLevel)
             {
-                Course c = new Course(teachers.get(0), subject.get(0), Integer.parseInt(level));
-                HibernateTest.create(c);
+                Course c = new Course(-1, teachers.get(0), subject.get(0), Integer.parseInt(level));
+                DatabaseHelper.insert(Course.getValues(c), Teacher.TeacherTable.getTable());
+                ///HibernateTest.create(c);
                 JOptionPane.showMessageDialog(null, "Student created successfully!");
             }
         }
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, "Not created successfully");
+        }
+        finally
+        {
+            DatabaseHelper.close();
         }
 
     }
@@ -234,6 +242,7 @@ public class Validate
         return true;
     }
     
+    /*
     public boolean validateSession(ParaprofessionalSession ps)
     {
         try
@@ -318,7 +327,7 @@ public class Validate
             System.out.println("ERROR ADDING SESSION"+e.getMessage() +"\n\n");
             e.printStackTrace();
         }
-    }/*
+    }*//*
     
     public boolean validateParaprofessional(Paraprofessiona p)
     {

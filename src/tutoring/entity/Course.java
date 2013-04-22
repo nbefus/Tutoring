@@ -116,7 +116,17 @@ public class Course
     {
         
     }
-
+    
+   public static Object[] getValues(Course c)
+    {
+        Object[] values = new Object[4];
+        values[0]=c.getCourseID();
+        values[1]=c.getTeacherID();
+        values[2]=c.getSubjectID();
+        values[3]=c.getLevel();
+        return values;
+    }
+   
     public static ArrayList<Course> selectAllCourse(String addedSQLToSelect, Connection connect) {
        // Connection connect = null;
         Statement statement = null;
