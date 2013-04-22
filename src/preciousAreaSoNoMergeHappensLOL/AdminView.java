@@ -459,7 +459,7 @@ public final class AdminView extends javax.swing.JFrame
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/preciousAreaSoNoMergeHappensLOL/pmslogoSmall.PNG"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tutoring/images/pmslogoSmall.PNG"))); // NOI18N
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         createTab.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
@@ -1029,7 +1029,7 @@ public final class AdminView extends javax.swing.JFrame
             reportsTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(reportsTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(reportsScrollPane)
+                .add(reportsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

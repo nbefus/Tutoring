@@ -1,8 +1,9 @@
-package preciousAreaSoNoMergeHappensLOL;
+package tutoring.helper;
+
+
 
 import java.util.ArrayList;
 import tutoring.entity.*;
-import tutoring.helper.DatabaseHelper;
 
 /**
  *
