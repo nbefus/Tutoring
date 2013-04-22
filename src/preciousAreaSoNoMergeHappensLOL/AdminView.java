@@ -28,7 +28,7 @@ import tutoring.ui.NewClientObject;
  *
  * @author shohe_i
  */
-public final class SIAView extends javax.swing.JFrame
+public final class AdminView extends javax.swing.JFrame
 {
 
     /**
@@ -99,7 +99,7 @@ public final class SIAView extends javax.swing.JFrame
     UltimateAutoAutoComplete uaacClient;
     UltimateAutoAutoComplete uaacCourse;
 
-    public SIAView()
+    public AdminView()
     {
         initComponents();
 
@@ -390,7 +390,7 @@ public final class SIAView extends javax.swing.JFrame
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         CreatePanel = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
+        createTab = new javax.swing.JPanel();
         studentInfoPanel = new javax.swing.JPanel();
         fnameLabel = new javax.swing.JLabel();
         fnameCombo = new javax.swing.JComboBox();
@@ -426,26 +426,30 @@ public final class SIAView extends javax.swing.JFrame
         newStudentButton = new javax.swing.JButton();
         editSaveButton = new javax.swing.JButton();
         addSessionbutton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        agendaTab = new javax.swing.JPanel();
         agendaPanel = new javax.swing.JPanel();
         agendaTableScrollPanel = new javax.swing.JScrollPane();
         agendaTable = new javax.swing.JTable();
         addAgendaItemButton = new javax.swing.JButton();
         deleteAgendaButton = new javax.swing.JButton();
-        sessionsAndAgendaPanel = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        sessionsTablePanel = new javax.swing.JPanel();
-        sessionsScrollPane = new javax.swing.JScrollPane();
+        sessionsTab = new javax.swing.JPanel();
+        sessionTypeTab = new javax.swing.JTabbedPane();
+        currentSessionPanel = new javax.swing.JPanel();
+        currentSessionScrollPane = new javax.swing.JScrollPane();
         sessionsTable = new javax.swing.JTable();
-        deleteSessionButton = new javax.swing.JButton();
-        futureSessionsPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        currentSessionDeleteButton = new javax.swing.JButton();
+        futureSessionPanel = new javax.swing.JPanel();
+        futureSessionScrollPane = new javax.swing.JScrollPane();
         appointmentsTable = new javax.swing.JTable();
-        deleteSessionButton1 = new javax.swing.JButton();
+        futureSessionDeleteButton = new javax.swing.JButton();
+        reportsTab = new javax.swing.JPanel();
+        reportsScrollPane = new javax.swing.JScrollPane();
+        reportPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 750));
-        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -458,7 +462,7 @@ public final class SIAView extends javax.swing.JFrame
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/preciousAreaSoNoMergeHappensLOL/pmslogoSmall.PNG"))); // NOI18N
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
+        createTab.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
 
         studentInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
 
@@ -723,36 +727,36 @@ public final class SIAView extends javax.swing.JFrame
             }
         });
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout createTabLayout = new org.jdesktop.layout.GroupLayout(createTab);
+        createTab.setLayout(createTabLayout);
+        createTabLayout.setHorizontalGroup(
+            createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(createTabLayout.createSequentialGroup()
                 .addContainerGap(229, Short.MAX_VALUE)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel2Layout.createSequentialGroup()
+                .add(createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(createTabLayout.createSequentialGroup()
                         .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 891, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(0, 0, Short.MAX_VALUE))
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(createTabLayout.createSequentialGroup()
+                        .add(createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .add(12, 12, 12)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(addSessionbutton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(clearButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(newStudentButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .add(editSaveButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 121, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(223, Short.MAX_VALUE))))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
+        createTabLayout.setVerticalGroup(
+            createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(createTabLayout.createSequentialGroup()
                 .add(20, 20, 20)
                 .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jPanel2Layout.createSequentialGroup()
+                .add(createTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(createTabLayout.createSequentialGroup()
                         .add(6, 6, 6)
                         .add(clearButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -761,14 +765,14 @@ public final class SIAView extends javax.swing.JFrame
                         .add(newStudentButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(addSessionbutton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 45, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel2Layout.createSequentialGroup()
+                    .add(createTabLayout.createSequentialGroup()
                         .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(8, 8, 8)
                         .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .add(0, 134, Short.MAX_VALUE))
         );
 
-        CreatePanel.addTab("Create", jPanel2);
+        CreatePanel.addTab("Create", createTab);
 
         agendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Agenda"));
 
@@ -824,30 +828,30 @@ public final class SIAView extends javax.swing.JFrame
                 .addContainerGap(69, Short.MAX_VALUE))
         );
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout agendaTabLayout = new org.jdesktop.layout.GroupLayout(agendaTab);
+        agendaTab.setLayout(agendaTabLayout);
+        agendaTabLayout.setHorizontalGroup(
+            agendaTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(agendaTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
+        agendaTabLayout.setVerticalGroup(
+            agendaTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(agendaTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(agendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        CreatePanel.addTab("Agenda", jPanel1);
+        CreatePanel.addTab("Agenda", agendaTab);
 
-        sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
+        currentSessionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
-        sessionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        sessionsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        sessionsScrollPane.setSize(sessionsScrollPane.getMinimumSize());
+        currentSessionScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        currentSessionScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        currentSessionScrollPane.setSize(currentSessionScrollPane.getMinimumSize());
 
         sessionsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -863,44 +867,44 @@ public final class SIAView extends javax.swing.JFrame
         sessionsTable.setRowMargin(5);
         sessionsTable.setShowGrid(true);
         sessionsTable.setSurrendersFocusOnKeystroke(true);
-        sessionsScrollPane.setViewportView(sessionsTable);
+        currentSessionScrollPane.setViewportView(sessionsTable);
 
-        deleteSessionButton.setText("Delete Session");
-        deleteSessionButton.addActionListener(new java.awt.event.ActionListener()
+        currentSessionDeleteButton.setText("Delete Session");
+        currentSessionDeleteButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                deleteSessionButtonActionPerformed(evt);
+                currentSessionDeleteButtonActionPerformed(evt);
             }
         });
 
-        org.jdesktop.layout.GroupLayout sessionsTablePanelLayout = new org.jdesktop.layout.GroupLayout(sessionsTablePanel);
-        sessionsTablePanel.setLayout(sessionsTablePanelLayout);
-        sessionsTablePanelLayout.setHorizontalGroup(
-            sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsTablePanelLayout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout currentSessionPanelLayout = new org.jdesktop.layout.GroupLayout(currentSessionPanel);
+        currentSessionPanel.setLayout(currentSessionPanelLayout);
+        currentSessionPanelLayout.setHorizontalGroup(
+            currentSessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, currentSessionPanelLayout.createSequentialGroup()
                 .add(0, 0, Short.MAX_VALUE)
-                .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(sessionsTablePanelLayout.createSequentialGroup()
+                .add(currentSessionDeleteButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(currentSessionPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1304, Short.MAX_VALUE)
+                .add(currentSessionScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1304, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        sessionsTablePanelLayout.setVerticalGroup(
-            sessionsTablePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(sessionsTablePanelLayout.createSequentialGroup()
-                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+        currentSessionPanelLayout.setVerticalGroup(
+            currentSessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(currentSessionPanelLayout.createSequentialGroup()
+                .add(currentSessionScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(currentSessionDeleteButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("Current", sessionsTablePanel);
+        sessionTypeTab.addTab("Current", currentSessionPanel);
 
-        futureSessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
+        futureSessionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setPreferredSize(sessionsScrollPane.getMinimumSize());
+        futureSessionScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        futureSessionScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        futureSessionScrollPane.setPreferredSize(currentSessionScrollPane.getMinimumSize());
 
         appointmentsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -913,57 +917,123 @@ public final class SIAView extends javax.swing.JFrame
 
             }
         ));
-        jScrollPane1.setViewportView(appointmentsTable);
+        futureSessionScrollPane.setViewportView(appointmentsTable);
 
-        deleteSessionButton1.setText("Delete Session");
-        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener()
+        futureSessionDeleteButton.setText("Delete Session");
+        futureSessionDeleteButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                deleteSessionButton1ActionPerformed(evt);
+                futureSessionDeleteButtonActionPerformed(evt);
             }
         });
 
-        org.jdesktop.layout.GroupLayout futureSessionsPanelLayout = new org.jdesktop.layout.GroupLayout(futureSessionsPanel);
-        futureSessionsPanel.setLayout(futureSessionsPanelLayout);
-        futureSessionsPanelLayout.setHorizontalGroup(
-            futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout futureSessionPanelLayout = new org.jdesktop.layout.GroupLayout(futureSessionPanel);
+        futureSessionPanel.setLayout(futureSessionPanelLayout);
+        futureSessionPanelLayout.setHorizontalGroup(
+            futureSessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionPanelLayout.createSequentialGroup()
                 .add(0, 1180, Short.MAX_VALUE)
-                .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(futureSessionsPanelLayout.createSequentialGroup()
+                .add(futureSessionDeleteButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(futureSessionPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(futureSessionScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        futureSessionsPanelLayout.setVerticalGroup(
-            futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+        futureSessionPanelLayout.setVerticalGroup(
+            futureSessionPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionPanelLayout.createSequentialGroup()
+                .add(futureSessionScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(futureSessionDeleteButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("Future", futureSessionsPanel);
+        sessionTypeTab.addTab("Future", futureSessionPanel);
 
-        org.jdesktop.layout.GroupLayout sessionsAndAgendaPanelLayout = new org.jdesktop.layout.GroupLayout(sessionsAndAgendaPanel);
-        sessionsAndAgendaPanel.setLayout(sessionsAndAgendaPanelLayout);
-        sessionsAndAgendaPanelLayout.setHorizontalGroup(
-            sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(sessionsAndAgendaPanelLayout.createSequentialGroup()
+        org.jdesktop.layout.GroupLayout sessionsTabLayout = new org.jdesktop.layout.GroupLayout(sessionsTab);
+        sessionsTab.setLayout(sessionsTabLayout);
+        sessionsTabLayout.setHorizontalGroup(
+            sessionsTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(sessionsTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jTabbedPane1)
+                .add(sessionTypeTab)
                 .addContainerGap())
         );
-        sessionsAndAgendaPanelLayout.setVerticalGroup(
-            sessionsAndAgendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsAndAgendaPanelLayout.createSequentialGroup()
+        sessionsTabLayout.setVerticalGroup(
+            sessionsTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsTabLayout.createSequentialGroup()
                 .addContainerGap(13, Short.MAX_VALUE)
-                .add(jTabbedPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(sessionTypeTab, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        CreatePanel.addTab("Sessions", sessionsAndAgendaPanel);
+        CreatePanel.addTab("Sessions", sessionsTab);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 1333, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 378, Short.MAX_VALUE)
+        );
+
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 315, Short.MAX_VALUE)
+        );
+
+        org.jdesktop.layout.GroupLayout reportPanelLayout = new org.jdesktop.layout.GroupLayout(reportPanel);
+        reportPanel.setLayout(reportPanelLayout);
+        reportPanelLayout.setHorizontalGroup(
+            reportPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(reportPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(reportPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        reportPanelLayout.setVerticalGroup(
+            reportPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, reportPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        reportsScrollPane.setViewportView(reportPanel);
+
+        org.jdesktop.layout.GroupLayout reportsTabLayout = new org.jdesktop.layout.GroupLayout(reportsTab);
+        reportsTab.setLayout(reportsTabLayout);
+        reportsTabLayout.setHorizontalGroup(
+            reportsTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(reportsTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(reportsScrollPane)
+                .addContainerGap())
+        );
+        reportsTabLayout.setVerticalGroup(
+            reportsTabLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(reportsTabLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(reportsScrollPane)
+                .addContainerGap())
+        );
+
+        CreatePanel.addTab("Reports", reportsTab);
 
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -981,9 +1051,9 @@ public final class SIAView extends javax.swing.JFrame
             .add(jPanel3Layout.createSequentialGroup()
                 .add(5, 5, 5)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE)
+                .add(0, 70, Short.MAX_VALUE)
                 .add(CreatePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(92, 92, 92))
+                .add(0, 71, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
@@ -1006,18 +1076,18 @@ public final class SIAView extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
+    private void futureSessionDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_futureSessionDeleteButtonActionPerformed
 
         int[] selectedRows = sessionsTable.getSelectedRows();
 
         ((SessionTableModel) appointmentsTable.getModel()).deleteRows(selectedRows);
-    }//GEN-LAST:event_deleteSessionButton1ActionPerformed
+    }//GEN-LAST:event_futureSessionDeleteButtonActionPerformed
 
-    private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
+    private void currentSessionDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentSessionDeleteButtonActionPerformed
         int[] selectedRows = sessionsTable.getSelectedRows();
 
         ((SessionTableModel) sessionsTable.getModel()).deleteRows(selectedRows);
-    }//GEN-LAST:event_deleteSessionButtonActionPerformed
+    }//GEN-LAST:event_currentSessionDeleteButtonActionPerformed
 
     private void newStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStudentButtonActionPerformed
 
@@ -1229,9 +1299,9 @@ public final class SIAView extends javax.swing.JFrame
 
             ArrayList<Location> locations = (ArrayList<Location>) HibernateTest.select("from Location as l where l.name='" + location.trim() + "'");
 
-            courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-            studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-            paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+            courseInfoPanel.setBackground(sessionsTab.getBackground());
+            studentInfoPanel.setBackground(sessionsTab.getBackground());
+            paraprofessionalInfoPanel.setBackground(sessionsTab.getBackground());
 
 
             System.out.println("CLIENTS SIZE: " + clients.size());
@@ -1361,9 +1431,9 @@ public final class SIAView extends javax.swing.JFrame
                         }
                     }
                     //sessionsAndAgendaPanel.setBackground(sessionsTablePanel.getBackground());
-                    courseInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-                    studentInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
-                    paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+                    courseInfoPanel.setBackground(sessionsTab.getBackground());
+                    studentInfoPanel.setBackground(sessionsTab.getBackground());
+                    paraprofessionalInfoPanel.setBackground(sessionsTab.getBackground());
                 }
             };
 
@@ -1403,16 +1473,16 @@ public final class SIAView extends javax.swing.JFrame
             }
         } catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(SIAView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(SIAView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(SIAView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(SIAView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdminView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -1423,7 +1493,7 @@ public final class SIAView extends javax.swing.JFrame
         {
             public void run()
             {
-                new SIAView().setVisible(true);
+                new AdminView().setVisible(true);
             }
         });
     }
@@ -1433,6 +1503,7 @@ public final class SIAView extends javax.swing.JFrame
     private javax.swing.JButton addAgendaItemButton;
     private javax.swing.JButton addSessionbutton;
     private javax.swing.JPanel agendaPanel;
+    private javax.swing.JPanel agendaTab;
     private javax.swing.JTable agendaTable;
     private javax.swing.JScrollPane agendaTableScrollPanel;
     private javax.swing.JTable appointmentsTable;
@@ -1440,25 +1511,27 @@ public final class SIAView extends javax.swing.JFrame
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JPanel courseInfoPanel;
     private javax.swing.JLabel courseLabel;
+    private javax.swing.JPanel createTab;
     private javax.swing.JComboBox creatorCombo;
     private javax.swing.JLabel creatorLabel;
+    private javax.swing.JButton currentSessionDeleteButton;
+    private javax.swing.JPanel currentSessionPanel;
+    private javax.swing.JScrollPane currentSessionScrollPane;
     private javax.swing.JButton deleteAgendaButton;
-    private javax.swing.JButton deleteSessionButton;
-    private javax.swing.JButton deleteSessionButton1;
     private javax.swing.JButton editSaveButton;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JComboBox fnameCombo;
     private javax.swing.JLabel fnameLabel;
-    private javax.swing.JPanel futureSessionsPanel;
+    private javax.swing.JButton futureSessionDeleteButton;
+    private javax.swing.JPanel futureSessionPanel;
+    private javax.swing.JScrollPane futureSessionScrollPane;
     private javax.swing.JCheckBox gcCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox levelCombo;
     private javax.swing.JLabel levelLabel;
     private javax.swing.JComboBox lnameCombo;
@@ -1472,12 +1545,14 @@ public final class SIAView extends javax.swing.JFrame
     private javax.swing.JPanel paraprofessionalInfoPanel;
     private javax.swing.JComboBox phoneCombo;
     private javax.swing.JLabel phoneLabel;
+    private javax.swing.JPanel reportPanel;
+    private javax.swing.JScrollPane reportsScrollPane;
+    private javax.swing.JPanel reportsTab;
+    private javax.swing.JTabbedPane sessionTypeTab;
     private javax.swing.JTextField sessionendField;
     private javax.swing.JLabel sessionendLabel;
-    private javax.swing.JPanel sessionsAndAgendaPanel;
-    private javax.swing.JScrollPane sessionsScrollPane;
+    private javax.swing.JPanel sessionsTab;
     private javax.swing.JTable sessionsTable;
-    private javax.swing.JPanel sessionsTablePanel;
     private javax.swing.JTextField sessionstartField;
     private javax.swing.JLabel sessionstartLabel;
     private javax.swing.JPanel studentInfoPanel;
