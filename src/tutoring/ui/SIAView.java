@@ -540,8 +540,6 @@ System.out.println("Done list 4");
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         CreatePanel = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         studentInfoPanel = new javax.swing.JPanel();
@@ -597,20 +595,14 @@ System.out.println("Done list 4");
         jScrollPane1 = new javax.swing.JScrollPane();
         appointmentsTable = new javax.swing.JTable();
         deleteSessionButton1 = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 750));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tutoring/images/pmslogoSmall.PNG"))); // NOI18N
-        jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
         jPanel2.setMinimumSize(new java.awt.Dimension(234, 0));
@@ -1056,23 +1048,23 @@ System.out.println("Done list 4");
             .add(agendaPanelLayout.createSequentialGroup()
                 .addContainerGap(130, Short.MAX_VALUE)
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 892, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(agendaPanelLayout.createSequentialGroup()
                         .add(addAgendaItemButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(deleteAgendaButton))
-                    .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 892, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(deleteAgendaButton)))
                 .addContainerGap(130, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(agendaPanelLayout.createSequentialGroup()
                 .add(16, 16, 16)
-                .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 289, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(addAgendaItemButton)
-                    .add(deleteAgendaButton))
-                .addContainerGap(69, Short.MAX_VALUE))
+                    .add(deleteAgendaButton)
+                    .add(addAgendaItemButton))
+                .addContainerGap())
         );
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
@@ -1214,6 +1206,14 @@ System.out.println("Done list 4");
 
         CreatePanel.addTab("Sessions", sessionsAndAgendaPanel);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tutoring/images/pmslogoSmall.PNG"))); // NOI18N
+        jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
+
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1229,10 +1229,10 @@ System.out.println("Done list 4");
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
                 .add(5, 5, 5)
-                .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, Short.MAX_VALUE)
+                .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(0, 0, 0)
                 .add(CreatePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(50, 50, 50))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
