@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import tutoring.ui.AdminView;
 
 /**
  *
@@ -23,11 +24,11 @@ public class Client {
 
     public enum ClientTable {
 
-        CLIENTID("clientID", true, getTableAlias()+".clientID"),
-        FNAME("fName", true, getTableAlias()+".fName"),
-        LNAME("lName", true, getTableAlias()+".lName"),
-        PHONE("phone", true, getTableAlias()+".phone"),
-        EMAIL("email", true, getTableAlias()+".email");
+        CLIENTID("Client ID", "clientID", true, getTableAlias()+".clientID"),
+        FNAME("First Name","fName", true, getTableAlias()+".fName"),
+        LNAME("Last Name","lName", true, getTableAlias()+".lName"),
+        PHONE("Phone","phone", true, getTableAlias()+".phone"),
+        EMAIL("Email","email", true, getTableAlias()+".email");
         
         private String name;
         private boolean mainTableColumn;
@@ -35,15 +36,20 @@ public class Client {
         private static final String table = "Client";
         
         private static final String tableAlias = "client";
-
-        private ClientTable(String name, boolean mainTableColumn, String withAlias) {
+        private String displayName;
+        private ClientTable(String displayName, String name, boolean mainTableColumn, String withAlias) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+        
+        public String getDisplayName() {
+            return displayName;
         }
 
         public boolean isMainTableColumn() {
@@ -75,6 +81,36 @@ public class Client {
                     cols.add(columns[i].getName());
             }
             return cols;
+        }
+        
+        public static String getDatabaseName(String DisplayName)
+        {
+            ClientTable[] components = ClientTable.class.getEnumConstants();
+            for (int i = 0; i < components.length; i++)
+            {
+                if (components[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return components[i].getWithAlias();
+                }
+            }
+
+            return "";
+        }
+        
+        public static String getSelectQuery()
+        {
+            Client.ClientTable [] cols = Client.ClientTable.class.getEnumConstants();
+            String columnSetUp = "";
+            for(int i=0; i<cols.length; i++)
+            {
+                columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+
+           
+
+            String query = "select "+columnSetUp+" from Client "+Client.ClientTable.getTableAlias();
+            return query;
         }
     }
     private int clientID; // primary key
@@ -122,19 +158,8 @@ public class Client {
 
                 System.out.println("Connected to the database test1");
 
-                Client.ClientTable [] cols = Client.ClientTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
-                
                 statement = connect.createStatement();
-
-                String query = "select "+columnSetUp+" from Client "+Client.ClientTable.getTableAlias();
-                
-
+                String query = ClientTable.getSelectQuery();
                 query += " "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

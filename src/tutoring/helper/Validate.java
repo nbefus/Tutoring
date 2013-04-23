@@ -49,7 +49,7 @@ public class Validate
         return false;
     }
     */
-    public static void createClient(JComboBox fnameField, JComboBox lnameField, JComboBox phoneField, JComboBox emailField)
+    public static void createClient(boolean update, JComboBox fnameField, JComboBox lnameField, JComboBox phoneField, JComboBox emailField)
     {
         try
         {
@@ -108,19 +108,31 @@ public class Validate
             if(lname.length() > 0 && fname.length() > 0 && goodPhone && goodEmail)
             {
                 Client c = new Client(-1, fname, lname, email, phone);
-                DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
+                DatabaseHelper.open();
+                boolean inserted;
+                if(!update)
+                    inserted = DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
+                else
+                    inserted = DatabaseHelper.update(Client.getValues(c), Client.ClientTable.getTable());
                // HibernateTest.create(c);
-                JOptionPane.showMessageDialog(null, "Student created successfully!");
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "Student successfully stored!");
+                else
+                    JOptionPane.showMessageDialog(null, "Not stored successfully");
             }
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Not created successfully");
+            JOptionPane.showMessageDialog(null, "Not stored successfully");
+        }
+        finally
+        {
+            DatabaseHelper.close();
         }
 
     }
     
-    public static void createCourse(JComboBox courseField, JComboBox levelField, JComboBox teacherField)
+    public static void createCourse(boolean update, JComboBox courseField, JComboBox levelField, JComboBox teacherField)
     {
         try
         {
@@ -181,14 +193,21 @@ public class Validate
             if(goodTeacher && goodCourse && goodLevel)
             {
                 Course c = new Course(-1, teachers.get(0), subject.get(0), Integer.parseInt(level));
-                DatabaseHelper.insert(Course.getValues(c), Teacher.TeacherTable.getTable());
-                ///HibernateTest.create(c);
-                JOptionPane.showMessageDialog(null, "Student created successfully!");
+                boolean inserted;
+                if(!update)
+                    inserted = DatabaseHelper.insert(Course.getValues(c), Teacher.TeacherTable.getTable());
+                else
+                    inserted = DatabaseHelper.update(Course.getValues(c), Teacher.TeacherTable.getTable());
+                
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "Student stored successfully!");
+                else
+                    JOptionPane.showMessageDialog(null, "Not stored successfully");
             }
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Not created successfully");
+            JOptionPane.showMessageDialog(null, "Not stored successfully");
         }
         finally
         {

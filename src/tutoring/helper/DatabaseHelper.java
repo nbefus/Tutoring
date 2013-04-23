@@ -45,6 +45,17 @@ public class DatabaseHelper
     {
         return connect;
     }
+    /*
+    public static String getDatabaseNameFromDisplayName(String tableName, String displayName)
+    {
+        if(ParaprofessionalSession.ParaSessTable.getTable().equalsIgnoreCase(tableName))
+            return ParaprofessionalSession.ParaSessTable.getDatabaseName(displayName);
+        else if(Client.ClientTable.getTable().equalsIgnoreCase(tableName))
+            return Client.ClientTable.getDatabaseName(displayName);
+        else if(Course.CourseTable.getTable().equalsIgnoreCase(tableName))
+            return Course.CourseTable.getDatabaseName(displayName);
+        return "";
+    }*/
     
     public static void close()
     {

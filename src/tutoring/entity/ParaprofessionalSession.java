@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import tutoring.ui.AdminView;
 
 /*
  * To change this template, choose Tools | Templates
@@ -36,45 +37,45 @@ public class ParaprofessionalSession {
      */
     public enum ParaSessTable {
 
-        PARAPROFESSIONALSESSIONID("paraprofessionalSessionID", true, getTableAlias()+".paraprofessionalSessionID"),
-        PARAPROFESSIONALID("paraprofessionalID", true, getTableAlias()+".paraprofessionalID"),
-        CLIENTID("clientID", true, getTableAlias()+".clientID"),
-        COURSEID("courseID", true, getTableAlias()+".courseID"),
-        LOCATIONID("locationID", true, getTableAlias()+".locationID"),
-        PARAPROFESSIONALCREATORID("paraprofessionalCreatorID", true, getTableAlias()+".paraprofessionalCreatorID"),
-        TIMEANDDATEENTERED("timeAndDateEntered", true, getTableAlias()+".timeAndDateEntered"),
-        SESSIONSTART("sessionStart", true, getTableAlias()+".sessionStart"),
-        SESSIONEND("sessionEnd", true, getTableAlias()+".sessionEnd"),
-        GRAMMARCHECK("grammarCheck", true, getTableAlias()+".grammarCheck"),
-        NOTES("notes", true, getTableAlias()+".notes"),
-        WALKOUT("walkout", true, getTableAlias()+".walkout"),
-        PARAPROFESSIONALFNAME("fName", false, getParaprofessionalAlias()+".fName"),
-        PARAPROFESSIONALLNAME("lName", false, getParaprofessionalAlias()+".lName"),
-        PARAPROFESSIONALHIREDATE("hireDate", false, getParaprofessionalAlias()+".hireDate"),
-        PARAPROFESSIONALTERMINATIONDATE("terminationDate", false, getParaprofessionalAlias()+".terminationDate"),
-        PARAPROFESSIONALISCLOCKEDIN("isClockedIn", false, getParaprofessionalAlias()+".isClockedIn"),
-        PARAPROFESSIONALROLEID("roleID", false, getParaprofessionalAlias()+".roleID"),
-        PARAPROFESSIONALROLETYPE("type", false, getParaprofessionalRoleAlias()+".type"),
-        CREATORFNAME("fName", false, getCreatorAlias()+".fName"),
-        CREATORLNAME("lName", false, getCreatorAlias()+".lName"),
-        CREATORHIREDATE("hireDate", false, getCreatorAlias()+".hireDate"),
-        CREATORTERMINATIONDATE("terminationDate", false, getCreatorAlias()+".terminationDate"),
-        CREATORISCLOCKEDIN("isClockedIn", false, getCreatorAlias()+".isClockedIn"),
-        CREATORROLEID("roleID", false, getCreatorAlias()+".roleID"),
-        CREATORROLETYPE("type", false, getCreatorRoleAlias()+".type"),
-        LOCATIONNAME("name", false, getLocationAlias()+".name"),
-        CLIENTFNAME("fName", false, getClientAlias()+".fName"),
-        CLIENTLNAME("lName", false, getClientAlias()+".lName"),
-        CLIENTPHONE("phone", false, getClientAlias()+".phone"),
-        CLIENTEMAIL("email", false, getClientAlias()+".email"),
-        SUBJECTID("subjectID", false, getCourseAlias()+".subjectID"),
-        SUBJECTABBREVNAME("abbrevName", false, getSubjectAlias()+".abbrevName"),
-        SUBJECTCATEGORYID("categoryID", false, getSubjectAlias()+".categoryID"),
-        SUBJECTCATEGORYNAME("name", false, getCategoryAlias()+".name"),
-        TEACHERID("teacherID", false, getCourseAlias()+".teacherID"),
-        TEACHERFNAME("fName", false, getTeacherAlias()+".fName"),
-        TEACHERLNAME("lName", false, getTeacherAlias()+".lName"),
-        COURSELEVEL("level", false, getCourseAlias()+".level");
+        PARAPROFESSIONALSESSIONID("Session ID","paraprofessionalSessionID", true, getTableAlias()+".paraprofessionalSessionID", true),
+        PARAPROFESSIONALID("Paraprofessional ID","paraprofessionalID", true, getTableAlias()+".paraprofessionalID", true),
+        CLIENTID("Client ID","clientID", true, getTableAlias()+".clientID", true),
+        COURSEID("Course ID","courseID", true, getTableAlias()+".courseID", true),
+        LOCATIONID("Location ID","locationID", true, getTableAlias()+".locationID", true),
+        PARAPROFESSIONALCREATORID("Creator ID","paraprofessionalCreatorID", true, getTableAlias()+".paraprofessionalCreatorID", true),
+        TIMEANDDATEENTERED("Date Entered","timeAndDateEntered", true, getTableAlias()+".timeAndDateEntered", false),
+        SESSIONSTART("Session Start", "sessionStart", true, getTableAlias()+".sessionStart", false),
+        SESSIONEND("Session End","sessionEnd", true, getTableAlias()+".sessionEnd", false),
+        GRAMMARCHECK("Grammar Check","grammarCheck", true, getTableAlias()+".grammarCheck", false),
+        NOTES("Notes","notes", true, getTableAlias()+".notes", false),
+        WALKOUT("Walkout","walkout", true, getTableAlias()+".walkout", false),
+        PARAPROFESSIONALFNAME("Paraprofessional First","fName", false, getParaprofessionalAlias()+".fName", false),
+        PARAPROFESSIONALLNAME("Paraprofessional Last","lName", false, getParaprofessionalAlias()+".lName",false),
+        PARAPROFESSIONALHIREDATE("Paraprofessional Hire Date","hireDate", false, getParaprofessionalAlias()+".hireDate", false),
+        PARAPROFESSIONALTERMINATIONDATE("Paraprofessional Termination Date","terminationDate", false, getParaprofessionalAlias()+".terminationDate", false),
+        PARAPROFESSIONALISCLOCKEDIN("Paraprofessional Is In?","isClockedIn", false, getParaprofessionalAlias()+".isClockedIn", false),
+        PARAPROFESSIONALROLEID("Paraprofessional Role ID","roleID", false, getParaprofessionalAlias()+".roleID", true),
+        PARAPROFESSIONALROLETYPE("Paraprofessional Role","type", false, getParaprofessionalRoleAlias()+".type",false),
+        CREATORFNAME("Creator First","fName", false, getCreatorAlias()+".fName", false),
+        CREATORLNAME("Creator Last","lName", false, getCreatorAlias()+".lName", false),
+        CREATORHIREDATE("Creator Hire Date","hireDate", false, getCreatorAlias()+".hireDate", false),
+        CREATORTERMINATIONDATE("Creator Termination Date","terminationDate", false, getCreatorAlias()+".terminationDate", false),
+        CREATORISCLOCKEDIN("Creator Is In?","isClockedIn", false, getCreatorAlias()+".isClockedIn", false),
+        CREATORROLEID("Creator Role ID","roleID", false, getCreatorAlias()+".roleID", true),
+        CREATORROLETYPE("Creator Role","type", false, getCreatorRoleAlias()+".type", false),
+        LOCATIONNAME("Location Name","name", false, getLocationAlias()+".name", false),
+        CLIENTFNAME("Client First","fName", false, getClientAlias()+".fName", false),
+        CLIENTLNAME("Client Last","lName", false, getClientAlias()+".lName", false),
+        CLIENTPHONE("Client Phone","phone", false, getClientAlias()+".phone", false),
+        CLIENTEMAIL("Client Email","email", false, getClientAlias()+".email", false),
+        SUBJECTID("Subject ID","subjectID", false, getCourseAlias()+".subjectID", true),
+        SUBJECTABBREVNAME("Subject","abbrevName", false, getSubjectAlias()+".abbrevName", false),
+        SUBJECTCATEGORYID("Category ID","categoryID", false, getSubjectAlias()+".categoryID", true),
+        SUBJECTCATEGORYNAME("Category","name", false, getCategoryAlias()+".name", false),
+        TEACHERID("Teacher ID","teacherID", false, getCourseAlias()+".teacherID",true),
+        TEACHERFNAME("Teacher First","fName", false, getTeacherAlias()+".fName", false),
+        TEACHERLNAME("Teacher Last","lName", false, getTeacherAlias()+".lName", false),
+        COURSELEVEL("Level","level", false, getCourseAlias()+".level", false);
 
         
         private String name;
@@ -96,14 +97,26 @@ public class ParaprofessionalSession {
         
         private static final String table = "ParaprofessionalSession";
 
-        private ParaSessTable(String name, boolean mainTableColumn, String withAlias) {
+        
+        private String displayName;
+        private boolean isID;
+        private ParaSessTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.displayName = displayName;
+            this.isID=isID;
         }
 
+        public boolean isID()
+        {
+            return isID;
+        }
         public String getName() {
             return name;
+        }
+        public String getDisplayName() {
+            return displayName;
         }
         public boolean isMainTableColumn() {
             return mainTableColumn;
@@ -151,6 +164,19 @@ public class ParaprofessionalSession {
             for(int i=0; i<columns.length; i++)
             {
                 if(columns[i].isMainTableColumn())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            ParaprofessionalSession.ParaSessTable[] columns = ParaprofessionalSession.ParaSessTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID)
                     cols.add(columns[i].getName());
             }
             return cols;
@@ -224,6 +250,20 @@ public class ParaprofessionalSession {
                         " join Category "+ParaSessTable.getCategoryAlias()+" on "+ParaSessTable.SUBJECTCATEGORYID.getWithAlias()+"="+ParaSessTable.getCategoryAlias()+"."+ParaSessTable.SUBJECTCATEGORYID.getName()+
                         " join Location "+ParaSessTable.getLocationAlias()+" on "+ParaSessTable.LOCATIONID.getWithAlias()+"="+ParaSessTable.getLocationAlias()+"."+ParaSessTable.LOCATIONID.getName();
                return query;
+        }
+        
+        public static String getDatabaseName(String DisplayName)
+        {
+            ParaSessTable[] components = ParaSessTable.class.getEnumConstants();
+            for (int i = 0; i < components.length; i++)
+            {
+                if (components[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return components[i].getWithAlias();
+                }
+            }
+
+            return "";
         }
     }
     

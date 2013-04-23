@@ -455,7 +455,7 @@ public class AdminView extends javax.swing.JFrame
         searchList.setModel(dlm);
 
         searchclientPanel.setVisible(true);
-        searchcoursePanel.setVisible(false);
+        searchuserPanel.setVisible(false);
         searchsessionPanel.setVisible(false);
         searchparaprofessionalPanel.setVisible(false);
         searchteacherPanel.setVisible(false);
@@ -531,7 +531,8 @@ public class AdminView extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
         java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
@@ -624,13 +625,15 @@ public class AdminView extends javax.swing.JFrame
         searchgcCombo = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         searchwalkoutCombo = new javax.swing.JComboBox();
-        searchcoursePanel = new javax.swing.JPanel();
+        searchuserPanel = new javax.swing.JPanel();
         courseLabel1 = new javax.swing.JLabel();
         searchcourseCombo = new javax.swing.JComboBox();
         levelLabel1 = new javax.swing.JLabel();
         searchlevelCombo = new javax.swing.JComboBox();
         teacherLabel1 = new javax.swing.JLabel();
         searchteacherCombo = new javax.swing.JComboBox();
+        teacherLabel6 = new javax.swing.JLabel();
+        searchteacherCombo2 = new javax.swing.JComboBox();
         searchclientPanel = new javax.swing.JPanel();
         fnameLabel4 = new javax.swing.JLabel();
         searchfnameCombo = new javax.swing.JComboBox();
@@ -684,6 +687,30 @@ public class AdminView extends javax.swing.JFrame
         paraprofessionalRadio = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        searchrolePanel = new javax.swing.JPanel();
+        courseLabel8 = new javax.swing.JLabel();
+        searchsubjectnameCombo1 = new javax.swing.JComboBox();
+        searchlocationPanel = new javax.swing.JPanel();
+        courseLabel9 = new javax.swing.JLabel();
+        searchsubjectnameCombo2 = new javax.swing.JComboBox();
+        searchagendacategoryPanel = new javax.swing.JPanel();
+        levelLabel11 = new javax.swing.JLabel();
+        searchsubjectcategoryCombo3 = new javax.swing.JComboBox();
+        searchcoursePanel = new javax.swing.JPanel();
+        courseLabel2 = new javax.swing.JLabel();
+        searchcourseCombo1 = new javax.swing.JComboBox();
+        levelLabel2 = new javax.swing.JLabel();
+        searchlevelCombo1 = new javax.swing.JComboBox();
+        teacherLabel2 = new javax.swing.JLabel();
+        searchteacherCombo1 = new javax.swing.JComboBox();
+        searchcategoryPanel = new javax.swing.JPanel();
+        levelLabel12 = new javax.swing.JLabel();
+        searchsubjectcategoryCombo4 = new javax.swing.JComboBox();
+        searchparaprofessionalcategoryPanel = new javax.swing.JPanel();
+        levelLabel13 = new javax.swing.JLabel();
+        searchsubjectcategoryCombo5 = new javax.swing.JComboBox();
+        searchparaprofessionalCombo1 = new javax.swing.JComboBox();
+        levelLabel14 = new javax.swing.JLabel();
         jScrollPane10 = new javax.swing.JScrollPane();
         reportPanel1 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -781,8 +808,10 @@ public class AdminView extends javax.swing.JFrame
         teacherLabel5.setText("Teacher:");
 
         teacherCombo.setEditable(true);
-        teacherCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        teacherCombo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 teacherComboActionPerformed(evt);
             }
         });
@@ -914,26 +943,34 @@ public class AdminView extends javax.swing.JFrame
 
         addSessionbutton.setForeground(new java.awt.Color(51, 102, 255));
         addSessionbutton.setText("Add Session");
-        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        addSessionbutton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 addSessionbuttonMouseClicked(evt);
             }
         });
-        addSessionbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        addSessionbutton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 addSessionbuttonActionPerformed(evt);
             }
         });
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
         clearButton.setText("Clear");
-        clearButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearButton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 clearButtonMouseClicked(evt);
             }
         });
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearButtonActionPerformed(evt);
             }
         });
@@ -941,21 +978,25 @@ public class AdminView extends javax.swing.JFrame
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "First", "Last", "Email", "Phone"
             }
         ));
         sessionsTableScrollPanel.setViewportView(sessionsTable);
 
         deleteSessionButton.setText("Delete Session");
-        deleteSessionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButtonActionPerformed(evt);
             }
         });
@@ -986,21 +1027,25 @@ public class AdminView extends javax.swing.JFrame
         futureSessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
 
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "First", "Last", "Email", "Phone"
             }
         ));
         appointmentsTableScrollPanel.setViewportView(appointmentsTable);
 
         deleteSessionButton3.setText("Delete Session");
-        deleteSessionButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton3.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButton3ActionPerformed(evt);
             }
         });
@@ -1100,13 +1145,15 @@ public class AdminView extends javax.swing.JFrame
         deleteAgendaButton1.setText("Delete Agenda");
 
         agendaTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -1136,8 +1183,10 @@ public class AdminView extends javax.swing.JFrame
 
         autocompleteCheck.setSelected(true);
         autocompleteCheck.setText("AutoComplete");
-        autocompleteCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        autocompleteCheck.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 autocompleteCheckActionPerformed(evt);
             }
         });
@@ -1197,7 +1246,7 @@ public class AdminView extends javax.swing.JFrame
                 .add(createAgendaPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(agendaPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(984, Short.MAX_VALUE))
         );
 
         AdminScrollPanel.setViewportView(sessionsAndAgendaPanel);
@@ -1207,21 +1256,25 @@ public class AdminView extends javax.swing.JFrame
         currentSessionsPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Results"));
 
         searchsearchTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "First", "Last", "Email", "Phone"
             }
         ));
         jScrollPane6.setViewportView(searchsearchTable);
 
         deleteSessionButton1.setText("Delete Session");
-        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteSessionButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteSessionButton1ActionPerformed(evt);
             }
         });
@@ -1235,14 +1288,14 @@ public class AdminView extends javax.swing.JFrame
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(currentSessionsPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane6)
+                .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1441, Short.MAX_VALUE)
                 .addContainerGap())
         );
         currentSessionsPanel1Layout.setVerticalGroup(
             currentSessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, currentSessionsPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .add(jScrollPane6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1250,26 +1303,34 @@ public class AdminView extends javax.swing.JFrame
 
         searchsearchButton.setForeground(new java.awt.Color(51, 102, 255));
         searchsearchButton.setText("Search");
-        searchsearchButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        searchsearchButton.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 searchsearchButtonMouseClicked(evt);
             }
         });
-        searchsearchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchsearchButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 searchsearchButtonActionPerformed(evt);
             }
         });
 
         clearButton1.setForeground(new java.awt.Color(153, 0, 0));
         clearButton1.setText("Clear");
-        clearButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        clearButton1.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 clearButton1MouseClicked(evt);
             }
         });
-        clearButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clearButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clearButton1ActionPerformed(evt);
             }
         });
@@ -1392,54 +1453,73 @@ public class AdminView extends javax.swing.JFrame
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchcoursePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchuserPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("User Information"));
 
-        courseLabel1.setText("Course:");
+        courseLabel1.setText("Username:");
 
         searchcourseCombo.setEditable(true);
 
-        levelLabel1.setText("Course#:");
+        levelLabel1.setText("Role:");
 
         searchlevelCombo.setEditable(true);
 
-        teacherLabel1.setText("Teacher:");
+        teacherLabel1.setText("First Name:");
 
         searchteacherCombo.setEditable(true);
-        searchteacherCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchteacherCombo.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 searchteacherComboActionPerformed(evt);
             }
         });
 
-        org.jdesktop.layout.GroupLayout searchcoursePanelLayout = new org.jdesktop.layout.GroupLayout(searchcoursePanel);
-        searchcoursePanel.setLayout(searchcoursePanelLayout);
-        searchcoursePanelLayout.setHorizontalGroup(
-            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcoursePanelLayout.createSequentialGroup()
+        teacherLabel6.setText("Last Name:");
+
+        searchteacherCombo2.setEditable(true);
+        searchteacherCombo2.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                searchteacherCombo2ActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout searchuserPanelLayout = new org.jdesktop.layout.GroupLayout(searchuserPanel);
+        searchuserPanel.setLayout(searchuserPanelLayout);
+        searchuserPanelLayout.setHorizontalGroup(
+            searchuserPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchuserPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .add(courseLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(searchcourseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
-                .add(levelLabel1)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                .add(searchlevelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(18, 18, 18)
                 .add(teacherLabel1)
-                .add(18, 18, 18)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(searchteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(teacherLabel6)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchteacherCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 147, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(levelLabel1)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchlevelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        searchcoursePanelLayout.setVerticalGroup(
-            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(searchcoursePanelLayout.createSequentialGroup()
-                .add(searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+        searchuserPanelLayout.setVerticalGroup(
+            searchuserPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchuserPanelLayout.createSequentialGroup()
+                .add(searchuserPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(courseLabel1)
                     .add(searchcourseCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel1)
                     .add(searchlevelCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(teacherLabel1)
-                    .add(searchteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(searchteacherCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(teacherLabel6)
+                    .add(searchteacherCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1502,27 +1582,33 @@ public class AdminView extends javax.swing.JFrame
         jScrollPane7.setViewportView(searchList);
 
         searchAddRestrictionsButton.setText("Add Restrictions");
-        searchAddRestrictionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchAddRestrictionsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 searchAddRestrictionsButtonActionPerformed(evt);
             }
         });
 
         searchresetrestrictionButton.setText("Reset Restriction");
-        searchresetrestrictionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchresetrestrictionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 searchresetrestrictionButtonActionPerformed(evt);
             }
         });
 
         searchclearrestrictionsButton.setText("Clear Restrictions");
-        searchclearrestrictionsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchclearrestrictionsButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 searchclearrestrictionsButtonActionPerformed(evt);
             }
         });
 
-        searchparaprofessionalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchparaprofessionalPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Paraprofessional Information"));
 
         courseLabel3.setText("First Name:");
 
@@ -1588,7 +1674,7 @@ public class AdminView extends javax.swing.JFrame
                 .add(jLabel1)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(searchparaprofessionalroleCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         searchparaprofessionalPanelLayout.setVerticalGroup(
             searchparaprofessionalPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1613,7 +1699,7 @@ public class AdminView extends javax.swing.JFrame
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchteacherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchteacherPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Teacher Information"));
 
         courseLabel4.setText("First Name:");
 
@@ -1649,7 +1735,7 @@ public class AdminView extends javax.swing.JFrame
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchsubjectPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchsubjectPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Subject Information"));
 
         courseLabel5.setText("Name:");
 
@@ -1672,7 +1758,7 @@ public class AdminView extends javax.swing.JFrame
                 .add(levelLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(searchsubjectcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(1055, Short.MAX_VALUE))
         );
         searchsubjectPanelLayout.setVerticalGroup(
             searchsubjectPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1682,10 +1768,10 @@ public class AdminView extends javax.swing.JFrame
                     .add(searchsubjectnameCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(levelLabel5)
                     .add(searchsubjectcategoryCombo, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        searchagendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+        searchagendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Agenda Information"));
 
         courseLabel6.setText("Notes:");
 
@@ -1733,16 +1819,20 @@ public class AdminView extends javax.swing.JFrame
 
         buttonGroup1.add(clientRadio);
         clientRadio.setText("Client");
-        clientRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        clientRadio.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 clientRadioActionPerformed(evt);
             }
         });
 
         buttonGroup1.add(courseRadio);
         courseRadio.setText("Course");
-        courseRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        courseRadio.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 courseRadioActionPerformed(evt);
             }
         });
@@ -1755,70 +1845,276 @@ public class AdminView extends javax.swing.JFrame
 
         buttonGroup1.add(paraprofessionalRadio);
         paraprofessionalRadio.setText("Paraprofessional");
-        paraprofessionalRadio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        paraprofessionalRadio.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 paraprofessionalRadioActionPerformed(evt);
             }
         });
 
         jButton1.setText("Create");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 jButton1ActionPerformed(evt);
             }
         });
 
         jButton2.setText("Save/Edit");
 
+        searchrolePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Role Information"));
+
+        courseLabel8.setText("Type:");
+
+        searchsubjectnameCombo1.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout searchrolePanelLayout = new org.jdesktop.layout.GroupLayout(searchrolePanel);
+        searchrolePanel.setLayout(searchrolePanelLayout);
+        searchrolePanelLayout.setHorizontalGroup(
+            searchrolePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchrolePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(courseLabel8)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(searchsubjectnameCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        searchrolePanelLayout.setVerticalGroup(
+            searchrolePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchrolePanelLayout.createSequentialGroup()
+                .add(searchrolePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(courseLabel8)
+                    .add(searchsubjectnameCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        searchlocationPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Location Information"));
+
+        courseLabel9.setText("Name:");
+
+        searchsubjectnameCombo2.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout searchlocationPanelLayout = new org.jdesktop.layout.GroupLayout(searchlocationPanel);
+        searchlocationPanel.setLayout(searchlocationPanelLayout);
+        searchlocationPanelLayout.setHorizontalGroup(
+            searchlocationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchlocationPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(courseLabel9)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(searchsubjectnameCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        searchlocationPanelLayout.setVerticalGroup(
+            searchlocationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchlocationPanelLayout.createSequentialGroup()
+                .add(searchlocationPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(courseLabel9)
+                    .add(searchsubjectnameCombo2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        searchagendacategoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Agenda Category Information"));
+
+        levelLabel11.setText("Category:");
+
+        searchsubjectcategoryCombo3.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout searchagendacategoryPanelLayout = new org.jdesktop.layout.GroupLayout(searchagendacategoryPanel);
+        searchagendacategoryPanel.setLayout(searchagendacategoryPanelLayout);
+        searchagendacategoryPanelLayout.setHorizontalGroup(
+            searchagendacategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchagendacategoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(levelLabel11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchsubjectcategoryCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        searchagendacategoryPanelLayout.setVerticalGroup(
+            searchagendacategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchagendacategoryPanelLayout.createSequentialGroup()
+                .add(searchagendacategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(levelLabel11)
+                    .add(searchsubjectcategoryCombo3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        searchcoursePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Course Information"));
+
+        courseLabel2.setText("Course:");
+
+        searchcourseCombo1.setEditable(true);
+
+        levelLabel2.setText("Course#:");
+
+        searchlevelCombo1.setEditable(true);
+
+        teacherLabel2.setText("Teacher:");
+
+        searchteacherCombo1.setEditable(true);
+        searchteacherCombo1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                searchteacherCombo1ActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout searchcoursePanelLayout = new org.jdesktop.layout.GroupLayout(searchcoursePanel);
+        searchcoursePanel.setLayout(searchcoursePanelLayout);
+        searchcoursePanelLayout.setHorizontalGroup(
+            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcoursePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(courseLabel2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(searchcourseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(levelLabel2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(searchlevelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(teacherLabel2)
+                .add(18, 18, 18)
+                .add(searchteacherCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 243, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(721, Short.MAX_VALUE))
+        );
+        searchcoursePanelLayout.setVerticalGroup(
+            searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcoursePanelLayout.createSequentialGroup()
+                .add(searchcoursePanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(courseLabel2)
+                    .add(searchcourseCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(levelLabel2)
+                    .add(searchlevelCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(teacherLabel2)
+                    .add(searchteacherCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        searchcategoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Category Information"));
+
+        levelLabel12.setText("Category:");
+
+        searchsubjectcategoryCombo4.setEditable(true);
+
+        org.jdesktop.layout.GroupLayout searchcategoryPanelLayout = new org.jdesktop.layout.GroupLayout(searchcategoryPanel);
+        searchcategoryPanel.setLayout(searchcategoryPanelLayout);
+        searchcategoryPanelLayout.setHorizontalGroup(
+            searchcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcategoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(levelLabel12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchsubjectcategoryCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1253, Short.MAX_VALUE))
+        );
+        searchcategoryPanelLayout.setVerticalGroup(
+            searchcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchcategoryPanelLayout.createSequentialGroup()
+                .add(searchcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(levelLabel12)
+                    .add(searchsubjectcategoryCombo4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        searchparaprofessionalcategoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Paraprofessional Category Information"));
+
+        levelLabel13.setText("Category:");
+
+        searchsubjectcategoryCombo5.setEditable(true);
+
+        searchparaprofessionalCombo1.setEditable(true);
+
+        levelLabel14.setText("Paraprofessional:");
+
+        org.jdesktop.layout.GroupLayout searchparaprofessionalcategoryPanelLayout = new org.jdesktop.layout.GroupLayout(searchparaprofessionalcategoryPanel);
+        searchparaprofessionalcategoryPanel.setLayout(searchparaprofessionalcategoryPanelLayout);
+        searchparaprofessionalcategoryPanelLayout.setHorizontalGroup(
+            searchparaprofessionalcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchparaprofessionalcategoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(levelLabel14)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchparaprofessionalCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 148, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(35, 35, 35)
+                .add(levelLabel13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 68, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchsubjectcategoryCombo5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 114, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        searchparaprofessionalcategoryPanelLayout.setVerticalGroup(
+            searchparaprofessionalcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(searchparaprofessionalcategoryPanelLayout.createSequentialGroup()
+                .add(searchparaprofessionalcategoryPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(levelLabel13)
+                    .add(searchsubjectcategoryCombo5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(searchparaprofessionalCombo1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(levelLabel14))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
         org.jdesktop.layout.GroupLayout sessionsPanel1Layout = new org.jdesktop.layout.GroupLayout(sessionsPanel1);
         sessionsPanel1.setLayout(sessionsPanel1Layout);
         sessionsPanel1Layout.setHorizontalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(searchsessionPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchcoursePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchclientPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchparaprofessionalPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchteacherPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchsubjectPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsPanel1Layout.createSequentialGroup()
-                        .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 331, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(6, 6, 6)
+                    .add(sessionsPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(searchsessionPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchclientPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchparaprofessionalPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchteacherPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchsubjectPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchrolePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchlocationPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchcoursePanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchagendacategoryPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchuserPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchcategoryPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(searchparaprofessionalcategoryPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .add(sessionsPanel1Layout.createSequentialGroup()
                         .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(sessionsPanel1Layout.createSequentialGroup()
-                                .add(288, 288, 288)
-                                .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(18, 18, 18)
-                                .add(searchAddRestrictionsButton)
-                                .add(18, 72, Short.MAX_VALUE)
-                                .add(searchsearchButton)
-                                .add(18, 18, 18)
-                                .add(jButton1)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(jButton2)
-                                .add(354, 354, 354))
+                                .add(322, 322, 322)
+                                .add(clientRadio)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(courseRadio)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(sessionsRadio)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(teacherRadio)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(paraprofessionalRadio))
                             .add(sessionsPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 331, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                                    .add(searchresetrestrictionButton)
-                                    .add(searchclearrestrictionsButton))
-                                .add(0, 0, Short.MAX_VALUE)))))
+                                    .add(sessionsPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                                        .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                            .add(searchclearrestrictionsButton)
+                                            .add(searchresetrestrictionButton)))
+                                    .add(sessionsPanel1Layout.createSequentialGroup()
+                                        .add(394, 394, 394)
+                                        .add(searchAddRestrictionsButton)
+                                        .add(37, 37, 37)
+                                        .add(clearButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 76, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                        .add(43, 43, 43)
+                                        .add(searchsearchButton)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jButton1)
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(jButton2)))))
+                        .add(0, 0, Short.MAX_VALUE))
+                    .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .add(sessionsPanel1Layout.createSequentialGroup()
-                .add(322, 322, 322)
-                .add(clientRadio)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(courseRadio)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(sessionsRadio)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(teacherRadio)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(paraprofessionalRadio)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sessionsPanel1Layout.setVerticalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1843,24 +2139,39 @@ public class AdminView extends javax.swing.JFrame
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(searchsubjectPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchlocationPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 234, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(searchrolePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchagendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 60, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchagendacategoryPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchuserPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchcategoryPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(searchparaprofessionalcategoryPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(sessionsPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jScrollPane7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 234, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(sessionsPanel1Layout.createSequentialGroup()
+                        .add(26, 26, 26)
                         .add(sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(searchsearchButton)
                             .add(searchAddRestrictionsButton)
                             .add(clearButton1)
+                            .add(searchsearchButton)
                             .add(jButton1)
-                            .add(jButton2))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jButton2)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(searchresetrestrictionButton)
-                        .add(18, 18, 18)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(searchclearrestrictionsButton)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(currentSessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         adminPanel.addTab("Search", sessionsPanel1);
@@ -1871,13 +2182,15 @@ public class AdminView extends javax.swing.JFrame
         jPanel1.setPreferredSize(new java.awt.Dimension(1300, 258));
 
         generalReportTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -1894,46 +2207,54 @@ public class AdminView extends javax.swing.JFrame
         downloadButton1.setText("Download");
 
         generalReportLoadButton.setText("Load");
-        generalReportLoadButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        generalReportLoadButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 generalReportLoadButtonActionPerformed(evt);
             }
         });
 
         generalReportTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane11.setViewportView(generalReportTable);
 
         generalReportTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane12.setViewportView(generalReportTable3);
 
         generalReportTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -1971,7 +2292,7 @@ public class AdminView extends javax.swing.JFrame
                                 .add(21, 21, 21)
                                 .add(jLabel6)))
                         .add(generalReportLoadButton))
-                    .addContainerGap(1193, Short.MAX_VALUE)))
+                    .addContainerGap(1151, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(185, 185, 185)
@@ -1981,7 +2302,7 @@ public class AdminView extends javax.swing.JFrame
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
                         .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -2003,7 +2324,7 @@ public class AdminView extends javax.swing.JFrame
                     .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(18, 18, 18)
                     .add(generalReportLoadButton)
-                    .addContainerGap(126, Short.MAX_VALUE)))
+                    .addContainerGap(105, Short.MAX_VALUE)))
             .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                 .add(jPanel1Layout.createSequentialGroup()
                     .add(16, 16, 16)
@@ -2090,11 +2411,11 @@ public class AdminView extends javax.swing.JFrame
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(adminPanel)
+            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1492, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1392, Short.MAX_VALUE)
+            .add(adminPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1608, Short.MAX_VALUE)
         );
 
         pack();
@@ -2202,12 +2523,57 @@ public class AdminView extends javax.swing.JFrame
 
     }//GEN-LAST:event_generalReportLoadButtonActionPerformed
 
-    private void paraprofessionalRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paraprofessionalRadioActionPerformed
+    private void teacherComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_teacherComboActionPerformed
+
+    private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addSessionbuttonMouseClicked
+
+    private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
+        //ADDING A SESSION
+    }//GEN-LAST:event_addSessionbuttonActionPerformed
+
+    private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clearButtonMouseClicked
+
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clearButtonActionPerformed
+
+    private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
+        int[] selectedRows = sessionsTable.getSelectedRows();
+
+        ((SessionTableModel) sessionsTable.getModel()).deleteRows(selectedRows);
+    }//GEN-LAST:event_deleteSessionButtonActionPerformed
+
+    private void deleteSessionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteSessionButton3ActionPerformed
+
+    private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
+
+    }//GEN-LAST:event_autocompleteCheckActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+
+        if(clientRadio.isSelected())
+        {
+            Validate.createClient(false, searchfnameCombo, searchlnameCombo, searchphoneCombo, searchemailCombo);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void paraprofessionalRadioActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_paraprofessionalRadioActionPerformed
+    {//GEN-HEADEREND:event_paraprofessionalRadioActionPerformed
         System.out.println("ACTION ON CLIENT RADIO");
         if (paraprofessionalRadio.isSelected())
         {
             searchclientPanel.setVisible(false);
-            searchcoursePanel.setVisible(false);
+            searchuserPanel.setVisible(false);
             searchsessionPanel.setVisible(false);
             searchparaprofessionalPanel.setVisible(true);
             searchteacherPanel.setVisible(false);
@@ -2217,14 +2583,14 @@ public class AdminView extends javax.swing.JFrame
             dlm.clear();
 
             /*
-             String[] restrictions = new String[4];
-             restrictions[0]="First Name is any";
-             restrictions[1]="Last Name is any";
-             restrictions[2]="Phone is any";
-             restrictions[3]="Email is any";
+            String[] restrictions = new String[4];
+            restrictions[0]="First Name is any";
+            restrictions[1]="Last Name is any";
+            restrictions[2]="Phone is any";
+            restrictions[3]="Email is any";
 
-             for(int i=0; i<restrictions.length; i++)
-             dlm.addElement(restrictions[i]);*/
+            for(int i=0; i<restrictions.length; i++)
+            dlm.addElement(restrictions[i]);*/
 
             dlm.addElement("Search for all records");
             // restrictHelper.setRestrictions(restrictions);
@@ -2232,13 +2598,14 @@ public class AdminView extends javax.swing.JFrame
         }
     }//GEN-LAST:event_paraprofessionalRadioActionPerformed
 
-    private void courseRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_courseRadioActionPerformed
+    private void courseRadioActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_courseRadioActionPerformed
+    {//GEN-HEADEREND:event_courseRadioActionPerformed
 
         System.out.println("ACTION ON COURSE RADIO");
         if (courseRadio.isSelected())
         {
             searchclientPanel.setVisible(false);
-            searchcoursePanel.setVisible(true);
+            searchuserPanel.setVisible(true);
             searchsessionPanel.setVisible(false);
             searchparaprofessionalPanel.setVisible(false);
             searchteacherPanel.setVisible(false);
@@ -2247,13 +2614,13 @@ public class AdminView extends javax.swing.JFrame
 
             dlm.clear();
             /*
-             String[] restrictions = new String[3];
-             restrictions[0]="Course is any";
-             restrictions[1]="Course# is any";
-             restrictions[2]="Teacher is any";
+            String[] restrictions = new String[3];
+            restrictions[0]="Course is any";
+            restrictions[1]="Course# is any";
+            restrictions[2]="Teacher is any";
 
-             for(int i=0; i<restrictions.length; i++)
-             dlm.addElement(restrictions[i]);*/
+            for(int i=0; i<restrictions.length; i++)
+            dlm.addElement(restrictions[i]);*/
 
             // restrictHelper.setRestrictions(restrictions);
 
@@ -2261,13 +2628,14 @@ public class AdminView extends javax.swing.JFrame
         }
     }//GEN-LAST:event_courseRadioActionPerformed
 
-    private void clientRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientRadioActionPerformed
+    private void clientRadioActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clientRadioActionPerformed
+    {//GEN-HEADEREND:event_clientRadioActionPerformed
 
         System.out.println("ACTION ON CLIENT RADIO");
         if (clientRadio.isSelected())
         {
             searchclientPanel.setVisible(true);
-            searchcoursePanel.setVisible(false);
+            searchuserPanel.setVisible(false);
             searchsessionPanel.setVisible(false);
             searchparaprofessionalPanel.setVisible(false);
             searchteacherPanel.setVisible(false);
@@ -2277,35 +2645,35 @@ public class AdminView extends javax.swing.JFrame
             dlm.clear();
 
             /*
-             String[] restrictions = new String[4];
-             restrictions[0]="First Name is any";
-             restrictions[1]="Last Name is any";
-             restrictions[2]="Phone is any";
-             restrictions[3]="Email is any";
+            String[] restrictions = new String[4];
+            restrictions[0]="First Name is any";
+            restrictions[1]="Last Name is any";
+            restrictions[2]="Phone is any";
+            restrictions[3]="Email is any";
 
-             for(int i=0; i<restrictions.length; i++)
-             dlm.addElement(restrictions[i]);*/
+            for(int i=0; i<restrictions.length; i++)
+            dlm.addElement(restrictions[i]);*/
 
             dlm.addElement("Search for all records");
             // restrictHelper.setRestrictions(restrictions);
 
         }
-
     }//GEN-LAST:event_clientRadioActionPerformed
 
-    private void searchclearrestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchclearrestrictionsButtonActionPerformed
+    private void searchclearrestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchclearrestrictionsButtonActionPerformed
+    {//GEN-HEADEREND:event_searchclearrestrictionsButtonActionPerformed
         /*
-         String[] restrictions = restrictHelper.getRestrictions();
+        String[] restrictions = restrictHelper.getRestrictions();
 
-         for(int i=0; i<restrictions.length; i++)
-         dlm.set(i, restrictions[i]);*/
+        for(int i=0; i<restrictions.length; i++)
+        dlm.set(i, restrictions[i]);*/
 
         dlm.clear();
         dlm.addElement("Search for all records");
-
     }//GEN-LAST:event_searchclearrestrictionsButtonActionPerformed
 
-    private void searchresetrestrictionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchresetrestrictionButtonActionPerformed
+    private void searchresetrestrictionButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchresetrestrictionButtonActionPerformed
+    {//GEN-HEADEREND:event_searchresetrestrictionButtonActionPerformed
 
         //dlm.set(searchList.getSelectedIndex(), restrictHelper.getRestrictionAt(searchList.getSelectedIndex()));
         if (searchList.getSelectedIndex() > 1 && dlm.size() - 1 == searchList.getSelectedIndex())
@@ -2316,10 +2684,10 @@ public class AdminView extends javax.swing.JFrame
         {
             dlm.removeElement(searchList.getSelectedValue());
         }
-
     }//GEN-LAST:event_searchresetrestrictionButtonActionPerformed
 
-    private void searchAddRestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchAddRestrictionsButtonActionPerformed
+    private void searchAddRestrictionsButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchAddRestrictionsButtonActionPerformed
+    {//GEN-HEADEREND:event_searchAddRestrictionsButtonActionPerformed
 
         ArrayList<String> restrictions = new ArrayList<String>();
         ArrayList<String> displayNames = new ArrayList<String>();
@@ -2354,10 +2722,10 @@ public class AdminView extends javax.swing.JFrame
 
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-             restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
-             restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
-             restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
-             restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);*/
+            restrictHelper.setListElement(fname, ComboBoxesIndexes.FNAME.indexOfCombo);
+            restrictHelper.setListElement(lname, ComboBoxesIndexes.LNAME.indexOfCombo);
+            restrictHelper.setListElement(phone, ComboBoxesIndexes.PHONE.indexOfCombo);
+            restrictHelper.setListElement(email, ComboBoxesIndexes.EMAIL.indexOfCombo);*/
         } else if (courseRadio.isSelected())
         {
 
@@ -2382,9 +2750,9 @@ public class AdminView extends javax.swing.JFrame
             }
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-             restrictHelper.setListElement(subject, 0);
-             restrictHelper.setListElement(level, 1);
-             restrictHelper.setListElement(teacher, 2);*/
+            restrictHelper.setListElement(subject, 0);
+            restrictHelper.setListElement(level, 1);
+            restrictHelper.setListElement(teacher, 2);*/
         } else if (paraprofessionalRadio.isSelected())
         {
 
@@ -2433,29 +2801,50 @@ public class AdminView extends javax.swing.JFrame
             }
             restrictHelper.setListElement(restrictions, displayNames);
             /*
-             restrictHelper.setListElement(subject, 0);
-             restrictHelper.setListElement(level, 1);
-             restrictHelper.setListElement(teacher, 2);*/
+            restrictHelper.setListElement(subject, 0);
+            restrictHelper.setListElement(level, 1);
+            restrictHelper.setListElement(teacher, 2);*/
         }
+        if(sessionsRadio.isSelected())
+        {
+            String clientFirst = ((JTextComponent) searchfnameCombo.getEditor().getEditorComponent()).getText().trim();
+            String clientLast = ((JTextComponent) searchlnameCombo.getEditor().getEditorComponent()).getText().trim();
+            String phone = ((JTextComponent) searchphoneCombo.getEditor().getEditorComponent()).getText().trim();
+            String email = ((JTextComponent) searchemailCombo.getEditor().getEditorComponent()).getText().trim();
 
+            String location = ((JTextComponent) searchlocationCombo.getEditor().getEditorComponent()).getText().trim();
+            String creator = ((JTextComponent) searchcreatorCombo.getEditor().getEditorComponent()).getText().trim();
+            String notes = searchnotesField.getText().trim();
+            String sessionStart = searchsessionstartField.getText().trim();
+            String sessionEnd = searchsessionendField.getText().trim();
+            String cateogry = searchcategorysessionCombo.getSelectedItem().toString().trim();
+            String paraprofessional = ((JTextComponent) searchparaprofessionalCombo.getEditor().getEditorComponent()).getText().trim();
+            String enteredDate = searchentereddateField.getText().trim();
+            String grammarCheck = searchgcCombo.getSelectedItem().toString().trim();
+            String walkout = searchwalkoutCombo.getSelectedItem().toString().trim();
+        }
         System.out.println("DONE searchaddrestriciton");
 
         clearComboBoxes();
     }//GEN-LAST:event_searchAddRestrictionsButtonActionPerformed
 
-    private void searchteacherComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchteacherComboActionPerformed
+    private void searchteacherComboActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchteacherComboActionPerformed
+    {//GEN-HEADEREND:event_searchteacherComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_searchteacherComboActionPerformed
 
-    private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButton1ActionPerformed
+    private void clearButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_clearButton1ActionPerformed
+    {//GEN-HEADEREND:event_clearButton1ActionPerformed
         clearComboBoxes();
     }//GEN-LAST:event_clearButton1ActionPerformed
 
-    private void clearButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButton1MouseClicked
+    private void clearButton1MouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_clearButton1MouseClicked
+    {//GEN-HEADEREND:event_clearButton1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_clearButton1MouseClicked
 
-    private void searchsearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchsearchButtonActionPerformed
+    private void searchsearchButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchsearchButtonActionPerformed
+    {//GEN-HEADEREND:event_searchsearchButtonActionPerformed
 
         String[] columns =
         {
@@ -2481,20 +2870,8 @@ public class AdminView extends javax.swing.JFrame
             {
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                        boolean isSelected, int row, int column)
+                    boolean isSelected, int row, int column)
                 {
-                    /* boxes[0]=searchfnameCombo;
-                     boxes[1]=searchlnameCombo;
-                     boxes[2]=searchphoneCombo;
-                     boxes[3]=searchemailCombo;
-                     boxes[4]=searchcategoryCombo;
-                     boxes[5]=searchcourseCombo;
-                     boxes[6]=searchcreatorCombo;
-                     boxes[7]=searchlevelCombo;
-                     boxes[8]=searchlocationCombo;
-                     boxes[9]=searchparaprofessionalCombo;
-                     boxes[10]=searchteacherCombo;*/
-
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
                     uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
                     uac.setComboValue(table.getValueAt(row, 2).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
@@ -2522,7 +2899,7 @@ public class AdminView extends javax.swing.JFrame
             {
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                        boolean isSelected, int row, int column)
+                    boolean isSelected, int row, int column)
                 {
 
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
@@ -2532,7 +2909,8 @@ public class AdminView extends javax.swing.JFrame
                     return null;
                 }
             };
-        } else if (paraprofessionalRadio.isSelected())
+        }
+        else if (paraprofessionalRadio.isSelected())
         {
             columns = new String[7];
             columns[0] = "fname";
@@ -2555,7 +2933,7 @@ public class AdminView extends javax.swing.JFrame
             {
                 @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
-                        boolean isSelected, int row, int column)
+                    boolean isSelected, int row, int column)
                 {
 
                     uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
@@ -2568,13 +2946,38 @@ public class AdminView extends javax.swing.JFrame
             };
         }
 
+        else if (sessionsRadio.isSelected())
+        {
+            columns = new String[4];
+            columns[0] = "fname";
+            columns[1] = "lname";
+            columns[2] = "phone";
+            columns[3] = "email";
+            table = "Client";
+            letter = 'c';
+
+            dce = new DefaultCellEditor(new JTextField())
+            {
+                @Override
+                public Component getTableCellEditorComponent(JTable table, Object value,
+                    boolean isSelected, int row, int column)
+                {
+                    uac.setComboValue(table.getValueAt(row, 0).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 1).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 2).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
+                    uac.setComboValue(table.getValueAt(row, 3).toString(), ComboBoxesIndexes.CEMAIL.getBoxIndex());
+
+                    return null;
+                }
+            };
+        }
         String fullQuery = null;
 
         /*
-         if(clientRadio.isSelected())
-         fullQuery = restrictHelper.createClientQuery(columns, table, letter);
-         else if(courseRadio.isSelected())
-         fullQuery = restrictHelper.createCourseQuery(columns);*/
+        if(clientRadio.isSelected())
+        fullQuery = restrictHelper.createClientQuery(columns, table, letter);
+        else if(courseRadio.isSelected())
+        fullQuery = restrictHelper.createCourseQuery(columns);*/
 
         fullQuery = restrictHelper.createQuery(columns, table);
 
@@ -2587,61 +2990,27 @@ public class AdminView extends javax.swing.JFrame
         {
             searchsearchTable.getColumnModel().getColumn(i).setCellEditor(dce);
         }
-
     }//GEN-LAST:event_searchsearchButtonActionPerformed
 
-    private void searchsearchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchsearchButtonMouseClicked
+    private void searchsearchButtonMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_searchsearchButtonMouseClicked
+    {//GEN-HEADEREND:event_searchsearchButtonMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_searchsearchButtonMouseClicked
 
-    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton1ActionPerformed
+    private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteSessionButton1ActionPerformed
+    {//GEN-HEADEREND:event_deleteSessionButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteSessionButton1ActionPerformed
 
-    private void teacherComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teacherComboActionPerformed
+    private void searchteacherCombo1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchteacherCombo1ActionPerformed
+    {//GEN-HEADEREND:event_searchteacherCombo1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_teacherComboActionPerformed
+    }//GEN-LAST:event_searchteacherCombo1ActionPerformed
 
-    private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked
+    private void searchteacherCombo2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchteacherCombo2ActionPerformed
+    {//GEN-HEADEREND:event_searchteacherCombo2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addSessionbuttonMouseClicked
-
-    private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
-        //ADDING A SESSION
-    }//GEN-LAST:event_addSessionbuttonActionPerformed
-
-    private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_clearButtonMouseClicked
-
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_clearButtonActionPerformed
-
-    private void deleteSessionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButtonActionPerformed
-        int[] selectedRows = sessionsTable.getSelectedRows();
-
-        ((SessionTableModel) sessionsTable.getModel()).deleteRows(selectedRows);
-    }//GEN-LAST:event_deleteSessionButtonActionPerformed
-
-    private void deleteSessionButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_deleteSessionButton3ActionPerformed
-
-    private void autocompleteCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autocompleteCheckActionPerformed
-
-    }//GEN-LAST:event_autocompleteCheckActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        
-        if(clientRadio.isSelected())
-        {
-            Validate.createClient(searchfnameCombo, searchlnameCombo, searchphoneCombo, searchemailCombo);
-        }
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_searchteacherCombo2ActionPerformed
 
    
     
@@ -2734,11 +3103,14 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JPanel courseInfoPanel1;
     private javax.swing.JLabel courseLabel1;
+    private javax.swing.JLabel courseLabel2;
     private javax.swing.JLabel courseLabel3;
     private javax.swing.JLabel courseLabel4;
     private javax.swing.JLabel courseLabel5;
     private javax.swing.JLabel courseLabel6;
     private javax.swing.JLabel courseLabel7;
+    private javax.swing.JLabel courseLabel8;
+    private javax.swing.JLabel courseLabel9;
     private javax.swing.JRadioButton courseRadio;
     private javax.swing.JPanel createAgendaPanel1;
     private javax.swing.JComboBox creatorCombo;
@@ -2792,6 +3164,11 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JComboBox levelCombo;
     private javax.swing.JLabel levelLabel1;
+    private javax.swing.JLabel levelLabel11;
+    private javax.swing.JLabel levelLabel12;
+    private javax.swing.JLabel levelLabel13;
+    private javax.swing.JLabel levelLabel14;
+    private javax.swing.JLabel levelLabel2;
     private javax.swing.JLabel levelLabel3;
     private javax.swing.JLabel levelLabel4;
     private javax.swing.JLabel levelLabel5;
@@ -2818,11 +3195,14 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JList searchList;
     private javax.swing.JPanel searchagendaPanel;
     private javax.swing.JComboBox searchagendacategoryCombo;
+    private javax.swing.JPanel searchagendacategoryPanel;
     private javax.swing.JComboBox searchagendanotesCombo;
+    private javax.swing.JPanel searchcategoryPanel;
     private javax.swing.JComboBox searchcategorysessionCombo;
     private javax.swing.JButton searchclearrestrictionsButton;
     private javax.swing.JPanel searchclientPanel;
     private javax.swing.JComboBox searchcourseCombo;
+    private javax.swing.JComboBox searchcourseCombo1;
     private javax.swing.JPanel searchcoursePanel;
     private javax.swing.JComboBox searchcreatorCombo;
     private javax.swing.JComboBox searchemailCombo;
@@ -2830,13 +3210,17 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JComboBox searchfnameteacherCombo;
     private javax.swing.JComboBox searchgcCombo;
     private javax.swing.JComboBox searchlevelCombo;
+    private javax.swing.JComboBox searchlevelCombo1;
     private javax.swing.JComboBox searchlnameCombo;
     private javax.swing.JComboBox searchlnameteacherCombo;
     private javax.swing.JComboBox searchlocationCombo;
+    private javax.swing.JPanel searchlocationPanel;
     private javax.swing.JTextField searchnotesField;
     private javax.swing.JComboBox searchparaprofessionalCombo;
+    private javax.swing.JComboBox searchparaprofessionalCombo1;
     private javax.swing.JPanel searchparaprofessionalPanel;
     private javax.swing.JComboBox searchparaprofessionalcategoryCombo;
+    private javax.swing.JPanel searchparaprofessionalcategoryPanel;
     private javax.swing.JComboBox searchparaprofessionalclockedinCombo;
     private javax.swing.JComboBox searchparaprofessionalfirstCombo;
     private javax.swing.JTextField searchparaprofessionalhireField;
@@ -2845,6 +3229,7 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JTextField searchparaprofessionalterminationField;
     private javax.swing.JComboBox searchphoneCombo;
     private javax.swing.JButton searchresetrestrictionButton;
+    private javax.swing.JPanel searchrolePanel;
     private javax.swing.JButton searchsearchButton;
     private javax.swing.JTable searchsearchTable;
     private javax.swing.JPanel searchsessionPanel;
@@ -2854,9 +3239,17 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JTextField searchsessionstartField4;
     private javax.swing.JPanel searchsubjectPanel;
     private javax.swing.JComboBox searchsubjectcategoryCombo;
+    private javax.swing.JComboBox searchsubjectcategoryCombo3;
+    private javax.swing.JComboBox searchsubjectcategoryCombo4;
+    private javax.swing.JComboBox searchsubjectcategoryCombo5;
     private javax.swing.JComboBox searchsubjectnameCombo;
+    private javax.swing.JComboBox searchsubjectnameCombo1;
+    private javax.swing.JComboBox searchsubjectnameCombo2;
     private javax.swing.JComboBox searchteacherCombo;
+    private javax.swing.JComboBox searchteacherCombo1;
+    private javax.swing.JComboBox searchteacherCombo2;
     private javax.swing.JPanel searchteacherPanel;
+    private javax.swing.JPanel searchuserPanel;
     private javax.swing.JComboBox searchwalkoutCombo;
     private javax.swing.JTextField sessionendField;
     private javax.swing.JLabel sessionendLabel1;
@@ -2875,9 +3268,11 @@ public class AdminView extends javax.swing.JFrame
     private javax.swing.JButton submitbutton1;
     private javax.swing.JComboBox teacherCombo;
     private javax.swing.JLabel teacherLabel1;
+    private javax.swing.JLabel teacherLabel2;
     private javax.swing.JLabel teacherLabel3;
     private javax.swing.JLabel teacherLabel4;
     private javax.swing.JLabel teacherLabel5;
+    private javax.swing.JLabel teacherLabel6;
     private javax.swing.JRadioButton teacherRadio;
     private javax.swing.JPanel thechartPanel1;
     private javax.swing.JCheckBox walkoutCheck1;
