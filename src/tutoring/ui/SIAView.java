@@ -93,6 +93,7 @@ public final class SIAView extends javax.swing.JFrame
     UltimateAutoAutoComplete uaacClient; 
 
     UltimateAutoAutoComplete uaacCourse;
+    private int sessionID = -1;
     
     public SIAView() 
     {
@@ -435,6 +436,8 @@ System.out.println("Done list 4");
             public Component getTableCellEditorComponent(JTable table, Object value,
                         boolean isSelected, int row, int column) 
             {
+                sessionID = ((Integer)table.getValueAt(row, SessionTableModel.Columns.ID.getColumnIndex())).intValue();
+                
                 uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.TEACHER.getColumnIndex()).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
                 uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LEVEL.getColumnIndex()).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
                 uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.COURSE.getColumnIndex()).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
@@ -1289,13 +1292,7 @@ System.out.println("Done list 4");
     }//GEN-LAST:event_addSessionbuttonMouseClicked
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        clearComboBoxes();
-        sessionstartField.setText("mm/dd/yyyy hh:mm aa");
-        sessionendField.setText("mm/dd/yyyy hh:mm aa");
-        editSaveButton.setVisible(false);
-        notesField.setText("");
-        gcCheck.setSelected(false);
-        walkoutCheck.setSelected(false);
+       clearForm();
     }//GEN-LAST:event_clearButtonActionPerformed
 
     private void clearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearButtonMouseClicked
@@ -1333,6 +1330,17 @@ System.out.println("Done list 4");
         ((AgendaTableModel) agendaTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteAgendaButtonActionPerformed
 
+    
+    private void clearForm()
+    {
+        clearComboBoxes();
+        sessionstartField.setText("mm/dd/yyyy hh:mm aa");
+        sessionendField.setText("mm/dd/yyyy hh:mm aa");
+        editSaveButton.setVisible(false);
+        notesField.setText("");
+        gcCheck.setSelected(false);
+        walkoutCheck.setSelected(false);
+    }
     private boolean getParaprofessionalSession(boolean isUpdating)
     {
         try
@@ -1606,7 +1614,10 @@ System.out.println("Done list 4");
             }
             else
             {
-                
+                ps.setParaprofessionalSessionID(sessionID);
+                sessionID = -1;
+                    
+                DatabaseHelper.update(ParaprofessionalSession.getValues(ps), ParaprofessionalSession.ParaSessTable.getTable());
 
                 System.out.println("NOW: "+now.toString());
                 String query =  "where "+clientIDString+"="+clients.get(0).getClientID()+" and "+courseIDString+"="+courses.get(0).getCourseID()+" and "+locationIDString+"="+locations.get(0).getLocationID()+" and "+creatorIDString+"="+creators.get(0).getParaprofessionalID()+" and "+enteredString+"='"+now.toString()+"' and "+sessStartString+""+sessionStartString+" and "+sessEndString+""+sessionEndString+" and "+gcString+"="+GC+" and "+notesString+"='"+notes+"' and "+walkoutString+"="+walkout;
@@ -1626,9 +1637,6 @@ System.out.println("Done list 4");
                 }
                 else
                 {
-                    ps.setParaprofessionalSessionID(sessions.get(0).getParaprofessionalSessionID());
-                    
-                    DatabaseHelper.update(ParaprofessionalSession.getValues(ps), ParaprofessionalSession.ParaSessTable.getTable());
                     //HibernateTest.update(ps);
                     //!!!
                     //Call reload data
@@ -1638,6 +1646,7 @@ System.out.println("Done list 4");
             }
 
             sessionsTable.repaint();
+            
             
             Thread thread = new Thread(){
                 public void run(){
@@ -1665,10 +1674,13 @@ System.out.println("Done list 4");
                    /// creatorInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                     paraprofessionalInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
                    /// locationInfoPanel.setBackground(sessionsAndAgendaPanel.getBackground());
+                    updateTables();
+                    clearForm();
                 }
             };
 
             thread.start();
+            
             return true;
         }
         catch(Exception e)
