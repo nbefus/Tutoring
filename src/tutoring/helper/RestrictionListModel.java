@@ -149,9 +149,9 @@ public class RestrictionListModel
         return fullQuery;
     }
     */
-    public String createQuery(String[] columns, String table)
+    public String createQuery(String[] columns, String table, String selectQuery)
     {
-        String query = "select ";
+        /*String query = "select ";
         
         //String stringColumns = "";
         for(int i=0; i<columns.length-1; i++)
@@ -159,14 +159,14 @@ public class RestrictionListModel
             query += columns[i]+", ";
         }
         query += columns[columns.length-1] + " from "+table;
-        
-        
+        */
+        String query = selectQuery;
         
         for(int i=1; i<dlm.size(); i++)
         {
             if(i==1)
                 query+=" where ";
-            query += getQuery(i);
+            query += getQuery(i, table);
             System.out.println("query is now: "+query);
         }
         
@@ -198,7 +198,9 @@ public class RestrictionListModel
             if(restrictions.size() > 1)
                 restriction += "(";
             for(int i=0; i<restrictions.size(); i++)
-               restriction += displayName.get(i)+"='"+restrictions.get(i)+"' AND ";
+            {
+               restriction += displayName.get(i)+"="+restrictions.get(i)+" AND ";
+            }
             restriction = restriction.substring(0, restriction.length()-5);
             if(restrictions.size() > 1)
                 restriction += ")";
@@ -209,7 +211,7 @@ public class RestrictionListModel
         }
         else if( restrictions.size() > 0)
         {
-            restriction = displayName.get(0)+"='"+restrictions.get(0)+"'";
+            restriction = displayName.get(0)+"="+restrictions.get(0)+"";
             dlm.addElement(restriction);
         }
         
@@ -217,7 +219,7 @@ public class RestrictionListModel
                 dlm.setElementAt(dlm.getElementAt(dlm.size()-2)+" OR", dlm.size()-2);
     }
     
-    public String getQuery(int index)
+    public String getQuery(int index, String table)
     {
         String value = dlm.get(index).toString();
         String query = "";
@@ -240,7 +242,7 @@ public class RestrictionListModel
             {
                 String[] expression = split[i].split("=");
 
-                query += AdminView.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + " and ";
+                query += DatabaseHelper.getDatabaseNameFromDisplayName(expression[0], table) + "="+expression[1] + " and ";//AdminView.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + " and ";
             }
             System.out.println("QUERY BEFORE MINUS: "+query);
             query = query.substring(0, query.length()-5);
@@ -255,7 +257,7 @@ public class RestrictionListModel
             String[] expression = value.split("=");
             System.out.println(expression[0]);
 
-            query += AdminView.ComboBoxesIndexes.COURSE.getDatabaseName(expression[0]) + "="+expression[1] + "";
+            query += DatabaseHelper.getDatabaseNameFromDisplayName(expression[0], table) + "="+expression[1] + "";
             
             if(or)
                 query = query+" OR";

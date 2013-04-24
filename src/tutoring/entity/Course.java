@@ -21,20 +21,20 @@ public class Course
     
     public enum CourseTable {
 
-        COURSEID("Course ID","courseId", true, getTableAlias()+".courseId"),
-        TEACHERID("Teaher ID","teacherID", true, getTableAlias()+".teacherID"),
-        SUBJECTID("Subject ID","subjectID", true, getTableAlias()+".subjectID"),
-        LEVEL("Level","level", true, getTableAlias()+".level"),
-        SUBJECTABBREVNAME("Subject","abbrevName", false, getSubjectAlias()+".abbrevName"),
-        SUBJECTCATEGORYID("Category ID","categoryID", false, getSubjectAlias()+".categoryID"),
-        SUBJECTCATEGORYNAME("Category","name", false, getCategoryAlias()+".name"),
-        TEACHERLNAME("Teacher Last","lName", false, getTeacherAlias()+".lName"),
-        TEACHERFNAME("Teacher First","fName", false, getTeacherAlias()+".fName");
+        COURSEID("Course ID","courseId", true, getTableAlias()+".courseId", true),
+        TEACHERID("Teaher ID","teacherID", true, getTableAlias()+".teacherID", true),
+        SUBJECTID("Subject ID","subjectID", true, getTableAlias()+".subjectID", true),
+        LEVEL("Level","level", true, getTableAlias()+".level", false),
+        SUBJECTABBREVNAME("Subject","abbrevName", false, getSubjectAlias()+".abbrevName", false),
+        SUBJECTCATEGORYID("Category ID","categoryID", false, getSubjectAlias()+".categoryID", true),
+        SUBJECTCATEGORYNAME("Category","name", false, getCategoryAlias()+".name", false),
+        TEACHERLNAME("Teacher Last","lName", false, getTeacherAlias()+".lName", false),
+        TEACHERFNAME("Teacher First","fName", false, getTeacherAlias()+".fName", false);
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
-        
+        private boolean isID;
         private static final String tableAlias = "course";
         private static final String subjectAlias = "subject";
         private static final String teacherAlias = "teacher";
@@ -43,15 +43,21 @@ public class Course
         
         private static final String table = "Course";
         private String displayName;
-        private CourseTable(String displayName, String name, boolean mainTableColumn, String withAlias) {
+        private CourseTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
             this.displayName = displayName;
+            this.isID = isID;
         }
 
         public String getName() {
             return name;
+        }
+        
+        public boolean isID()
+        {
+            return isID;
         }
         
         public String getDisplayName() {
@@ -89,6 +95,19 @@ public class Course
             return cols;
         }
         
+        public static ArrayList<String> getTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Course.CourseTable[] columns = Course.CourseTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(!columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
         public static String getDatabaseName(String DisplayName)
         {
             CourseTable[] components = CourseTable.class.getEnumConstants();
@@ -103,17 +122,26 @@ public class Course
             return "";
         }
         
-        public static String getSelectQuery()
+        public static String getSelectColumns(boolean selectIDs)
         {
             Course.CourseTable [] cols = Course.CourseTable.class.getEnumConstants();
+            
             String columnSetUp = "";
+            
             for(int i=0; i<cols.length; i++)
             {
-                columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
 
-
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
 
             String query = "SELECT "+columnSetUp+" FROM Course "+CourseTable.getTableAlias()+" join Teacher "+CourseTable.getTeacherAlias()+" on "+CourseTable.TEACHERID.getWithAlias()+"="+CourseTable.getTeacherAlias()+"."+CourseTable.TEACHERID.getName()+
                     " join Subject "+CourseTable.getSubjectAlias()+" on "+CourseTable.SUBJECTID.getWithAlias()+"="+CourseTable.getSubjectAlias()+"."+CourseTable.SUBJECTID.getName()+" join Category "+CourseTable.getCategoryAlias()+" on "+CourseTable.SUBJECTCATEGORYID.getWithAlias()+" = "+CourseTable.getCategoryAlias()+"."+CourseTable.SUBJECTCATEGORYID.getName();
@@ -185,7 +213,7 @@ public class Course
                 System.out.println("Connected to the database test1");
 
                 statement = connect.createStatement();
-                String query = CourseTable.getSelectQuery();
+                String query = CourseTable.getSelectQuery(true);
                 query+= " "+addedSQLToSelect;
                  System.out.println(query);
                 resultSet = statement.executeQuery(query);

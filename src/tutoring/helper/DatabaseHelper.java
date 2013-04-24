@@ -45,9 +45,10 @@ public class DatabaseHelper
     {
         return connect;
     }
-    /*
-    public static String getDatabaseNameFromDisplayName(String tableName, String displayName)
+    
+    public static String getDatabaseNameFromDisplayName(String displayName, String tableName)
     {
+        System.out.println("DISPLAY NAME: "+displayName + " Table: "+tableName +":"+ Course.CourseTable.getTable() + ":"+Course.CourseTable.getDatabaseName(displayName));
         if(ParaprofessionalSession.ParaSessTable.getTable().equalsIgnoreCase(tableName))
             return ParaprofessionalSession.ParaSessTable.getDatabaseName(displayName);
         else if(Client.ClientTable.getTable().equalsIgnoreCase(tableName))
@@ -55,7 +56,7 @@ public class DatabaseHelper
         else if(Course.CourseTable.getTable().equalsIgnoreCase(tableName))
             return Course.CourseTable.getDatabaseName(displayName);
         return "";
-    }*/
+    }
     
     public static void close()
     {
@@ -420,14 +421,27 @@ public class DatabaseHelper
                 firstTime = false;
             }
 
-            for (int i = 0; i < row.length; i++) {
-                if(row[i] != null)
-                    data[count][i] = row[i].toString();
-                else
-                    data[count][i] = "";
-               // System.out.print("\t\t" + row[i] + "--" + row[i].getClass().toString());
+            //if(showID)
+            //{
+                for (int i = 0; i < row.length; i++) {
+                    if(row[i] != null)
+                        data[count][i] = row[i].toString();
+                    else
+                        data[count][i] = "";
+                   // System.out.print("\t\t" + row[i] + "--" + row[i].getClass().toString());
+                }
+            /*}
+            else
+            {
+                for (int i = 1; i < row.length; i++) {
+                    if(row[i] != null)
+                        data[count][i-1] = row[i].toString();
+                    else
+                        data[count][i-1] = "";
+                   // System.out.print("\t\t" + row[i] + "--" + row[i].getClass().toString());
+                }
             }
-
+*/
             count++;
         }
 

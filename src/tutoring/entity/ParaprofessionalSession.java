@@ -176,7 +176,7 @@ public class ParaprofessionalSession {
             
             for(int i=0; i<columns.length; i++)
             {
-                if(columns[i].isMainTableColumn() && !columns[i].isID)
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;
@@ -212,16 +212,23 @@ public class ParaprofessionalSession {
             return categoryAlias;
         }
         
-        public static String getSelectQuery()
+        public static String getSelectColumns(boolean selectIDs)
         {
             ParaprofessionalSession.ParaSessTable [] ps = ParaprofessionalSession.ParaSessTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<ps.length; i++)
-                {
+            String columnSetUp = "";
+            for(int i=0; i<ps.length; i++)
+            {
+                if(selectIDs || !ps[i].isID())
                     columnSetUp += ps[i].getWithAlias() + " as '"+ps[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
-                
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+                return columnSetUp;
+        }
+        
+        public static String getSelectQuery()
+        {
+            
+                String columnSetUp = getSelectColumns(true);
                 String query = "SELECT " + columnSetUp
                     /*    + "paraprofessionalSessionID," 
                +"p.paraprofessionalID as 'pParaprofessionalID',  p.fName as 'pFName', p.lName as 'pLName', p.hireDate as 'pHireDate', p.terminationDate as 'pTerminationDate', p.isClockedIn as 'pIsClockedIn', r.roleID as 'pRoleID', r.type as 'pType',"

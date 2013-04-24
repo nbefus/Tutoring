@@ -202,7 +202,7 @@ System.out.println("1111111111111111111111");
         for (int i = 0; i < tutors.size(); i++) {
             tutorslist.add(tutors.get(i).getfName() + " " + tutors.get(i).getlName());
         }
-        /*
+        
        
          for(int i=0; i<levels.size(); i++)
          levelslist.add(levels.get(i).getLevel()+"");
@@ -215,7 +215,7 @@ System.out.println("1111111111111111111111");
          for(int i=0; i<teacherFirst.size(); i++)
          teacherslist.add(teacherFirst.get(i).getfName()+" "+teacherFirst.get(i).getlName());
          for(int i=0; i<subjects.size(); i++)
-         subjectslist.add(subjects.get(i).getAbbrevName());*/
+         subjectslist.add(subjects.get(i).getAbbrevName());
 
         //setUpList2("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName");
 
