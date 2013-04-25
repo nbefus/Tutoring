@@ -120,6 +120,33 @@ public class Agenda {
         {
             return agendaCategoryAlias;
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            Agenda.AgendaTable[] cols = Agenda.AgendaTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "SELECT "+columnSetUp+" from Agenda "+AgendaTable.getTableAlias()+" join AgendaCategory "+AgendaTable.getAgendaCategoryAlias()+" on "+AgendaTable.AGENDACATEGORYID.getWithAlias()+"="+AgendaTable.getAgendaCategoryAlias()+"."+AgendaTable.AGENDACATEGORYID.getName();
+            
+            return query;
+        }
+
     }
     
     private int agendaID;
@@ -169,16 +196,9 @@ public class Agenda {
 
                 System.out.println("Connected to the database test1");
 
-                Agenda.AgendaTable [] cols = Agenda.AgendaTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
-                statement = connect.createStatement();
                 
-                String query = "SELECT "+columnSetUp+" from Agenda "+AgendaTable.getTableAlias()+" join AgendaCategory "+AgendaTable.getAgendaCategoryAlias()+" on "+AgendaTable.AGENDACATEGORYID.getWithAlias()+"="+AgendaTable.getAgendaCategoryAlias()+"."+AgendaTable.AGENDACATEGORYID.getName();
+                statement = connect.createStatement();
+                String query = AgendaTable.getSelectQuery(true);
                 
                 query+= " "+addedSQLToSelect;
                 
