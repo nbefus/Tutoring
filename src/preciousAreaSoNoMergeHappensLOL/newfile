@@ -6,3 +6,14 @@
 
 **********************************
         this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
+
+
+        try
+        {
+            Process p = Runtime.getRuntime().exec("open play.mov");
+        } catch (IOException ex)
+        {
+            Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println("hi");
