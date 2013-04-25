@@ -81,7 +81,7 @@ public class User {
         public static ArrayList<String> getMainTableColumns()
         {
             ArrayList<String> cols = new ArrayList<String>();
-            Paraprofessional.ParaTable[] columns = Paraprofessional.ParaTable.class.getEnumConstants();
+            User.UserTable[] columns =  User.UserTable.class.getEnumConstants();
             
             for(int i=0; i<columns.length; i++)
             {
@@ -89,6 +89,33 @@ public class User {
                     cols.add(columns[i].getName());
             }
             return cols;
+        }
+        
+        public static ArrayList<String> getTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            User.UserTable[] columns =  User.UserTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(!columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+     
+        public static String getDatabaseName(String DisplayName)
+        {
+            User.UserTable[] columns =  User.UserTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
         }
 
         public static String getRoleAlias()

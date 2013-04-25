@@ -84,6 +84,33 @@ public class Teacher
             return cols;
         }
         
+        public static ArrayList<String> getTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Teacher.TeacherTable[] columns = Teacher.TeacherTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(!columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+     
+        public static String getDatabaseName(String DisplayName)
+        {
+            Teacher.TeacherTable[] columns = Teacher.TeacherTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
+        }
+        
         public static String getQuery()
         {
             Teacher.TeacherTable [] cols = Teacher.TeacherTable.class.getEnumConstants();

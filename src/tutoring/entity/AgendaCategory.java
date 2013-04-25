@@ -80,17 +80,31 @@ public class AgendaCategory
             return cols;
         }
         
-        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        public static ArrayList<String> getTableColumnsWithoutIDs()
         {
             ArrayList<String> cols = new ArrayList<String>();
             AgendaCategory.AgendaCategoryTable[] columns = AgendaCategory.AgendaCategoryTable.class.getEnumConstants();
             
             for(int i=0; i<columns.length; i++)
             {
-                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                if(!columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;
+        }
+        
+        public static String getDatabaseName(String DisplayName)
+        {
+            AgendaCategory.AgendaCategoryTable[] columns = AgendaCategory.AgendaCategoryTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
         }
     }
     

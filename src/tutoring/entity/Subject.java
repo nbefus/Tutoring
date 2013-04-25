@@ -86,6 +86,33 @@ public class Subject {
             }
             return cols;
         }
+        
+        public static ArrayList<String> getTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Subject.SubjectTable[] columns = Subject.SubjectTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(!columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+     
+        public static String getDatabaseName(String DisplayName)
+        {
+            Subject.SubjectTable[] columns = Subject.SubjectTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
+        }
 
         public static String getCategoryAlias()
         {

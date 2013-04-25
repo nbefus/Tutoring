@@ -13,8 +13,7 @@ public class LoginView extends javax.swing.JFrame
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
@@ -87,10 +86,8 @@ public class LoginView extends javax.swing.JFrame
         usernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         usernameLabel.setText("Username:");
 
-        usernameField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 usernameFieldKeyPressed(evt);
             }
         });
@@ -99,10 +96,8 @@ public class LoginView extends javax.swing.JFrame
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         passwordLabel.setText("Password:");
 
-        passwordField.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 passwordFieldKeyPressed(evt);
             }
         });
@@ -110,20 +105,16 @@ public class LoginView extends javax.swing.JFrame
         loginButton.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         loginButton.setForeground(new java.awt.Color(0, 153, 0));
         loginButton.setText("Login");
-        loginButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
         });
 
         logoIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logoIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tutoring/images/pmslogo.PNG"))); // NOI18N
-        logoIcon.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        logoIcon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 logoIconMouseClicked(evt);
             }
         });

@@ -24,24 +24,26 @@ public class Client {
 
     public enum ClientTable {
 
-        CLIENTID("Client ID", "clientID", true, getTableAlias()+".clientID"),
-        FNAME("First Name","fName", true, getTableAlias()+".fName"),
-        LNAME("Last Name","lName", true, getTableAlias()+".lName"),
-        PHONE("Phone","phone", true, getTableAlias()+".phone"),
-        EMAIL("Email","email", true, getTableAlias()+".email");
+        CLIENTID("Client ID", "clientID", true, getTableAlias()+".clientID", true),
+        FNAME("First Name","fName", true, getTableAlias()+".fName", false),
+        LNAME("Last Name","lName", true, getTableAlias()+".lName", false),
+        PHONE("Phone","phone", true, getTableAlias()+".phone", false),
+        EMAIL("Email","email", true, getTableAlias()+".email", false);
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
         private static final String table = "Client";
         
         private static final String tableAlias = "client";
         private String displayName;
-        private ClientTable(String displayName, String name, boolean mainTableColumn, String withAlias) {
+        private ClientTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
             this.displayName = displayName;
+            this.isID=isID;
         }
 
         public String getName() {
@@ -51,6 +53,11 @@ public class Client {
         public String getDisplayName() {
             return displayName;
         }
+        
+       public boolean isID()
+       {
+           return isID;
+       }
 
         public boolean isMainTableColumn() {
             return mainTableColumn;
@@ -83,14 +90,14 @@ public class Client {
             return cols;
         }
         
-        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        public static ArrayList<String> getTableColumnsWithoutIDs()
         {
             ArrayList<String> cols = new ArrayList<String>();
-            Category.CategoryTable[] columns = Category.CategoryTable.class.getEnumConstants();
+            ClientTable[] columns = ClientTable.class.getEnumConstants();
             
             for(int i=0; i<columns.length; i++)
             {
-                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                if(!columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;

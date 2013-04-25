@@ -83,14 +83,14 @@ public class Location {
             return cols;
         }
         
-        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        public static ArrayList<String> getTableColumnsWithoutIDs()
         {
             ArrayList<String> cols = new ArrayList<String>();
             Location.LocationTable[] columns = Location.LocationTable.class.getEnumConstants();
             
             for(int i=0; i<columns.length; i++)
             {
-                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                if(!columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;

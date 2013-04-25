@@ -55,6 +55,29 @@ public class DatabaseHelper
             return Client.ClientTable.getDatabaseName(displayName);
         else if(Course.CourseTable.getTable().equalsIgnoreCase(tableName))
             return Course.CourseTable.getDatabaseName(displayName);
+        else if(Agenda.AgendaTable.getTable().equalsIgnoreCase(tableName))
+            return Agenda.AgendaTable.getDatabaseName(displayName);
+        else if(AgendaCategory.AgendaCategoryTable.getTable().equalsIgnoreCase(tableName))
+            return AgendaCategory.AgendaCategoryTable.getDatabaseName(displayName);
+        else if(Category.CategoryTable.getTable().equalsIgnoreCase(tableName))
+            return Category.CategoryTable.getDatabaseName(displayName);
+        else if(Location.LocationTable.getTable().equalsIgnoreCase(tableName))
+            return Course.CourseTable.getDatabaseName(displayName);
+        else if(Location.LocationTable.getTable().equalsIgnoreCase(tableName))
+            return Course.CourseTable.getDatabaseName(displayName);
+        else if(Paraprofessional.ParaTable.getTable().equalsIgnoreCase(tableName))
+            return Paraprofessional.ParaTable.getDatabaseName(displayName);
+        else if(ParaprofessionalSession.ParaSessTable.getTable().equalsIgnoreCase(tableName))
+            return ParaprofessionalSession.ParaSessTable.getDatabaseName(displayName);
+        else if(Role.RoleTable.getTable().equalsIgnoreCase(tableName))
+            return Role.RoleTable.getDatabaseName(displayName);
+        else if(Subject.SubjectTable.getTable().equalsIgnoreCase(tableName))
+            return Subject.SubjectTable.getDatabaseName(displayName);
+        else if(Teacher.TeacherTable.getTable().equalsIgnoreCase(tableName))
+            return Teacher.TeacherTable.getDatabaseName(displayName);
+        else if(User.UserTable.getTable().equalsIgnoreCase(tableName))
+            return User.UserTable.getDatabaseName(displayName);
+        
         return "";
     }
     
