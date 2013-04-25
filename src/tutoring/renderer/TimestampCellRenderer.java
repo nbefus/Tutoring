@@ -42,7 +42,7 @@ public class TimestampCellRenderer extends DefaultTableCellRenderer
                 {
                     //System.out.println("WORKING");
                     
-                    this.setText("Starts");
+                    this.setText("Start");
                     
                     if(isSelected)
                     {

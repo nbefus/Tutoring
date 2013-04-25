@@ -275,7 +275,7 @@ public class NewClientObject extends javax.swing.JDialog {
                 
                 //HibernateTest.create(c);
                 if(inserted)
-                    JOptionPane.showMessageDialog(null, "Student created successfully!");
+                    JOptionPane.showMessageDialog(null, "Student created successfully!\n\nWait a couple seconds before searching a student again for the dropdown boxes to update");
                 else
                     JOptionPane.showMessageDialog(null, "Not created successfully");
                 close();

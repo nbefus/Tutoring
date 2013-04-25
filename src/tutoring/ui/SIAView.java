@@ -2030,6 +2030,7 @@ System.out.println("Done list 4");
         NewClientObject ndo = new NewClientObject(new Frame(), true);
         ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
+        
         Data.refreshStudent();
         uaacClient.noMore();
         uaacClient = null;
@@ -2059,8 +2060,6 @@ System.out.println("LIST 2");
 System.out.println("DONE LIST2");
        uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);
        clearForm();
-        
-
     }//GEN-LAST:event_newStudentButtonActionPerformed
 
     private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed
