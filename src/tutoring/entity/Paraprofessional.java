@@ -120,6 +120,32 @@ public class Paraprofessional
 
             return "";
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            Paraprofessional.ParaTable[] cols = Paraprofessional.ParaTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "SELECT "+columnSetUp+" FROM Paraprofessional "+ParaTable.getTableAlias()+" join Role "+ParaTable.getRoleAlias()+" on "+ParaTable.ROLEID.getWithAlias()+" = "+ParaTable.getRoleAlias()+"."+ParaTable.ROLEID.getName();
+            
+            return query;
+        }
 
         public static String getRoleAlias()
         {
@@ -181,17 +207,10 @@ public class Paraprofessional
 
                 System.out.println("Connected to the database test1");
 
-                Paraprofessional.ParaTable [] cols = Paraprofessional.ParaTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
                 
                 statement = connect.createStatement();
 
-                String query = "SELECT "+columnSetUp+" FROM Paraprofessional "+ParaTable.getTableAlias()+" join Role "+ParaTable.getRoleAlias()+" on "+ParaTable.ROLEID.getWithAlias()+" = "+ParaTable.getRoleAlias()+"."+ParaTable.ROLEID.getName();
+                String query = Paraprofessional.ParaTable.getSelectQuery(true);
                 query += " "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
 

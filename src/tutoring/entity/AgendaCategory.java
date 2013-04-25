@@ -106,6 +106,32 @@ public class AgendaCategory
 
             return "";
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            AgendaCategory.AgendaCategoryTable[] cols = AgendaCategory.AgendaCategoryTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "select "+columnSetUp+" from AgendaCategory "+AgendaCategory.AgendaCategoryTable.getTableAlias();
+            
+            return query;
+        }
     }
     
     private int agendaCategoryID;
@@ -140,18 +166,11 @@ public class AgendaCategory
 
                 System.out.println("Connected to the database test1");
 
-                AgendaCategory.AgendaCategoryTable [] cols = AgendaCategory.AgendaCategoryTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
                 
                 statement = connect.createStatement();
 
-                String query = "select "+columnSetUp+" from AgendaCategory "+AgendaCategory.AgendaCategoryTable.getTableAlias();
-
+                String query = AgendaCategory.AgendaCategoryTable.getSelectQuery(true);
+                
                 query+= " "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

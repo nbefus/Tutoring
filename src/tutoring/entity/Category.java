@@ -108,6 +108,32 @@ public class Category {
             return "";
         }
         
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            Category.CategoryTable[] cols = Category.CategoryTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "SELECT "+columnSetUp+" from Category "+Category.CategoryTable.getTableAlias();
+            
+            return query;
+        }
+        
     }
     
     private int categoryID;
@@ -142,17 +168,9 @@ public class Category {
 
                 System.out.println("Connected to the database test1");
 
-                Category.CategoryTable [] cols = Category.CategoryTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
                 
                 statement = connect.createStatement();
-
-                String query = "SELECT "+columnSetUp+" from Category "+Category.CategoryTable.getTableAlias();
+                String query = Category.CategoryTable.getSelectColumns(true);
                     query+=" "+ addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
 

@@ -109,6 +109,32 @@ public class Location {
 
             return "";
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            Location.LocationTable[] cols = Location.LocationTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "SELECT "+columnSetUp+" from Location "+Location.LocationTable.getTableAlias();
+            
+            return query;
+        }
     }
     
     private int locationID; // primary key
@@ -143,17 +169,9 @@ public class Location {
 
                 System.out.println("Connected to the database test1");
 
-                Location.LocationTable [] cols = Location.LocationTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
-                
+               
                 statement = connect.createStatement();
-
-                String query = "SELECT "+columnSetUp+" from Location "+Location.LocationTable.getTableAlias();
+                String query = Location.LocationTable.getSelectQuery(true);
                 query += " "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
 
