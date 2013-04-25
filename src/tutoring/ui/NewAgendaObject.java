@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
 import tutoring.entity.*;
-
 import tutoring.helper.*;
 
 /**
@@ -31,6 +30,7 @@ public class NewAgendaObject extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         agendaCategoryCombo.setEditable(false);
+        this.setResizable(false);
         System.out.println("HAAA");
         Object[] cats = category.toArray();
         for(int i=0; i<cats.length; i++)
@@ -149,7 +149,8 @@ public class NewAgendaObject extends javax.swing.JDialog {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         createAgendaPanel = new javax.swing.JPanel();
@@ -177,16 +178,20 @@ public class NewAgendaObject extends javax.swing.JDialog {
 
         cancelButton.setForeground(new java.awt.Color(153, 0, 0));
         cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cancelButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cancelButtonActionPerformed(evt);
             }
         });
 
         submitbutton.setForeground(new java.awt.Color(51, 102, 255));
         submitbutton.setText("Create");
-        submitbutton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        submitbutton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 submitbuttonActionPerformed(evt);
             }
         });
@@ -200,8 +205,10 @@ public class NewAgendaObject extends javax.swing.JDialog {
         agendaDateLabel1.setText("Ex. mm/dd/yyyy");
 
         editButton.setText("Save/Edit");
-        editButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        editButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 editButtonActionPerformed(evt);
             }
         });
@@ -266,16 +273,16 @@ public class NewAgendaObject extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(30, 30, 30)
+                .addContainerGap()
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(30, 30, 30))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(28, 28, 28)
+                .addContainerGap()
                 .add(createAgendaPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

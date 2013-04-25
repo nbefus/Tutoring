@@ -24,6 +24,7 @@ public class NewClientObject extends javax.swing.JDialog {
     public NewClientObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setResizable(false);
         
     }
     
@@ -122,24 +123,24 @@ public class NewClientObject extends javax.swing.JDialog {
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(searchclientPanelLayout.createSequentialGroup()
                         .add(searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(emailField)
                             .add(searchclientPanelLayout.createSequentialGroup()
-                                .add(6, 6, 6)
-                                .add(jLabel1)
-                                .add(0, 0, Short.MAX_VALUE))
-                            .add(searchclientPanelLayout.createSequentialGroup()
-                                .add(searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                                    .add(fnameField)
-                                    .add(lnameField)
-                                    .add(phoneField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
-                                .add(0, 0, Short.MAX_VALUE))
-                            .add(emailField))
+                                .add(searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(searchclientPanelLayout.createSequentialGroup()
+                                        .add(6, 6, 6)
+                                        .add(jLabel1))
+                                    .add(searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                        .add(fnameField)
+                                        .add(lnameField)
+                                        .add(phoneField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)))
+                                .add(0, 0, Short.MAX_VALUE)))
                         .addContainerGap())))
             .add(searchclientPanelLayout.createSequentialGroup()
                 .add(83, 83, 83)
                 .add(cancelButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(createButton)
-                .add(0, 0, Short.MAX_VALUE))
+                .add(0, 46, Short.MAX_VALUE))
         );
         searchclientPanelLayout.setVerticalGroup(
             searchclientPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -175,29 +176,27 @@ public class NewClientObject extends javax.swing.JDialog {
         sessionsPanel1Layout.setHorizontalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(sessionsPanel1Layout.createSequentialGroup()
-                .add(24, 24, 24)
+                .addContainerGap()
                 .add(searchclientPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sessionsPanel1Layout.setVerticalGroup(
             sessionsPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, sessionsPanel1Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+            .add(sessionsPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .add(searchclientPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(sessionsPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(sessionsPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .add(sessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+            .add(sessionsPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

@@ -150,7 +150,6 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="nameComboPopupMenuWillBecomeVisible"/>
                 <EventHandler event="popupMenuWillBecomeInvisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="nameComboPopupMenuWillBecomeInvisible"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="nameComboKeyPressed"/>
               </Events>
