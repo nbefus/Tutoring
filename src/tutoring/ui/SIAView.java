@@ -13,7 +13,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.logging.Level;
@@ -116,12 +118,30 @@ public final class SIAView extends javax.swing.JFrame
 
     UltimateAutoAutoComplete uaacCourse;
     private int sessionID = -1;
-    
-        
+    private final int logoutSeconds = 180;
+    private long timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    Thread timeout = new Thread(){
+        public void run(){
+            while(timeoutTime - System.currentTimeMillis() > 0)
+            {
+                System.out.println("TIME LEFT: "+timeoutTime);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.out.println("AHHAAHAHAHA EXCEPTION IN THREAD SLEEP");
+                    }
+            }
+            close();
+            LoginView newlogin = new LoginView();
+            newlogin.setVisible(true);
+            System.out.println("BOOOOOOOOMMMMM");
+        }
+    };
     
     public SIAView() 
     {
 
+        timeout.start();
         initComponents();
         this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
         
@@ -572,10 +592,8 @@ System.out.println("Done list 4");
             uaacCourse.setComboValue("", i);
     }
     
-    public void setUpGeneralReportTab()
+    public void loadChartsWithoutDate()
     {
-
-
         DatabaseHelper.open();
         String[][] data = DatabaseHelper.getDataFromRegularQuery(
                 "SELECT "
@@ -633,8 +651,12 @@ System.out.println("Done list 4");
 
         DatabaseHelper.close();
         displayCharts(data, categoryData, otherValues, studentMinutes);
-        
+    }
+    
+    public void setUpGeneralReportTab()
+    {
 
+        loadChartsWithoutDate();
 
         // String[] columns = new String[c.size()];
         // for(int i=0; i<c.size(); i++)
@@ -681,6 +703,7 @@ System.out.println("Done list 4");
         dtm3.setDataVector(studentMinutes, columns3);
         generalReportTable4.setModel(dtm3);
 
+        System.out.println("LOADED DATA");
 
 
         DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
@@ -721,8 +744,6 @@ System.out.println("Done list 4");
             System.out.println(Double.parseDouble(generalData[i][1]) + " + " + generalData[i][0]);
             barDataset.addValue(Double.parseDouble(generalData[i][1]), series, generalData[i][0]);
             pieDataset.setValue(generalData[i][0], Double.parseDouble(generalData[i][1]));
-
-
         }
 
         final JFreeChart barChart = createChart(barDataset, "Total Student Sessions by Subject", "# of Student Sessions", "Subject", false, Color.green, Color.gray);
@@ -884,6 +905,7 @@ System.out.println("Done list 4");
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel3 = new javax.swing.JPanel();
         tabsPane = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
@@ -950,7 +972,6 @@ System.out.println("Done list 4");
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         generalReportEndField = new javax.swing.JTextField();
-        downloadButton1 = new javax.swing.JButton();
         generalReportLoadButton = new javax.swing.JButton();
         jScrollPane11 = new javax.swing.JScrollPane();
         generalReportTable = new javax.swing.JTable();
@@ -958,6 +979,11 @@ System.out.println("Done list 4");
         generalReportTable3 = new javax.swing.JTable();
         jScrollPane13 = new javax.swing.JScrollPane();
         generalReportTable4 = new javax.swing.JTable();
+        monthRadio = new javax.swing.JRadioButton();
+        alltimeRadio = new javax.swing.JRadioButton();
+        dayRadio = new javax.swing.JRadioButton();
+        yearRadio = new javax.swing.JRadioButton();
+        weekRadio = new javax.swing.JRadioButton();
         graphPane = new javax.swing.JPanel();
         generalChartPanelLeft = new javax.swing.JPanel();
         generalChartPanelMid = new javax.swing.JPanel();
@@ -971,13 +997,28 @@ System.out.println("Done list 4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 750));
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                formMouseMoved(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel3.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanel3MouseMoved(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Create"));
         jPanel2.setMinimumSize(new java.awt.Dimension(234, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(1111, 449));
+        jPanel2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanel2MouseMoved(evt);
+            }
+        });
 
         studentInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Student Information"));
         studentInfoPanel.setMaximumSize(new java.awt.Dimension(977, 63));
@@ -1347,6 +1388,11 @@ System.out.println("Done list 4");
         tabsPane.addTab("Create", jPanel2);
 
         agendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Agenda"));
+        agendaPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                agendaPanelMouseMoved(evt);
+            }
+        });
 
         agendaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1424,6 +1470,11 @@ System.out.println("Done list 4");
 
         sessionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         sessionsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        sessionsScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                sessionsScrollPaneMouseMoved(evt);
+            }
+        });
 
         sessionsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         sessionsTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1472,6 +1523,11 @@ System.out.println("Done list 4");
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setPreferredSize(sessionsScrollPane.getMinimumSize());
+        jScrollPane1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jScrollPane1MouseMoved(evt);
+            }
+        });
 
         appointmentsTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
         appointmentsTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -1558,8 +1614,6 @@ System.out.println("Done list 4");
 
         generalReportEndField.setText("mm/dd/yyyy hh:mm aa");
 
-        downloadButton1.setText("Download");
-
         generalReportLoadButton.setText("Load");
         generalReportLoadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1606,92 +1660,162 @@ System.out.println("Done list 4");
         ));
         jScrollPane13.setViewportView(generalReportTable4);
 
+        buttonGroup1.add(monthRadio);
+        monthRadio.setText("Past Month");
+        monthRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monthRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(alltimeRadio);
+        alltimeRadio.setText("All time");
+        alltimeRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alltimeRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(dayRadio);
+        dayRadio.setText("Past Day");
+        dayRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dayRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(yearRadio);
+        yearRadio.setText("Past Year");
+        yearRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearRadioActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(weekRadio);
+        weekRadio.setText("Past Week");
+        weekRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                weekRadioActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout tablePaneLayout = new org.jdesktop.layout.GroupLayout(tablePane);
         tablePane.setLayout(tablePaneLayout);
         tablePaneLayout.setHorizontalGroup(
             tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
+            .add(tablePaneLayout.createSequentialGroup()
+                .addContainerGap()
                 .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(tablePaneLayout.createSequentialGroup()
-                        .add(598, 598, 598)
-                        .add(downloadButton1))
-                    .add(tablePaneLayout.createSequentialGroup()
-                        .add(183, 183, 183)
-                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(alltimeRadio)
+                    .add(dayRadio)
+                    .add(weekRadio)
+                    .add(monthRadio)
+                    .add(yearRadio))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 51, Short.MAX_VALUE)
                 .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(56, 56, 56))
-            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(tablePaneLayout.createSequentialGroup()
-                    .addContainerGap()
                     .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(tablePaneLayout.createSequentialGroup()
-                                .add(12, 12, 12)
-                                .add(jLabel5))
-                            .add(tablePaneLayout.createSequentialGroup()
-                                .add(21, 21, 21)
-                                .add(jLabel6)))
-                        .add(generalReportLoadButton))
-                    .addContainerGap(1193, Short.MAX_VALUE)))
-            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(tablePaneLayout.createSequentialGroup()
-                    .add(185, 185, 185)
-                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(436, Short.MAX_VALUE)))
+                            .add(jLabel5))
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(jLabel6)
+                    .add(generalReportLoadButton))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 587, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 587, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jScrollPane8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .add(54, 54, 54))
         );
         tablePaneLayout.setVerticalGroup(
             tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
-                        .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .add(18, 18, 18)
-                .add(downloadButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(17, 17, 17))
-            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(tablePaneLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .add(jLabel5)
-                    .add(1, 1, 1)
-                    .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                    .add(jLabel6)
-                    .add(1, 1, 1)
-                    .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(18, 18, 18)
-                    .add(generalReportLoadButton)
-                    .addContainerGap(130, Short.MAX_VALUE)))
-            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(tablePaneLayout.createSequentialGroup()
-                    .add(16, 16, 16)
-                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(163, Short.MAX_VALUE)))
+            .add(tablePaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(tablePaneLayout.createSequentialGroup()
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(tablePaneLayout.createSequentialGroup()
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(dayRadio)
+                            .add(jLabel5))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(weekRadio)
+                            .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(monthRadio)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(yearRadio)
+                            .add(jLabel6))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(alltimeRadio))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(generalReportLoadButton)))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
 
         graphPane.setPreferredSize(new java.awt.Dimension(1300, 800));
 
+        generalChartPanelLeft.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelLeftMouseMoved(evt);
+            }
+        });
         generalChartPanelLeft.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelMid.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelMidMouseMoved(evt);
+            }
+        });
         generalChartPanelMid.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelRight.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelRightMouseMoved(evt);
+            }
+        });
         generalChartPanelRight.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelLong.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelLongMouseMoved(evt);
+            }
+        });
         generalChartPanelLong.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelMid2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelMid2MouseMoved(evt);
+            }
+        });
         generalChartPanelMid2.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelLeft2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelLeft2MouseMoved(evt);
+            }
+        });
         generalChartPanelLeft2.setLayout(new java.awt.GridBagLayout());
 
+        generalChartPanelRight2.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                generalChartPanelRight2MouseMoved(evt);
+            }
+        });
         generalChartPanelRight2.setLayout(new java.awt.GridBagLayout());
 
         org.jdesktop.layout.GroupLayout graphPaneLayout = new org.jdesktop.layout.GroupLayout(graphPane);
@@ -1888,27 +2012,13 @@ System.out.println("Done list 4");
         ((AgendaTableModel) agendaTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteAgendaButtonActionPerformed
 
-    private void generalReportLoadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generalReportLoadButtonActionPerformed
-    {//GEN-HEADEREND:event_generalReportLoadButtonActionPerformed
+    
+    private void loadChartsWithDates(Timestamp beginDate, Timestamp endDate)
+    {
+        System.out.println("DATES DATES: "+ beginDate.toString() + " : "+endDate);
         try
         {
-            String begin = generalReportBeginField.getText().trim();
-            String end = generalReportEndField.getText().trim();
-
-            boolean isDateBegin = Validate.validateTimestamp(begin);
-            boolean isDateEnd = Validate.validateTimestamp(end);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
-            Timestamp beginDate = null;
-            Timestamp endDate = null;
-            if (isDateBegin)
-            {
-                beginDate = new Timestamp(sdf.parse(begin).getTime());
-            }
-            if (isDateEnd)
-            {
-                endDate = new Timestamp(sdf.parse(end).getTime());
-            }
-
+            System.out.println("DATE BEFORE DATE: "+beginDate.before(endDate));
             if (beginDate != null && endDate != null && beginDate.before(endDate))
             {
                 DatabaseHelper.open();
@@ -1961,23 +2071,33 @@ System.out.println("Done list 4");
 
                 String[][] studentMinutes = DatabaseHelper.getDataFromRegularQuery(
                     "SELECT "
-                    + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
-                    + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
-                    + " AS '<10 Min. Sessions', "
-                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
-                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
-                    + " AS '10-24 Min. Sessions', "
-                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
-                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
-                    + " AS '25-35 Min. Sessions', "
-                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
-                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
-                    + " AS '36-60 Min. Sessions' "+ "FROM ParaprofessionalSession ps "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
+                + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
+                + " AS '<10 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
+                + " AS '10-24 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
+                + " AS '25-35 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
+                + " AS '36-60 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 60"
+                + ", 1, 0))"
+                + " AS '>60 Min. Sessions' "
+                + "FROM ParaprofessionalSession ps "
                     + "where "
                     + "timeAndDateEntered "
                     + "between "
                     + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
                 );
+                
+                
+                
+                
+                
+              
 
                 DatabaseHelper.close();
                 displayCharts(data, categoryData, otherValues, studentMinutes);
@@ -1987,15 +2107,240 @@ System.out.println("Done list 4");
         } catch (Exception e)
         {
             System.out.println("EXCEPTION on load");
+            e.printStackTrace();
+        }
+    }
+    
+    public static Date addDays(Date date, int days)
+    {
+        System.out.println("DATE BEFORE CONVERSION: "+date.toString());
+        //Date dateBefore = new Date(date.getTime() - days * 24 * 3600 * 1000 );
+        int x = -days;
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.add( Calendar.DAY_OF_YEAR, x);
+        Date dateBefore = cal.getTime();
+        System.out.println("DATE AFTER CONVERSION: "+dateBefore.toString());
+        //Calendar cal = Calendar.getInstance();
+        //cal.setTime(date);
+        //cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return dateBefore;
+    }
+    
+    private void generalReportLoadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generalReportLoadButtonActionPerformed
+    {//GEN-HEADEREND:event_generalReportLoadButtonActionPerformed
+        try
+        {
+            String begin = generalReportBeginField.getText().trim();
+            String end = generalReportEndField.getText().trim();
+
+            boolean isDateBegin = Validate.validateTimestamp(begin);
+            boolean isDateEnd = Validate.validateTimestamp(end);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+            Timestamp beginDate = null;
+            Timestamp endDate = null;
+            if (isDateBegin)
+            {
+                beginDate = new Timestamp(sdf.parse(begin).getTime());
+            }
+            if (isDateEnd)
+            {
+                endDate = new Timestamp(sdf.parse(end).getTime());
+            }
+
+            loadChartsWithDates(beginDate, endDate);
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
         }
     }//GEN-LAST:event_generalReportLoadButtonActionPerformed
 
+    private void jPanel3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseMoved
+        
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+      //  System.out.println("Set back to: "+timeout);
+        
+    }//GEN-LAST:event_jPanel3MouseMoved
+
+    private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+        
+timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_formMouseMoved
+
+    private void sessionsScrollPaneMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sessionsScrollPaneMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_sessionsScrollPaneMouseMoved
+
+    private void jScrollPane1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_jScrollPane1MouseMoved
+
+    private void agendaPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_agendaPanelMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_agendaPanelMouseMoved
+
+    private void generalChartPanelLeftMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelLeftMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelLeftMouseMoved
+
+    private void generalChartPanelMidMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelMidMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelMidMouseMoved
+
+    private void generalChartPanelRightMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelRightMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelRightMouseMoved
+
+    private void generalChartPanelLongMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelLongMouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelLongMouseMoved
+
+    private void generalChartPanelMid2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelMid2MouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelMid2MouseMoved
+
+    private void generalChartPanelLeft2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelLeft2MouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelLeft2MouseMoved
+
+    private void generalChartPanelRight2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_generalChartPanelRight2MouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_generalChartPanelRight2MouseMoved
+
+    private void jPanel2MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseMoved
+        // TODO add your handling code here:
+        timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
+    }//GEN-LAST:event_jPanel2MouseMoved
+
+    private void dayRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayRadioActionPerformed
+        
+        
+        try
+        {
+            Date d = new Date();
+            
+             Timestamp beginDate = new Timestamp(d.getTime());
+            Timestamp endDate;
+          
+
+            String sourceDate = beginDate.toString();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date myDate = format.parse(sourceDate);
+            beginDate = new Timestamp(myDate.getTime());
+            myDate = addDays(myDate, 1);
+            endDate = new Timestamp(myDate.getTime());
+            
+           loadChartsWithDates(endDate, beginDate);
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+            e.printStackTrace();
+        }
+        
+        
+    }//GEN-LAST:event_dayRadioActionPerformed
+
+    private void monthRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthRadioActionPerformed
+        try
+        {
+            Date d = new Date();
+            
+             Timestamp beginDate = new Timestamp(d.getTime());
+            Timestamp endDate;
+          
+
+            String sourceDate = beginDate.toString();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date myDate = format.parse(sourceDate);
+            beginDate = new Timestamp(myDate.getTime());
+            myDate = addDays(myDate, 30);
+            endDate = new Timestamp(myDate.getTime());
+            
+          loadChartsWithDates(endDate, beginDate);
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_monthRadioActionPerformed
+
+    private void yearRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearRadioActionPerformed
+        try
+        {
+            Date d = new Date();
+            
+            Timestamp beginDate = new Timestamp(d.getTime());
+            Timestamp endDate;
+          
+
+            String sourceDate = beginDate.toString();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+            Date myDate = format.parse(sourceDate);
+            beginDate = new Timestamp(myDate.getTime());
+            myDate = addDays(myDate, 365);
+            endDate = new Timestamp(myDate.getTime());
+            
+            loadChartsWithDates(endDate, beginDate);
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_yearRadioActionPerformed
+
+    private void alltimeRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alltimeRadioActionPerformed
+        loadChartsWithoutDate();
+    }//GEN-LAST:event_alltimeRadioActionPerformed
+
+    private void weekRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekRadioActionPerformed
+         try
+        {
+            Date d = new Date();
+            
+            Timestamp beginDate = new Timestamp(d.getTime());
+            Timestamp endDate;
+          
+
+            String sourceDate = beginDate.toString();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+            Date myDate = format.parse(sourceDate);
+            beginDate = new Timestamp(myDate.getTime());
+            myDate = addDays(myDate, 7);
+            endDate = new Timestamp(myDate.getTime());
+            
+            loadChartsWithDates(endDate, beginDate);
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_weekRadioActionPerformed
+
     private void close()
     {
+        /*
         Window win = SwingUtilities.getWindowAncestor(this);
         if (win != null) {
            win.dispose();
-        }
+        }*/
+        setVisible(false); //you can't see me!
+        dispose();
     }
     
     
@@ -2422,17 +2767,19 @@ System.out.println("Done list 4");
     private javax.swing.JPanel agendaPanel;
     private javax.swing.JTable agendaTable;
     private javax.swing.JScrollPane agendaTableScrollPanel;
+    private javax.swing.JRadioButton alltimeRadio;
     private javax.swing.JTable appointmentsTable;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton clearButton;
     private javax.swing.JComboBox courseCombo;
     private javax.swing.JPanel courseInfoPanel;
     private javax.swing.JLabel courseLabel;
     private javax.swing.JComboBox creatorCombo;
     private javax.swing.JLabel creatorLabel;
+    private javax.swing.JRadioButton dayRadio;
     private javax.swing.JButton deleteAgendaButton;
     private javax.swing.JButton deleteSessionButton;
     private javax.swing.JButton deleteSessionButton1;
-    private javax.swing.JButton downloadButton1;
     private javax.swing.JButton editSaveButton;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
@@ -2476,6 +2823,7 @@ System.out.println("Done list 4");
     private javax.swing.JLabel lnameLabel;
     private javax.swing.JComboBox locationCombo;
     private javax.swing.JLabel locationLabel;
+    private javax.swing.JRadioButton monthRadio;
     private javax.swing.JButton newStudentButton;
     private javax.swing.JTextArea notesField;
     private javax.swing.JLabel notesLabel;
@@ -2500,5 +2848,7 @@ System.out.println("Done list 4");
     private javax.swing.JComboBox teacherCombo;
     private javax.swing.JLabel teacherLabel;
     private javax.swing.JCheckBox walkoutCheck;
+    private javax.swing.JRadioButton weekRadio;
+    private javax.swing.JRadioButton yearRadio;
     // End of variables declaration//GEN-END:variables
 }

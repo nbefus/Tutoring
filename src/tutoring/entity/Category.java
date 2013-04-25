@@ -170,8 +170,9 @@ public class Category {
 
                 
                 statement = connect.createStatement();
-                String query = Category.CategoryTable.getSelectColumns(true);
+                String query = Category.CategoryTable.getSelectQuery(true);
                     query+=" "+ addedSQLToSelect;
+                    System.out.println("QUERY IS IN CATEGORY: "+query);
                 resultSet = statement.executeQuery(query);
 
                 while (resultSet.next()) {
