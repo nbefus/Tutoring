@@ -914,6 +914,18 @@
                                           <Component id="teacherRadio" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="paraprofessionalRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="roleRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="locationRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="categoryRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="agendaRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="agendaCategoryRadio" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="subjectRadio" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
@@ -941,7 +953,7 @@
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="252" max="32767" attributes="0"/>
                               </Group>
                               <Component id="currentSessionsPanel1" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -959,6 +971,12 @@
                               <Component id="sessionsRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="teacherRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="paraprofessionalRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="roleRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="locationRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="categoryRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="agendaRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="agendaCategoryRadio" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="subjectRadio" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="searchclientPanel" min="-2" max="-2" attributes="0"/>
@@ -977,7 +995,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="searchrolePanel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="searchagendaPanel" min="-2" pref="60" max="-2" attributes="0"/>
+                          <Component id="searchagendaPanel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="searchagendacategoryPanel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -1008,9 +1026,9 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="83" max="32767" attributes="0"/>
                           <Component id="currentSessionsPanel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="87" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1818,7 +1836,7 @@
                                   <Component id="searchagendadateField" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="teacherLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="17" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1878,6 +1896,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Sessions"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sessionsRadioActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="teacherRadio">
                   <Properties>
@@ -1886,6 +1907,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Teacher"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="teacherRadioActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="paraprofessionalRadio">
                   <Properties>
@@ -2221,6 +2245,72 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JRadioButton" name="roleRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Role"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="roleRadioActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JRadioButton" name="locationRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Location"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="locationRadioActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JRadioButton" name="categoryRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Category"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="categoryRadioActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JRadioButton" name="agendaRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Agenda"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agendaRadioActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JRadioButton" name="agendaCategoryRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Agenda Category"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="agendaCategoryRadioActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JRadioButton" name="subjectRadio">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection component="buttonGroup1" type="bean"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Subject"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subjectRadioActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
           </SubComponents>
@@ -2300,7 +2390,7 @@
                                       </Group>
                                       <Component id="generalReportLoadButton" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="1151" max="32767" attributes="0"/>
+                                  <EmptySpace pref="1193" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
@@ -2315,7 +2405,7 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="10" max="32767" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <Component id="jScrollPane12" min="-2" pref="79" max="-2" attributes="0"/>
@@ -2340,7 +2430,7 @@
                                   <Component id="generalReportEndField" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="generalReportLoadButton" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="105" max="32767" attributes="0"/>
+                                  <EmptySpace pref="126" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">

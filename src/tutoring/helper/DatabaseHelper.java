@@ -392,6 +392,9 @@ public class DatabaseHelper
 
             for(int i=0; i<row.length; i++)
             {
+                //System.out.println(data[count][i] + ":"+row[i].getClass().toString());
+                if(row[i] == null)
+                    row[i] = "NONE";
                 data[count][i] = row[i].toString();
                 System.out.print("\t\t"+row[i]+"--"+row[i].getClass().toString());
             }
