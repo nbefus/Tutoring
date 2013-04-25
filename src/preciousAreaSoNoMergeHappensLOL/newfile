@@ -3,3 +3,6 @@
 
 
     java.awt.Toolkit.getDefaultToolkit().getScreenSize()
+
+**********************************
+        this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);

@@ -131,7 +131,9 @@ public final class SIAView extends javax.swing.JFrame
     
     public SIAView() 
     {
+
         initComponents();
+        this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
         threadLogoff.start();
         
         //Logoff thread
@@ -1828,7 +1830,7 @@ System.out.println("Done list 4");
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(0, 0, 0)
                 .add(tabsPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .add(50, 50, 50))
         );
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
