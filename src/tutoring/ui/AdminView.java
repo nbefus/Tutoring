@@ -2730,11 +2730,11 @@ public class AdminView extends javax.swing.JFrame
         else if (courseRadio.isSelected())
         {
 
-            String teacherFirst = ((JTextComponent) searchteacherfirstCombo.getEditor().getEditorComponent()).getText();
-            String teacherLast = ((JTextComponent) searchteacherlastCombo.getEditor().getEditorComponent()).getText();
-            String subject = ((JTextComponent) searchsubjectnameCombo.getEditor().getEditorComponent()).getText();
-            String level = ((JTextComponent) searchlevelCombo.getEditor().getEditorComponent()).getText();
-            String category = ((JTextComponent) searchsubjectcategoryCombo.getEditor().getEditorComponent()).getText();
+           // String teacherFirst = ((JTextComponent) searchteacherfirstCombo.getEditor().getEditorComponent()).getText();
+           // String teacherLast = ((JTextComponent) searchteacherlastCombo.getEditor().getEditorComponent()).getText();
+           // String subject = ((JTextComponent) searchsubjectnameCombo.getEditor().getEditorComponent()).getText();
+          //  String level = ((JTextComponent) searchlevelCombo.getEditor().getEditorComponent()).getText();
+          // String category = ((JTextComponent) searchsubjectcategoryCombo.getEditor().getEditorComponent()).getText();
             
             if (teacherFirst.length() > 0)
             {
