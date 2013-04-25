@@ -12,9 +12,16 @@ public class SignInSignOut extends javax.swing.JFrame
     public SignInSignOut()
     {
         initComponents();
+        this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
         DatabaseHelper.open();
         list = (ArrayList<Paraprofessional>) Paraprofessional.selectAllParaprofessional("where "+Paraprofessional.ParaTable.TERMINATIONDATE.getWithAlias()+" is null", DatabaseHelper.getConnection());
         DatabaseHelper.close();
+        for (int i = 0; i < list.size(); i++)
+        {
+            listOfParaprofessionals.add(list.get(i).getlName() + ", " + list.get(i).getfName());
+        }
+
+        nameCombo.setModel(new DefaultComboBoxModel(listOfParaprofessionals.toArray()));
     }
 
     /**
@@ -60,7 +67,6 @@ public class SignInSignOut extends javax.swing.JFrame
         {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt)
             {
-                nameComboPopupMenuWillBecomeVisible(evt);
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt)
             {
@@ -146,16 +152,6 @@ public class SignInSignOut extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameComboPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nameComboPopupMenuWillBecomeVisible
-
-        for (int i = 0; i < list.size(); i++)
-        {
-            listOfParaprofessionals.add(list.get(i).getlName() + ", " + list.get(i).getfName());
-        }
-
-        nameCombo.setModel(new DefaultComboBoxModel(listOfParaprofessionals.toArray()));
-    }//GEN-LAST:event_nameComboPopupMenuWillBecomeVisible
 
     private void nameComboPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_nameComboPopupMenuWillBecomeInvisible
 
