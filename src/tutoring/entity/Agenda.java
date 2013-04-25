@@ -21,11 +21,11 @@ public class Agenda {
     
     public enum AgendaTable {
 
-        AGENDAID("agendaID", true, getTableAlias()+".agendaID"),
-        DATE("date", true, getTableAlias()+".date"),
-        NOTES("notes", true, getTableAlias()+".notes"),
-        AGENDACATEGORYID("agendaCategoryID", true, getTableAlias()+".agendaCategoryID"),
-        AGENDACATEGORYTYPE("type", false, getAgendaCategoryAlias()+".type");
+        AGENDAID("Agenda ID","agendaID", true, getTableAlias()+".agendaID", true),
+        DATE("Date","date", true, getTableAlias()+".date", false),
+        NOTES("Notes","notes", true, getTableAlias()+".notes", false),
+        AGENDACATEGORYID("Agenda Category ID","agendaCategoryID", true, getTableAlias()+".agendaCategoryID", true),
+        AGENDACATEGORYTYPE("Category","type", false, getAgendaCategoryAlias()+".type", false);
         
         private String name;
         private boolean mainTableColumn;
@@ -36,17 +36,28 @@ public class Agenda {
         private static final String agendaCategoryAlias = "agendacategory";
         
         private static final String table = "Agenda";
+        private boolean isID;
+        private String displayName;
         
-        private AgendaTable(String name, boolean mainTableColumn, String withAlias) {
+        private AgendaTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
         }
+        
+        public String getDisplayName(){
+            return displayName;
+        }
 
+        public boolean isID(){
+            return isID;
+        }
         public boolean isMainTableColumn() {
             return mainTableColumn;
         }
@@ -73,6 +84,19 @@ public class Agenda {
             for(int i=0; i<columns.length; i++)
             {
                 if(columns[i].isMainTableColumn())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+             Agenda.AgendaTable[] columns = Agenda.AgendaTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;

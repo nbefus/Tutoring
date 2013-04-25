@@ -21,27 +21,39 @@ public class Subject {
 
     public enum SubjectTable {
 
-        SUBJECTID("subjectID", true, getTableAlias()+".subjectID"),
-        ABBREVNAME("abbrevName", true, getTableAlias()+".abbrevName"),
-        CATEGORYID("categoryID", true, getTableAlias()+".categoryID"), 
-        CATEGORYNAME("name", true, getCategoryAlias()+".name");
+        SUBJECTID("Subject ID","subjectID", true, getTableAlias()+".subjectID", true),
+        ABBREVNAME("Subject","abbrevName", true, getTableAlias()+".abbrevName", false),
+        CATEGORYID("Category ID","categoryID", true, getTableAlias()+".categoryID", true), 
+        CATEGORYNAME("Category","name", true, getCategoryAlias()+".name", false);
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
+        private String displayName;
         
         private static final String tableAlias = "subject";
         private static final String table = "Subject";
         private static final String categoryAlias = "category";
 
-        private SubjectTable(String name, boolean mainTableColumn, String withAlias) {
+        private SubjectTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+        
+        public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
         }
 
         public boolean isMainTableColumn() {

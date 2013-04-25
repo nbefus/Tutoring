@@ -21,33 +21,45 @@ public class User {
     public enum UserTable {
 
  
-        USERNAME("userName", true, getTableAlias()+".userName"),
-        ROLEID("roleID", true, getTableAlias()+".roleID"),
-        LNAME("lName", true, getTableAlias()+".lName"),
-        FNAME("fName", true, getTableAlias()+".fName"),
-        PASSWORD("password", true, getTableAlias()+".password"),
-        ROLETYPE("type", false, getRoleAlias()+".type");
+        USERNAME("Username","userName", true, getTableAlias()+".userName", false),
+        ROLEID("Role ID", "roleID", true, getTableAlias()+".roleID", true),
+        LNAME("Last Name","lName", true, getTableAlias()+".lName", false),
+        FNAME("First Name", "fName", true, getTableAlias()+".fName", false),
+        PASSWORD("Password","password", true, getTableAlias()+".password", false),
+        ROLETYPE("Role","type", false, getRoleAlias()+".type", false);
         
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
+        private String displayName;
         
         private static final String tableAlias = "user";
         private static final String table = "User";
         private static final String roleAlias = "role";
         
 
-        private UserTable(String name, boolean mainTableColumn, String withAlias) {
+        private UserTable(String displayName, String name, boolean mainTableColumn, String withAlias,boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
         }
 
+        public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
+        }
+        
         public boolean isMainTableColumn() {
             return mainTableColumn;
         }

@@ -19,8 +19,10 @@ public class AgendaCategory
 {
     public enum AgendaCategoryTable {
 
-        AGENDACATEGORYID("agendaCategoryID", true, getTableAlias()+".agendaCategoryID"),
-        TYPE("type", true, getTableAlias()+".type");
+        AGENDACATEGORYID("Agenda Category ID","agendaCategoryID", true, getTableAlias()+".agendaCategoryID", true),
+        TYPE("Category","type", true, getTableAlias()+".type", false);
+        private boolean isID;
+        private String displayName;
         
         private String name;
         private boolean mainTableColumn;
@@ -29,14 +31,23 @@ public class AgendaCategory
         private static final String tableAlias = "agendacategory";
 
         private static final String table = "AgendaCategory";
-        private AgendaCategoryTable(String name, boolean mainTableColumn, String withAlias) {
+        private AgendaCategoryTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+         public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
         }
 
         public boolean isMainTableColumn() {
@@ -64,6 +75,19 @@ public class AgendaCategory
             for(int i=0; i<columns.length; i++)
             {
                 if(columns[i].isMainTableColumn())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            AgendaCategory.AgendaCategoryTable[] columns = AgendaCategory.AgendaCategoryTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
                     cols.add(columns[i].getName());
             }
             return cols;

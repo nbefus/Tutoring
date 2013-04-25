@@ -83,6 +83,19 @@ public class Client {
             return cols;
         }
         
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Category.CategoryTable[] columns = Category.CategoryTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
         public static String getDatabaseName(String DisplayName)
         {
             ClientTable[] components = ClientTable.class.getEnumConstants();

@@ -18,26 +18,38 @@ import java.util.ArrayList;
 public class Location {
     public enum LocationTable {
         
-        LOCATIONID("locationID", true, getTableAlias()+".locationID"),
-        NAME("name", true, getTableAlias()+".name");
+        LOCATIONID("Location ID", "locationID", true, getTableAlias()+".locationID", true),
+        NAME("Location", "name", true, getTableAlias()+".name", false);
         
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
+        private String displayName;
         
         private static final String tableAlias = "location";
         private static final String table = "Location";
         
 
-        private LocationTable(String name, boolean mainTableColumn, String withAlias) {
+        private LocationTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+        
+        public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
         }
 
         public boolean isMainTableColumn() {
@@ -69,6 +81,33 @@ public class Location {
                     cols.add(columns[i].getName());
             }
             return cols;
+        }
+        
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Location.LocationTable[] columns = Location.LocationTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
+        public static String getDatabaseName(String DisplayName)
+        {
+            Location.LocationTable[] columns = Location.LocationTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
         }
     }
     

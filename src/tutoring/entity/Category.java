@@ -18,23 +18,36 @@ import java.util.ArrayList;
 public class Category {
     
     public enum CategoryTable {
-        CATEGORYID("categoryID", true, getTableAlias()+".categoryID"),
-        NAME("name", true, getTableAlias()+".name");
+        CATEGORYID("Category ID","categoryID", true, getTableAlias()+".categoryID", true),
+        NAME("Name","name", true, getTableAlias()+".name", false);
          
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
+        private String displayName;
         
         private static final String tableAlias = "category";
         private static final String table = "Category";
-        private CategoryTable(String name, boolean mainTableColumn, String withAlias) {
+        
+        private CategoryTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+        
+         public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
         }
 
         public boolean isMainTableColumn() {
@@ -66,6 +79,33 @@ public class Category {
                     cols.add(columns[i].getName());
             }
             return cols;
+        }
+        
+        public static ArrayList<String> getMainTableColumnsWithoutIDs()
+        {
+            ArrayList<String> cols = new ArrayList<String>();
+            Category.CategoryTable[] columns = Category.CategoryTable.class.getEnumConstants();
+            
+            for(int i=0; i<columns.length; i++)
+            {
+                if(columns[i].isMainTableColumn() && !columns[i].isID())
+                    cols.add(columns[i].getName());
+            }
+            return cols;
+        }
+        
+        public static String getDatabaseName(String DisplayName)
+        {
+            Category.CategoryTable[] columns = Category.CategoryTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
         }
         
     }

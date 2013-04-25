@@ -23,16 +23,17 @@ public class Paraprofessional
      public enum ParaTable {
 
  
-        PARAPROFESSIONALID("paraprofessionalID", true, getTableAlias()+".paraprofessionalID"),
-        ROLEID("roleID", true, getTableAlias()+".roleID"),
-        LNAME("lName", true, getTableAlias()+".lName"),
-        FNAME("fName", true, getTableAlias()+".fName"),
-        HIREDATE("hireDate", true, getTableAlias()+".hireDate"),
-        TERMINATIONDATE("terminationDate", true, getTableAlias()+".terminationDate"),
-        ISCLOCKEDIN("isClockedIn", true, getTableAlias()+".isClockedIn"),
-        ROLETYPE("type", false, getRoleAlias()+".type");
+        PARAPROFESSIONALID("Paraprofessional ID","paraprofessionalID", true, getTableAlias()+".paraprofessionalID", true),
+        ROLEID("Role ID","roleID", true, getTableAlias()+".roleID", true),
+        LNAME("Last Name","lName", true, getTableAlias()+".lName", false),
+        FNAME("First Name","fName", true, getTableAlias()+".fName", false),
+        HIREDATE("Hire Date","hireDate", true, getTableAlias()+".hireDate", false),
+        TERMINATIONDATE("Termination Date","terminationDate", true, getTableAlias()+".terminationDate", false),
+        ISCLOCKEDIN("Is In","isClockedIn", true, getTableAlias()+".isClockedIn", false),
+        ROLETYPE("Role","type", false, getRoleAlias()+".type", false);
         
-        
+        private boolean isID;
+        private String displayName;
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
@@ -42,16 +43,26 @@ public class Paraprofessional
         private static final String roleAlias = "role";
         
 
-        private ParaTable(String name, boolean mainTableColumn, String withAlias) {
+        private ParaTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
         }
 
+        public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
+        }
+        
         public boolean isMainTableColumn() {
             return mainTableColumn;
         }

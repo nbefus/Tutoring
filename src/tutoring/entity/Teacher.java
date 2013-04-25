@@ -20,25 +20,37 @@ public class Teacher
 {
     public enum TeacherTable {
 
-        TEACHERID("teacherID", true, getTableAlias()+".teacherID"),
-        FNAME("fName", true, getTableAlias()+".fName"),
-        LNAME("lName", true, getTableAlias()+".lName");
+        TEACHERID("Teacher ID","teacherID", true, getTableAlias()+".teacherID", true),
+        FNAME("First Name","fName", true, getTableAlias()+".fName", false),
+        LNAME("Last Name","lName", true, getTableAlias()+".lName", false);
         
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
+        private boolean isID;
+        private String displayName;
         
         private static final String tableAlias = "teacher";
         private static final String table = "Teacher";
 
-        private TeacherTable(String name, boolean mainTableColumn, String withAlias) {
+        private TeacherTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
             this.name = name;
             this.mainTableColumn = mainTableColumn;
             this.withAlias = withAlias;
+            this.isID = isID;
+            this.displayName = displayName;
         }
 
         public String getName() {
             return name;
+        }
+        
+        public String getDisplayName(){
+            return displayName;
+        }
+
+        public boolean isID(){
+            return isID;
         }
 
         public boolean isMainTableColumn() {
