@@ -2427,7 +2427,7 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
         {
             //start is for windows
             //open is for mac
-            Process p = Runtime.getRuntime().exec("start play.mov");
+            Process p = Runtime.getRuntime().exec("open pmsLogoSpecial.png");
         } catch (IOException ex)
         {
             
