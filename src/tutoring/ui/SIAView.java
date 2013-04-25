@@ -125,17 +125,17 @@ public final class SIAView extends javax.swing.JFrame
         public void run(){
             while(timeoutTime - System.currentTimeMillis() > 0)
             {
-                System.out.println("TIME LEFT: "+timeoutTime);
+                //System.out.println("TIME LEFT: "+timeoutTime);
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
-                    System.out.println("AHHAAHAHAHA EXCEPTION IN THREAD SLEEP");
+                  //  System.out.println("AHHAAHAHAHA EXCEPTION IN THREAD SLEEP");
                     }
             }
             close();
             LoginView newlogin = new LoginView();
             newlogin.setVisible(true);
-            System.out.println("BOOOOOOOOMMMMM");
+            //System.out.println("BOOOOOOOOMMMMM");
         }
     };
     
@@ -670,7 +670,7 @@ System.out.println("Done list 4");
     {
         String[] columns =
         {
-            "Subject", "Total Sessions", "30-min. Sessions", "Avg. Session/Visit", "Total Wait Time", "Avg. Wait Time"
+            "Subject", "Total Sessions", "30-min. Sessions", "Avg. Session/Visit"//, "Total Wait Time", "Avg. Wait Time"
         };
 
         DefaultTableModel dtm = new DefaultTableModel();
