@@ -7,6 +7,8 @@ package tutoring.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.GradientPaint;
+import java.awt.Window;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,12 +16,32 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.LegendTitle;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.util.Rotation;
 import tutoring.entity.*;
 import tutoring.helper.*;
 
@@ -95,9 +117,28 @@ public final class SIAView extends javax.swing.JFrame
     UltimateAutoAutoComplete uaacCourse;
     private int sessionID = -1;
     
+    Thread threadLogoff = new Thread(){
+                public void run(){
+                try
+                {
+                    Thread.sleep(60*5*1000);
+                    close();
+                } catch (InterruptedException ex)
+                {
+                }
+                }     
+            };
+
+        
+    
     public SIAView() 
     {
         initComponents();
+        threadLogoff.start();
+        
+        //Logoff thread
+        
+        
         
         notesField.setLineWrap(true);
         sessionstartField.setText("mm/dd/yyyy hh:mm aa");
@@ -312,7 +353,8 @@ System.out.println("Done list 4");
         //tableHelper.fasterScrolling(20);
             
     ///SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
-    
+        setUpGeneralReportTab();
+        
     DatabaseHelper.close();
     }
     
@@ -477,7 +519,7 @@ System.out.println("Done list 4");
                 
                 editSaveButton.setVisible(true);
                
-                CreatePanel.setSelectedIndex(0);
+                tabsPane.setSelectedIndex(0);
                 return null;
             }
         };
@@ -529,6 +571,307 @@ System.out.println("Done list 4");
          for(int i=0; i<uaacCourse.getBoxesLength(); i++)
             uaacCourse.setComboValue("", i);
     }
+    
+    public void setUpGeneralReportTab()
+    {
+
+
+        DatabaseHelper.open();
+        String[][] data = DatabaseHelper.getDataFromRegularQuery(
+                "SELECT "
+                + "abbrevName,"
+                + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
+                + "Sum(IF( TIMESTAMPDIFF("
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "
+                + "SUM(walkout) as 'Walkouts', "
+                + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "
+                + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "
+                + "FROM ParaprofessionalSession ps "
+                + "join Course c on ps.courseID=c.courseID "
+                + "join Subject s on c.subjectID=s.subjectID "
+                + "group by abbrevName");
+
+        String[][] categoryData = DatabaseHelper.getDataFromRegularQuery(
+                "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
+                + " from ParaprofessionalSession ps"
+                + " join Course course on course.courseID=ps.courseID"
+                + " join Subject s on course.subjectID=s.subjectID"
+                + " join Category c on s.categoryID=c.categoryID"
+                + " group by c.name");
+
+        String[][] otherValues = DatabaseHelper.getDataFromRegularQuery(
+                "SELECT "
+                + "SUM(walkout) as 'Walkouts', "
+                + "COUNT(paraprofessionalID) as 'Total Students',"
+                + "Sum(IF( TIMESTAMPDIFF("
+                + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "
+                + "FROM ParaprofessionalSession ps");
+
+        String[][] studentMinutes = DatabaseHelper.getDataFromRegularQuery(
+                "SELECT "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
+                + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
+                + " AS '<10 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
+                + " AS '10-24 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
+                + " AS '25-35 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
+                + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
+                + " AS '36-60 Min. Sessions', "
+                + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 60"
+                + ", 1, 0))"
+                + " AS '>60 Min. Sessions' "
+                + "FROM ParaprofessionalSession ps");
+
+        DatabaseHelper.close();
+        displayCharts(data, categoryData, otherValues, studentMinutes);
+        
+
+
+        // String[] columns = new String[c.size()];
+        // for(int i=0; i<c.size(); i++)
+        //     columns[i]=(String)c.get(i);
+
+
+    }
+    
+    private void displayCharts(String[][] generalData, String[][] categoryData, String[][] otherValues, String[][] studentMinutes)
+    {
+        String[] columns =
+        {
+            "Subject", "Total Sessions", "30-min. Sessions", "Avg. Session/Visit", "Total Wait Time", "Avg. Wait Time"
+        };
+
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setDataVector(generalData, columns);
+        generalReportTable.setModel(dtm);
+
+        String[] columns1 =
+        {
+            "Category", "# of Sessions"
+        };
+
+        DefaultTableModel dtm1 = new DefaultTableModel();
+        dtm1.setDataVector(categoryData, columns1);
+        generalReportTable3.setModel(dtm1);
+
+        String[] columns2 =
+        {
+            "Walkouts", "Total Students", "Total Sessions"
+        };
+
+        DefaultTableModel dtm2 = new DefaultTableModel();
+        dtm2.setDataVector(otherValues, columns2);
+        generalReportTable2.setModel(dtm2);
+
+        String[] columns3 =
+        {
+            "<10 Min.", "10-25 Min.", "25-35 Min.", "36-60 Min.", ">60 Min."
+        };
+
+        DefaultTableModel dtm3 = new DefaultTableModel();
+        dtm3.setDataVector(studentMinutes, columns3);
+        generalReportTable4.setModel(dtm3);
+
+
+
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset1 = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset2 = new DefaultCategoryDataset();
+        DefaultCategoryDataset barDataset3 = new DefaultCategoryDataset();
+
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        DefaultPieDataset pieDataset1 = new DefaultPieDataset();
+        DefaultPieDataset pieDataset2 = new DefaultPieDataset();
+
+        String series = "Category";
+
+
+        // String[] categories = new String[data.length];
+        // for(int i=0; i<data.length; i++)
+        //     categories[i] = data[i][1];
+
+        for (int i = 0; i < categoryData.length; i++)
+        {
+            barDataset1.addValue(Double.parseDouble(categoryData[i][1]), series, categoryData[i][0]);
+            pieDataset1.setValue(categoryData[i][0], Double.parseDouble(categoryData[i][1]));
+        }
+
+        for (int i = 0; i < columns2.length; i++)
+        {
+            barDataset2.addValue(Double.parseDouble(otherValues[0][i]), series, columns2[i]);
+        }
+
+        for (int i = 0; i < columns3.length; i++)
+        {
+            barDataset3.addValue(Double.parseDouble(studentMinutes[0][i]), series, columns3[i]);
+            pieDataset2.setValue(columns3[i], Double.parseDouble(studentMinutes[0][i]));
+        }
+
+        for (int i = 0; i < generalData.length; i++)
+        {
+            System.out.println(Double.parseDouble(generalData[i][1]) + " + " + generalData[i][0]);
+            barDataset.addValue(Double.parseDouble(generalData[i][1]), series, generalData[i][0]);
+            pieDataset.setValue(generalData[i][0], Double.parseDouble(generalData[i][1]));
+
+
+        }
+
+        final JFreeChart barChart = createChart(barDataset, "Total Student Sessions by Subject", "# of Student Sessions", "Subject", false, Color.green, Color.gray);
+        final ChartPanel barChartPanel = new ChartPanel(barChart);
+        barChartPanel.setPreferredSize(generalChartPanelLong.getSize());
+        System.out.println(barChartPanel.getPreferredSize().height + " " + barChartPanel.getPreferredSize().width);
+        generalChartPanelLong.removeAll();
+        generalChartPanelLong.add(barChartPanel);
+        generalChartPanelLong.validate();
+
+
+        final JFreeChart barChart1 = createChart(barDataset1, "Total Student Sessions by Category", "# of Student Sessions", "Category", false, Color.blue, Color.gray);
+        final ChartPanel barChartPanel1 = new ChartPanel(barChart1);
+        barChartPanel1.setPreferredSize(generalChartPanelLeft2.getSize());
+        System.out.println(barChartPanel1.getPreferredSize().height + " " + barChartPanel1.getPreferredSize().width);
+        generalChartPanelLeft2.removeAll();
+        generalChartPanelLeft2.add(barChartPanel1);
+        generalChartPanelLeft2.validate();
+
+        final JFreeChart barChart2 = createChart(barDataset2, "Other Information", "Total #", "Statistic", false, Color.red, Color.gray);
+        final ChartPanel barChartPanel2 = new ChartPanel(barChart2);
+        barChartPanel2.setPreferredSize(generalChartPanelMid2.getSize());
+        System.out.println(barChartPanel2.getPreferredSize().height + " " + barChartPanel2.getPreferredSize().width);
+        generalChartPanelMid2.removeAll();
+        generalChartPanelMid2.add(barChartPanel2);
+        generalChartPanelMid2.validate();
+
+        final JFreeChart barChart3 = createChart(barDataset3, "Session Length Overview", "# of Sessions of Length", "Length Period", false, Color.gray, Color.white);
+        final ChartPanel barChartPanel3 = new ChartPanel(barChart3);
+        barChartPanel3.setPreferredSize(generalChartPanelRight2.getSize());
+        System.out.println(barChartPanel3.getPreferredSize().height + " " + barChartPanel3.getPreferredSize().width);
+        generalChartPanelRight2.removeAll();
+        generalChartPanelRight2.add(barChartPanel3);
+        generalChartPanelRight2.validate();
+
+
+        final JFreeChart pieChart = createChart(pieDataset, "Total Student Sessions by Subject");
+        final ChartPanel pieChartPanel = new ChartPanel(pieChart);
+        pieChartPanel.setPreferredSize(generalChartPanelLeft.getSize());
+        System.out.println(pieChartPanel.getPreferredSize().height + " " + pieChartPanel.getPreferredSize().width);
+        generalChartPanelLeft.removeAll();
+        generalChartPanelLeft.add(pieChartPanel);
+        generalChartPanelLeft.validate();
+
+        final JFreeChart pieChart1 = createChart(pieDataset1, "Total Student Sessions by Category");
+        final ChartPanel pieChartPanel1 = new ChartPanel(pieChart1);
+        pieChartPanel1.setPreferredSize(generalChartPanelRight.getSize());
+        System.out.println(pieChartPanel1.getPreferredSize().height + " " + pieChartPanel1.getPreferredSize().width);
+        generalChartPanelRight.removeAll();
+        generalChartPanelRight.add(pieChartPanel1);
+        generalChartPanelRight.validate();
+
+        final JFreeChart pieChart2 = createChart(pieDataset2, "Total Student Sessions by Length");
+        final ChartPanel pieChartPanel2 = new ChartPanel(pieChart2);
+        pieChartPanel2.setPreferredSize(generalChartPanelMid.getSize());
+        System.out.println(pieChartPanel2.getPreferredSize().height + " " + pieChartPanel2.getPreferredSize().width);
+        generalChartPanelMid.removeAll();
+        generalChartPanelMid.add(pieChartPanel2);
+        generalChartPanelMid.validate();
+
+        // thechartPanel1.validate();
+        //  reportPanel1.validate();
+        // jScrollPane10.validate();
+    }
+    
+    private JFreeChart createChart(PieDataset dataset, String title)
+    {
+
+        JFreeChart chart = ChartFactory.createPieChart3D(title, // chart title
+                dataset, // data
+                true, // include legend
+                true,
+                false);
+
+        PiePlot3D plot = (PiePlot3D) chart.getPlot();
+        chart.setBorderVisible(false);
+        plot.setBackgroundPaint(this.getBackground());
+        plot.setStartAngle(290);
+        plot.setOutlineVisible(false);
+        plot.setDirection(Rotation.CLOCKWISE);
+        chart.setBackgroundPaint(this.getBackground());
+        plot.setForegroundAlpha(0.75f);
+
+        LegendTitle lt = chart.getLegend();
+        lt.setBackgroundPaint(this.getBackground());
+        lt.setBorder(0, 0, 0, 0);
+        //lt.setBackgroundPaint(null);
+        return chart;
+    }
+
+    private JFreeChart createChart(final CategoryDataset dataset, final String title, final String xText, final String yText, final boolean showLegend, Color start, Color end)
+    {
+
+        // create the chart...
+        final JFreeChart chart = ChartFactory.createBarChart(
+                title, // chart title
+                xText, // domain axis label
+                yText, // range axis label
+                dataset, // data
+                PlotOrientation.VERTICAL, // orientation
+                showLegend, // include legend
+                true, // tooltips?
+                false // URLs?
+                );
+
+        // NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
+
+        // set the background color for the chart...
+        chart.setBackgroundPaint(this.getBackground());
+
+        // get a reference to the plot for further customisation...
+        final CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(this.getBackground());
+        plot.setDomainGridlinePaint(Color.black);
+        plot.setRangeGridlinePaint(Color.black);
+        plot.setOutlineVisible(false);
+        // set the range axis to display integers only...
+        final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+
+        // disable bar outlines...
+        final BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        renderer.setDrawBarOutline(false);
+
+        // set up gradient paints for series...
+        final GradientPaint gp0 = new GradientPaint(
+                0.0f, 0.0f, start,
+                0.0f, 0.0f, end);
+        /*
+         final GradientPaint gp1 = new GradientPaint(
+         0.0f, 0.0f, Color.green, 
+         0.0f, 0.0f, Color.lightGray
+         );
+         final GradientPaint gp2 = new GradientPaint(
+         0.0f, 0.0f, Color.red, 
+         0.0f, 0.0f, Color.lightGray
+         );*/
+        renderer.setSeriesPaint(0, gp0);
+        /*
+         renderer.setSeriesPaint(1, gp1);
+         renderer.setSeriesPaint(2, gp2);*/
+
+        final CategoryAxis domainAxis = plot.getDomainAxis();
+        domainAxis.setCategoryLabelPositions(
+                CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
+        // OPTIONAL CUSTOMISATION COMPLETED.
+
+        return chart;
+    }
 
 
     /**
@@ -543,7 +886,7 @@ System.out.println("Done list 4");
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel3 = new javax.swing.JPanel();
-        CreatePanel = new javax.swing.JTabbedPane();
+        tabsPane = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         studentInfoPanel = new javax.swing.JPanel();
         fnameLabel = new javax.swing.JLabel();
@@ -598,11 +941,44 @@ System.out.println("Done list 4");
         jScrollPane1 = new javax.swing.JScrollPane();
         appointmentsTable = new javax.swing.JTable();
         deleteSessionButton1 = new javax.swing.JButton();
+        reportsPane = new javax.swing.JPanel();
+        reportsScrollPane = new javax.swing.JScrollPane();
+        reportsTopPane = new javax.swing.JPanel();
+        tablePane = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        generalReportTable2 = new javax.swing.JTable();
+        generalReportBeginField = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        generalReportEndField = new javax.swing.JTextField();
+        downloadButton1 = new javax.swing.JButton();
+        generalReportLoadButton = new javax.swing.JButton();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        generalReportTable = new javax.swing.JTable();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        generalReportTable3 = new javax.swing.JTable();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        generalReportTable4 = new javax.swing.JTable();
+        graphPane = new javax.swing.JPanel();
+        generalChartPanelLeft = new javax.swing.JPanel();
+        generalChartPanelMid = new javax.swing.JPanel();
+        generalChartPanelRight = new javax.swing.JPanel();
+        generalChartPanelLong = new javax.swing.JPanel();
+        generalChartPanelMid2 = new javax.swing.JPanel();
+        generalChartPanelLeft2 = new javax.swing.JPanel();
+        generalChartPanelRight2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 750));
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter()
+        {
+            public void mouseMoved(java.awt.event.MouseEvent evt)
+            {
+                formMouseMoved(evt);
+            }
+        });
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -615,7 +991,6 @@ System.out.println("Done list 4");
         studentInfoPanel.setMaximumSize(new java.awt.Dimension(977, 63));
         studentInfoPanel.setMinimumSize(new java.awt.Dimension(977, 63));
         studentInfoPanel.setPreferredSize(new java.awt.Dimension(977, 63));
-        studentInfoPanel.setSize(new java.awt.Dimension(977, 63));
 
         fnameLabel.setText("First Name*");
 
@@ -623,7 +998,6 @@ System.out.println("Done list 4");
         fnameCombo.setMaximumSize(new java.awt.Dimension(141, 28));
         fnameCombo.setMinimumSize(new java.awt.Dimension(141, 28));
         fnameCombo.setPreferredSize(new java.awt.Dimension(141, 28));
-        fnameCombo.setSize(new java.awt.Dimension(141, 28));
 
         lnameLabel.setText("Last Name*");
 
@@ -631,7 +1005,6 @@ System.out.println("Done list 4");
         lnameCombo.setMaximumSize(new java.awt.Dimension(156, 28));
         lnameCombo.setMinimumSize(new java.awt.Dimension(156, 28));
         lnameCombo.setPreferredSize(new java.awt.Dimension(156, 28));
-        lnameCombo.setSize(new java.awt.Dimension(156, 28));
 
         emailLabel.setText("Email");
 
@@ -639,13 +1012,11 @@ System.out.println("Done list 4");
         emailCombo.setMaximumSize(new java.awt.Dimension(211, 28));
         emailCombo.setMinimumSize(new java.awt.Dimension(211, 28));
         emailCombo.setPreferredSize(new java.awt.Dimension(211, 28));
-        emailCombo.setSize(new java.awt.Dimension(211, 28));
 
         phoneLabel.setText("Telephone");
 
         phoneCombo.setEditable(true);
         phoneCombo.setMaximumSize(new java.awt.Dimension(128, 28));
-        phoneCombo.setSize(new java.awt.Dimension(128, 28));
 
         org.jdesktop.layout.GroupLayout studentInfoPanelLayout = new org.jdesktop.layout.GroupLayout(studentInfoPanel);
         studentInfoPanel.setLayout(studentInfoPanelLayout);
@@ -692,19 +1063,16 @@ System.out.println("Done list 4");
         courseInfoPanel.setMaximumSize(new java.awt.Dimension(832, 63));
         courseInfoPanel.setMinimumSize(new java.awt.Dimension(832, 63));
         courseInfoPanel.setPreferredSize(new java.awt.Dimension(832, 63));
-        courseInfoPanel.setSize(new java.awt.Dimension(832, 63));
 
         courseLabel.setText("Course*");
 
         courseCombo.setEditable(true);
         courseCombo.setMaximumSize(new java.awt.Dimension(128, 28));
-        courseCombo.setSize(new java.awt.Dimension(128, 28));
 
         levelLabel.setText("Course#*");
 
         levelCombo.setEditable(true);
         levelCombo.setMaximumSize(new java.awt.Dimension(128, 28));
-        levelCombo.setSize(new java.awt.Dimension(128, 28));
 
         teacherLabel.setText("Teacher*");
 
@@ -712,7 +1080,6 @@ System.out.println("Done list 4");
         teacherCombo.setMaximumSize(new java.awt.Dimension(347, 28));
         teacherCombo.setMinimumSize(new java.awt.Dimension(347, 28));
         teacherCombo.setPreferredSize(new java.awt.Dimension(347, 28));
-        teacherCombo.setSize(new java.awt.Dimension(347, 28));
         teacherCombo.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -754,7 +1121,6 @@ System.out.println("Done list 4");
         paraprofessionalInfoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Session Information"));
         paraprofessionalInfoPanel.setMaximumSize(new java.awt.Dimension(832, 155));
         paraprofessionalInfoPanel.setMinimumSize(new java.awt.Dimension(832, 155));
-        paraprofessionalInfoPanel.setSize(new java.awt.Dimension(832, 155));
 
         ParaprofessionalLabel.setText("Paraprofessional*");
 
@@ -762,7 +1128,6 @@ System.out.println("Done list 4");
         paraprofessionalCombo.setMaximumSize(new java.awt.Dimension(160, 28));
         paraprofessionalCombo.setMinimumSize(new java.awt.Dimension(160, 28));
         paraprofessionalCombo.setPreferredSize(new java.awt.Dimension(160, 28));
-        paraprofessionalCombo.setSize(new java.awt.Dimension(160, 28));
 
         sessionstartLabel.setText("Session Start");
 
@@ -770,7 +1135,6 @@ System.out.println("Done list 4");
         sessionstartField.setMaximumSize(new java.awt.Dimension(156, 28));
         sessionstartField.setMinimumSize(new java.awt.Dimension(156, 28));
         sessionstartField.setPreferredSize(new java.awt.Dimension(156, 28));
-        sessionstartField.setSize(new java.awt.Dimension(156, 28));
 
         sessionendLabel.setText("Session End");
 
@@ -778,7 +1142,6 @@ System.out.println("Done list 4");
         sessionendField.setMaximumSize(new java.awt.Dimension(156, 28));
         sessionendField.setMinimumSize(new java.awt.Dimension(156, 28));
         sessionendField.setPreferredSize(new java.awt.Dimension(156, 28));
-        sessionendField.setSize(new java.awt.Dimension(156, 28));
 
         notesLabel.setText("Notes");
 
@@ -791,13 +1154,11 @@ System.out.println("Done list 4");
         locationCombo.setMaximumSize(new java.awt.Dimension(160, 28));
         locationCombo.setMinimumSize(new java.awt.Dimension(160, 28));
         locationCombo.setPreferredSize(new java.awt.Dimension(160, 28));
-        locationCombo.setSize(new java.awt.Dimension(160, 28));
 
         creatorCombo.setEditable(true);
         creatorCombo.setMaximumSize(new java.awt.Dimension(160, 28));
         creatorCombo.setMinimumSize(new java.awt.Dimension(160, 28));
         creatorCombo.setPreferredSize(new java.awt.Dimension(160, 28));
-        creatorCombo.setSize(new java.awt.Dimension(160, 28));
 
         creatorLabel.setText("Creator*");
 
@@ -807,7 +1168,6 @@ System.out.println("Done list 4");
         notesField.setMaximumSize(new java.awt.Dimension(185, 116));
         notesField.setMinimumSize(new java.awt.Dimension(185, 116));
         notesField.setPreferredSize(new java.awt.Dimension(185, 116));
-        notesField.setSize(new java.awt.Dimension(185, 116));
         jScrollPane2.setViewportView(notesField);
 
         org.jdesktop.layout.GroupLayout paraprofessionalInfoPanelLayout = new org.jdesktop.layout.GroupLayout(paraprofessionalInfoPanel);
@@ -883,7 +1243,6 @@ System.out.println("Done list 4");
 
         jPanel5.setMaximumSize(new java.awt.Dimension(139, 218));
         jPanel5.setPreferredSize(new java.awt.Dimension(139, 218));
-        jPanel5.setSize(new java.awt.Dimension(139, 218));
         jPanel5.setLayout(new java.awt.GridBagLayout());
 
         clearButton.setForeground(new java.awt.Color(153, 0, 0));
@@ -979,7 +1338,7 @@ System.out.println("Done list 4");
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
+                .addContainerGap(90, Short.MAX_VALUE)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                     .add(studentInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jPanel2Layout.createSequentialGroup()
@@ -988,7 +1347,7 @@ System.out.println("Done list 4");
                             .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(113, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1007,7 +1366,7 @@ System.out.println("Done list 4");
                 .add(0, 95, Short.MAX_VALUE))
         );
 
-        CreatePanel.addTab("Create", jPanel2);
+        tabsPane.addTab("Create", jPanel2);
 
         agendaPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Agenda"));
 
@@ -1049,14 +1408,14 @@ System.out.println("Done list 4");
         agendaPanelLayout.setHorizontalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(agendaPanelLayout.createSequentialGroup()
-                .addContainerGap(130, Short.MAX_VALUE)
+                .addContainerGap(138, Short.MAX_VALUE)
                 .add(agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(agendaTableScrollPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 892, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(agendaPanelLayout.createSequentialGroup()
                         .add(addAgendaItemButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(deleteAgendaButton)))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         agendaPanelLayout.setVerticalGroup(
             agendaPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1087,7 +1446,7 @@ System.out.println("Done list 4");
                 .addContainerGap())
         );
 
-        CreatePanel.addTab("Agenda", jPanel1);
+        tabsPane.addTab("Agenda", jPanel1);
 
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
@@ -1127,7 +1486,7 @@ System.out.println("Done list 4");
                 .add(deleteSessionButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(sessionsTablePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1119, Short.MAX_VALUE)
+                .add(sessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1135, Short.MAX_VALUE)
                 .addContainerGap())
         );
         sessionsTablePanelLayout.setVerticalGroup(
@@ -1173,7 +1532,7 @@ System.out.println("Done list 4");
         futureSessionsPanelLayout.setHorizontalGroup(
             futureSessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, futureSessionsPanelLayout.createSequentialGroup()
-                .add(0, 995, Short.MAX_VALUE)
+                .add(0, 1011, Short.MAX_VALUE)
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(futureSessionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -1207,7 +1566,243 @@ System.out.println("Done list 4");
                 .addContainerGap())
         );
 
-        CreatePanel.addTab("Sessions", sessionsAndAgendaPanel);
+        tabsPane.addTab("Sessions", sessionsAndAgendaPanel);
+
+        reportsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        reportsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        reportsTopPane.setLayout(new java.awt.BorderLayout());
+
+        tablePane.setPreferredSize(new java.awt.Dimension(1300, 258));
+
+        generalReportTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane8.setViewportView(generalReportTable2);
+
+        generalReportBeginField.setText("mm/dd/yyyy hh:mm aa");
+
+        jLabel5.setText("Begin");
+
+        jLabel6.setText("End");
+
+        generalReportEndField.setText("mm/dd/yyyy hh:mm aa");
+
+        downloadButton1.setText("Download");
+
+        generalReportLoadButton.setText("Load");
+        generalReportLoadButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                generalReportLoadButtonActionPerformed(evt);
+            }
+        });
+
+        generalReportTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane11.setViewportView(generalReportTable);
+
+        generalReportTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane12.setViewportView(generalReportTable3);
+
+        generalReportTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane13.setViewportView(generalReportTable4);
+
+        org.jdesktop.layout.GroupLayout tablePaneLayout = new org.jdesktop.layout.GroupLayout(tablePane);
+        tablePane.setLayout(tablePaneLayout);
+        tablePaneLayout.setHorizontalGroup(
+            tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(tablePaneLayout.createSequentialGroup()
+                        .add(598, 598, 598)
+                        .add(downloadButton1))
+                    .add(tablePaneLayout.createSequentialGroup()
+                        .add(183, 183, 183)
+                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 376, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(56, 56, 56))
+            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(tablePaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(tablePaneLayout.createSequentialGroup()
+                                .add(12, 12, 12)
+                                .add(jLabel5))
+                            .add(tablePaneLayout.createSequentialGroup()
+                                .add(21, 21, 21)
+                                .add(jLabel6)))
+                        .add(generalReportLoadButton))
+                    .addContainerGap(1151, Short.MAX_VALUE)))
+            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(tablePaneLayout.createSequentialGroup()
+                    .add(185, 185, 185)
+                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 698, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(436, Short.MAX_VALUE)))
+        );
+        tablePaneLayout.setVerticalGroup(
+            tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createSequentialGroup()
+                        .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(downloadButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 39, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(17, 17, 17))
+            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(tablePaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .add(jLabel5)
+                    .add(1, 1, 1)
+                    .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                    .add(jLabel6)
+                    .add(1, 1, 1)
+                    .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(18, 18, 18)
+                    .add(generalReportLoadButton)
+                    .addContainerGap(109, Short.MAX_VALUE)))
+            .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(tablePaneLayout.createSequentialGroup()
+                    .add(16, 16, 16)
+                    .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(163, Short.MAX_VALUE)))
+        );
+
+        reportsTopPane.add(tablePane, java.awt.BorderLayout.PAGE_END);
+
+        graphPane.setPreferredSize(new java.awt.Dimension(1300, 800));
+
+        generalChartPanelLeft.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLong.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelMid2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelLeft2.setLayout(new java.awt.GridBagLayout());
+
+        generalChartPanelRight2.setLayout(new java.awt.GridBagLayout());
+
+        org.jdesktop.layout.GroupLayout graphPaneLayout = new org.jdesktop.layout.GroupLayout(graphPane);
+        graphPane.setLayout(graphPaneLayout);
+        graphPaneLayout.setHorizontalGroup(
+            graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(graphPaneLayout.createSequentialGroup()
+                .add(16, 16, 16)
+                .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(graphPaneLayout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 436, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(6, 6, 6)
+                .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, graphPaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+        graphPaneLayout.setVerticalGroup(
+            graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(graphPaneLayout.createSequentialGroup()
+                .add(11, 11, 11)
+                .add(graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 249, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(6, 6, 6)
+                .add(graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(6, 6, 6)
+                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+
+        reportsTopPane.add(graphPane, java.awt.BorderLayout.CENTER);
+
+        reportsScrollPane.setViewportView(reportsTopPane);
+
+        org.jdesktop.layout.GroupLayout reportsPaneLayout = new org.jdesktop.layout.GroupLayout(reportsPane);
+        reportsPane.setLayout(reportsPaneLayout);
+        reportsPaneLayout.setHorizontalGroup(
+            reportsPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 1192, Short.MAX_VALUE)
+            .add(reportsPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(reportsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1192, Short.MAX_VALUE))
+        );
+        reportsPaneLayout.setVerticalGroup(
+            reportsPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(0, 449, Short.MAX_VALUE)
+            .add(reportsPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(org.jdesktop.layout.GroupLayout.TRAILING, reportsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE))
+        );
+
+        tabsPane.addTab("Reports", reportsPane);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -1224,7 +1819,7 @@ System.out.println("Done list 4");
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(CreatePanel)
+                    .add(tabsPane)
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1234,7 +1829,7 @@ System.out.println("Done list 4");
                 .add(5, 5, 5)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 126, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(0, 0, 0)
-                .add(CreatePanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(tabsPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 495, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(50, Short.MAX_VALUE))
         );
 
@@ -1329,6 +1924,124 @@ System.out.println("Done list 4");
 
         ((AgendaTableModel) agendaTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteAgendaButtonActionPerformed
+
+    private void generalReportLoadButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_generalReportLoadButtonActionPerformed
+    {//GEN-HEADEREND:event_generalReportLoadButtonActionPerformed
+        try
+        {
+            String begin = generalReportBeginField.getText().trim();
+            String end = generalReportEndField.getText().trim();
+
+            boolean isDateBegin = Validate.validateTimestamp(begin);
+            boolean isDateEnd = Validate.validateTimestamp(end);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
+            Timestamp beginDate = null;
+            Timestamp endDate = null;
+            if (isDateBegin)
+            {
+                beginDate = new Timestamp(sdf.parse(begin).getTime());
+            }
+            if (isDateEnd)
+            {
+                endDate = new Timestamp(sdf.parse(end).getTime());
+            }
+
+            if (beginDate != null && endDate != null && beginDate.before(endDate))
+            {
+                DatabaseHelper.open();
+                String[][] data = DatabaseHelper.getDataFromRegularQuery(
+                    "SELECT "
+                    + "abbrevName,"
+                    + "COUNT(paraprofessionalSessionID) as 'Total Sessions',"
+                    + "Sum(IF( TIMESTAMPDIFF("
+                    + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                    + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS '30-min. Sessions', "
+                    + "Sum(IF( TIMESTAMPDIFF( "
+                    + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                    + "MINUTE , sessionStart, sessionEnd ) /30, 1))/count(paraprofessionalSessionID) as 'Avg. Session/Visit', "
+                    + "SUM(walkout) as 'Walkouts', "
+                    + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart)) as 'Total Wait Time', "
+                    + "SUM(TIMESTAMPDIFF(MINUTE , timeAndDateEntered, sessionStart))/COUNT(paraprofessionalSessionID) as 'Avg. Wait Time' "
+                    + "FROM ParaprofessionalSession ps "
+                    + "join Course c on ps.courseID=c.courseID "
+                    + "join Subject s on c.subjectID=s.subjectID "
+                    + "where "
+                    + "timeAndDateEntered "
+                    + "between "
+                    + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                    + "group by abbrevName");
+
+                String[][] categoryData = DatabaseHelper.getDataFromRegularQuery(
+                    "select c.name, count(paraprofessionalSessionID) as '# of Sessions'"
+                    + " from ParaprofessionalSession ps"
+                    + " join Course course on course.courseID=ps.courseID"
+                    + " join Subject s on course.subjectID=s.subjectID"
+                    + " join Category c on s.categoryID=c.categoryID "
+                    + "where "
+                    + "timeAndDateEntered "
+                    + "between "
+                    + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                    + " group by c.name");
+
+                String[][] otherValues = DatabaseHelper.getDataFromRegularQuery(
+                    "SELECT "
+                    + "SUM(walkout) as 'Walkouts', "
+                    + "COUNT(paraprofessionalID) as 'Total Students', "
+                    + "Sum(IF( TIMESTAMPDIFF("
+                    + "MINUTE , sessionStart, sessionEnd ) >30, TIMESTAMPDIFF( "
+                    + "MINUTE , sessionStart, sessionEnd ) /30, 1)) AS 'Total Sessions' "+ "FROM ParaprofessionalSession "
+                    + "where "
+                    + "timeAndDateEntered "
+                    + "between "
+                    + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                );
+
+                String[][] studentMinutes = DatabaseHelper.getDataFromRegularQuery(
+                    "SELECT "
+                    + "Sum(IF( TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) < 10"
+                    + " and TIMESTAMPDIFF(MINUTE, sessionStart, sessionEnd ) > 0, 1, 0))"
+                    + " AS '<10 Min. Sessions', "
+                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 10"
+                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) < 25, 1, 0))"
+                    + " AS '10-24 Min. Sessions', "
+                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) >= 25"
+                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 35, 1, 0))"
+                    + " AS '25-35 Min. Sessions', "
+                    + "Sum(IF( TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) > 35"
+                    + " and TIMESTAMPDIFF(MINUTE , sessionStart, sessionEnd ) <= 60, 1, 0))"
+                    + " AS '36-60 Min. Sessions' "+ "FROM ParaprofessionalSession ps "
+                    + "where "
+                    + "timeAndDateEntered "
+                    + "between "
+                    + "'" + beginDate.toString() + "' and '" + endDate.toString() + "'"
+                );
+
+                DatabaseHelper.close();
+                displayCharts(data, categoryData, otherValues, studentMinutes);
+
+            }
+
+        } catch (Exception e)
+        {
+            System.out.println("EXCEPTION on load");
+        }
+    }//GEN-LAST:event_generalReportLoadButtonActionPerformed
+
+    private void close()
+    {
+        Window win = SwingUtilities.getWindowAncestor(this);
+        if (win != null) {
+           win.dispose();
+        }
+    }
+    
+    
+    
+    private void formMouseMoved(java.awt.event.MouseEvent evt)//GEN-FIRST:event_formMouseMoved
+    {//GEN-HEADEREND:event_formMouseMoved
+        threadLogoff.interrupt();
+        threadLogoff.start();
+    }//GEN-LAST:event_formMouseMoved
 
     
     private void clearForm()
@@ -1747,7 +2460,6 @@ System.out.println("Done list 4");
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane CreatePanel;
     private javax.swing.JLabel ParaprofessionalLabel;
     private javax.swing.JButton addAgendaItemButton;
     private javax.swing.JButton addSessionbutton;
@@ -1764,6 +2476,7 @@ System.out.println("Done list 4");
     private javax.swing.JButton deleteAgendaButton;
     private javax.swing.JButton deleteSessionButton;
     private javax.swing.JButton deleteSessionButton1;
+    private javax.swing.JButton downloadButton1;
     private javax.swing.JButton editSaveButton;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
@@ -1771,14 +2484,35 @@ System.out.println("Done list 4");
     private javax.swing.JLabel fnameLabel;
     private javax.swing.JPanel futureSessionsPanel;
     private javax.swing.JCheckBox gcCheck;
+    private javax.swing.JPanel generalChartPanelLeft;
+    private javax.swing.JPanel generalChartPanelLeft2;
+    private javax.swing.JPanel generalChartPanelLong;
+    private javax.swing.JPanel generalChartPanelMid;
+    private javax.swing.JPanel generalChartPanelMid2;
+    private javax.swing.JPanel generalChartPanelRight;
+    private javax.swing.JPanel generalChartPanelRight2;
+    private javax.swing.JTextField generalReportBeginField;
+    private javax.swing.JTextField generalReportEndField;
+    private javax.swing.JButton generalReportLoadButton;
+    private javax.swing.JTable generalReportTable;
+    private javax.swing.JTable generalReportTable2;
+    private javax.swing.JTable generalReportTable3;
+    private javax.swing.JTable generalReportTable4;
+    private javax.swing.JPanel graphPane;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JComboBox levelCombo;
     private javax.swing.JLabel levelLabel;
@@ -1793,6 +2527,9 @@ System.out.println("Done list 4");
     private javax.swing.JPanel paraprofessionalInfoPanel;
     private javax.swing.JComboBox phoneCombo;
     private javax.swing.JLabel phoneLabel;
+    private javax.swing.JPanel reportsPane;
+    private javax.swing.JScrollPane reportsScrollPane;
+    private javax.swing.JPanel reportsTopPane;
     private javax.swing.JTextField sessionendField;
     private javax.swing.JLabel sessionendLabel;
     private javax.swing.JPanel sessionsAndAgendaPanel;
@@ -1802,6 +2539,8 @@ System.out.println("Done list 4");
     private javax.swing.JTextField sessionstartField;
     private javax.swing.JLabel sessionstartLabel;
     private javax.swing.JPanel studentInfoPanel;
+    private javax.swing.JPanel tablePane;
+    private javax.swing.JTabbedPane tabsPane;
     private javax.swing.JComboBox teacherCombo;
     private javax.swing.JLabel teacherLabel;
     private javax.swing.JCheckBox walkoutCheck;
