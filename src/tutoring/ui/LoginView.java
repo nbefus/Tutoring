@@ -9,6 +9,7 @@ public class LoginView extends javax.swing.JFrame
     public LoginView()
     {
         initComponents();
+        this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
 
     }
 
@@ -35,7 +36,6 @@ public class LoginView extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(577, 476));
-        setPreferredSize(java.awt.Toolkit.getDefaultToolkit().getScreenSize());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -227,6 +227,8 @@ public class LoginView extends javax.swing.JFrame
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 
+        loginButton.setEnabled(false);
+        
         login = new Login(usernameField.getText(), passwordField.getText());
         errorLabel.setText(login.loginFeedback());
 
@@ -234,29 +236,29 @@ public class LoginView extends javax.swing.JFrame
         {
             if (login.getRole().getType().equalsIgnoreCase("SIA"))
             {
-
                 SIAView sia = new SIAView();
-                sia.show();
+                sia.setVisible(true);
                 this.setVisible(false);
 
             } else if (login.getRole().getType().equalsIgnoreCase("ADMIN"))
             {
                 AdminView admin = new AdminView();
-                admin.show();
+                admin.setVisible(true);
                 this.setVisible(false);
             }
         }
+        ///loginButton.setEnabled(true);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void usernameFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && loginButton.isEnabled())
         {
             loginButtonActionPerformed((java.awt.event.ActionEvent) loginButton.getAction());
         }
     }//GEN-LAST:event_usernameFieldKeyPressed
 
     private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && loginButton.isEnabled())
         {
             loginButtonActionPerformed((java.awt.event.ActionEvent) loginButton.getAction());
         }
