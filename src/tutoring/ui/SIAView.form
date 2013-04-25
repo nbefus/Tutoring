@@ -127,7 +127,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace pref="78" max="32767" attributes="0"/>
+                          <EmptySpace pref="108" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="studentInfoPanel" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
@@ -139,7 +139,7 @@
                                   <Component id="jPanel5" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="90" max="32767" attributes="0"/>
+                          <EmptySpace pref="119" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -156,7 +156,7 @@
                               </Group>
                               <Component id="jPanel5" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="83" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="120" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -527,7 +527,7 @@
                               <Component id="phoneLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="phoneCombo" min="-2" pref="180" max="-2" attributes="0"/>
-                              <EmptySpace pref="31" max="32767" attributes="0"/>
+                              <EmptySpace pref="42" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -757,7 +757,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="agendaTableScrollPanel" pref="314" max="32767" attributes="0"/>
+                              <Component id="agendaTableScrollPanel" pref="328" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="deleteAgendaButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -824,7 +824,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                          <Component id="jTabbedPane1" pref="1228" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -833,7 +833,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTabbedPane1" max="32767" attributes="0"/>
+                          <Component id="jTabbedPane1" pref="407" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -869,7 +869,7 @@
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="sessionsScrollPane" pref="1183" max="32767" attributes="0"/>
+                                  <Component id="sessionsScrollPane" pref="1191" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -877,7 +877,7 @@
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="sessionsScrollPane" pref="290" max="32767" attributes="0"/>
+                                  <Component id="sessionsScrollPane" pref="321" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="deleteSessionButton" min="-2" pref="29" max="-2" attributes="0"/>
                               </Group>
@@ -946,7 +946,7 @@
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="1059" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="1075" max="32767" attributes="0"/>
                                   <Component id="deleteSessionButton1" min="-2" pref="136" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -959,7 +959,7 @@
                         <DimensionLayout dim="1">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jScrollPane1" pref="290" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane1" pref="321" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="deleteSessionButton1" min="-2" pref="29" max="-2" attributes="0"/>
                               </Group>
@@ -1025,17 +1025,17 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1240" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="1248" max="32767" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Component id="reportsScrollPane" alignment="0" pref="1240" max="32767" attributes="0"/>
+                          <Component id="reportsScrollPane" alignment="0" pref="1248" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="411" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="429" max="32767" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Component id="reportsScrollPane" alignment="1" pref="411" max="32767" attributes="0"/>
+                          <Component id="reportsScrollPane" alignment="1" pref="429" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1088,7 +1088,7 @@
                                           <Component id="monthRadio" min="-2" max="-2" attributes="0"/>
                                           <Component id="yearRadio" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="22" max="32767" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="103" alignment="1" groupAlignment="0" attributes="0">
@@ -1156,7 +1156,7 @@
                                               <Component id="generalReportLoadButton" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="68" max="32767" attributes="0"/>
+                                      <EmptySpace pref="83" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>

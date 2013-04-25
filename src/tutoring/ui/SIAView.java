@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -145,7 +146,9 @@ public final class SIAView extends javax.swing.JFrame
         timeout.start();
         initComponents();
         this.setExtendedState(this.getExtendedState() | this.MAXIMIZED_BOTH);
-        
+        sessionsTable.getTableHeader().setReorderingAllowed(false);
+        appointmentsTable.getTableHeader().setReorderingAllowed(false);
+        agendaTable.getTableHeader().setReorderingAllowed(false);
         //Logoff thread
         
         
@@ -2027,6 +2030,35 @@ System.out.println("Done list 4");
         NewClientObject ndo = new NewClientObject(new Frame(), true);
         ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
+        Data.refreshStudent();
+        uaacClient.noMore();
+        uaacClient = null;
+        JComboBox[] cboxes = new  JComboBox[4];
+       /* fnameCombo = new JComboBox();
+        lnameCombo = new JComboBox();
+        phoneCombo = new JComboBox();
+        emailCombo = new JComboBox();*/
+       cboxes[0]=fnameCombo;
+       cboxes[1]=lnameCombo;
+       cboxes[2]=phoneCombo;
+       cboxes[3]=emailCombo;
+       
+       ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
+System.out.println("LIST1");
+       cultimateList.add(Data.getClientsfirst());
+       cultimateList.add(Data.getClientslast());
+       cultimateList.add(Data.getClientsphone());
+       cultimateList.add(Data.getClientsemail());
+       System.out.println("DONE LIST1");
+       ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
+System.out.println("LIST 2");
+       cultimateList1.add(Data.getFnameOrderedList());
+       cultimateList1.add(Data.getLnameOrderedList());
+       cultimateList1.add(Data.getPhoneOrderedList());
+       cultimateList1.add(Data.getEmailOrderedList());
+System.out.println("DONE LIST2");
+       uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);
+       clearForm();
         
 
     }//GEN-LAST:event_newStudentButtonActionPerformed
@@ -2035,7 +2067,9 @@ System.out.println("Done list 4");
         //Paraprofessional t = new Paraprofessional(count, "TUTORFIRSTTEST", "TUTORLASTTEST", true);
         //Teacher teach = new Teacher(count, jComboBoxTeacher.getSelectedItem().toString(), "TestFirstName");
         //Subject sub = new Subject(count, jComboBoxCourse.getSelectedItem().toString(), "FullNameTest", new Category(count, "MABS"));
+        addSessionbutton.setEnabled(false);
         getParaprofessionalSession(false);
+        addSessionbutton.setEnabled(true);
     }//GEN-LAST:event_addSessionbuttonActionPerformed
 
     private void addSessionbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addSessionbuttonMouseClicked

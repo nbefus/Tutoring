@@ -81,6 +81,22 @@ public class Data {
     {
         return agendaCategoryList;
     }
+    
+    public static void refreshStudent()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);System.out.println("1111111111111111111111");
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);System.out.println("1111111111111111111111");
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);System.out.println("1111111111111111111111");
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);System.out.println("1111111111111111111111");
+        DatabaseHelper.close();
+    }
 
     public Data(boolean initializeAll) {
         locationslist = new ArrayList<String>();
@@ -280,7 +296,7 @@ System.out.println("1111111111111111111111");
         return arraylist;
     }*/
 
-    public ArrayList<String> setUpList(String query, int index, char separator, ArrayList<String> singleton) {
+    public static ArrayList<String> setUpList(String query, int index, char separator, ArrayList<String> singleton) {
         List result = DatabaseHelper.selectAll(query);
         ArrayList<String> arraylist = new ArrayList<String>();
         Iterator it = result.iterator();
