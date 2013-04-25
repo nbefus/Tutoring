@@ -119,13 +119,11 @@ public final class SIAView extends javax.swing.JFrame
     
     Thread threadLogoff = new Thread(){
                 public void run(){
-                try
+                while(timeTillLogoff-System.currentTimeMillis() > 0)
                 {
-                    Thread.sleep(60*5*1000);
-                    close();
-                } catch (InterruptedException ex)
-                {
+                    //timeTillLogoff = System.currentTimeMillis();
                 }
+                
                 }     
             };
 
@@ -2036,11 +2034,15 @@ System.out.println("Done list 4");
     }
     
     
-    
+    private int timeTillLogoff = 30*1000;
     private void formMouseMoved(java.awt.event.MouseEvent evt)//GEN-FIRST:event_formMouseMoved
     {//GEN-HEADEREND:event_formMouseMoved
+        timeTillLogoff = 30*1000;
         threadLogoff.interrupt();
+        System.out.println(threadLogoff.getState().toString());
+        threadLogoff.stop();
         threadLogoff.start();
+        
     }//GEN-LAST:event_formMouseMoved
 
     
