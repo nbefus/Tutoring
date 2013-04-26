@@ -218,13 +218,14 @@ public class LoginView extends javax.swing.JFrame
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 
-        loginButton.setEnabled(false);
+        
         
         login = new Login(usernameField.getText(), passwordField.getText());
         errorLabel.setText(login.loginFeedback());
 
         if (login.isLoggedIn())
         {
+            loginButton.setEnabled(false);
             if (login.getRole().getType().equalsIgnoreCase("SIA"))
             {
                 SIAView sia = new SIAView();

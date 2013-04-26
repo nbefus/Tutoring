@@ -2031,35 +2031,38 @@ System.out.println("Done list 4");
         ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
         
-        Data.refreshStudent();
-        uaacClient.noMore();
-        uaacClient = null;
-        JComboBox[] cboxes = new  JComboBox[4];
-       /* fnameCombo = new JComboBox();
-        lnameCombo = new JComboBox();
-        phoneCombo = new JComboBox();
-        emailCombo = new JComboBox();*/
-       cboxes[0]=fnameCombo;
-       cboxes[1]=lnameCombo;
-       cboxes[2]=phoneCombo;
-       cboxes[3]=emailCombo;
-       
-       ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
-System.out.println("LIST1");
-       cultimateList.add(Data.getClientsfirst());
-       cultimateList.add(Data.getClientslast());
-       cultimateList.add(Data.getClientsphone());
-       cultimateList.add(Data.getClientsemail());
-       System.out.println("DONE LIST1");
-       ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
-System.out.println("LIST 2");
-       cultimateList1.add(Data.getFnameOrderedList());
-       cultimateList1.add(Data.getLnameOrderedList());
-       cultimateList1.add(Data.getPhoneOrderedList());
-       cultimateList1.add(Data.getEmailOrderedList());
-System.out.println("DONE LIST2");
-       uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);
-       clearForm();
+        if(ndo.wasInserted())
+        {
+            Data.refreshStudent();
+            uaacClient.noMore();
+            uaacClient = null;
+            JComboBox[] cboxes = new  JComboBox[4];
+           /* fnameCombo = new JComboBox();
+            lnameCombo = new JComboBox();
+            phoneCombo = new JComboBox();
+            emailCombo = new JComboBox();*/
+           cboxes[0]=fnameCombo;
+           cboxes[1]=lnameCombo;
+           cboxes[2]=phoneCombo;
+           cboxes[3]=emailCombo;
+
+           ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
+    System.out.println("LIST1");
+           cultimateList.add(Data.getClientsfirst());
+           cultimateList.add(Data.getClientslast());
+           cultimateList.add(Data.getClientsphone());
+           cultimateList.add(Data.getClientsemail());
+           System.out.println("DONE LIST1");
+           ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
+    System.out.println("LIST 2");
+           cultimateList1.add(Data.getFnameOrderedList());
+           cultimateList1.add(Data.getLnameOrderedList());
+           cultimateList1.add(Data.getPhoneOrderedList());
+           cultimateList1.add(Data.getEmailOrderedList());
+    System.out.println("DONE LIST2");
+           uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);
+           clearForm();
+        }
     }//GEN-LAST:event_newStudentButtonActionPerformed
 
     private void addSessionbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSessionbuttonActionPerformed

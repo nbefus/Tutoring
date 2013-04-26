@@ -21,6 +21,7 @@ public class NewClientObject extends javax.swing.JDialog {
     /**
      * Creates new form NewDatabaseObject
      */
+    private boolean inserted = false;
     public NewClientObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -34,6 +35,11 @@ public class NewClientObject extends javax.swing.JDialog {
         if (win != null) {
            win.dispose();
         }
+    }
+    
+    public boolean wasInserted()
+    {
+        return inserted;
     }
     
     /**
@@ -271,7 +277,7 @@ public class NewClientObject extends javax.swing.JDialog {
             {
                 Client c = new Client(-1, fname, lname, email, phone);
                 DatabaseHelper.open();
-                boolean inserted = DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
+                inserted = DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
                 
                 //HibernateTest.create(c);
                 if(inserted)
