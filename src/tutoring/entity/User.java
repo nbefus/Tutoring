@@ -117,6 +117,32 @@ public class User {
 
             return "";
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            User.UserTable [] cols = User.UserTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "select "+columnSetUp+" from User "+User.UserTable.getTableAlias() +" join Role "+User.UserTable.getRoleAlias() + " on "+UserTable.ROLEID.getWithAlias()+"="+UserTable.getRoleAlias()+"."+UserTable.ROLEID.getName();
+            
+            return query;
+        }
 
         public static String getRoleAlias()
         {
@@ -141,16 +167,15 @@ public class User {
         this.password = password;
     }
     
-    public static Object[] getValues(Paraprofessional p)
+    public static Object[] getValues(User u)
     {
-        Object[] values = new Object[7];
-        values[0]=p.getParaprofessionalID();
-        values[1]=p.getRoleID();
-        values[2]=p.getlName();
-        values[3]=p.getfName();
-        values[4]=p.getHireDate();
-        values[5]=p.getTerminationDate();
-        values[6]=p.isIsClockedIn();
+        Object[] values = new Object[5];
+        values[0]=u.getUserName();
+        values[1]=u.getRoleID().getRoleID();
+        values[2]=u.getlName();
+        values[3]=u.getfName();
+        values[4]=u.getPassword();
+
         return values;
     }
     

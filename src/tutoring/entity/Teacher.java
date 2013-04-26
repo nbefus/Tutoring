@@ -111,19 +111,33 @@ public class Teacher
             return "";
         }
         
-        public static String getQuery()
+        public static String getSelectColumns(boolean selectIDs)
         {
             Teacher.TeacherTable [] cols = Teacher.TeacherTable.class.getEnumConstants();
+            
             String columnSetUp = "";
+            
             for(int i=0; i<cols.length; i++)
             {
-                columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
-
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
             String query = "select "+columnSetUp+" from Teacher "+Teacher.TeacherTable.getTableAlias();
+            
             return query;
         }
+        
+
     }
     
     private int teacherID;
@@ -161,7 +175,7 @@ public class Teacher
 
                 statement = connect.createStatement();
 
-                String query = TeacherTable.getQuery();
+                String query = TeacherTable.getSelectQuery(true);
                 query+=" "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
                 

@@ -2903,7 +2903,7 @@ public class AdminView extends javax.swing.JFrame
     private void searchsearchButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchsearchButtonActionPerformed
     {//GEN-HEADEREND:event_searchsearchButtonActionPerformed
 
-        String selectQuery = Client.ClientTable.getSelectQuery();
+        String selectQuery = Client.ClientTable.getSelectQuery(false);
         ArrayList<String> columns= Client.ClientTable.getMainTableColumns();
         String[] oldCOlumns =
         {
@@ -3035,21 +3035,20 @@ public class AdminView extends javax.swing.JFrame
             };
         }
         
-        
         searchclientPanel.setVisible(false);
-            searchuserPanel.setVisible(false);
-            searchcoursePanel.setVisible(false);
-            searchsessionPanel.setVisible(false);
-            searchparaprofessionalPanel.setVisible(true);
-            searchteacherPanel.setVisible(false);
-            searchagendaPanel.setVisible(false);
-            searchsubjectPanel.setVisible(false);
-            searchagendacategoryPanel.setVisible(false);
-            searchlocationPanel.setVisible(false);
-            searchparaprofessionalcategoryPanel.setVisible(false);
-            searchrolePanel.setVisible(false);
-            searchcategoryPanel.setVisible(false);
-            searchcreatorPanel.setVisible(false);
+        searchuserPanel.setVisible(false);
+        searchcoursePanel.setVisible(false);
+        searchsessionPanel.setVisible(false);
+        searchparaprofessionalPanel.setVisible(true);
+        searchteacherPanel.setVisible(false);
+        searchagendaPanel.setVisible(false);
+        searchsubjectPanel.setVisible(false);
+        searchagendacategoryPanel.setVisible(false);
+        searchlocationPanel.setVisible(false);
+        searchparaprofessionalcategoryPanel.setVisible(false);
+        searchrolePanel.setVisible(false);
+        searchcategoryPanel.setVisible(false);
+        searchcreatorPanel.setVisible(false);
         
         if (clientRadio.isSelected())
         {

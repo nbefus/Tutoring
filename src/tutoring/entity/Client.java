@@ -117,19 +117,29 @@ public class Client {
             return "";
         }
         
-        public static String getSelectQuery()
+        public static String getSelectColumns(boolean selectIDs)
         {
             Client.ClientTable [] cols = Client.ClientTable.class.getEnumConstants();
+            
             String columnSetUp = "";
+            
             for(int i=0; i<cols.length; i++)
             {
-                columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
 
-           
-
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
             String query = "select "+columnSetUp+" from Client "+Client.ClientTable.getTableAlias();
+            
             return query;
         }
     }
@@ -179,7 +189,7 @@ public class Client {
                 System.out.println("Connected to the database test1");
 
                 statement = connect.createStatement();
-                String query = ClientTable.getSelectQuery();
+                String query = ClientTable.getSelectQuery(true);
                 query += " "+addedSQLToSelect;
                 resultSet = statement.executeQuery(query);
                 while (resultSet.next()) {

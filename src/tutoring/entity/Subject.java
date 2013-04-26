@@ -113,6 +113,32 @@ public class Subject {
 
             return "";
         }
+        
+         public static String getSelectColumns(boolean selectIDs)
+        {
+            Subject.SubjectTable[] cols = Subject.SubjectTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "SELECT "+columnSetUp+" from Subject "+SubjectTable.getTableAlias()+" join Category "+SubjectTable.getCategoryAlias()+" on "+SubjectTable.CATEGORYID.getWithAlias()+" = "+SubjectTable.getCategoryAlias()+"."+SubjectTable.CATEGORYID.getName();
+            
+            return query;
+        }
 
         public static String getCategoryAlias()
         {
@@ -148,16 +174,9 @@ public class Subject {
 
                 System.out.println("Connected to the database test1");
 
-                Subject.SubjectTable [] cols = Subject.SubjectTable.class.getEnumConstants();
-                String columnSetUp = "";
-                for(int i=0; i<cols.length; i++)
-                {
-                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
-                }
-                columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
                 
                 statement = connect.createStatement();
-                String query = "SELECT "+columnSetUp+" from Subject "+SubjectTable.getTableAlias()+" join Category "+SubjectTable.getCategoryAlias()+" on "+SubjectTable.CATEGORYID.getWithAlias()+" = "+SubjectTable.getCategoryAlias()+"."+SubjectTable.CATEGORYID.getName();
+                String query = Subject.SubjectTable.getSelectQuery(true);
                 query+=" "+addedSQLToSelect;
                 System.out.println(query);
                 resultSet = statement.executeQuery(query);

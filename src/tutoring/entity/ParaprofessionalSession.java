@@ -225,10 +225,10 @@ public class ParaprofessionalSession {
                 return columnSetUp;
         }
         
-        public static String getSelectQuery()
+        public static String getSelectQuery(boolean selectIDs)
         {
             
-                String columnSetUp = getSelectColumns(true);
+                String columnSetUp = getSelectColumns(selectIDs);
                 String query = "SELECT " + columnSetUp
                     /*    + "paraprofessionalSessionID," 
                +"p.paraprofessionalID as 'pParaprofessionalID',  p.fName as 'pFName', p.lName as 'pLName', p.hireDate as 'pHireDate', p.terminationDate as 'pTerminationDate', p.isClockedIn as 'pIsClockedIn', r.roleID as 'pRoleID', r.type as 'pType',"
@@ -298,7 +298,7 @@ public class ParaprofessionalSession {
       
       public static void test()
       {
-          System.out.println(ParaSessTable.getSelectQuery());
+          System.out.println(ParaSessTable.getSelectQuery(false));
       }
     public ParaprofessionalSession(int paraprofessionalSessionID, Paraprofessional paraprofessionalID, Client client, Course course, Location location, Paraprofessional paraprofessionalCreator, Timestamp timeAndDateEntered, Timestamp sessionStart, Timestamp sessionEnd, boolean grammarCheck, String notes, boolean walkout) {
         this.paraprofessionalSessionID = paraprofessionalSessionID;
@@ -357,7 +357,7 @@ public class ParaprofessionalSession {
                 statement = connect.createStatement();
 
                // ParaprofessionalSession.ParaSessTable ps = ParaprofessionalSession.ParaSessTable.;
-                String query = ParaprofessionalSession.ParaSessTable.getSelectQuery();
+                String query = ParaprofessionalSession.ParaSessTable.getSelectQuery(false);
                query += " "+addedSQLToSelect;
                
                resultSet = statement.executeQuery(query);

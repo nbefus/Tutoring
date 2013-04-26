@@ -4,6 +4,11 @@
  */
 package tutoring.entity;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +19,8 @@ public class Role {
     
     public enum RoleTable {
         
-        LOCATIONID("Location ID", "locationID", true, getTableAlias()+".locationID", true),
-        NAME("Location", "name", true, getTableAlias()+".name", false);
+        ROLEID("Role ID", "roleID", true, getTableAlias()+".roleID", true),
+        TYPE("Role", "type", true, getTableAlias()+".type", false);
         
         
         private String name;
@@ -24,8 +29,8 @@ public class Role {
         private boolean isID;
         private String displayName;
         
-        private static final String tableAlias = "location";
-        private static final String table = "Location";
+        private static final String tableAlias = "role";
+        private static final String table = "Role";
         
 
         private RoleTable(String displayName, String name, boolean mainTableColumn, String withAlias, boolean isID) {
@@ -105,6 +110,32 @@ public class Role {
 
             return "";
         }
+        
+        public static String getSelectColumns(boolean selectIDs)
+        {
+            Role.RoleTable [] cols = Role.RoleTable.class.getEnumConstants();
+            
+            String columnSetUp = "";
+            
+            for(int i=0; i<cols.length; i++)
+            {
+                if(selectIDs || !cols[i].isID())
+                    columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
+            }
+            columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
+            return columnSetUp;
+
+        }
+        
+        public static String getSelectQuery(boolean selectIDs)
+        {
+            
+            String columnSetUp = getSelectColumns(selectIDs);
+            
+            String query = "select "+columnSetUp+" from Role "+Role.RoleTable.getTableAlias();
+            
+            return query;
+        }
     }
     
     private int roleID; // primary key
@@ -119,7 +150,71 @@ public class Role {
     {
         
     }
+    
+    public static Object[] getValues(Role r)
+    {
+        Object[] values = new Object[2];
+        values[0]=r.getRoleID();
+        values[1]=r.getType();
+        return values;
+    }
+    
+     public static ArrayList<Role> selectAllClients(String addedSQLToSelect, Connection connect) 
+     {
+        // Connection connect = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        ArrayList<Role> roles = new ArrayList<Role>();
+        
+        try {
+            // connect way #1
+         //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
+         //   String user = "nbefus_me";
+         //   String password = "heythere";
 
+        //    connect = DriverManager.getConnection(url1, user, password);
+
+            if (connect != null) {
+
+                System.out.println("Connected to the database test1");
+
+                statement = connect.createStatement();
+                String query = Role.RoleTable.getSelectQuery(true);
+                query += " "+addedSQLToSelect;
+                resultSet = statement.executeQuery(query);
+                while (resultSet.next()) {
+                    
+                    roles.add(new Role(resultSet.getInt(RoleTable.ROLEID.getWithAlias()), resultSet.getString(RoleTable.TYPE.getWithAlias())));
+                }
+                
+                 return roles;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("An error occurred. Maybe user/password is invalid");
+            ex.printStackTrace();
+        } finally {
+            try {
+          if (resultSet != null) {
+            resultSet.close();
+          }
+
+          if (statement != null) {
+            statement.close();
+          }
+
+         /* if (connect != null) {
+            connect.close();
+          }*/
+        } catch (Exception e) {
+
+        }    
+            return roles;
+        }
+    }
+    
+    
     /**
      * @return the roleID
      */
