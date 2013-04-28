@@ -177,7 +177,7 @@ public class ParaprofessionalSession {
             for(int i=0; i<columns.length; i++)
             {
                 if(!columns[i].isID())
-                    cols.add(columns[i].getName());
+                    cols.add(columns[i].getDisplayName());
             }
             return cols;
         }

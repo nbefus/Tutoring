@@ -145,9 +145,12 @@ public class Location {
         this.name = locationName;
     }
 
-      public Location()
+    public static Object[] getValues(Location l)
     {
-        
+        Object[] values = new Object[2];
+        values[0]=l.getLocationID();
+        values[1]=l.getName();
+        return values;
     }
       
       public static ArrayList<Location> selectAllLocation(String addedSQLToSelect, Connection connect) {

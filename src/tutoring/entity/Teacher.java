@@ -149,9 +149,13 @@ public class Teacher
         this.fName = fName;
     }
 
-      public Teacher()
+    public static Object[] getValues(Teacher t)
     {
-        
+        Object[] values = new Object[3];
+        values[0]=t.getTeacherID();
+        values[1]=t.getfName();
+        values[2] = t.getlName();
+        return values;
     }
       
       public static ArrayList<Teacher> selectAllTeacher(String addedSQLToSelect, Connection connect) {

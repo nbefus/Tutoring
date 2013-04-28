@@ -6,6 +6,7 @@ package tutoring.helper;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -31,14 +32,11 @@ public class Data {
      private ArrayList<User> users;// = (ArrayList<Client>)HibernateTest.select("from Client as c where c.fName='"+clientFName.trim()+"' and c.lName='"+clientLName.trim()+"'");
      */
 
-    private static ArrayList<Client> clientFirst;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
+    /*private static ArrayList<Client> clientFirst;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.fName");
     private static ArrayList<Client> clientLast;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.lName");
     private static ArrayList<Client> clientPhone;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.phone");
     private static ArrayList<Client> clientEmail;// = (ArrayList<Client>)HibernateTest.select("from Client as c order by c.email");
-    private static ArrayList<String> clientsfirst;// = new ArrayList<String>();
-    private static ArrayList<String> clientslast;// = new ArrayList<String>();
-    private static ArrayList<String> clientsphone;// = new ArrayList<String>();
-    private static ArrayList<String> clientsemail;// = new ArrayList<String>();
+   
     private static ArrayList<Location> locations;// = (ArrayList<Location>)HibernateTest.select("from Location as l order by l.name");
     private static ArrayList<Paraprofessional> tutors;// = (ArrayList<Paraprofessional>)HibernateTest.select("from Paraprofessional as p order by p.fName");
     private static ArrayList<Subject> subjects;// = (ArrayList<Subject>)HibernateTest.select("from Subject as s order by s.abbrevName");
@@ -48,9 +46,13 @@ public class Data {
     private static ArrayList<Teacher> teacherLast;
     private static ArrayList<Role> roles;
     private static ArrayList<Paraprofessional> tutorFirst;
-    private static ArrayList<Paraprofessional> tutorLast;
+    private static ArrayList<Paraprofessional> tutorLast;*/
+     private static ArrayList<String> clientsfirst;// = new ArrayList<String>();
+    private static ArrayList<String> clientslast;// = new ArrayList<String>();
+    private static ArrayList<String> clientsphone;// = new ArrayList<String>();
+    private static ArrayList<String> clientsemail;// = new ArrayList<String>();
     private static ArrayList<String> locationslist;// = new ArrayList<String>();
-    private static ArrayList<String> tutorslist;// = new ArrayList<String>();
+   private static ArrayList<String> tutorslist;// = new ArrayList<String>();
     private static ArrayList<String> teacherslist;// = new ArrayList<String>();
     private static ArrayList<String> subjectslist;// = new ArrayList<String>();
     private static ArrayList<String> categorieslist;// = new ArrayList<String>();
@@ -59,9 +61,9 @@ public class Data {
     private static ArrayList<String> teacherlastlist;
     private static ArrayList<String> tutorsfirstlist;
     private static ArrayList<String> tutorslastlist;
-    private static ArrayList<String> roleslist;
+    //private static ArrayList<String> roleslist;
     private static ArrayList<String> multicategorylist;
-    private static ArrayList<String> combinedcourselist;
+   // private static ArrayList<String> combinedcourselist;
     private static ArrayList<String> subjectOrderedList;//= setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName");
     private static ArrayList<String> levelOrderedList;// = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level");
     private static ArrayList<String> teacherOrderedList;
@@ -69,18 +71,20 @@ public class Data {
     private static ArrayList<String> lnameOrderedList;// = setUpList("select fname, lname, phone, email from Client order by lname");
     private static ArrayList<String> phoneOrderedList;// = setUpList("select fname, lname, phone, email from Client order by phone");
     private static ArrayList<String> emailOrderedList;
-    private static ArrayList<String> agendaCategoryList;
-    public static ArrayList<String> getCombinedcourselist() {
-        return combinedcourselist;
-    }
+   // private static ArrayList<String> agendaCategoryList;
+    
+    private static ArrayList<String> userfirstlist;
+    private static ArrayList<String> userlastlist;
+    private static ArrayList<String> usernamelist;
+    private static ArrayList<String> parafirstlist;
+    private static ArrayList<String> paralastlist;
+    private static ArrayList<String> agendanotelist;
+    private static ArrayList<String> rolelist;
+    private static ArrayList<String> agendacategorylist;
+    
 
-    /**
-     * @return the agendaCategoryList
-     */
-    public static ArrayList<String> getAgendaCategoryList()
-    {
-        return agendaCategoryList;
-    }
+
+
     
     public static void refreshStudent()
     {
@@ -91,60 +95,77 @@ public class Data {
         
         char separator = ',';
         DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);System.out.println("1111111111111111111111");
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);System.out.println("1111111111111111111111");
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);System.out.println("1111111111111111111111");
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);System.out.println("1111111111111111111111");
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
         DatabaseHelper.close();
     }
 
     public Data(boolean initializeAll) {
         locationslist = new ArrayList<String>();
-        tutorslist = new ArrayList<String>();
-        teacherslist = new ArrayList<String>();
+       
         subjectslist = new ArrayList<String>();
         categorieslist = new ArrayList<String>();
         levelslist = new ArrayList<String>();
         teacherlastlist = new ArrayList<String>();
         teacherfirstlist = new ArrayList<String>();
-        roleslist = new ArrayList<String>();
 
+        tutorslist = new ArrayList<String>();
         tutorsfirstlist = new ArrayList<String>();
         tutorslastlist = new ArrayList<String>();
-
+        teacherslist = new ArrayList<String>();
         multicategorylist = new ArrayList<String>();
-        combinedcourselist = new ArrayList<String>();
+        
+        
+        char separator = ',';
+        
+        DatabaseHelper.open();
         
         clientsfirst = new ArrayList<String>();
         clientslast = new ArrayList<String>();
         clientsphone = new ArrayList<String>();
         clientsemail = new ArrayList<String>();
         
-        char separator = ',';
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
         
-        DatabaseHelper.open();
+        subjectslist = regularSQL("select "+Subject.SubjectTable.ABBREVNAME.getName()+" from "+Subject.SubjectTable.getTable()+" order by "+Subject.SubjectTable.ABBREVNAME.getName());
+        
+        levelslist = regularSQL("select "+Course.CourseTable.LEVEL.getName()+" from "+Course.CourseTable.getTable()+" order by "+Course.CourseTable.LEVEL.getName());
+        
+        teacherfirstlist = regularSQL("select "+Teacher.TeacherTable.FNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.FNAME.getName());
+        teacherlastlist = regularSQL("select "+Teacher.TeacherTable.LNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.LNAME.getName());
+        
+        categorieslist = regularSQL("select "+Category.CategoryTable.NAME.getName()+" from "+Category.CategoryTable.getTable()+" order by "+Category.CategoryTable.NAME.getName());
+        
+        userfirstlist = regularSQL("select "+User.UserTable.FNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.FNAME.getName());
+        userlastlist = regularSQL("select "+User.UserTable.LNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.LNAME.getName());
+        usernamelist = regularSQL("select "+User.UserTable.USERNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.USERNAME.getName());
+        
+        agendacategorylist = regularSQL("select "+AgendaCategory.AgendaCategoryTable.TYPE.getName()+" from "+AgendaCategory.AgendaCategoryTable.getTable()+" order by "+AgendaCategory.AgendaCategoryTable.TYPE.getName());
+        agendanotelist = regularSQL("select "+Agenda.AgendaTable.NOTES.getName()+" from "+Agenda.AgendaTable.getTable()+" order by "+Agenda.AgendaTable.NOTES.getName());
+        
+        rolelist= regularSQL("select "+Role.RoleTable.TYPE.getName()+" from "+Role.RoleTable.getTable()+" order by "+Role.RoleTable.TYPE.getName());
+        
+        locationslist = regularSQL("select "+Location.LocationTable.NAME.getName()+ " from "+Location.LocationTable.getTable()+" order by "+Location.LocationTable.NAME.getName());
+        
+        parafirstlist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
+        paralastlist = regularSQL("select "+Paraprofessional.ParaTable.LNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.LNAME.getName());
+       
+        tutorslist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+", "+Paraprofessional.ParaTable.FNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
         
         subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
-        System.out.println("1111111111111111111111");
-        
         levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
-        System.out.println("1111111111111111111111");
         teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist);
-System.out.println("1111111111111111111111");
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);System.out.println("1111111111111111111111");
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);System.out.println("1111111111111111111111");
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);System.out.println("1111111111111111111111");
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);System.out.println("1111111111111111111111");
-
-    /*
-        clientFirst = (ArrayList<Client>) HibernateTest.select("from Client as c order by c.fName");
-        clientLast = (ArrayList<Client>) HibernateTest.select("from Client as c order by c.lName");
-        clientPhone = (ArrayList<Client>) HibernateTest.select("from Client as c order by c.phone");
-        clientEmail = (ArrayList<Client>) HibernateTest.select("from Client as c order by c.email");
-
-        ;*/
-
+       
+        multicategorylist = createMultiCat(categorieslist.size(), null);
+        /*
         locations = Location.selectAllLocation("order by "+Location.LocationTable.NAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");System.out.println("1111111111111111111111");
+        locationslist = Arrays.copyOf(locations.toArray(), locations.size(), ArrayList.class);
+        
         tutors = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as p order by p.fName");System.out.println("1111111111111111111111");
         subjects = Subject.selectAllSubjects("order by "+Subject.SubjectTable.ABBREVNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Subject>) HibernateTest.select("from Subject as s order by s.abbrevName");System.out.println("1111111111111111111111");
         teacherFirst = Teacher.selectAllTeacher("order by "+Teacher.TeacherTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Teacher>) HibernateTest.select("from Teacher as t order by t.fName");System.out.println("1111111111111111111111");
@@ -155,16 +176,16 @@ System.out.println("1111111111111111111111");
         tutorFirst = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.FNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.fName");System.out.println("1111111111111111111111");
         tutorLast = Paraprofessional.selectAllParaprofessional("order by "+Paraprofessional.ParaTable.LNAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Paraprofessional>) HibernateTest.select("from Paraprofessional as t order by t.lName");System.out.println("1111111111111111111111");
 
-        
+        */
 
 
-
+/*
         for (int i = 0; i < combinedcourselist.size(); i++) {
             System.out.println("!!!!!!!!!!!!!!" + combinedcourselist.get(i).toString());
         }
 
 
-        roles = null;//(ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");System.out.println("1111111111111111111111 DONEDONE DONE");
+        roles = null;*///(ArrayList<Role>) HibernateTest.select("from Role as r order by r.type");System.out.println("1111111111111111111111 DONEDONE DONE");
 
         /*
          for(int i=0; i<clientFirst.size(); i++)
@@ -195,6 +216,7 @@ System.out.println("1111111111111111111111");
         /* 
          */
         
+        /*
         ArrayList<AgendaCategory> cats = AgendaCategory.selectAllAgendaCategory("", DatabaseHelper.getConnection());//(ArrayList<AgendaCategory>)HibernateTest.select("from AgendaCategory");
         agendaCategoryList = new ArrayList<String>();
         for(int i=0; i<cats.size(); i++)
@@ -221,28 +243,28 @@ System.out.println("1111111111111111111111");
         
        
          for(int i=0; i<levels.size(); i++)
-         levelslist.add(levels.get(i).getLevel()+"");
+            levelslist.add(levels.get(i).getLevel()+"");
        
          for(int i=0; i<teacherFirst.size(); i++)
-         teacherfirstlist.add(teacherFirst.get(i).getfName());
+            teacherfirstlist.add(teacherFirst.get(i).getfName());
        
          for(int i=0; i<teacherLast.size(); i++)
-         teacherlastlist.add(teacherLast.get(i).getlName());
+            teacherlastlist.add(teacherLast.get(i).getlName());
          for(int i=0; i<teacherFirst.size(); i++)
-         teacherslist.add(teacherFirst.get(i).getfName()+" "+teacherFirst.get(i).getlName());
+            teacherslist.add(teacherFirst.get(i).getfName()+" "+teacherFirst.get(i).getlName());
          for(int i=0; i<subjects.size(); i++)
-         subjectslist.add(subjects.get(i).getAbbrevName());
-
+            subjectslist.add(subjects.get(i).getAbbrevName());
+*/
         //setUpList2("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName");
 
 
 
 
-
+/*
         for (int i = 0; i < categories.size(); i++) {
             categorieslist.add(categories.get(i).getName());
         }
-
+*/
 
 
 
@@ -257,7 +279,7 @@ System.out.println("1111111111111111111111");
 
 
 
-        multicategorylist = createMultiCat(categorieslist.size(), null);
+        
         /*
          if(initializeAll)
          {
@@ -318,6 +340,23 @@ System.out.println("1111111111111111111111");
             // System.out.println(line);
             arraylist.add(line);
             // System.out.println();
+        }
+        return arraylist;
+    }
+    
+    public static ArrayList<String> regularSQL(String query) {
+        List result = DatabaseHelper.selectAll(query);
+        ArrayList<String> arraylist = new ArrayList<String>();
+        Iterator it = result.iterator();
+        while (it.hasNext()) {
+            Object[] row = (Object[]) it.next();
+            for (int i = 0; i < row.length; i++) {
+                // System.out.print("\t\t*" + row[i]+"*");
+                if(row[i] == null || row[i].toString().length() == 0)
+                    row[i]="NONE";
+
+                arraylist.add(row[i].toString());
+            }
         }
         return arraylist;
     }
@@ -393,7 +432,7 @@ System.out.println("1111111111111111111111");
             if (s.equals(" ")) {
                 tmp.add(categorieslist.get(n - 1));
             } else {
-                tmp.add(s + " " + categorieslist.get(n - 1));
+                tmp.add(s + ", " + categorieslist.get(n - 1));
             }
         }
 
@@ -509,6 +548,7 @@ System.out.println("1111111111111111111111");
      return users;
      }
      */
+    /*
     public static ArrayList<Client> getClientFirst() {
         return clientFirst;
     }
@@ -523,7 +563,7 @@ System.out.println("1111111111111111111111");
 
     public static ArrayList<Client> getClientEmail() {
         return clientEmail;
-    }
+    }*/
 
     public static ArrayList<String> getClientsfirst() {
         return clientsfirst;
@@ -541,6 +581,7 @@ System.out.println("1111111111111111111111");
         return clientsemail;
     }
 
+    /*
     public static ArrayList<Location> getLocations() {
         return locations;
     }
@@ -563,12 +604,13 @@ System.out.println("1111111111111111111111");
 
     public static ArrayList<Course> getLevels() {
         return levels;
-    }
+    }*/
 
     public static ArrayList<String> getLocationslist() {
         return locationslist;
     }
 
+    
     public static ArrayList<String> getTutorslist() {
         return tutorslist;
     }
@@ -601,13 +643,6 @@ System.out.println("1111111111111111111111");
      */
     public static ArrayList<String> getTeacherlastlist() {
         return teacherlastlist;
-    }
-
-    /**
-     * @return the roleslist
-     */
-    public static ArrayList<String> getRoleslist() {
-        return roleslist;
     }
 
     /**
@@ -657,5 +692,37 @@ System.out.println("1111111111111111111111");
 
     public static ArrayList<String> getEmailOrderedList() {
         return emailOrderedList;
+    }
+
+    public static ArrayList<String> getUserfirstlist() {
+        return userfirstlist;
+    }
+
+    public static ArrayList<String> getUserlastlist() {
+        return userlastlist;
+    }
+
+    public static ArrayList<String> getUsernamelist() {
+        return usernamelist;
+    }
+
+    public static ArrayList<String> getParafirstlist() {
+        return parafirstlist;
+    }
+
+    public static ArrayList<String> getParalastlist() {
+        return paralastlist;
+    }
+
+    public static ArrayList<String> getAgendanotelist() {
+        return agendanotelist;
+    }
+
+    public static ArrayList<String> getRolelist() {
+        return rolelist;
+    }
+
+    public static ArrayList<String> getAgendacategorylist() {
+        return agendacategorylist;
     }
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 /*
  * To change this template, choose Tools | Templates
@@ -156,15 +157,15 @@ public class Paraprofessional
     private int paraprofessionalID;         // primary key
     private Role roleID;                      // foreign key
     private String lName, fName;
-    private Timestamp hireDate = null;
-    private Timestamp terminationDate = null;
+    private Date hireDate = null;
+    private Date terminationDate = null;
     private boolean isClockedIn;
 
       public Paraprofessional()
     {
         
     }
-    public Paraprofessional(int paraprofessionalID, Role role, String lName, String fName, Timestamp hireDate, Timestamp terminationDate, boolean isClockedIn) {
+    public Paraprofessional(int paraprofessionalID, Role role, String lName, String fName, Date hireDate, Date terminationDate, boolean isClockedIn) {
         this.paraprofessionalID = paraprofessionalID;
         this.roleID = role;
         this.lName = lName;
@@ -302,28 +303,28 @@ public class Paraprofessional
     /**
      * @return the hireDate
      */
-    public Timestamp getHireDate() {
+    public Date getHireDate() {
         return hireDate;
     }
 
     /**
      * @param hireDate the hireDate to set
      */
-    public void setHireDate(Timestamp hireDate) {
+    public void setHireDate(Date hireDate) {
         this.hireDate = hireDate;
     }
 
     /**
      * @return the terminationDate
      */
-    public Timestamp getTerminationDate() {
+    public Date getTerminationDate() {
         return terminationDate;
     }
 
     /**
      * @param terminationDate the terminationDate to set
      */
-    public void setTerminationDate(Timestamp terminationDate) {
+    public void setTerminationDate(Date terminationDate) {
         this.terminationDate = terminationDate;
     }
 

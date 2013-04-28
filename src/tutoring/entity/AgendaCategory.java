@@ -142,9 +142,12 @@ public class AgendaCategory
         this.type = type;
     }
     
-    public AgendaCategory()
+    public static Object[] getValues(AgendaCategory c)
     {
-        
+        Object[] values = new Object[2];
+        values[0]=c.getAgendaCategoryID();
+        values[1]=c.getType();
+        return values;
     }
     
      public static ArrayList<AgendaCategory> selectAllAgendaCategory(String addedSQLToSelect, Connection connect) {

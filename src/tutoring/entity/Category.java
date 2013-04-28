@@ -19,7 +19,7 @@ public class Category {
     
     public enum CategoryTable {
         CATEGORYID("Category ID","categoryID", true, getTableAlias()+".categoryID", true),
-        NAME("Name","name", true, getTableAlias()+".name", false);
+        NAME("Category","name", true, getTableAlias()+".name", false);
          
         private String name;
         private boolean mainTableColumn;
@@ -144,9 +144,12 @@ public class Category {
         this.name = name;
     }
     
-    public Category()
+    public static Object[] getValues(Category c)
     {
-
+        Object[] values = new Object[2];
+        values[0]=c.getCategoryID();
+        values[1]=c.getName();
+        return values;
     }
      
       public static ArrayList<Category> selectAllCategory(String addedSQLToSelect, Connection connect) {

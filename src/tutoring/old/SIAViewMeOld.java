@@ -37,8 +37,8 @@ import javax.swing.text.JTextComponent;
 
 import tutoring.entity.*;
 import tutoring.helper.*;
-import tutoring.ui.NewAgendaObject;
-import tutoring.ui.NewClientObject;
+import tutoring.dialogs.NewAgendaObject;
+import tutoring.dialogs.NewClientObject;
 
 
 /**

@@ -150,14 +150,21 @@ public class Subject {
     private String abbrevName;
     private Category categoryID;  // foreign key
 
-    public Subject() {
-    }
-
-    public Subject(int subjectID, String abbrevName, Category category) {
+   public Subject(int subjectID, String abbrevName, Category category) {
         this.subjectID = subjectID;
         this.abbrevName = abbrevName;
         this.categoryID = category;
     }
+    
+    public static Object[] getValues(Subject s)
+    {
+        Object[] values = new Object[3];
+        values[0]=s.getSubjectID();
+        values[1]=s.getAbbrevName();
+        values[2] = s.getCategoryID().getCategoryID();
+        return values;
+    }
+      
 
     public static ArrayList<Subject> selectAllSubjects(String addedSQLToSelect, Connection connect) {
         

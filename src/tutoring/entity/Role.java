@@ -159,7 +159,7 @@ public class Role {
         return values;
     }
     
-     public static ArrayList<Role> selectAllClients(String addedSQLToSelect, Connection connect) 
+     public static ArrayList<Role> selectAllRoles(String addedSQLToSelect, Connection connect) 
      {
         // Connection connect = null;
         Statement statement = null;

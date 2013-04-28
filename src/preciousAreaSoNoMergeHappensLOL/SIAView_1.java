@@ -22,7 +22,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.text.JTextComponent;
 import tutoring.entity.*;
 import tutoring.helper.*;
-import tutoring.ui.NewClientObject;
+import tutoring.dialogs.NewClientObject;
 
 /**
  *

@@ -149,7 +149,7 @@ public class RestrictionListModel
         return fullQuery;
     }
     */
-    public String createQuery(String[] columns, String table, String selectQuery)
+    public String createQuery(String table, String selectQuery)
     {
         /*String query = "select ";
         
