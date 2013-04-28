@@ -164,7 +164,7 @@ public final class SIAView extends javax.swing.JFrame
         (new Thread(){
             public void run(){
                 
-                notesField.setLineWrap(true);
+        notesField.setLineWrap(true);
         sessionstartField.setText("mm/dd/yyyy hh:mm aa");
         sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
