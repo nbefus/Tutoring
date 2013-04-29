@@ -105,7 +105,7 @@ public class NewClientObject extends javax.swing.JDialog {
             boolean goodEmail = true;
             
             
-            if(email.length() > 4)
+            if(email.length() > 0)
             {
                 int atSign = email.indexOf("@");
                 int dot = email.indexOf(".");
@@ -312,7 +312,7 @@ public class NewClientObject extends javax.swing.JDialog {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         
-        validate();
+        validate(false);
 
     }//GEN-LAST:event_createButtonActionPerformed
 

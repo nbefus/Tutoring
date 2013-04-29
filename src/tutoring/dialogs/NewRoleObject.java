@@ -74,13 +74,14 @@ public class NewRoleObject extends javax.swing.JDialog {
                 Role r = new Role(roleID, role);
                 System.out.println(r.toString());
 
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(Role.getValues(r), Role.RoleTable.getTable());
                 else
                     DatabaseHelper.update(Role.getValues(r), Role.RoleTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda category was successfully written to the database!");
+                JOptionPane.showMessageDialog(null, "The role was successfully written to the database!");
                 
                 close();
                 
@@ -89,7 +90,7 @@ public class NewRoleObject extends javax.swing.JDialog {
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "The agenda category was NOT created! Please try again!");
+            JOptionPane.showMessageDialog(null, "The role was NOT created! Please try again!");
         }
         finally
         {

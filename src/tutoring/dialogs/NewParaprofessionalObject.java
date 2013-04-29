@@ -9,7 +9,9 @@ import java.awt.Window;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
@@ -22,6 +24,7 @@ import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
+import tutoring.helper.UltimateAutoComplete;
 
 /**
  *
@@ -37,17 +40,21 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        roleCombo.setEditable(true);
-        categoryCombo.setEditable(true);
+      //  roleCombo.setEditable(true);
+       // categoryCombo.setEditable(true);
         
         
         this.setResizable(false);
                
-        roleCombo.setModel(new DefaultComboBoxModel(Data.getRolelist().toArray()));
-        roleCombo.setSelectedIndex(0);
+        //roleCombo.setModel(new DefaultComboBoxModel(new ArrayList<String>(new HashSet<String>(Data.getRolelist())).toArray()));
+        //roleCombo.setSelectedIndex(0);
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getRolelist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{roleCombo});
+       
         
-        categoryCombo.setModel(new DefaultComboBoxModel(Data.getCategorieslist().toArray()));
-        categoryCombo.setSelectedIndex(0);
+        //categoryCombo.setModel(new DefaultComboBoxModel(new ArrayList<String>(new HashSet<String>(Data.getCategorieslist())).toArray()));
+        //categoryCombo.setSelectedIndex(0);
         
         editButton.setVisible(false);
         
@@ -57,19 +64,25 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        roleCombo.setEditable(true);
-        categoryCombo.setEditable(true);
+       // roleCombo.setEditable(true);
+       // categoryCombo.setEditable(true);
         
         
         this.setResizable(false);
                
-        ArrayList<String> roles = Data.getRolelist();
-        ArrayList<String> categories = Data.getCategorieslist();
-        roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
-        roleCombo.setSelectedIndex(roles.indexOf(role));
+       // ArrayList<String> roles = new ArrayList<String>(new HashSet<String>(Data.getRolelist()));
+        //ArrayList<String> categories = new ArrayList<String>(new HashSet<String>(Data.getCategorieslist()));
+       // roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
+        //roleCombo.setSelectedIndex(roles.indexOf(role));
+        
+         ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getRolelist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{roleCombo});
         
         //categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
         //categoryCombo.setSelectedIndex(categories.indexOf(category));
+        
+        uac.setComboValue(role, 0);
         
         clockedInCombo.setSelectedIndex(((DefaultComboBoxModel)clockedInCombo.getModel()).getIndexOf(clockedIn));
         

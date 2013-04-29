@@ -102,8 +102,8 @@ public class Course
             
             for(int i=0; i<columns.length; i++)
             {
-                if(!columns[i].isID())
-                    cols.add(columns[i].getName());
+                if(!columns[i].isID() || i==0)
+                    cols.add(columns[i].getDisplayName());
             }
             return cols;
         }
@@ -130,7 +130,7 @@ public class Course
             
             for(int i=0; i<cols.length; i++)
             {
-                if(selectIDs || !cols[i].isID())
+                if(selectIDs || !cols[i].isID() || i==0)
                     columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
@@ -187,8 +187,8 @@ public class Course
     {
         Object[] values = new Object[4];
         values[0]=c.getCourseID();
-        values[1]=c.getTeacherID();
-        values[2]=c.getSubjectID();
+        values[1]=c.getTeacherID().getTeacherID();
+        values[2]=c.getSubjectID().getSubjectID();
         values[3]=c.getLevel();
         return values;
     }

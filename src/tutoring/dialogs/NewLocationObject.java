@@ -73,14 +73,14 @@ public class NewLocationObject extends javax.swing.JDialog {
                 
                 Location l = new Location(locationID, location);
                 System.out.println(l.toString());
-
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(Location.getValues(l), Location.LocationTable.getTable());
                 else
                     DatabaseHelper.update(Location.getValues(l), Location.LocationTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda category was successfully written to the database!");
+                JOptionPane.showMessageDialog(null, "The location was successfully written to the database!");
                 
                 close();
                 
@@ -89,7 +89,7 @@ public class NewLocationObject extends javax.swing.JDialog {
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "The agenda category was NOT created! Please try again!");
+            JOptionPane.showMessageDialog(null, "The location was NOT created! Please try again!");
         }
         finally
         {

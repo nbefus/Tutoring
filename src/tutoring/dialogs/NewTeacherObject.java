@@ -95,6 +95,7 @@ public class NewTeacherObject extends javax.swing.JDialog {
                 Teacher t = new Teacher(teacherID, lname, fname);
                 System.out.println(t.toString());
 
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(Teacher.getValues(t), Teacher.TeacherTable.getTable());
                 else
@@ -102,9 +103,7 @@ public class NewTeacherObject extends javax.swing.JDialog {
                 //Reload data and table
                 
                 JOptionPane.showMessageDialog(null, "The teacher was successfully written to the database!");
-                
                 close();
-                
             }
 
         }
@@ -114,7 +113,7 @@ public class NewTeacherObject extends javax.swing.JDialog {
         }
         finally
         {
-            DatabaseHelper.close();
+            DatabaseHelper.close(); 
         }
     }
     /**

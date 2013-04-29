@@ -514,13 +514,11 @@ System.out.println("Done list 4");
             for(int i=0; i<sessions.size(); i++)
             {
                 ((SessionTableModel) sessionsTable.getModel()).addRow(sessions.get(i)); 
-                System.out.println("ADDED SESSION");
             }
             
             sessionsTable.repaint();
         }
         
-        System.out.println("SESSIONS AGIAN");
         
         String futureSessionsWhere = " where ("+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NULL) AND "+sessStartCol+" >= '"+now.toString()+"' AND "+walkoutCol+"='false'";
 
@@ -532,7 +530,6 @@ System.out.println("Done list 4");
             for(int i=0; i<futureSessions.size(); i++)
             {
                 ((SessionTableModel) appointmentsTable.getModel()).addRow(futureSessions.get(i)); 
-                System.out.println("ADDED FUTURE SESSION");
             }
             
             appointmentsTable.repaint();
@@ -550,7 +547,6 @@ System.out.println("Done list 4");
                 
                 Agenda a = agenda.get(i);
                 ((AgendaTableModel) agendaTable.getModel()).addRow(a);
-                //System.out.println("AGENDA : "+a.getAgendaID()+" "+ a.getDate()+" "+ a.getNotes()+" " +a.getAgendaCategoryID().getType());
                 
             }
            
@@ -703,7 +699,7 @@ System.out.println("Done list 4");
                 String notes = table.getValueAt(row, AgendaTableModel.Columns.NOTES.getColumnIndex()).toString();
                 int agendaID =((Integer) table.getValueAt(row, AgendaTableModel.Columns.ID.getColumnIndex())).intValue();
                 
-                NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, Data.getAgendacategorylist(), type, date, notes, agendaID);
+                NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, type, date, notes, agendaID);
                 ndo.setLocationRelativeTo(null);
                 ndo.setVisible(true);
                 System.out.println("HOPEFULLY NOT HERE YET");
@@ -2209,7 +2205,7 @@ System.out.println("Done list 4");
 
     private void addAgendaItemButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAgendaItemButtonActionPerformed
     {//GEN-HEADEREND:event_addAgendaItemButtonActionPerformed
-        NewAgendaObject ndo = new NewAgendaObject(new Frame(), true, Data.getAgendacategorylist());
+        NewAgendaObject ndo = new NewAgendaObject(new Frame(), true);
         ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
         System.out.println("HOPEFULLY NOT HERE YET");

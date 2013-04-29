@@ -9,7 +9,9 @@ import java.awt.Window;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
@@ -20,6 +22,7 @@ import tutoring.entity.Category;
 import tutoring.entity.Subject;
 import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
+import tutoring.helper.UltimateAutoComplete;
 
 /**
  *
@@ -34,12 +37,16 @@ public class NewSubjectObject extends javax.swing.JDialog {
     public NewSubjectObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        categoryCombo.setEditable(true);
+      //  categoryCombo.setEditable(true);
         
         this.setResizable(false);
-        ArrayList<String> categories = Data.getCategorieslist();
-        categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
-        categoryCombo.setSelectedIndex(0);
+       // ArrayList<String> categories = new ArrayList<String>(new HashSet<String>(Data.getCategorieslist()));
+       /// categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
+       // categoryCombo.setSelectedIndex(0);
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getCategorieslist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{categoryCombo});
+       
         editButton.setVisible(false);
         
     }
@@ -47,12 +54,18 @@ public class NewSubjectObject extends javax.swing.JDialog {
     public NewSubjectObject(java.awt.Frame parent, boolean modal, String subject, String category, int subjectID) {
         super(parent, modal);
         initComponents();
-        categoryCombo.setEditable(true);
-        ArrayList<String> categories = Data.getCategorieslist();
+      //  categoryCombo.setEditable(true);
+      //  ArrayList<String> categories = new ArrayList<String>(new HashSet<String>(Data.getCategorieslist()));
 
-        categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
+       // categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
         
-        categoryCombo.setSelectedIndex(categories.indexOf(category));
+       // categoryCombo.setSelectedIndex(categories.indexOf(category));
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getCategorieslist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{categoryCombo});
+       
+        uac.setComboValue(category, 0);
+        
         subjectField.setText(subject);
         editButton.setVisible(true);
         this.subjectID=subjectID;
@@ -99,14 +112,14 @@ public class NewSubjectObject extends javax.swing.JDialog {
                 
                 Subject s = new Subject(subjectID, subject, cat.get(0));
                 System.out.println(s.toString());
-
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(Subject.getValues(s), Subject.SubjectTable.getTable());
                 else
                     DatabaseHelper.update(Subject.getValues(s), Subject.SubjectTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda item was successfully written to the database!");
+                JOptionPane.showMessageDialog(null, "The subject was successfully written to the database!");
                 
                 close();
                 
@@ -115,7 +128,7 @@ public class NewSubjectObject extends javax.swing.JDialog {
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "The agenda item was NOT created! Please try again!");
+            JOptionPane.showMessageDialog(null, "The subject was NOT created! Please try again!");
         }
         finally
         {

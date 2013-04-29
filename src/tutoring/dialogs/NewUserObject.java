@@ -7,7 +7,9 @@ package tutoring.dialogs;
 import java.awt.Color;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
@@ -17,6 +19,7 @@ import tutoring.entity.Teacher;
 import tutoring.entity.User;
 import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
+import tutoring.helper.UltimateAutoComplete;
 
 /**
  *
@@ -30,14 +33,17 @@ public class NewUserObject extends javax.swing.JDialog {
     public NewUserObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        roleCombo.setEditable(true);
-        ArrayList<String> roles = Data.getRolelist();
+       /// roleCombo.setEditable(true);
+       // ArrayList<String> roles  = new ArrayList<String>(new HashSet<String>(Data.getRolelist()));
 
         
         this.setResizable(false);
                
-        roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
-        roleCombo.setSelectedIndex(0);
+        //roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
+        //roleCombo.setSelectedIndex(0);
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getRolelist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{roleCombo});
         
         this.setResizable(false);
   
@@ -50,11 +56,17 @@ public class NewUserObject extends javax.swing.JDialog {
         initComponents();
       
         this.setResizable(false);
-        roleCombo.setEditable(true);
-        ArrayList<String> roles = Data.getRolelist();
-        roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
-        roleCombo.setSelectedIndex(roles.indexOf(role));
+        //roleCombo.setEditable(true);
+        //ArrayList<String> roles = new ArrayList<String>(new HashSet<String>(Data.getRolelist()));
+        //roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
+        //roleCombo.setSelectedIndex(roles.indexOf(role));
             
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(new ArrayList<String>(new HashSet<String>(Data.getRolelist())));
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{roleCombo});
+       
+        uac.setComboValue(role, 0);
+        
         fnameField.setText(fname);
         lnameField.setText(lname);
         usernameField.setText(username);
@@ -133,6 +145,7 @@ public class NewUserObject extends javax.swing.JDialog {
                 
                 User u = new User(username, validRole.get(0), lname, fname, password);
 
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(User.getValues(u), User.UserTable.getTable());
                 else

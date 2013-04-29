@@ -73,14 +73,14 @@ public class NewCategoryObject extends javax.swing.JDialog {
                 
                 Category c = new Category(categoryID, category);
                 System.out.println(c.toString());
-
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(Category.getValues(c), Category.CategoryTable.getTable());
                 else
                     DatabaseHelper.update(Category.getValues(c), Category.CategoryTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda category was successfully written to the database!");
+                JOptionPane.showMessageDialog(null, "The category was successfully written to the database!");
                 
                 close();
                 
@@ -89,7 +89,7 @@ public class NewCategoryObject extends javax.swing.JDialog {
         }
         catch(Exception e)
         {
-            JOptionPane.showMessageDialog(null, "The agenda category was NOT created! Please try again!");
+            JOptionPane.showMessageDialog(null, "The category was NOT created! Please try again!");
         }
         finally
         {

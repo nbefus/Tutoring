@@ -78,7 +78,7 @@ public class NewAgendaCategoryObject extends javax.swing.JDialog {
                 
                 AgendaCategory c = new AgendaCategory(agendaCategoryID, category);
                 System.out.println(c.toString());
-
+                DatabaseHelper.open();
                 if(!update)
                     DatabaseHelper.insert(AgendaCategory.getValues(c), AgendaCategory.AgendaCategoryTable.getTable());
                 else

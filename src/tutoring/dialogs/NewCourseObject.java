@@ -9,7 +9,10 @@ import java.awt.Window;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
@@ -21,6 +24,7 @@ import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
+import tutoring.helper.UltimateAutoComplete;
 
 /**
  *
@@ -38,17 +42,22 @@ public class NewCourseObject extends javax.swing.JDialog {
         
         teacherCombo.setEditable(true);
         subjectCombo.setEditable(true);
-         ArrayList<String> teachers = Data.getTeacherslist();
-        ArrayList<String> subjects = Data.getSubjectslist(); 
         
+         ArrayList<String> teachers = new ArrayList<String>(new HashSet<String>(Data.getTeacherslist()));
+        ArrayList<String> subjects = new ArrayList<String>(new HashSet<String>(Data.getSubjectslist()));
+        
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(teachers);
+        uacList.add(subjects);
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{teacherCombo, subjectCombo});
         
         this.setResizable(false);
                
-        teacherCombo.setModel(new DefaultComboBoxModel(teachers.toArray()));
+      /*  teacherCombo.setModel(new DefaultComboBoxModel(teachers.toArray()));
         teacherCombo.setSelectedIndex(0);
         
         subjectCombo.setModel(new DefaultComboBoxModel(subjects.toArray()));
-        subjectCombo.setSelectedIndex(0);
+        subjectCombo.setSelectedIndex(0);*/
         
         editButton.setVisible(false);
         
@@ -58,20 +67,28 @@ public class NewCourseObject extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        teacherCombo.setEditable(true);
-        subjectCombo.setEditable(true);
+       /* teacherCombo.setEditable(true);
+        subjectCombo.setEditable(true);*/
         
         
         this.setResizable(false);
                
-        ArrayList<String> teachers = Data.getTeacherslist();
-        ArrayList<String> subjects = Data.getSubjectslist(); 
-        
-        teacherCombo.setModel(new DefaultComboBoxModel(teachers.toArray()));
+        ArrayList<String> teachers = new ArrayList<String>(new HashSet<String>(Data.getTeacherslist()));
+        ArrayList<String> subjects = new ArrayList<String>(new HashSet<String>(Data.getSubjectslist()));
+      
+       /* teacherCombo.setModel(new DefaultComboBoxModel(teachers.toArray()));
         teacherCombo.setSelectedIndex(teachers.indexOf(teacher));
         
         subjectCombo.setModel(new DefaultComboBoxModel(subjects.toArray()));
-        subjectCombo.setSelectedIndex(subjects.indexOf(subject));
+        subjectCombo.setSelectedIndex(subjects.indexOf(subject));*/
+        
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(teachers);
+        uacList.add(subjects);
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{teacherCombo, subjectCombo});
+        uac.setComboValue(teacher, 0);
+        uac.setComboValue(subject, 1);
+
         
         editButton.setVisible(false);
         

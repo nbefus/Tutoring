@@ -8,8 +8,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import tutoring.entity.*;
 
 /**
@@ -82,8 +84,8 @@ public class Data {
     private static ArrayList<String> rolelist;
     private static ArrayList<String> agendacategorylist;
     
-
-
+    private static Set<String> uniqueTeachers = new HashSet<String>();
+    private static Set<String> uniqueSubjects = new HashSet<String>();
 
     
     public static void refreshClient()
@@ -276,6 +278,11 @@ public class Data {
         DatabaseHelper.close();
     }
     
+    public Set<String> getUniqueTeachers()
+    {
+        return uniqueTeachers;
+    }
+    
     public Data(boolean initializeAll) {
         locationslist = new ArrayList<String>();
        
@@ -337,7 +344,11 @@ public class Data {
         levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
         
         teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist);
-       
+      
+        Set<String> mySet = new HashSet<String>(teacherslist);
+        System.out.println("HASHSET "+mySet.size());
+        System.out.println(teacherslist.size());    
+        
         multicategorylist = createMultiCat(categorieslist.size(), null);
         /*
         locations = Location.selectAllLocation("order by "+Location.LocationTable.NAME.getWithAlias(), DatabaseHelper.getConnection());//(ArrayList<Location>) HibernateTest.select("from Location as l order by l.name");System.out.println("1111111111111111111111");

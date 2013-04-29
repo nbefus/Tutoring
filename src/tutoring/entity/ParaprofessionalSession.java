@@ -176,7 +176,7 @@ public class ParaprofessionalSession {
             
             for(int i=0; i<columns.length; i++)
             {
-                if(!columns[i].isID())
+                if(!columns[i].isID() || i==0)
                     cols.add(columns[i].getDisplayName());
             }
             return cols;
@@ -218,7 +218,7 @@ public class ParaprofessionalSession {
             String columnSetUp = "";
             for(int i=0; i<ps.length; i++)
             {
-                if(selectIDs || !ps[i].isID())
+                if(selectIDs || !ps[i].isID() || i==0)
                     columnSetUp += ps[i].getWithAlias() + " as '"+ps[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);

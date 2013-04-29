@@ -9,7 +9,9 @@ import java.awt.Window;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.MatteBorder;
@@ -29,15 +31,18 @@ public class NewAgendaObject extends javax.swing.JDialog {
     public NewAgendaObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        ArrayList<String> category = Data.getAgendacategorylist();
-        agendaCategoryCombo.setEditable(false);
+        ArrayList<String> category = new ArrayList<String>(new HashSet<String>(Data.getAgendacategorylist()));
+        
+       // agendaCategoryCombo.setEditable(true);
         this.setResizable(false);
-        System.out.println("HAAA");
-        Object[] cats = category.toArray();
-        for(int i=0; i<cats.length; i++)
-            System.out.append("Checkingblah "+cats[i]);
+        
         agendaCategoryCombo.setModel(new DefaultComboBoxModel(category.toArray()));
-        agendaCategoryCombo.setSelectedIndex(0);
+        
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(category);
+        new UltimateAutoComplete(uacList, new JComboBox[]{agendaCategoryCombo});
+        
+        //agendaCategoryCombo.setSelectedIndex(0);
         editButton.setVisible(false);
         
     }
@@ -45,15 +50,16 @@ public class NewAgendaObject extends javax.swing.JDialog {
     public NewAgendaObject(java.awt.Frame parent, boolean modal, String select, String date, String description, int agendaID) {
         super(parent, modal);
         initComponents();
-        ArrayList<String> category = Data.getAgendacategorylist();
-        agendaCategoryCombo.setEditable(false);
-        System.out.println("HAAA");
-        Object[] cats = category.toArray();
-        for(int i=0; i<cats.length; i++)
-            System.out.append("Checkingblah "+cats[i]);
-        agendaCategoryCombo.setModel(new DefaultComboBoxModel(category.toArray()));
+        ArrayList<String> category = new ArrayList<String>(new HashSet<String>(Data.getAgendacategorylist()));
+        //agendaCategoryCombo.setEditable(true);
         
-        agendaCategoryCombo.setSelectedIndex(category.indexOf(select));
+       // agendaCategoryCombo.setModel(new DefaultComboBoxModel(category.toArray()));
+        
+        ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
+        uacList.add(category);
+        UltimateAutoComplete uac = new UltimateAutoComplete(uacList, new JComboBox[]{agendaCategoryCombo});
+        uac.setComboValue(select, 0);
+       // agendaCategoryCombo.setSelectedIndex(category.indexOf(select));
         dateField.setText(date);
         noteTextArea.setText(description);
         editButton.setVisible(true);

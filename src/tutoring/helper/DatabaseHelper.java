@@ -13,9 +13,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -46,6 +50,19 @@ public class DatabaseHelper
             
         }
     }
+    
+    public static void removeDuplicates(List<Object> l) {
+    Set<Object> s = new TreeSet<Object>(new Comparator<Object>() {
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            // ... compare the two object according to your requirements
+            return 0;
+        }
+    });
+            s.addAll(l);
+    List<Object> res = Arrays.asList(s.toArray());
+}
     
     public static Connection getConnection()
     {
@@ -246,7 +263,7 @@ public class DatabaseHelper
     }
     
     
-    public static boolean update(Object[] values, String table) {
+     public static boolean update(Object[] values, String table) {
         //Connection connect = null;
         Statement statement = null;
         PreparedStatement preparedStatement = null;
@@ -309,6 +326,66 @@ public class DatabaseHelper
                }
                
                String query = "update "+table+" set "+valuesString+" "+whereString;
+               System.out.println(query);
+                statement.executeUpdate(query);
+                
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("An error occurred. Maybe user/password is invalid");
+            ex.printStackTrace();
+        } finally {
+            try {
+          if (resultSet != null) {
+            resultSet.close();
+          }
+
+          if (statement != null) {
+            statement.close();
+          }
+
+          /*
+          if (connect != null) {
+            connect.close();
+          }*/
+        } catch (Exception e) {
+
+        }    
+            return false;
+        }
+    }
+    
+    
+    public static boolean delete(String ID, String table) {
+        //Connection connect = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List l = new ArrayList();
+        
+        try {
+            // connect way #1
+         //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
+         //   String user = "nbefus_me";
+         //   String password = "heythere";
+           
+          //  connect = DriverManager.getConnection(url1, user, password);
+
+            if (connect != null) {
+
+                System.out.println("Connected to the database test1");
+
+                statement = connect.createStatement();
+
+                ArrayList<String> columns = getTableColumns(table);
+                
+                String whereString = "";
+               
+                whereString+="where "+columns.get(0)+" = " +ID;
+                   
+            
+               String query = "delete from "+table+" "+whereString;
                System.out.println(query);
                 statement.executeUpdate(query);
                 
@@ -436,7 +513,7 @@ public class DatabaseHelper
          return data;
     }
     
-    public static void fillTableWithQuery(String query, JTable table, String[] columns) {
+    public static String[][] fillTableWithQuery(String query) {
         List l = DatabaseHelper.selectAll(query);
         //List c = HibernateTest.regularSelect("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'User'");
 
@@ -476,59 +553,13 @@ public class DatabaseHelper
 */
             count++;
         }
+        
+        return data;
 
-        DefaultTableModel dtm = new DefaultTableModel();
-        dtm.setDataVector(data, columns);
-        table.setModel(dtm);
-        autoResizeColWidth(table);
+        
     }
     
-    public static JTable autoResizeColWidth(JTable table)//, DefaultTableModel model) 
-    {
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        //table.setModel(model);
-
-    int margin = 1;
-
-    for (int i = 0; i < table.getColumnCount(); i++) {
-        int                     vColIndex = i;
-        DefaultTableColumnModel colModel  = (DefaultTableColumnModel) table.getColumnModel();
-        TableColumn             col       = colModel.getColumn(vColIndex);
-        int                     width     = 0;
-
-        // Get width of column header
-        TableCellRenderer renderer = col.getHeaderRenderer();
-
-        if (renderer == null) {
-            renderer = table.getTableHeader().getDefaultRenderer();
-        }
-
-        Component comp = renderer.getTableCellRendererComponent(table, col.getHeaderValue(), false, false, 0, 0);
-
-        width = comp.getPreferredSize().width;
-
-        // Get maximum width of column data
-        for (int r = 0; r < table.getRowCount(); r++) {
-            renderer = table.getCellRenderer(r, vColIndex);
-            System.out.println("COL: "+vColIndex+" and ROW: "+r+"   "+renderer.toString());
-            comp     = renderer.getTableCellRendererComponent(table, table.getValueAt(r, vColIndex), false, false,
-                    r, vColIndex);
-            width = Math.max(width, comp.getPreferredSize().width);
-        }
-
-        // Add margin
-        width += 2 * margin;
-
-        // Set the width
-        col.setPreferredWidth(width);
-    }
-
-    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(
-        SwingConstants.LEFT);
-
-     table.setAutoCreateRowSorter(true);
-    //table.getTableHeader().setReorderingAllowed(false);
-
-    return table;
-    }
+    
+    
+    
 }

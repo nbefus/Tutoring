@@ -88,8 +88,8 @@ public class Category {
             
             for(int i=0; i<columns.length; i++)
             {
-                if(!columns[i].isID())
-                    cols.add(columns[i].getName());
+                if(!columns[i].isID() || i==0)
+                    cols.add(columns[i].getDisplayName());
             }
             return cols;
         }
@@ -116,7 +116,7 @@ public class Category {
             
             for(int i=0; i<cols.length; i++)
             {
-                if(selectIDs || !cols[i].isID())
+                if(selectIDs || !cols[i].isID() || i==0)
                     columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);

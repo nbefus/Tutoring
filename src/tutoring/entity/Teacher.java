@@ -91,8 +91,8 @@ public class Teacher
             
             for(int i=0; i<columns.length; i++)
             {
-                if(!columns[i].isID())
-                    cols.add(columns[i].getName());
+                if(!columns[i].isID() || i==0)
+                    cols.add(columns[i].getDisplayName());
             }
             return cols;
         }
@@ -119,7 +119,7 @@ public class Teacher
             
             for(int i=0; i<cols.length; i++)
             {
-                if(selectIDs || !cols[i].isID())
+                if(selectIDs || !cols[i].isID() || i==0)
                     columnSetUp += cols[i].getWithAlias() + " as '"+cols[i].getWithAlias()+"', ";
             }
             columnSetUp = columnSetUp.substring(0, columnSetUp.length()-2);
@@ -153,8 +153,8 @@ public class Teacher
     {
         Object[] values = new Object[3];
         values[0]=t.getTeacherID();
-        values[1]=t.getfName();
-        values[2] = t.getlName();
+        values[1]=t.getlName();
+        values[2] = t.getfName();
         return values;
     }
       

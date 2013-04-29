@@ -22,7 +22,12 @@ import javax.swing.JComboBox;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.text.JTextComponent;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -53,6 +58,7 @@ import tutoring.dialogs.NewTeacherObject;
 import tutoring.dialogs.NewUserObject;
 import tutoring.helper.*;
 import tutoring.entity.*;
+import tutoring.renderer.FontCellRenderer;
 
 /**
  *
@@ -233,7 +239,7 @@ public class AdminView extends javax.swing.JFrame
         clearComboBoxes();
     }
     
-     public DefaultCellEditor makeEditAgendaCellEditor()
+    public DefaultCellEditor makeEditSearchCellEditor()
     {
         DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
         {
@@ -243,7 +249,7 @@ public class AdminView extends javax.swing.JFrame
             {
                 SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
                 SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-                
+                System.out.println("GET TABEL CELL EDITOR MAKE EDIT SEARCH CELL EDITOR");
                 
                 if (clientRadio.isSelected())
                 {
@@ -251,9 +257,17 @@ public class AdminView extends javax.swing.JFrame
                     String clientEmail = "", clientFirst ="", clientLast = "", clientPhone="";
                     for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
                     {
+                        System.out.println(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString() + "!!"+table.getValueAt(row, i).toString());
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.CLIENTID.getDisplayName()))
                         {
-                            clientID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                clientID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.EMAIL.getDisplayName()))
                         {
@@ -270,6 +284,17 @@ public class AdminView extends javax.swing.JFrame
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.PHONE.getDisplayName()))
                         {
                             clientPhone = table.getValueAt(row, i).toString();
+                            /*if(clientPhone.trim().length() > 0)
+                            {
+                                try
+                                {
+                                    clientPhone = clientPhone.substring(0, clientPhone.length()-7)+"-"+clientPhone.substring(clientPhone.length()-7, clientPhone.length()-4)+"-"+clientPhone.substring(clientPhone.length()-4);
+                                }
+                                catch(Exception e)
+                                {
+                                    
+                                }
+                            }*/
                         }
                     }
                     
@@ -324,7 +349,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.PARAPROFESSIONALID.getDisplayName()))
                         {
-                            paraID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                paraID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.FNAME.getDisplayName()))
                         {
@@ -417,7 +449,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.COURSEID.getDisplayName()))
                         {
-                            courseID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                courseID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.TEACHERFNAME.getDisplayName()))
                         {
@@ -453,7 +492,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Teacher.TeacherTable.TEACHERID.getDisplayName()))
                         {
-                            teacherID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                teacherID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Teacher.TeacherTable.FNAME.getDisplayName()))
                         {
@@ -480,7 +526,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Subject.SubjectTable.SUBJECTID.getDisplayName()))
                         {
-                            subjectID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                subjectID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Subject.SubjectTable.ABBREVNAME.getDisplayName()))
                         {
@@ -507,7 +560,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.AGENDAID.getDisplayName()))
                         {
-                            agendaID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                agendaID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.NOTES.getDisplayName()))
                         {
@@ -546,7 +606,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(AgendaCategory.AgendaCategoryTable.AGENDACATEGORYID.getDisplayName()))
                         {
-                            agendaCategoryID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                agendaCategoryID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(AgendaCategory.AgendaCategoryTable.TYPE.getDisplayName()))
                         {
@@ -570,7 +637,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Category.CategoryTable.CATEGORYID.getDisplayName()))
                         {
-                            categoryID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                categoryID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Category.CategoryTable.NAME.getDisplayName()))
                         {
@@ -594,7 +668,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Location.LocationTable.LOCATIONID.getDisplayName()))
                         {
-                            locationID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                locationID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Location.LocationTable.NAME.getDisplayName()))
                         {
@@ -618,7 +699,14 @@ public class AdminView extends javax.swing.JFrame
                     {
                         if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Role.RoleTable.ROLEID.getDisplayName()))
                         {
-                            roleID = ((Integer)table.getValueAt(row, i)).intValue();
+                            try
+                            {
+                                roleID = Integer.parseInt(table.getValueAt(row, i).toString());
+                            }
+                            catch(Exception e)
+                            {
+                                
+                            }
                         }
                         else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Role.RoleTable.TYPE.getDisplayName()))
                         {
@@ -943,6 +1031,55 @@ public class AdminView extends javax.swing.JFrame
         // OPTIONAL CUSTOMISATION COMPLETED.
 
         return chart;
+    }
+    
+    public static JTable autoResizeColWidth(JTable table)//, DefaultTableModel model) 
+    {
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        //table.setModel(model);
+
+    int margin = 1;
+
+    for (int i = 0; i < table.getColumnCount(); i++) {
+        int                     vColIndex = i;
+        DefaultTableColumnModel colModel  = (DefaultTableColumnModel) table.getColumnModel();
+        TableColumn             col       = colModel.getColumn(vColIndex);
+        int                     width     = 0;
+
+        // Get width of column header
+        TableCellRenderer renderer = col.getHeaderRenderer();
+
+        if (renderer == null) {
+            renderer = table.getTableHeader().getDefaultRenderer();
+        }
+
+        Component comp = renderer.getTableCellRendererComponent(table, col.getHeaderValue(), false, false, 0, 0);
+
+        width = comp.getPreferredSize().width;
+
+        // Get maximum width of column data
+        for (int r = 0; r < table.getRowCount(); r++) {
+            renderer = table.getCellRenderer(r, vColIndex);
+            System.out.println("COL: "+vColIndex+" and ROW: "+r+"   "+renderer.toString());
+            comp     = renderer.getTableCellRendererComponent(table, table.getValueAt(r, vColIndex), false, false,
+                    r, vColIndex);
+            width = Math.max(width, comp.getPreferredSize().width);
+        }
+
+        // Add margin
+        width += 2 * margin;
+
+        // Set the width
+        col.setPreferredWidth(width);
+    }
+
+    ((DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(
+        SwingConstants.LEFT);
+
+     table.setAutoCreateRowSorter(true);
+    //table.getTableHeader().setReorderingAllowed(false);
+
+    return table;
     }
 
     public void setUpSearchTab()
@@ -3745,7 +3882,20 @@ public class AdminView extends javax.swing.JFrame
         System.out.println("QUERY: " + fullQuery);
 
         DatabaseHelper.open();
-        DatabaseHelper.fillTableWithQuery(fullQuery, searchsearchTable, Arrays.copyOf(columns.toArray(), columns.size(), String[].class));
+        
+        String[][] data = DatabaseHelper.fillTableWithQuery(fullQuery);
+        
+        String[] tableColumns = Arrays.copyOf(columns.toArray(), columns.size(), String[].class);
+        DefaultTableModel dtm = new DefaultTableModel();
+        dtm.setDataVector(data, tableColumns);
+        
+        searchsearchTable.setModel(dtm);
+        autoResizeColWidth(searchsearchTable);
+        
+        for(int i=0; i<searchsearchTable.getColumnCount(); i++)
+        {
+            searchsearchTable.getColumnModel().getColumn(i).setCellEditor(makeEditSearchCellEditor());
+        }
         DatabaseHelper.close();
         /*for (int i = 0; i < searchsearchTable.getColumnCount(); i++)
         {
@@ -3760,7 +3910,114 @@ public class AdminView extends javax.swing.JFrame
 
     private void deleteSessionButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteSessionButton1ActionPerformed
     {//GEN-HEADEREND:event_deleteSessionButton1ActionPerformed
-        // TODO add your handling code here:
+        
+        DatabaseHelper.open();
+        int[] rows = searchsearchTable.getSelectedRows();
+           /* DefaultTableModel dtm = ((DefaultTableModel)searchsearchTable.getModel());
+            for(int i=0; i<rows.length; i++)
+                dtm.removeRow(rows[i]);
+            */
+        if (clientRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Client.ClientTable.CLIENTID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Client.ClientTable.getTable());
+            }
+        }
+        else if (sessionsRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(ParaprofessionalSession.ParaSessTable.PARAPROFESSIONALSESSIONID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), ParaprofessionalSession.ParaSessTable.getTable());
+            }
+        }
+        else if (paraprofessionalRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Paraprofessional.ParaTable.PARAPROFESSIONALID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Paraprofessional.ParaTable.getTable());
+            }
+        }
+        else if (userRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(User.UserTable.USERNAME.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), User.UserTable.getTable());
+            }
+        }
+        else if (courseRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Course.CourseTable.COURSEID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Course.CourseTable.getTable());
+            }
+        }
+        else if (teacherRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Teacher.TeacherTable.TEACHERID.getDisplayName());
+                //System.out.println("ID TO DELETE"+index+ " : "+searchsearchTable.getValueAt(rows[i], index).toString());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Teacher.TeacherTable.getTable());
+            }
+        }
+        else if (subjectRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Subject.SubjectTable.SUBJECTID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Subject.SubjectTable.getTable());
+            }
+        }
+        else if (agendaRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Agenda.AgendaTable.AGENDAID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Agenda.AgendaTable.getTable());
+            }
+        }
+        else if (agendaCategoryRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(AgendaCategory.AgendaCategoryTable.AGENDACATEGORYID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), AgendaCategory.AgendaCategoryTable.getTable());
+            }
+        }
+        else if (categoryRadio.isSelected())
+        {
+            for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Category.CategoryTable.CATEGORYID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Category.CategoryTable.getTable());
+            }
+        }
+        else if (locationRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Location.LocationTable.LOCATIONID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Location.LocationTable.getTable());
+            }
+        }
+        else if (roleRadio.isSelected())
+        {
+             for(int i=0; i<rows.length; i++)
+            {
+                int index = searchsearchTable.getTableHeader().getColumnModel().getColumnIndex(Role.RoleTable.ROLEID.getDisplayName());
+                DatabaseHelper.delete(searchsearchTable.getValueAt(rows[i], index).toString(), Role.RoleTable.getTable());
+            }
+        }
+        
+        DatabaseHelper.close();
+        
+        
     }//GEN-LAST:event_deleteSessionButton1ActionPerformed
 
     private void searchuserlastComboActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_searchuserlastComboActionPerformed
