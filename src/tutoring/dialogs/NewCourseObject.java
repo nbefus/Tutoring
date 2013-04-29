@@ -19,6 +19,7 @@ import tutoring.entity.AgendaCategory;
 import tutoring.entity.Course;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
+import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
 
 /**
@@ -31,12 +32,14 @@ public class NewCourseObject extends javax.swing.JDialog {
      * Creates new form NewCourseObject
      */
     private int courseID = -1;
-    public NewCourseObject(java.awt.Frame parent, boolean modal, ArrayList<String> teachers, ArrayList<String> subjects) {
+    public NewCourseObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
         teacherCombo.setEditable(true);
         subjectCombo.setEditable(true);
+         ArrayList<String> teachers = Data.getTeacherslist();
+        ArrayList<String> subjects = Data.getSubjectslist(); 
         
         
         this.setResizable(false);
@@ -51,7 +54,7 @@ public class NewCourseObject extends javax.swing.JDialog {
         
     }
     
-    public NewCourseObject(java.awt.Frame parent, boolean modal, ArrayList<String> teachers, ArrayList<String> subjects, String teacher, String subject, String level, int courseID) {
+    public NewCourseObject(java.awt.Frame parent, boolean modal, String teacher, String subject, String level, int courseID) {
         super(parent, modal);
         initComponents();
         
@@ -61,6 +64,9 @@ public class NewCourseObject extends javax.swing.JDialog {
         
         this.setResizable(false);
                
+        ArrayList<String> teachers = Data.getTeacherslist();
+        ArrayList<String> subjects = Data.getSubjectslist(); 
+        
         teacherCombo.setModel(new DefaultComboBoxModel(teachers.toArray()));
         teacherCombo.setSelectedIndex(teachers.indexOf(teacher));
         

@@ -115,6 +115,20 @@ public class Agenda {
 
             return "";
         }
+        
+        public static String getColumnName(String DisplayName)
+        {
+            Agenda.AgendaTable[] columns = Agenda.AgendaTable.class.getEnumConstants();
+            for (int i = 0; i < columns.length; i++)
+            {
+                if (columns[i].getDisplayName().equalsIgnoreCase(DisplayName))
+                {
+                    return columns[i].getWithAlias();
+                }
+            }
+
+            return "";
+        }
 
         public static String getAgendaCategoryAlias()
         {

@@ -6,6 +6,7 @@ package tutoring.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Frame;
 
 import java.awt.GradientPaint;
 
@@ -39,6 +40,17 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.util.Rotation;
+import tutoring.dialogs.NewAgendaCategoryObject;
+import tutoring.dialogs.NewAgendaObject;
+import tutoring.dialogs.NewCategoryObject;
+import tutoring.dialogs.NewClientObject;
+import tutoring.dialogs.NewCourseObject;
+import tutoring.dialogs.NewLocationObject;
+import tutoring.dialogs.NewParaprofessionalObject;
+import tutoring.dialogs.NewRoleObject;
+import tutoring.dialogs.NewSubjectObject;
+import tutoring.dialogs.NewTeacherObject;
+import tutoring.dialogs.NewUserObject;
 import tutoring.helper.*;
 import tutoring.entity.*;
 
@@ -159,6 +171,479 @@ public class AdminView extends javax.swing.JFrame
         notesField.setText("");
        // searchgcCheck.setSelected(false);
        // searchwalkoutCheck.setSelected(false);
+    }
+    
+    public void updateBoxes()
+    {
+        JComboBox[] boxes = new JComboBox[22];
+       
+        boxes[0] = searchclientfirstCombo;
+        boxes[1] = searchclientlastCombo;
+        boxes[2] = searchclientphoneCombo;
+        boxes[3] = searchclientemailCombo;
+        boxes[4] = searchsubjectnameCombo;
+        boxes[5] = searchlevelCombo;
+        boxes[6] = searchteacherfirstCombo;
+        boxes[7] = searchteacherlastCombo;
+        boxes[8] = searchsubjectcategoryCombo;
+        
+        boxes[9] = searchuserfirstCombo;
+        boxes[10] = searchuserlastCombo;
+        boxes[11] = searchusernameCombo;
+        boxes[12] = searchagendacategoryCombo;
+        boxes[13] = searchagendanotesCombo;
+        boxes[14] = searchroleCombo;
+        boxes[15] = searchlocationCombo;
+        boxes[16] = searchparaprofessionalfirstCombo;
+        boxes[17] = searchparaprofessionallastCombo;
+        boxes[18] = searchparaprofessionalroleCombo;
+        boxes[19] = searchcreatorfirstCombo;
+        boxes[20] = searchcreatorlastCombo;
+        boxes[21] = searchcreatorroleCombo;
+      
+    
+        ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
+        cultimateList.add(Data.getClientsfirst());
+        cultimateList.add(Data.getClientslast());
+        cultimateList.add(Data.getClientsphone());
+        cultimateList.add(Data.getClientsemail());
+        cultimateList.add(Data.getSubjectslist());
+        cultimateList.add(Data.getLevelslist());
+        cultimateList.add(Data.getTeacherfirstlist());
+        cultimateList.add(Data.getTeacherlastlist());
+        cultimateList.add(Data.getMulticategorylist());
+        
+        cultimateList.add(Data.getUserfirstlist());
+        cultimateList.add(Data.getUserlastlist());
+        cultimateList.add(Data.getUsernamelist());
+        cultimateList.add(Data.getAgendacategorylist());
+        cultimateList.add(Data.getAgendanotelist());
+        cultimateList.add(Data.getRolelist());
+        cultimateList.add(Data.getLocationslist());
+        cultimateList.add(Data.getParafirstlist());
+        cultimateList.add(Data.getParalastlist());
+        cultimateList.add(Data.getRolelist());
+        cultimateList.add(Data.getParafirstlist());
+        cultimateList.add(Data.getParalastlist());
+        cultimateList.add(Data.getRolelist());
+  
+        uac.noMore();
+        uac = null;
+        uac = new UltimateAutoComplete(cultimateList, boxes);
+        clearComboBoxes();
+    }
+    
+     public DefaultCellEditor makeEditAgendaCellEditor()
+    {
+        DefaultCellEditor dce = new DefaultCellEditor(new JTextField())
+        {
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                        boolean isSelected, int row, int column) 
+            {
+                SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+                SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+                
+                
+                if (clientRadio.isSelected())
+                {
+                    int clientID = -1;
+                    String clientEmail = "", clientFirst ="", clientLast = "", clientPhone="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.CLIENTID.getDisplayName()))
+                        {
+                            clientID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.EMAIL.getDisplayName()))
+                        {
+                            clientEmail = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.FNAME.getDisplayName()))
+                        {
+                            clientFirst  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.LNAME.getDisplayName()))
+                        {
+                            clientLast = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Client.ClientTable.PHONE.getDisplayName()))
+                        {
+                            clientPhone = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    NewClientObject nco = new NewClientObject(new Frame(), true, clientFirst, clientLast, clientPhone, clientEmail, clientID);
+                    nco.setLocationRelativeTo(null);
+                    nco.setVisible(true);
+                    
+                    Data.refreshClient();
+                    updateBoxes();
+                }
+                else if (sessionsRadio.isSelected())
+                {
+                    /*
+                    int clientID = -1;
+                    String clientEmail = "", clientFirst ="", clientLast = "", clientPhone="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(ParaprofessionalSession.ParaSessTable.CLIENTEMAIL.getDisplayName()))
+                        {
+                            clientID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(ParaprofessionalSession.ParaSessTable.CLIENTFNAME.getDisplayName()))
+                        {
+                            clientEmail = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(ParaprofessionalSession.ParaSessTable..getDisplayName()))
+                        {
+                            clientFirst  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(ParaprofessionalSession.ParaSessTable.CLIENTEMAIL.getDisplayName()))
+                        {
+                            clientLast = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(ParaprofessionalSession.ParaSessTable.CLIENTEMAIL.getDisplayName()))
+                        {
+                            clientPhone = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    NewClientObject nco = new NewClientObject(new Frame(), true, clientFirst, clientLast, clientPhone, clientEmail, clientID);
+                    nco.setLocationRelativeTo(null);
+                    nco.setVisible(true);
+                    
+                    Data.refreshClient();
+                    updateBoxes();*/
+                }
+                else if (paraprofessionalRadio.isSelected())
+                {
+                    int paraID = -1;
+                    String fname = "", lname ="", hireDate = "", clockedIn="", role="", terminationDate="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.PARAPROFESSIONALID.getDisplayName()))
+                        {
+                            paraID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.FNAME.getDisplayName()))
+                        {
+                            fname = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.LNAME.getDisplayName()))
+                        {
+                            lname = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.HIREDATE.getDisplayName()))
+                        {
+                            hireDate = table.getValueAt(row, i).toString();
+                            try
+                            {
+                                hireDate = sdfTo.format(sdfFrom.parse(hireDate));
+                            }
+                            catch(Exception e)
+                            {
+                                hireDate = "";
+                            }
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.ISCLOCKEDIN.getDisplayName()))
+                        {
+                            clockedIn = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.ROLETYPE.getDisplayName()))
+                        {
+                            role = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Paraprofessional.ParaTable.TERMINATIONDATE.getDisplayName()))
+                        {
+                            terminationDate = table.getValueAt(row, i).toString();
+                            try
+                            {
+                                terminationDate = sdfTo.format(sdfFrom.parse(terminationDate));
+                            }
+                            catch(Exception e)
+                            {
+                                terminationDate = "";
+                            }
+                        }
+                    }
+                    
+                    NewParaprofessionalObject npo = new NewParaprofessionalObject(new Frame(), true, role, fname, lname, clockedIn, hireDate, terminationDate, paraID);
+                    npo.setLocationRelativeTo(null);
+                    npo.setVisible(true);
+                    
+                    Data.refreshParaprofessional();
+                    updateBoxes();
+                }
+                else if (userRadio.isSelected())
+                {
+                    String username = "", password ="", fname = "", lname="", role="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(User.UserTable.PASSWORD.getDisplayName()))
+                        {
+                            password = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(User.UserTable.FNAME.getDisplayName()))
+                        {
+                            fname  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(User.UserTable.LNAME.getDisplayName()))
+                        {
+                            lname = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(User.UserTable.ROLETYPE.getDisplayName()))
+                        {
+                            role = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(User.UserTable.USERNAME.getDisplayName()))
+                        {
+                            username = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    NewUserObject nuo = new NewUserObject(new Frame(), true, username, password, lname, fname, role);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshUser();
+                    updateBoxes();
+                }
+                else if (courseRadio.isSelected())
+                {
+                    int courseID = -1;
+                    String teacherFirst = "", teacherLast = "", subject ="", level = "", teacher ="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.COURSEID.getDisplayName()))
+                        {
+                            courseID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.TEACHERFNAME.getDisplayName()))
+                        {
+                            teacherFirst  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.TEACHERLNAME.getDisplayName()))
+                        {
+                            teacherLast  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.SUBJECTABBREVNAME.getDisplayName()))
+                        {
+                            subject = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Course.CourseTable.LEVEL.getDisplayName()))
+                        {
+                            level = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    teacher = teacherFirst + " "+teacherLast;
+                    NewCourseObject nuo = new NewCourseObject(new Frame(), true, teacher, subject, level, courseID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshCourse();
+                    updateBoxes();
+                }
+                else if (teacherRadio.isSelected())
+                {
+                    int teacherID = -1;
+                    String teacherFirst = "", teacherLast = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Teacher.TeacherTable.TEACHERID.getDisplayName()))
+                        {
+                            teacherID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Teacher.TeacherTable.FNAME.getDisplayName()))
+                        {
+                            teacherFirst  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Teacher.TeacherTable.LNAME.getDisplayName()))
+                        {
+                            teacherLast  = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    NewTeacherObject nuo = new NewTeacherObject(new Frame(), true, teacherFirst, teacherLast, teacherID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshTeacher();
+                    updateBoxes();
+                }
+                else if (subjectRadio.isSelected())
+                {
+                    int subjectID = -1;
+                    String name = "", category = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Subject.SubjectTable.SUBJECTID.getDisplayName()))
+                        {
+                            subjectID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Subject.SubjectTable.ABBREVNAME.getDisplayName()))
+                        {
+                            name  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Subject.SubjectTable.CATEGORYNAME.getDisplayName()))
+                        {
+                            category  = table.getValueAt(row, i).toString();
+                        }
+                    }
+                    
+                    NewSubjectObject nuo = new NewSubjectObject(new Frame(), true, name, category, subjectID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshSubject();
+                    updateBoxes();
+                }
+                else if (agendaRadio.isSelected())
+                {
+                    int agendaID = -1;
+                    String notes = "", category = "", date ="";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.AGENDAID.getDisplayName()))
+                        {
+                            agendaID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.NOTES.getDisplayName()))
+                        {
+                            notes  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.AGENDACATEGORYTYPE.getDisplayName()))
+                        {
+                            category  = table.getValueAt(row, i).toString();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Agenda.AgendaTable.DATE.getDisplayName()))
+                        {
+                            date  = table.getValueAt(row, i).toString();
+                            try
+                            {
+                                date = sdfTo.format(sdfFrom.parse(date));
+                            }
+                            catch(Exception e)
+                            {
+                                date = "";
+                            }
+                        }
+                    }
+                    
+                    NewAgendaObject nuo = new NewAgendaObject(new Frame(), true, category, date, notes, agendaID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshAgenda();
+                    updateBoxes();
+                }
+                else if (agendaCategoryRadio.isSelected())
+                {
+                     int agendaCategoryID = -1;
+                    String category = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(AgendaCategory.AgendaCategoryTable.AGENDACATEGORYID.getDisplayName()))
+                        {
+                            agendaCategoryID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(AgendaCategory.AgendaCategoryTable.TYPE.getDisplayName()))
+                        {
+                            category  = table.getValueAt(row, i).toString();
+                        }
+                        
+                    }
+                    
+                    NewAgendaCategoryObject nuo = new NewAgendaCategoryObject(new Frame(), true, category,  agendaCategoryID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshAgendaCategory();
+                    updateBoxes();
+                }
+                else if (categoryRadio.isSelected())
+                {
+                     int categoryID = -1;
+                    String category = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Category.CategoryTable.CATEGORYID.getDisplayName()))
+                        {
+                            categoryID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Category.CategoryTable.NAME.getDisplayName()))
+                        {
+                            category  = table.getValueAt(row, i).toString();
+                        }
+                        
+                    }
+                    
+                    NewCategoryObject nuo = new NewCategoryObject(new Frame(), true, category,  categoryID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshCategory();
+                    updateBoxes();
+                }
+                else if (locationRadio.isSelected())
+                {
+                    int locationID = -1;
+                    String location = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Location.LocationTable.LOCATIONID.getDisplayName()))
+                        {
+                            locationID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Location.LocationTable.NAME.getDisplayName()))
+                        {
+                            location  = table.getValueAt(row, i).toString();
+                        }
+                        
+                    }
+                    
+                    NewLocationObject nuo = new NewLocationObject(new Frame(), true, location,  locationID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshLocation();
+                    updateBoxes();
+                }
+                else if (roleRadio.isSelected())
+                {
+                    int roleID = -1;
+                    String role = "";
+                    for(int i=0; i<table.getTableHeader().getColumnModel().getColumnCount(); i++)
+                    {
+                        if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Role.RoleTable.ROLEID.getDisplayName()))
+                        {
+                            roleID = ((Integer)table.getValueAt(row, i)).intValue();
+                        }
+                        else if(table.getTableHeader().getColumnModel().getColumn(i).getHeaderValue().toString().equals(Role.RoleTable.TYPE.getDisplayName()))
+                        {
+                            role  = table.getValueAt(row, i).toString();
+                        }
+                        
+                    }
+                    
+                    NewRoleObject nuo = new NewRoleObject(new Frame(), true, role,  roleID);
+                    nuo.setLocationRelativeTo(null);
+                    nuo.setVisible(true);
+                    
+                    Data.refreshRole();
+                    updateBoxes();
+                }   
+
+                
+                
+                
+                System.out.println("HOPEFULLY NOT HERE YET");
+                return null;
+            }
+        };
+        
+        return dce;
     }
 
     public void setUpGeneralReportTab()
@@ -2609,7 +3094,76 @@ public class AdminView extends javax.swing.JFrame
 
         if(clientRadio.isSelected())
         {
-            Validate.createClient(false, searchclientfirstCombo, searchclientlastCombo, searchclientphoneCombo, searchclientemailCombo);
+            //Validate.createClient(false, searchclientfirstCombo, searchclientlastCombo, searchclientphoneCombo, searchclientemailCombo);
+            NewClientObject ndo = new NewClientObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (sessionsRadio.isSelected())
+        {
+            NewClientObject ndo = new NewClientObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (paraprofessionalRadio.isSelected())
+        {
+            NewParaprofessionalObject ndo = new NewParaprofessionalObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true); 
+        }
+        else if (userRadio.isSelected())
+        {
+            NewUserObject ndo = new NewUserObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true); 
+        }
+        else if (courseRadio.isSelected())
+        {
+            NewCourseObject ndo = new NewCourseObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (teacherRadio.isSelected())
+        {
+            NewTeacherObject ndo = new NewTeacherObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (subjectRadio.isSelected())
+        {
+            NewSubjectObject ndo = new NewSubjectObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true); 
+        }
+        else if (agendaRadio.isSelected())
+        {
+           NewAgendaObject ndo = new NewAgendaObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (agendaCategoryRadio.isSelected())
+        {
+            NewAgendaCategoryObject ndo = new NewAgendaCategoryObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (categoryRadio.isSelected())
+        {
+            NewCategoryObject ndo = new NewCategoryObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (locationRadio.isSelected())
+        {
+            NewLocationObject ndo = new NewLocationObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true);
+        }
+        else if (roleRadio.isSelected())
+        {
+            NewRoleObject ndo = new NewRoleObject(new Frame(), true);
+            ndo.setLocationRelativeTo(null);
+            ndo.setVisible(true); 
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

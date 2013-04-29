@@ -20,6 +20,7 @@ import tutoring.entity.Paraprofessional;
 import tutoring.entity.Role;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
+import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
 
 /**
@@ -32,7 +33,7 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
      * Creates new form NewParaprofessionalObject
      */
     private int paraprofessionalID = -1;
-    public NewParaprofessionalObject(java.awt.Frame parent, boolean modal, ArrayList<String> roles, ArrayList<String> categories) {
+    public NewParaprofessionalObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
@@ -42,17 +43,17 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         
         this.setResizable(false);
                
-        roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
+        roleCombo.setModel(new DefaultComboBoxModel(Data.getRolelist().toArray()));
         roleCombo.setSelectedIndex(0);
         
-        categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
+        categoryCombo.setModel(new DefaultComboBoxModel(Data.getCategorieslist().toArray()));
         categoryCombo.setSelectedIndex(0);
         
         editButton.setVisible(false);
         
     }
     
-    public NewParaprofessionalObject(java.awt.Frame parent, boolean modal, ArrayList<String> roles, ArrayList<String> categories, String role, String category, String fname, String lname, String clockedIn, String hireDate, String terminationDate, int paraprofessionalID) {
+    public NewParaprofessionalObject(java.awt.Frame parent, boolean modal, String role,String fname, String lname, String clockedIn, String hireDate, String terminationDate, int paraprofessionalID) {
         super(parent, modal);
         initComponents();
         
@@ -62,13 +63,15 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         
         this.setResizable(false);
                
+        ArrayList<String> roles = Data.getRolelist();
+        ArrayList<String> categories = Data.getCategorieslist();
         roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
         roleCombo.setSelectedIndex(roles.indexOf(role));
         
-        categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
-        categoryCombo.setSelectedIndex(categories.indexOf(category));
+        //categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
+        //categoryCombo.setSelectedIndex(categories.indexOf(category));
         
-        clockedInCombo.setSelectedIndex(((DefaultComboBoxModel)clockedInCombo.getModel()).getIndexOf(category));
+        clockedInCombo.setSelectedIndex(((DefaultComboBoxModel)clockedInCombo.getModel()).getIndexOf(clockedIn));
         
         editButton.setVisible(true);
         

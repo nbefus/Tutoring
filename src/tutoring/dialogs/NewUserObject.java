@@ -15,6 +15,7 @@ import javax.swing.text.JTextComponent;
 import tutoring.entity.Role;
 import tutoring.entity.Teacher;
 import tutoring.entity.User;
+import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
 
 /**
@@ -26,11 +27,12 @@ public class NewUserObject extends javax.swing.JDialog {
     /**
      * Creates new form NewUserObject
      */
-    public NewUserObject(java.awt.Frame parent, boolean modal, ArrayList<String> roles) {
+    public NewUserObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         roleCombo.setEditable(true);
-        
+        ArrayList<String> roles = Data.getRolelist();
+
         
         this.setResizable(false);
                
@@ -43,12 +45,13 @@ public class NewUserObject extends javax.swing.JDialog {
         
     }
     
-    public NewUserObject(java.awt.Frame parent, boolean modal, ArrayList<String> roles, String username, String password, String lname, String fname, String role) {
+    public NewUserObject(java.awt.Frame parent, boolean modal, String username, String password, String lname, String fname, String role) {
         super(parent, modal);
         initComponents();
       
         this.setResizable(false);
         roleCombo.setEditable(true);
+        ArrayList<String> roles = Data.getRolelist();
         roleCombo.setModel(new DefaultComboBoxModel(roles.toArray()));
         roleCombo.setSelectedIndex(roles.indexOf(role));
             

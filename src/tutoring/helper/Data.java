@@ -86,7 +86,7 @@ public class Data {
 
 
     
-    public static void refreshStudent()
+    public static void refreshClient()
     {
         clientsfirst = new ArrayList<String>();
         clientslast = new ArrayList<String>();
@@ -102,6 +102,180 @@ public class Data {
         DatabaseHelper.close();
     }
 
+    public static void refreshAgenda()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshAgendaCategory()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshCategory()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshCourse()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshLocation()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshParaprofessional()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshParaprofessionalSession()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshRole()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshSubject()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshTeacher()
+    {
+        clientsfirst = new ArrayList<String>();
+        clientslast = new ArrayList<String>();
+        clientsphone = new ArrayList<String>();
+        clientsemail = new ArrayList<String>();
+        
+        char separator = ',';
+        DatabaseHelper.open();
+        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
+        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
+        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
+        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
+        DatabaseHelper.close();
+    }
+    
+    public static void refreshUser()
+    {
+        userfirstlist = new ArrayList<String>();
+        usernamelist = new ArrayList<String>();
+        userlastlist = new ArrayList<String>();
+        
+        DatabaseHelper.open();
+        userfirstlist = regularSQL("select "+User.UserTable.FNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.FNAME.getName());
+        userlastlist = regularSQL("select "+User.UserTable.LNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.LNAME.getName());
+        usernamelist = regularSQL("select "+User.UserTable.USERNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.USERNAME.getName());
+        
+        DatabaseHelper.close();
+    }
+    
     public Data(boolean initializeAll) {
         locationslist = new ArrayList<String>();
        
@@ -132,46 +306,7 @@ public class Data {
         phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
         emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
         
-        System.out.println("\n\nFnameOrdered\n");
-        for(int i=0; i<fnameOrderedList.size(); i++)
-        {
-            System.out.println(fnameOrderedList.get(i));
-        }
-        System.out.println("\n\nFname\n");
-        for(int i=0; i<clientsfirst.size(); i++)
-        {
-            System.out.println(clientsfirst.get(i));
-        }
-        System.out.println("\n\nLnameOrdered\n");
-        for(int i=0; i<lnameOrderedList.size(); i++)
-        {
-            System.out.println(lnameOrderedList.get(i));
-        }
-        System.out.println("\n\nLname\n");
-        for(int i=0; i<clientslast.size(); i++)
-        {
-            System.out.println(clientslast.get(i));
-        }
-        System.out.println("\n\nPHONEOrdered\n");
-        for(int i=0; i<phoneOrderedList.size(); i++)
-        {
-            System.out.println(phoneOrderedList.get(i));
-        }
-        System.out.println("\n\nPHONE\n");
-        for(int i=0; i<clientsphone.size(); i++)
-        {
-            System.out.println(clientsphone.get(i));
-        }
-        System.out.println("\n\nEmailOrdered\n");
-        for(int i=0; i<emailOrderedList.size(); i++)
-        {
-            System.out.println(emailOrderedList.get(i));
-        }
-        System.out.println("\n\nEmail\n");
-        for(int i=0; i<clientsemail.size(); i++)
-        {
-            System.out.println(clientsemail.get(i));
-        }
+        
        
        // subjectslist = regularSQL("select "+Subject.SubjectTable.ABBREVNAME.getName()+" from "+Subject.SubjectTable.getTable()+" order by "+Subject.SubjectTable.ABBREVNAME.getName());
         
@@ -370,7 +505,7 @@ public class Data {
             for (int i = 0; i < row.length; i++) {
                 // System.out.print("\t\t*" + row[i]+"*");
                 if(row[i] == null || row[i].toString().length() == 0)
-                    row[i]="NONE";
+                    row[i]=" ";
                 line += row[i] + "" + separator;
 
                 if (index == i) {
@@ -396,7 +531,7 @@ public class Data {
                 // System.out.print("\t\t*" + row[i]+"*");
                 
                 if(row[i] == null || row[i].toString().length() == 0)
-                    row[i]="NONE";
+                    row[i]=" ";
                 
                 if(i == row.length-1)
                     line += row[i].toString();

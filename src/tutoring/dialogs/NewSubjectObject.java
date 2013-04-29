@@ -18,6 +18,7 @@ import tutoring.entity.Agenda;
 import tutoring.entity.AgendaCategory;
 import tutoring.entity.Category;
 import tutoring.entity.Subject;
+import tutoring.helper.Data;
 import tutoring.helper.DatabaseHelper;
 
 /**
@@ -30,24 +31,25 @@ public class NewSubjectObject extends javax.swing.JDialog {
      * Creates new form NewSubjectObject
      */
    private int subjectID = -1;
-    public NewSubjectObject(java.awt.Frame parent, boolean modal, ArrayList<String> categories) {
+    public NewSubjectObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         categoryCombo.setEditable(true);
         
         this.setResizable(false);
-        
+        ArrayList<String> categories = Data.getCategorieslist();
         categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
         categoryCombo.setSelectedIndex(0);
         editButton.setVisible(false);
         
     }
     
-    public NewSubjectObject(java.awt.Frame parent, boolean modal, ArrayList<String> categories, String subject, String category, int subjectID) {
+    public NewSubjectObject(java.awt.Frame parent, boolean modal, String subject, String category, int subjectID) {
         super(parent, modal);
         initComponents();
         categoryCombo.setEditable(true);
-        
+        ArrayList<String> categories = Data.getCategorieslist();
+
         categoryCombo.setModel(new DefaultComboBoxModel(categories.toArray()));
         
         categoryCombo.setSelectedIndex(categories.indexOf(category));

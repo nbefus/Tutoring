@@ -78,7 +78,7 @@ public final class SIAView extends javax.swing.JFrame
     public void update() 
     {
         
-            Data.refreshStudent();
+            Data.refreshClient();
             uaacClient.noMore();
             uaacClient = null;
             JComboBox[] cboxes = new  JComboBox[4];
@@ -699,6 +699,7 @@ System.out.println("Done list 4");
                 {
                     
                 }
+                System.out.println("TABLETEST: "+table.getTableHeader().getColumnModel().getColumn(0).getHeaderValue().toString());
                 String notes = table.getValueAt(row, AgendaTableModel.Columns.NOTES.getColumnIndex()).toString();
                 int agendaID =((Integer) table.getValueAt(row, AgendaTableModel.Columns.ID.getColumnIndex())).intValue();
                 
@@ -2142,7 +2143,7 @@ System.out.println("Done list 4");
         
         if(true)//ndo.wasInserted())
         {
-            Data.refreshStudent();
+            Data.refreshClient();
             uaacClient.noMore();
             uaacClient = null;
             JComboBox[] cboxes = new  JComboBox[4];

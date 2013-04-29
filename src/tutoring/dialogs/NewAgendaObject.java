@@ -26,9 +26,10 @@ public class NewAgendaObject extends javax.swing.JDialog {
      * Creates new form NewDatabaseObject
      */
     private int agendaID = -1;
-    public NewAgendaObject(java.awt.Frame parent, boolean modal, ArrayList<String> category) {
+    public NewAgendaObject(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        ArrayList<String> category = Data.getAgendacategorylist();
         agendaCategoryCombo.setEditable(false);
         this.setResizable(false);
         System.out.println("HAAA");
@@ -41,9 +42,10 @@ public class NewAgendaObject extends javax.swing.JDialog {
         
     }
     
-    public NewAgendaObject(java.awt.Frame parent, boolean modal, ArrayList<String> category, String select, String date, String description, int agendaID) {
+    public NewAgendaObject(java.awt.Frame parent, boolean modal, String select, String date, String description, int agendaID) {
         super(parent, modal);
         initComponents();
+        ArrayList<String> category = Data.getAgendacategorylist();
         agendaCategoryCombo.setEditable(false);
         System.out.println("HAAA");
         Object[] cats = category.toArray();
