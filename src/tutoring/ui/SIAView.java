@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
@@ -58,6 +59,92 @@ import tutoring.helper.*;
  */
 public final class SIAView extends javax.swing.JFrame
 {
+
+    public class MinuteUpdater extends TimerTask {
+    //times member represent calling times.
+    private SessionTableModel stm;
+   public MinuteUpdater(SessionTableModel stm)
+   {
+       this.stm = stm;
+   }
+    public void run() 
+    {
+        stm.fireTableDataChanged();
+        //update();
+    }
+ 
+}
+    
+    public void update() 
+    {
+        
+            Data.refreshStudent();
+            uaacClient.noMore();
+            uaacClient = null;
+            JComboBox[] cboxes = new  JComboBox[4];
+           
+           cboxes[0]=fnameCombo;
+           cboxes[1]=lnameCombo;
+           cboxes[2]=phoneCombo;
+           cboxes[3]=emailCombo;
+
+           ArrayList<ArrayList<String>> cultimateList = new ArrayList<ArrayList<String>>();
+    System.out.println("LIST1");
+           cultimateList.add(Data.getClientsfirst());
+           cultimateList.add(Data.getClientslast());
+           cultimateList.add(Data.getClientsphone());
+           cultimateList.add(Data.getClientsemail());
+           System.out.println("DONE LIST1");
+           ArrayList<ArrayList<String>> cultimateList1 = new ArrayList<ArrayList<String>>();
+    System.out.println("LIST 2");
+           cultimateList1.add(Data.getFnameOrderedList());
+           cultimateList1.add(Data.getLnameOrderedList());
+           cultimateList1.add(Data.getPhoneOrderedList());
+           cultimateList1.add(Data.getEmailOrderedList());
+    System.out.println("DONE LIST2");
+           uaacClient = new UltimateAutoAutoComplete(cultimateList, cboxes, cultimateList1);
+           
+           JComboBox[] cboxes2 = new  JComboBox[3];
+       cboxes2[0]=courseCombo;
+       cboxes2[1]=levelCombo;
+       cboxes2[2]=teacherCombo;
+       //cboxes[3]=emailCombo;
+       System.out.println("LIST 3");
+       ArrayList<ArrayList<String>> cultimateList2 = new ArrayList<ArrayList<String>>();
+
+       cultimateList2.add(Data.getSubjectslist());
+       cultimateList2.add(Data.getLevelslist());
+       cultimateList2.add(Data.getTeacherslist());
+System.out.println("DONE list 3");
+       ArrayList<ArrayList<String>> cultimateList22 = new ArrayList<ArrayList<String>>();
+System.out.println("LIst 4");
+       cultimateList22.add(Data.getSubjectOrderedList());
+       cultimateList22.add(Data.getLevelOrderedList());
+       cultimateList22.add(Data.getTeacherOrderedList());
+System.out.println("Done list 4");
+
+        uaacCourse.noMore();
+        uaacCourse = null;
+       uaacCourse = new UltimateAutoAutoComplete(cultimateList2, cboxes2, cultimateList22);//Data.getClientFirst(), Data.getClientLast(), Data.getClientPhone(), Data.getClientEmail());
+      
+       
+       JComboBox[] boxes3 = new  JComboBox[3];
+        
+        boxes3[0]=creatorCombo;
+        boxes3[1]=locationCombo;
+        boxes3[2]=paraprofessionalCombo;
+
+        ArrayList<ArrayList<String>> cultimateList3 = new ArrayList<ArrayList<String>>();
+        
+        cultimateList3.add(Data.getTutorslist());
+        cultimateList3.add(Data.getLocationslist());
+        cultimateList3.add(Data.getTutorslist());
+       
+        uac.noMore();
+        uac = null;
+        uac = new UltimateAutoComplete(cultimateList3, boxes3);
+           clearForm();
+    }
 
     /**
      * Creates new form SIA
@@ -121,7 +208,12 @@ public final class SIAView extends javax.swing.JFrame
     UltimateAutoAutoComplete uaacClient; 
 
     UltimateAutoAutoComplete uaacCourse;
-    private int sessionID = -1;
+    private TodaySessionTableHelper todayTableHelper;// = new TodaySessionTableHelper(todaysSessionTable);
+    private SessionTableHelper tableHelper;// = new SessionTableHelper(sessionsTable, false, null, (TodaySessionTableModel)todaysSessionTable.getModel());
+    private SessionTableHelper tableHelperFuture;//= new SessionTableHelper(appointmentsTable, true, (SessionTableModel)sessionsTable.getModel(), null);
+    private AgendaTableHelper tableHelperAgenda;// = new AgendaTableHelper(agendaTable);
+
+private int sessionID = -1;
     private final int logoutSeconds = 180;
     private long timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
     Thread timeout = new Thread(){
@@ -155,7 +247,23 @@ public final class SIAView extends javax.swing.JFrame
         
         
         
+        todayTableHelper = new TodaySessionTableHelper(todaysSessionTable);
+        tableHelper = new SessionTableHelper(sessionsTable, false, null, (TodaySessionTableModel)todaysSessionTable.getModel());
+        tableHelperFuture = new SessionTableHelper(appointmentsTable, true, (SessionTableModel)sessionsTable.getModel(), null);
+        tableHelperAgenda = new AgendaTableHelper(agendaTable);
         
+        
+        todayTableHelper.increaseRowHeight(12);
+        tableHelperAgenda.allowScrollingOnTable();
+       
+        tableHelperAgenda.increaseRowHeight(12);
+        
+        tableHelperFuture.allowScrollingOnTable();
+        tableHelperFuture.increaseRowHeight(12);
+        
+        tableHelper.allowScrollingOnTable();
+       
+        tableHelper.increaseRowHeight(12);
        
        // sessionsTable.setCellSelectionEnabled(true);
 
@@ -169,19 +277,7 @@ public final class SIAView extends javax.swing.JFrame
         sessionendField.setText("mm/dd/yyyy hh:mm aa");
         editSaveButton.setVisible(false);
         
-        SessionTableHelper tableHelper = new SessionTableHelper(sessionsTable, false, null);
-        SessionTableHelper tableHelperFuture = new SessionTableHelper(appointmentsTable, true, (SessionTableModel)sessionsTable.getModel());
-        AgendaTableHelper tableHelperAgenda = new AgendaTableHelper(agendaTable);
-        tableHelperAgenda.allowScrollingOnTable();
-       
-        tableHelperAgenda.increaseRowHeight(12);
         
-        tableHelperFuture.allowScrollingOnTable();
-        tableHelperFuture.increaseRowHeight(12);
-        
-        tableHelper.allowScrollingOnTable();
-       
-        tableHelper.increaseRowHeight(12);
         
         
         
@@ -334,6 +430,18 @@ System.out.println("Done list 4");
         }
         
         
+         String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = CURDATE() and DATE("+sessEndCol+") = CURDATE()";
+       ArrayList<ParaprofessionalSession> todaySessions = ParaprofessionalSession.selectAllParaprofessionalSession(todaySessionsWhere,DatabaseHelper.getConnection());
+        if(todaySessions.size() > 0)
+        {
+            for(int i=0; i<todaySessions.size(); i++)
+            {
+                ((TodaySessionTableModel) todaysSessionTable.getModel()).addRow(todaySessions.get(i)); 
+            }
+            
+            todaysSessionTable.repaint();
+        }
+        
         /*
          ArrayList<ParaprofessionalSession> sessions = (ArrayList<ParaprofessionalSession>)HibernateTest.select("from ParaprofessionalSession as ps where (ps.sessionStart IS NULL or ps.sessionEnd IS NULL) AND walkout='false'");
 
@@ -349,39 +457,44 @@ System.out.println("Done list 4");
         
         
         
-        Timer timer = new Timer("Minute Update");
- 
-        //2- Taking an instance of class contains your repeated method.
-        MinuteUpdate min = new MinuteUpdate((SessionTableModel)sessionsTable.getModel());
- 
-        MinuteUpdate min2 = new MinuteUpdate((SessionTableModel)appointmentsTable.getModel());
-
-        timer.schedule(min, 0, 60000);
-        timer.schedule(min2, 0, 60000);
         
-        
-        
-        
-        
-        setUpAgenda();
         
         DefaultCellEditor dce = makeEditSessionCellEditor();
         DefaultCellEditor dceAgenda = makeEditAgendaCellEditor();
         
         tableHelper.setTableRendersAndEditors(true, dce);
         tableHelperFuture.setTableRendersAndEditors(true, dce);
+        todayTableHelper.setTableRendersAndEditors(true, dce);
         tableHelperAgenda.setTableRendersAndEditors(true, dceAgenda);
         //tableHelperAgenda.autoResizeColWidth();
         tableHelper.autoResizeColWidth();
+        todayTableHelper.autoResizeColWidth();
         tableHelperFuture.autoResizeColWidth();
         //tableHelper.fasterScrolling(20);
             
     ///SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
+        
+        
+        
+        setUpAgenda();
+        
+       
         setUpGeneralReportTab();
             } }).start();
         
         
     DatabaseHelper.close();
+     
+        
+        Timer timer = new Timer("Minute Update");
+ 
+        //2- Taking an instance of class contains your repeated method.
+        MinuteUpdater min = new MinuteUpdater((SessionTableModel)sessionsTable.getModel());
+ 
+        MinuteUpdater min2 = new MinuteUpdater((SessionTableModel)appointmentsTable.getModel());
+
+        timer.schedule(min, 0, 60000);
+        timer.schedule(min2, 0, 60000);
     }
     
     
@@ -390,11 +503,11 @@ System.out.println("Done list 4");
         DatabaseHelper.open();
         Timestamp now = new Timestamp((new Date()).getTime());
         String sessStartCol = ParaprofessionalSession.ParaSessTable.SESSIONSTART.getWithAlias();
-       String sessEndCol = ParaprofessionalSession.ParaSessTable.SESSIONEND.getWithAlias();
-       String walkoutCol = ParaprofessionalSession.ParaSessTable.WALKOUT.getWithAlias();
+        String sessEndCol = ParaprofessionalSession.ParaSessTable.SESSIONEND.getWithAlias();
+        String walkoutCol = ParaprofessionalSession.ParaSessTable.WALKOUT.getWithAlias();
        
-      String currentSessionsWhere = " where ("+sessStartCol+" IS NULL or ("+sessStartCol+" <= '"+now.toString()+"' and "+sessEndCol+" IS NULL)) AND "+walkoutCol+"='false'";
-((SessionTableModel) sessionsTable.getModel()).deleteAllRows();
+        String currentSessionsWhere = " where ("+sessStartCol+" IS NULL or ("+sessStartCol+" <= '"+now.toString()+"' and "+sessEndCol+" IS NULL)) AND "+walkoutCol+"='false'";
+        ((SessionTableModel) sessionsTable.getModel()).deleteAllRows();
        ArrayList<ParaprofessionalSession> sessions = ParaprofessionalSession.selectAllParaprofessionalSession(currentSessionsWhere,DatabaseHelper.getConnection());
         if(sessions.size() > 0)
         {
@@ -443,6 +556,19 @@ System.out.println("Done list 4");
            
         agendaTable.repaint();
         
+        }
+        
+        String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = CURDATE() and DATE("+sessEndCol+") = CURDATE()";
+       ArrayList<ParaprofessionalSession> todaySessions = ParaprofessionalSession.selectAllParaprofessionalSession(todaySessionsWhere,DatabaseHelper.getConnection());
+        ((TodaySessionTableModel) todaysSessionTable.getModel()).deleteAllRows();
+       if(todaySessions.size() > 0)
+        {
+            for(int i=0; i<todaySessions.size(); i++)
+            {
+                ((TodaySessionTableModel) todaysSessionTable.getModel()).addRow(todaySessions.get(i)); 
+            }
+            
+            todaysSessionTable.repaint();
         }
         DatabaseHelper.close();
     }
@@ -968,6 +1094,10 @@ System.out.println("Done list 4");
         jScrollPane1 = new javax.swing.JScrollPane();
         appointmentsTable = new javax.swing.JTable();
         deleteSessionButton1 = new javax.swing.JButton();
+        todaySessionsPanel = new javax.swing.JPanel();
+        todaySessionsScrollPane = new javax.swing.JScrollPane();
+        todaysSessionTable = new javax.swing.JTable();
+        deleteSessionButton2 = new javax.swing.JButton();
         reportsPane = new javax.swing.JPanel();
         reportsScrollPane = new javax.swing.JScrollPane();
         reportsTopPane = new javax.swing.JPanel();
@@ -1554,7 +1684,59 @@ System.out.println("Done list 4");
                 .add(deleteSessionButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        jTabbedPane1.addTab("Future", futureSessionsPanel);
+        jTabbedPane1.addTab("Appointments", futureSessionsPanel);
+
+        todaySessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Sessions"));
+
+        todaySessionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        todaySessionsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        todaySessionsScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                todaySessionsScrollPaneMouseMoved(evt);
+            }
+        });
+
+        todaysSessionTable.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        todaysSessionTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        todaysSessionTable.setRowMargin(5);
+        todaysSessionTable.setSurrendersFocusOnKeystroke(true);
+        todaySessionsScrollPane.setViewportView(todaysSessionTable);
+
+        deleteSessionButton2.setText("Delete Session");
+        deleteSessionButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteSessionButton2ActionPerformed(evt);
+            }
+        });
+
+        org.jdesktop.layout.GroupLayout todaySessionsPanelLayout = new org.jdesktop.layout.GroupLayout(todaySessionsPanel);
+        todaySessionsPanel.setLayout(todaySessionsPanelLayout);
+        todaySessionsPanelLayout.setHorizontalGroup(
+            todaySessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, todaySessionsPanelLayout.createSequentialGroup()
+                .add(0, 0, Short.MAX_VALUE)
+                .add(deleteSessionButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 136, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(todaySessionsPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .add(todaySessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        todaySessionsPanelLayout.setVerticalGroup(
+            todaySessionsPanelLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(todaySessionsPanelLayout.createSequentialGroup()
+                .add(todaySessionsScrollPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(deleteSessionButton2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 29, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jTabbedPane1.addTab("Today's", todaySessionsPanel);
 
         org.jdesktop.layout.GroupLayout sessionsAndAgendaPanelLayout = new org.jdesktop.layout.GroupLayout(sessionsAndAgendaPanel);
         sessionsAndAgendaPanel.setLayout(sessionsAndAgendaPanelLayout);
@@ -1958,7 +2140,7 @@ System.out.println("Done list 4");
         ndo.setLocationRelativeTo(null);
         ndo.setVisible(true);
         
-        if(ndo.wasInserted())
+        if(true)//ndo.wasInserted())
         {
             Data.refreshStudent();
             uaacClient.noMore();
@@ -2393,6 +2575,14 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
             
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void todaySessionsScrollPaneMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todaySessionsScrollPaneMouseMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_todaySessionsScrollPaneMouseMoved
+
+    private void deleteSessionButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteSessionButton2ActionPerformed
 
     private void close()
     {
@@ -2842,6 +3032,7 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
     private javax.swing.JButton deleteAgendaButton;
     private javax.swing.JButton deleteSessionButton;
     private javax.swing.JButton deleteSessionButton1;
+    private javax.swing.JButton deleteSessionButton2;
     private javax.swing.JButton editSaveButton;
     private javax.swing.JComboBox emailCombo;
     private javax.swing.JLabel emailLabel;
@@ -2910,6 +3101,9 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
     private javax.swing.JTabbedPane tabsPane;
     private javax.swing.JComboBox teacherCombo;
     private javax.swing.JLabel teacherLabel;
+    private javax.swing.JPanel todaySessionsPanel;
+    private javax.swing.JScrollPane todaySessionsScrollPane;
+    private javax.swing.JTable todaysSessionTable;
     private javax.swing.JCheckBox walkoutCheck;
     private javax.swing.JRadioButton weekRadio;
     private javax.swing.JRadioButton yearRadio;

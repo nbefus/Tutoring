@@ -132,9 +132,50 @@ public class Data {
         phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
         emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
         
-        subjectslist = regularSQL("select "+Subject.SubjectTable.ABBREVNAME.getName()+" from "+Subject.SubjectTable.getTable()+" order by "+Subject.SubjectTable.ABBREVNAME.getName());
+        System.out.println("\n\nFnameOrdered\n");
+        for(int i=0; i<fnameOrderedList.size(); i++)
+        {
+            System.out.println(fnameOrderedList.get(i));
+        }
+        System.out.println("\n\nFname\n");
+        for(int i=0; i<clientsfirst.size(); i++)
+        {
+            System.out.println(clientsfirst.get(i));
+        }
+        System.out.println("\n\nLnameOrdered\n");
+        for(int i=0; i<lnameOrderedList.size(); i++)
+        {
+            System.out.println(lnameOrderedList.get(i));
+        }
+        System.out.println("\n\nLname\n");
+        for(int i=0; i<clientslast.size(); i++)
+        {
+            System.out.println(clientslast.get(i));
+        }
+        System.out.println("\n\nPHONEOrdered\n");
+        for(int i=0; i<phoneOrderedList.size(); i++)
+        {
+            System.out.println(phoneOrderedList.get(i));
+        }
+        System.out.println("\n\nPHONE\n");
+        for(int i=0; i<clientsphone.size(); i++)
+        {
+            System.out.println(clientsphone.get(i));
+        }
+        System.out.println("\n\nEmailOrdered\n");
+        for(int i=0; i<emailOrderedList.size(); i++)
+        {
+            System.out.println(emailOrderedList.get(i));
+        }
+        System.out.println("\n\nEmail\n");
+        for(int i=0; i<clientsemail.size(); i++)
+        {
+            System.out.println(clientsemail.get(i));
+        }
+       
+       // subjectslist = regularSQL("select "+Subject.SubjectTable.ABBREVNAME.getName()+" from "+Subject.SubjectTable.getTable()+" order by "+Subject.SubjectTable.ABBREVNAME.getName());
         
-        levelslist = regularSQL("select "+Course.CourseTable.LEVEL.getName()+" from "+Course.CourseTable.getTable()+" order by "+Course.CourseTable.LEVEL.getName());
+       // levelslist = regularSQL("select "+Course.CourseTable.LEVEL.getName()+" from "+Course.CourseTable.getTable()+" order by "+Course.CourseTable.LEVEL.getName());
         
         teacherfirstlist = regularSQL("select "+Teacher.TeacherTable.FNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.FNAME.getName());
         teacherlastlist = regularSQL("select "+Teacher.TeacherTable.LNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.LNAME.getName());
@@ -155,10 +196,11 @@ public class Data {
         parafirstlist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
         paralastlist = regularSQL("select "+Paraprofessional.ParaTable.LNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.LNAME.getName());
        
-        tutorslist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+", "+Paraprofessional.ParaTable.FNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
+        tutorslist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+", "+Paraprofessional.ParaTable.LNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
         
         subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
         levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
+        
         teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist);
        
         multicategorylist = createMultiCat(categorieslist.size(), null);
@@ -337,7 +379,6 @@ public class Data {
             }
 
             line = line.substring(0, line.length() - 1);
-            // System.out.println(line);
             arraylist.add(line);
             // System.out.println();
         }
@@ -350,13 +391,20 @@ public class Data {
         Iterator it = result.iterator();
         while (it.hasNext()) {
             Object[] row = (Object[]) it.next();
+            String line = "";
             for (int i = 0; i < row.length; i++) {
                 // System.out.print("\t\t*" + row[i]+"*");
+                
                 if(row[i] == null || row[i].toString().length() == 0)
                     row[i]="NONE";
-
-                arraylist.add(row[i].toString());
+                
+                if(i == row.length-1)
+                    line += row[i].toString();
+                else
+                    line += row[i].toString() + " ";
+                    
             }
+            arraylist.add(line);
         }
         return arraylist;
     }

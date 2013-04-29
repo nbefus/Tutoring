@@ -18,7 +18,6 @@ import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
 import tutoring.entity.ParaprofessionalSession;
-import tutoring.ui.AdminView;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -28,10 +27,9 @@ import tutoring.ui.AdminView;
  *
  * @author Nathaniel
  */
-public class SessionTableModel extends AbstractTableModel {
+public class TodaySessionTableModel extends AbstractTableModel {
 
-    
-    public enum Columns
+     public enum Columns
     {
         ID(0, "ID", Integer.class),
         CLIENTFIRSTNAME(1, "First Name", String.class),
@@ -66,7 +64,7 @@ public class SessionTableModel extends AbstractTableModel {
 	}
         
         static {
-            for (Columns v : Columns.values()) {
+            for (TodaySessionTableModel.Columns v : TodaySessionTableModel.Columns.values()) {
             classMap.put(v.columnIndex, v.columnClass);
             }
         }
@@ -93,49 +91,31 @@ public class SessionTableModel extends AbstractTableModel {
      
     private String[] columnNames;// = {"ID","fname","lname","phone", "email","course","level","teacher","notes","tutor","gc", "date","start","stop","min", "location","creator","walkout","category" };
     private  ParaprofessionalSession[] data;// = {{null,null,null,null,null,null,null,null}};
-    private boolean isFutureSession;
     private ArrayList<ParaprofessionalSession> tutorSessions = new ArrayList();
 
-    private SessionTableModel currentSessionModel;
-    private TodaySessionTableModel todaySessionTableModel;
    /* public SessionTableModel(ArrayList<ParaprofessionalSession> list, boolean isFutureSession){
          this.tutorSessions = list;
          columnNames=generateColumns();
          this.isFutureSession = isFutureSession;
     }*/
-    public SessionTableModel(boolean isFutureSession, TodaySessionTableModel todaySessionTableModel){
-        this.isFutureSession = isFutureSession;
-        this.todaySessionTableModel = todaySessionTableModel;
+    public TodaySessionTableModel(){
         columnNames=generateColumns();
         
     }
     
-    public SessionTableModel(boolean isFutureSession, SessionTableModel currentSessionModel)
+    public TodaySessionTableModel(SessionTableModel currentSessionModel)
     {
-        this.isFutureSession = isFutureSession;
-        this.currentSessionModel = currentSessionModel;
-        
         columnNames = generateColumns();
-        
     }
     
     private String[] generateColumns()
     {
-        Columns[] c = Columns.class.getEnumConstants();
+        SessionTableModel.Columns[] c = SessionTableModel.Columns.class.getEnumConstants();
         String[] columnNames = new String[c.length];
         for(int i=0; i<c.length; i++)
         {
             columnNames[c[i].getColumnIndex()] = c[i].getDisplayName();
-            
-            if(columnNames[c[i].getColumnIndex()].equals(Columns.START.getDisplayName()) && isFutureSession)
-            {
-                columnNames[c[i].getColumnIndex()] = "Appointment";
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HERE");
-            }
-            else if(columnNames[c[i].getColumnIndex()].equals(Columns.STOP.getDisplayName()) && isFutureSession)
-                columnNames[c[i].getColumnIndex()] = "Start";
-                
-          System.out.println("COLUMN NAME: *"+columnNames[c[i].getColumnIndex()] + "* *"+Columns.START.getDisplayName() + "* "+isFutureSession);
+      
         }
         
         return columnNames;
@@ -210,137 +190,7 @@ public class SessionTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object o, int r, int c)
     {
-         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm aa", Locale.ENGLISH);
-        System.out.println("SetValue at :"+ r + " "+c);
-        if(!o.toString().equals("CURRENT"))
-        {
-            
-            if(!areEqual(getValueAt(r,c),o))
-            {
-                int option = JOptionPane.showConfirmDialog(null, "Are you sure you this session is a walkout?");
-                if(option == JOptionPane.YES_OPTION)
-                {
-                    System.out.println("EDITED at setValueAt STM: "+o.toString());
-                   // tutorSessions.get(r)
-
-                    ParaprofessionalSession ts = tutorSessions.get(r);
-                    switch (c) {
-                    /*case 0: 
-                        break;
-                    case 1:
-                        ts.getClientID().setfName((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 2:
-                        ts.getClientID().setlName((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 3:
-                        ts.getClientID().setPhone((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 4:
-                        ts.getClientID().setEmail((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 5:
-                        ts.getCourseID().getSubjectID().setAbbrevName((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 6:
-                        ts.getCourseID().setLevel(Integer.parseInt((String)o));
-                        HibernateTest.update(ts);
-                        break;
-                    case 7:
-
-                        //ts.getCourseID().getTeacherID().getfName() + " "+ts.getCourseID().getTeacherID().getlName();
-                        break;
-                    case 8:
-                        ts.setNotes((String)o);
-                        HibernateTest.update(ts);
-                        break;
-                    case 9:
-                        //ts.getParaprofessionalID().getfName() + " "+ts.getParaprofessionalID().getlName();
-                        break;
-                    case 10:
-                        ts.setGrammarCheck((Boolean)o);
-                        HibernateTest.update(ts);
-                        System.out.println("DONE");
-                        break;
-                    case 11:
-                        System.out.println("NOW ON CASE 11");
-                    try {
-                        ts.setTimeAndDateEntered(new Timestamp(sdf.parse((String)o).getTime()));
-                    } catch (ParseException ex) {
-                        System.out.println("ERROR AT CASE 11 sessiontablemodel");
-                    }
-                        HibernateTest.update(ts);
-                        break;
-                    case 12:
-                        if(ts.getSessionStart() != null)
-                            ts.getSessionStart();
-                        else
-                            Timestamp.valueOf("9999-12-31 12:00:00");
-                        break;
-                    case 13:
-                        if(ts.getSessionStart() != null)
-                            ts.getSessionEnd();
-                        else
-                            Timestamp.valueOf("9999-12-31 12:00:00");
-                        break;
-                    case 14:
-                    case 15:
-                        ts.getLocationID().getName();
-                    case 16:
-                        //ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
-                   */ case 18:
-                        ts.setWalkout((Boolean)o);
-                        //HibernateTest.update(ts);
-                        tutorSessions.remove(ts);
-                        break;
-                    /*case 18:
-                        ts.getCourseID().getSubjectID().getCategoryID().getName();*/
-                   }
-                   // fireTableCellUpdated(r, c);
-                    fireTableDataChanged();
-                   //return null;
-
-                }
-                else
-                    System.out.println("CANCELLED");
-            }
-            
-        }
-        else
-        {
-            ParaprofessionalSession ts = tutorSessions.get(r);
-            if(c == Columns.START.getColumnIndex() && !isFutureSession)
-                ts.setSessionStart(new Timestamp((new Date()).getTime()));
-            else if(c == Columns.STOP.getColumnIndex() && isFutureSession)
-            {
-                ts.setSessionStart(new Timestamp((new Date()).getTime()));
-                //DatabaseHelper.open();
-                //DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
-                //DatabaseHelper.close();
-                currentSessionModel.addRow(ts);
-                tutorSessions.remove(ts);
-                //HibernateTest.update(ts);
-                //Move into current sessions
-                // by calling a refresh data method
-            }
-            else if(c == Columns.STOP.getColumnIndex() && !isFutureSession)
-            {
-                ts.setSessionEnd(new Timestamp((new Date()).getTime()));
-                //HibernateTest.update(ts);
-                todaySessionTableModel.addRow(ts);
-                tutorSessions.remove(ts);
-            }
-            
-            
-            fireTableDataChanged();
-           // fireTableRowsUpdated(r, c);
-            //HibernateTest.update(ts);
-        }
+       
     }
     
     /*
@@ -358,9 +208,9 @@ public class SessionTableModel extends AbstractTableModel {
       //  System.out.println(getValueAt(i,j).getClass().toString());
       //  System.out.println((getValueAt(i, j-1) instanceof Timestamp));
       //  System.out.println(((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")));
-        if(!(getValueAt(i, j-1) instanceof Timestamp && ((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")) && j == Columns.STOP.getColumnIndex()) && !(getValueAt(i, j) instanceof Timestamp && !((Timestamp)getValueAt(i, j)).equals(Timestamp.valueOf("9999-12-31 12:00:00"))))
+        //if(!(getValueAt(i, j-1) instanceof Timestamp && ((Timestamp)getValueAt(i, j-1)).equals(Timestamp.valueOf("9999-12-31 12:00:00")) && j == SessionTableModel.Columns.STOP.getColumnIndex()) && !(getValueAt(i, j) instanceof Timestamp && !((Timestamp)getValueAt(i, j)).equals(Timestamp.valueOf("9999-12-31 12:00:00"))))
             return true;
-        return false;
+        //return false;
     }
     
     @Override
@@ -417,15 +267,10 @@ public class SessionTableModel extends AbstractTableModel {
                 else
                     return Timestamp.valueOf("9999-12-31 12:00:00");
             case 14:
-                if(ts.getSessionStart() != null && ts.getSessionEnd() == null && !isFutureSession)
+                if(ts.getSessionStart() != null && ts.getSessionEnd() == null)
                     return minutesOf(new Date(ts.getSessionStart().getTime()), new Date());
-                else if(ts.getSessionStart() != null && ts.getSessionEnd() != null && !isFutureSession)
+                else if(ts.getSessionStart() != null && ts.getSessionEnd() != null)
                     return minutesOf(new Date(ts.getSessionStart().getTime()), new Date(ts.getSessionEnd().getTime()));
-                else if(ts.getSessionStart() != null && ts.getSessionEnd() == null && isFutureSession)
-                {
-                    System.out.println("STEEEIOJWOEIJFOW MINUTES!!!!: ");
-                    return minutesOf(new Date(), new Date(ts.getSessionStart().getTime()));
-                }
                 else
                     return 0;
             case 15:
@@ -452,10 +297,9 @@ public class SessionTableModel extends AbstractTableModel {
    @Override
    public Class<?> getColumnClass(int columnIndex){
 
-       return Columns.getColumnClass(columnIndex);
+       return SessionTableModel.Columns.getColumnClass(columnIndex);
           //   return null;
       }
-   
    
       
  }

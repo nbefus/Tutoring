@@ -343,8 +343,8 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
                         stringToFind = clientsEmail.get(indexesOfValue.get(indexesOfValue.size()-1)).getfName();
                     */
                     System.out.println("STRING TO FIND: "+stringToFind + " other text "+otherText);
-                    if(!otherText.equals(stringToFind))
-                    {
+                    //if(true)//!otherText.equals(stringToFind))
+                  //  {
                         //clear matches
                         for(int j=0; j<max; j++)
                         {
@@ -498,9 +498,9 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
                         //    e.printStackTrace();
                         //}
                         //updatelist(1, true);
-                    }
-                    else
-                        System.out.println("NO NEED");
+                   // }
+                  //  else
+                   //     System.out.println("NO NEED");
  
                 }
             }
@@ -708,7 +708,7 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
             System.out.println("SELECTED I");
     }
 
-    
+    private MouseAdapter ma = listener();
     private void addPopupMouseListener(JComboBox box) {
         try {
                   Field popupInBasicComboBoxUI = BasicComboBoxUI.class.getDeclaredField("popup");
@@ -719,7 +719,8 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
                 scrollerInBasicComboPopup.setAccessible(true);
                 JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
 
-                scroller.getViewport().getView().addMouseListener(listener());
+               
+                scroller.getViewport().getView().addMouseListener(ma);
 //                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
         }
         catch (NoSuchFieldException e) {
@@ -740,7 +741,7 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
                 scrollerInBasicComboPopup.setAccessible(true);
                 JScrollPane scroller = (JScrollPane) scrollerInBasicComboPopup.get(popup);
 
-                scroller.getViewport().getView().removeMouseListener(listener());
+                scroller.getViewport().getView().removeMouseListener(ma);
 //                ((JViewport) ((JScrollPane) ((BasicComboPopup) popupInBasicComboBoxUI.get(box.getUI())).getComponents()[0]).getComponents()[0]).getComponents()[0].addMouseListener(this);
         }
         catch (NoSuchFieldException e) {

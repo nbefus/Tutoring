@@ -357,7 +357,7 @@ public class ParaprofessionalSession {
                 statement = connect.createStatement();
 
                // ParaprofessionalSession.ParaSessTable ps = ParaprofessionalSession.ParaSessTable.;
-                String query = ParaprofessionalSession.ParaSessTable.getSelectQuery(false);
+                String query = ParaprofessionalSession.ParaSessTable.getSelectQuery(true);
                query += " "+addedSQLToSelect;
                
                resultSet = statement.executeQuery(query);

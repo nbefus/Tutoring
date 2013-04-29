@@ -21,5 +21,7 @@ public class MinuteUpdate extends TimerTask {
     public void run() 
     {
         stm.fireTableDataChanged();
+        
     }
+ 
 }

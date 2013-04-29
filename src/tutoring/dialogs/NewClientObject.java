@@ -268,7 +268,7 @@ public class NewClientObject extends javax.swing.JDialog {
             
             if(lname.length() > 0 && fname.length() > 0 && goodPhone && goodEmail)
             {
-                Client c = new Client(-1, fname, lname, email, phone);
+                Client c = new Client(-1, fname, lname, phone, email);
                 DatabaseHelper.open();
                 inserted = DatabaseHelper.insert(Client.getValues(c), Client.ClientTable.getTable());
                 
