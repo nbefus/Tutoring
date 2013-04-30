@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
+import tutoring.entity.Agenda;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
@@ -159,8 +160,15 @@ public class SessionTableModel extends AbstractTableModel {
     
     public void deleteRows(int[] r)
     {
+        DatabaseHelper.open();
         for(int i=0; i<r.length; i++)
-            tutorSessions.remove(r[i]);
+            DatabaseHelper.delete(tutorSessions.get(r[i]).getParaprofessionalSessionID()+"", Agenda.AgendaTable.getTable());
+        DatabaseHelper.close();
+        ArrayList<ParaprofessionalSession> a = new ArrayList<ParaprofessionalSession>();
+        for(int i=0; i< r.length; i++)
+            a.add(tutorSessions.get(r[i]));
+        
+        tutorSessions.removeAll(a);
         fireTableDataChanged();
     }
     
@@ -295,7 +303,9 @@ public class SessionTableModel extends AbstractTableModel {
                         //ts.getParaprofessionalCreatorID().getfName() + " "+ts.getParaprofessionalCreatorID().getlName();
                    */ case 18:
                         ts.setWalkout((Boolean)o);
-                        //HibernateTest.update(ts);
+                        DatabaseHelper.open();
+                        DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
+                        DatabaseHelper.close();
                         tutorSessions.remove(ts);
                         break;
                     /*case 18:
@@ -315,15 +325,22 @@ public class SessionTableModel extends AbstractTableModel {
         {
             ParaprofessionalSession ts = tutorSessions.get(r);
             if(c == Columns.START.getColumnIndex() && !isFutureSession)
+            {
                 ts.setSessionStart(new Timestamp((new Date()).getTime()));
+                DatabaseHelper.open();
+                DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
+                DatabaseHelper.close();
+            }
             else if(c == Columns.STOP.getColumnIndex() && isFutureSession)
             {
                 ts.setSessionStart(new Timestamp((new Date()).getTime()));
-                //DatabaseHelper.open();
-                //DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
-                //DatabaseHelper.close();
+               
+                DatabaseHelper.open();
+                DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
+                DatabaseHelper.close();
                 currentSessionModel.addRow(ts);
                 tutorSessions.remove(ts);
+                
                 //HibernateTest.update(ts);
                 //Move into current sessions
                 // by calling a refresh data method
@@ -332,8 +349,12 @@ public class SessionTableModel extends AbstractTableModel {
             {
                 ts.setSessionEnd(new Timestamp((new Date()).getTime()));
                 //HibernateTest.update(ts);
+                DatabaseHelper.open();
+                DatabaseHelper.update(ParaprofessionalSession.getValues(ts), ParaprofessionalSession.ParaSessTable.getTable());
+                DatabaseHelper.close();
                 todaySessionTableModel.addRow(ts);
                 tutorSessions.remove(ts);
+                
             }
             
             

@@ -84,10 +84,6 @@ public class Data {
     private static ArrayList<String> rolelist;
     private static ArrayList<String> agendacategorylist;
     
-    private static Set<String> uniqueTeachers = new HashSet<String>();
-    private static Set<String> uniqueSubjects = new HashSet<String>();
-
-    
     public static void refreshClient()
     {
         clientsfirst = new ArrayList<String>();
@@ -96,172 +92,108 @@ public class Data {
         clientsemail = new ArrayList<String>();
         
         char separator = ',';
-        DatabaseHelper.open();
         fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
         lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
         phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
         emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
     }
 
     public static void refreshAgenda()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        agendacategorylist = new ArrayList<String>();
+        agendanotelist = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        agendacategorylist = regularSQL("select "+AgendaCategory.AgendaCategoryTable.TYPE.getName()+" from "+AgendaCategory.AgendaCategoryTable.getTable()+" order by "+AgendaCategory.AgendaCategoryTable.TYPE.getName());
+        agendanotelist = regularSQL("select "+Agenda.AgendaTable.NOTES.getName()+" from "+Agenda.AgendaTable.getTable()+" order by "+Agenda.AgendaTable.NOTES.getName());
+        
     }
     
     public static void refreshAgendaCategory()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        agendacategorylist = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        
+        agendacategorylist = regularSQL("select "+AgendaCategory.AgendaCategoryTable.TYPE.getName()+" from "+AgendaCategory.AgendaCategoryTable.getTable()+" order by "+AgendaCategory.AgendaCategoryTable.TYPE.getName());
+
     }
     
     public static void refreshCategory()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
-        
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        categorieslist = new ArrayList<String>();
+        multicategorylist = new ArrayList<String>();
+
+        categorieslist = regularSQL("select "+Category.CategoryTable.NAME.getName()+" from "+Category.CategoryTable.getTable()+" order by "+Category.CategoryTable.NAME.getName());
+        multicategorylist = createMultiCat(categorieslist.size(), null);
     }
     
     public static void refreshCourse()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
-        
+        subjectOrderedList = new ArrayList<String>();
+        levelOrderedList = new ArrayList<String>();
+        teacherOrderedList = new ArrayList<String>();
+        teacherfirstlist = new ArrayList<String>();
+        teacherlastlist = new ArrayList<String>();
+
         char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
+        levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
+        teacherfirstlist = regularSQL("select "+Teacher.TeacherTable.FNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.FNAME.getName());
+        teacherlastlist = regularSQL("select "+Teacher.TeacherTable.LNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.LNAME.getName());
+        teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist); 
+        
     }
     
     public static void refreshLocation()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        locationslist = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        locationslist = regularSQL("select "+Location.LocationTable.NAME.getName()+ " from "+Location.LocationTable.getTable()+" order by "+Location.LocationTable.NAME.getName());
     }
     
     public static void refreshParaprofessional()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        parafirstlist = new ArrayList<String>();
+        paralastlist = new ArrayList<String>();
+        tutorslist = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        
+        parafirstlist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
+        paralastlist = regularSQL("select "+Paraprofessional.ParaTable.LNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.LNAME.getName());
+       
+        tutorslist = regularSQL("select "+Paraprofessional.ParaTable.FNAME.getName()+", "+Paraprofessional.ParaTable.LNAME.getName()+" from "+Paraprofessional.ParaTable.getTable()+" order by "+Paraprofessional.ParaTable.FNAME.getName());
+        
     }
     
     public static void refreshParaprofessionalSession()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
     }
     
     public static void refreshRole()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        rolelist = new ArrayList<String>();
+
+        rolelist= regularSQL("select "+Role.RoleTable.TYPE.getName()+" from "+Role.RoleTable.getTable()+" order by "+Role.RoleTable.TYPE.getName());
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
     }
     
     public static void refreshSubject()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
-        
+        subjectOrderedList = new ArrayList<String>();
+
         char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
+        
     }
     
     public static void refreshTeacher()
     {
-        clientsfirst = new ArrayList<String>();
-        clientslast = new ArrayList<String>();
-        clientsphone = new ArrayList<String>();
-        clientsemail = new ArrayList<String>();
+        teacherfirstlist = new ArrayList<String>();
+        teacherlastlist = new ArrayList<String>();
         
-        char separator = ',';
-        DatabaseHelper.open();
-        fnameOrderedList = setUpList("select fname, lname, phone, email from Client order by fname", 0, separator, clientsfirst);
-        lnameOrderedList = setUpList("select fname, lname, phone, email from Client order by lname", 1, separator, clientslast);
-        phoneOrderedList = setUpList("select fname, lname, phone, email from Client order by phone", 2, separator, clientsphone);
-        emailOrderedList = setUpList("select fname, lname, phone, email from Client order by email", 3, separator, clientsemail);
-        DatabaseHelper.close();
+        teacherfirstlist = regularSQL("select "+Teacher.TeacherTable.FNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.FNAME.getName());
+        teacherlastlist = regularSQL("select "+Teacher.TeacherTable.LNAME.getName()+" from "+Teacher.TeacherTable.getTable()+" order by "+Teacher.TeacherTable.LNAME.getName());
+        
     }
     
     public static void refreshUser()
@@ -276,11 +208,6 @@ public class Data {
         usernamelist = regularSQL("select "+User.UserTable.USERNAME.getName()+" from "+User.UserTable.getTable()+" order by "+User.UserTable.USERNAME.getName());
         
         DatabaseHelper.close();
-    }
-    
-    public Set<String> getUniqueTeachers()
-    {
-        return uniqueTeachers;
     }
     
     public Data(boolean initializeAll) {
@@ -343,11 +270,7 @@ public class Data {
         subjectOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by abbrevName", 0, separator, subjectslist);
         levelOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by level", 1, separator, levelslist);
         
-        teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist);
-      
-        Set<String> mySet = new HashSet<String>(teacherslist);
-        System.out.println("HASHSET "+mySet.size());
-        System.out.println(teacherslist.size());    
+        teacherOrderedList = setUpList("select abbrevName, level, concat_ws(' ',fName, lName) as 'teacher' from Course c join Subject s on c.subjectID=s.subjectID join Teacher t on c.teacherID=t.teacherID order by fname", 2, separator, teacherslist); 
         
         multicategorylist = createMultiCat(categorieslist.size(), null);
         /*

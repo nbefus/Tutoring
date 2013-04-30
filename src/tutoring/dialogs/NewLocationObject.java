@@ -73,15 +73,18 @@ public class NewLocationObject extends javax.swing.JDialog {
                 
                 Location l = new Location(locationID, location);
                 System.out.println(l.toString());
+                boolean inserted = false;
                 DatabaseHelper.open();
                 if(!update)
-                    DatabaseHelper.insert(Location.getValues(l), Location.LocationTable.getTable());
+                    inserted = DatabaseHelper.insert(Location.getValues(l), Location.LocationTable.getTable());
                 else
-                    DatabaseHelper.update(Location.getValues(l), Location.LocationTable.getTable());
+                    inserted = DatabaseHelper.update(Location.getValues(l), Location.LocationTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The location was successfully written to the database!");
-                
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The location was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The location was NOT created! Please try again!");
                 close();
                 
             }

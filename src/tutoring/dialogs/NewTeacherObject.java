@@ -93,16 +93,19 @@ public class NewTeacherObject extends javax.swing.JDialog {
             {
                 
                 Teacher t = new Teacher(teacherID, lname, fname);
-                System.out.println(t.toString());
 
                 DatabaseHelper.open();
-                if(!update)
-                    DatabaseHelper.insert(Teacher.getValues(t), Teacher.TeacherTable.getTable());
-                else
-                    DatabaseHelper.update(Teacher.getValues(t), Teacher.TeacherTable.getTable());
-                //Reload data and table
+                boolean inserted;
                 
-                JOptionPane.showMessageDialog(null, "The teacher was successfully written to the database!");
+                if(!update)
+                    inserted = DatabaseHelper.insert(Teacher.getValues(t), Teacher.TeacherTable.getTable());
+                else
+                    inserted = DatabaseHelper.update(Teacher.getValues(t), Teacher.TeacherTable.getTable());
+                //Reload data and table
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The teacher was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The teacher was NOT created! Please try again!");
                 close();
             }
 

@@ -75,13 +75,18 @@ public class NewRoleObject extends javax.swing.JDialog {
                 System.out.println(r.toString());
 
                 DatabaseHelper.open();
+                
+                boolean inserted;
                 if(!update)
-                    DatabaseHelper.insert(Role.getValues(r), Role.RoleTable.getTable());
+                    inserted = DatabaseHelper.insert(Role.getValues(r), Role.RoleTable.getTable());
                 else
-                    DatabaseHelper.update(Role.getValues(r), Role.RoleTable.getTable());
+                    inserted = DatabaseHelper.update(Role.getValues(r), Role.RoleTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The role was successfully written to the database!");
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The role was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The role was NOT created! Please try again!");
                 
                 close();
                 

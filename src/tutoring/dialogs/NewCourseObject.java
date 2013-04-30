@@ -165,19 +165,24 @@ public class NewCourseObject extends javax.swing.JDialog {
             {
                 
                 Course c = new Course(courseID, validTeacher.get(0), validSubject.get(0), lev);
-                System.out.println(c.toString());
 
+                boolean inserted;
+                
                 if(!update)
-                    DatabaseHelper.insert(Course.getValues(c), Course.CourseTable.getTable());
+                    inserted = DatabaseHelper.insert(Course.getValues(c), Course.CourseTable.getTable());
                 else
-                    DatabaseHelper.update(Course.getValues(c), Course.CourseTable.getTable());
+                    inserted = DatabaseHelper.update(Course.getValues(c), Course.CourseTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The course item was successfully written to the database!");
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The course item was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The course item was NOT created! Please try again!");
                 
                 close();
                 
             }
+            
 
         }
         catch(Exception e)

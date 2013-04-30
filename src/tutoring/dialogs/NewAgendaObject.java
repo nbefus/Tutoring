@@ -36,7 +36,7 @@ public class NewAgendaObject extends javax.swing.JDialog {
        // agendaCategoryCombo.setEditable(true);
         this.setResizable(false);
         
-        agendaCategoryCombo.setModel(new DefaultComboBoxModel(category.toArray()));
+       // agendaCategoryCombo.setModel(new DefaultComboBoxModel(category.toArray()));
         
         ArrayList<ArrayList<String>> uacList = new ArrayList<ArrayList<String>>();
         uacList.add(category);
@@ -125,15 +125,18 @@ public class NewAgendaObject extends javax.swing.JDialog {
             {
                 
                 Agenda a = new Agenda(agendaID, d, notes, cat.get(0));
-                System.out.println(a.toString());
 
+                boolean inserted;
                 if(!update)
-                    DatabaseHelper.insert(Agenda.getValues(a), Agenda.AgendaTable.getTable());
+                    inserted = DatabaseHelper.insert(Agenda.getValues(a), Agenda.AgendaTable.getTable());
                 else
-                    DatabaseHelper.update(Agenda.getValues(a), Agenda.AgendaTable.getTable());
+                    inserted = DatabaseHelper.update(Agenda.getValues(a), Agenda.AgendaTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda item was successfully written to the database!");
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The agenda item was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The agenda item was NOT created! Please try again!");
                 
                 close();
                 

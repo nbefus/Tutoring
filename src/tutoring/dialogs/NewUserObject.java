@@ -146,14 +146,19 @@ public class NewUserObject extends javax.swing.JDialog {
                 User u = new User(username, validRole.get(0), lname, fname, password);
 
                 DatabaseHelper.open();
+                
+                boolean inserted;
+                
                 if(!update)
-                    DatabaseHelper.insert(User.getValues(u), User.UserTable.getTable());
+                    inserted = DatabaseHelper.insert(User.getValues(u), User.UserTable.getTable());
                 else
-                    DatabaseHelper.update(User.getValues(u), User.UserTable.getTable());
+                    inserted = DatabaseHelper.update(User.getValues(u), User.UserTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The user was successfully written to the database!");
-                
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The user was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The user was NOT created! Please try again!");
                 close();
                 
             }

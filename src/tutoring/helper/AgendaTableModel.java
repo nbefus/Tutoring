@@ -128,8 +128,16 @@ public class AgendaTableModel extends AbstractTableModel {
     
     public void deleteRows(int[] r)
     {
+        DatabaseHelper.open();
         for(int i=0; i<r.length; i++)
-            agendaItems.remove(r[i]);
+            DatabaseHelper.delete(agendaItems.get(r[i]).getAgendaID()+"", Agenda.AgendaTable.getTable());
+        DatabaseHelper.close();
+        ArrayList<Agenda> a = new ArrayList<Agenda>();
+        for(int i=0; i< r.length; i++)
+            a.add(agendaItems.get(r[i]));
+        
+        agendaItems.removeAll(a);
+        
         fireTableDataChanged();
     }
         

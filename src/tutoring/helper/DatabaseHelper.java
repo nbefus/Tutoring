@@ -100,6 +100,8 @@ public class DatabaseHelper
             return Teacher.TeacherTable.getDatabaseName(displayName);
         else if(User.UserTable.getTable().equalsIgnoreCase(tableName))
             return User.UserTable.getDatabaseName(displayName);
+        else if(ParaprofessionalCategory.ParaCatTable.getTable().equalsIgnoreCase(tableName))
+            return ParaprofessionalCategory.ParaCatTable.getDatabaseName(displayName);
         
         return "";
     }
@@ -151,6 +153,10 @@ public class DatabaseHelper
         {
             return ParaprofessionalSession.ParaSessTable.getMainTableColumns();
         }
+        else if(table.equals(ParaprofessionalCategory.ParaCatTable.getTable()))
+        {
+            return ParaprofessionalCategory.ParaCatTable.getMainTableColumns();
+        }
         else if(table.equals(Subject.SubjectTable.getTable()))
         {
             return Subject.SubjectTable.getMainTableColumns();
@@ -188,41 +194,85 @@ public class DatabaseHelper
                 statement = connect.createStatement();
 
                 String valuesString = "";
-               for(int i=1; i<values.length; i++)
-               {
-                   //System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
-                   if(values[i] instanceof Integer)
-                   {
-                       valuesString+=values[i].toString()+",";
-                   }
-                   else if(values[i] instanceof Timestamp || values[i] instanceof String)
-                   {
-                       valuesString+="'"+values[i].toString()+"',";
-                   }
-                   else if(values[i] instanceof Date)
-                   {
-                       Timestamp t = new Timestamp(((Date)values[i]).getTime());
-                       valuesString+="'"+t.toString()+"',";
-                   }
-                   else if(values[i] instanceof Boolean)
-                   {
-                       valuesString+=values[i].toString()+",";
-                   }
-                   else if(values[i] == null)
-                   {
-                       valuesString+="null,";
-                   }
-                   else
-                       System.out.println("UNKNOWN VALUE TYPE");
-                   
-                   if(i == values.length-1)
-                       valuesString = valuesString.substring(0, valuesString.length()-1);
-               }
+                if(table.equals(ParaprofessionalCategory.ParaCatTable.getTable()))
+                {
+                    for(int i=0; i<values.length; i++)
+                    {
+                        System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                        if(values[i] instanceof Integer)
+                        {
+                            valuesString+=values[i].toString()+",";
+                        }
+                        else if(values[i] instanceof Timestamp || values[i] instanceof String)
+                        {
+                            valuesString+="'"+values[i].toString()+"',";
+                        }
+                        else if(values[i] instanceof Date)
+                        {
+                            Timestamp t = new Timestamp(((Date)values[i]).getTime());
+                            valuesString+="'"+t.toString()+"',";
+                        }
+                        else if(values[i] instanceof Boolean)
+                        {
+                            valuesString+=values[i].toString()+",";
+                        }
+                        else if(values[i] == null)
+                        {
+                            valuesString+="null,";
+                        }
+                        else
+                            System.out.println("UNKNOWN VALUE TYPE");
+
+                        if(i == values.length-1)
+                            valuesString = valuesString.substring(0, valuesString.length()-1);
+                    }
+                }
+                else
+                {
+                    for(int i=1; i<values.length; i++)
+                    {
+                        System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                        if(values[i] instanceof Integer)
+                        {
+                            valuesString+=values[i].toString()+",";
+                        }
+                        else if(values[i] instanceof Timestamp || values[i] instanceof String)
+                        {
+                            valuesString+="'"+values[i].toString()+"',";
+                        }
+                        else if(values[i] instanceof Date)
+                        {
+                            Timestamp t = new Timestamp(((Date)values[i]).getTime());
+                            valuesString+="'"+t.toString()+"',";
+                        }
+                        else if(values[i] instanceof Boolean)
+                        {
+                            valuesString+=values[i].toString()+",";
+                        }
+                        else if(values[i] == null)
+                        {
+                            valuesString+="null,";
+                        }
+                        else
+                            System.out.println("UNKNOWN VALUE TYPE");
+
+                        if(i == values.length-1)
+                            valuesString = valuesString.substring(0, valuesString.length()-1);
+                    }
+                }
                
                ArrayList<String> columns = getTableColumns(table);
                String columnsString = "";
-               for(int i=1; i<columns.size(); i++)
-                   columnsString += columns.get(i)+",";
+               if(table.equals(ParaprofessionalCategory.ParaCatTable.getTable()))
+               {
+                    for(int i=0; i<columns.size(); i++)
+                        columnsString += columns.get(i)+",";
+               }
+               else
+               {
+                    for(int i=1; i<columns.size(); i++)
+                        columnsString += columns.get(i)+",";
+               }
                columnsString = columnsString.substring(0, columnsString.length()-1);
                 
                 
@@ -262,7 +312,72 @@ public class DatabaseHelper
         return inserted;
     }
     
-    
+  
+      
+       public static boolean updateParaCat(Object[] values, Object[] oldValues, String table) {
+        //Connection connect = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        boolean inserted = false;
+        List l = new ArrayList();
+        
+        try {
+            // connect way #1
+         //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
+         //   String user = "nbefus_me";
+         //   String password = "heythere";
+           
+          //  connect = DriverManager.getConnection(url1, user, password);
+
+            if (connect != null) {
+
+                System.out.println("Connected to the database test1");
+
+                statement = connect.createStatement();
+
+                ArrayList<String> columns = getTableColumns(table);
+                
+                String valuesString = "";
+                String whereString = "";
+                
+              whereString+="where "+columns.get(0)+" = " +oldValues[0].toString() + " and "+columns.get(1) + " = "+oldValues[1].toString();
+               
+              valuesString += columns.get(0)+" = "+values[0].toString() + ", "+columns.get(1) + " = "+values[1].toString();
+                
+               
+               String query = "update "+table+" set "+valuesString+" "+whereString;
+               System.out.println(query);
+               statement.executeUpdate(query);
+                System.out.println("TRUE");
+                inserted = true;
+                return inserted;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("An error occurred. Maybe user/password is invalid");
+            ex.printStackTrace();
+        } finally {
+            try {
+          if (resultSet != null) {
+            resultSet.close();
+          }
+
+          if (statement != null) {
+            statement.close();
+          }
+
+          /*
+          if (connect != null) {
+            connect.close();
+          }*/
+        } catch (Exception e) {
+
+        }
+            return inserted;
+        }
+    }
+                       
      public static boolean update(Object[] values, String table) {
         //Connection connect = null;
         Statement statement = null;
@@ -292,6 +407,7 @@ public class DatabaseHelper
                {
                    if(i == 0)
                    {
+                       
                        whereString+="where "+columns.get(i)+" = " +values[i].toString();
                    }
                    else
@@ -327,12 +443,12 @@ public class DatabaseHelper
                
                String query = "update "+table+" set "+valuesString+" "+whereString;
                System.out.println(query);
-                statement.executeUpdate(query);
+               statement.executeUpdate(query);
                 
                 return true;
             }
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             System.out.println("An error occurred. Maybe user/password is invalid");
             ex.printStackTrace();
         } finally {
@@ -383,6 +499,65 @@ public class DatabaseHelper
                 String whereString = "";
                
                 whereString+="where "+columns.get(0)+" = " +ID;
+                   
+            
+               String query = "delete from "+table+" "+whereString;
+               System.out.println(query);
+                statement.executeUpdate(query);
+                
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("An error occurred. Maybe user/password is invalid");
+            ex.printStackTrace();
+        } finally {
+            try {
+          if (resultSet != null) {
+            resultSet.close();
+          }
+
+          if (statement != null) {
+            statement.close();
+          }
+
+          /*
+          if (connect != null) {
+            connect.close();
+          }*/
+        } catch (Exception e) {
+
+        }    
+            return false;
+        }
+    }
+    
+    public static boolean delete(String ID, String ID2, String table) {
+        //Connection connect = null;
+        Statement statement = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List l = new ArrayList();
+        
+        try {
+            // connect way #1
+         //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
+         //   String user = "nbefus_me";
+         //   String password = "heythere";
+           
+          //  connect = DriverManager.getConnection(url1, user, password);
+
+            if (connect != null) {
+
+                System.out.println("Connected to the database test1");
+
+                statement = connect.createStatement();
+
+                ArrayList<String> columns = getTableColumns(table);
+                
+                String whereString = "";
+               
+                whereString+="where "+columns.get(0)+" = " +ID +" and "+columns.get(1)+" = "+ID2;
                    
             
                String query = "delete from "+table+" "+whereString;

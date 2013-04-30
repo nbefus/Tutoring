@@ -79,13 +79,18 @@ public class NewAgendaCategoryObject extends javax.swing.JDialog {
                 AgendaCategory c = new AgendaCategory(agendaCategoryID, category);
                 System.out.println(c.toString());
                 DatabaseHelper.open();
+                
+                boolean inserted;
                 if(!update)
-                    DatabaseHelper.insert(AgendaCategory.getValues(c), AgendaCategory.AgendaCategoryTable.getTable());
+                    inserted = DatabaseHelper.insert(AgendaCategory.getValues(c), AgendaCategory.AgendaCategoryTable.getTable());
                 else
-                    DatabaseHelper.update(AgendaCategory.getValues(c), AgendaCategory.AgendaCategoryTable.getTable());
+                    inserted = DatabaseHelper.update(AgendaCategory.getValues(c), AgendaCategory.AgendaCategoryTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The agenda category was successfully written to the database!");
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The agenda category was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The agenda category was NOT created! Please try again!");
                 
                 close();
                 

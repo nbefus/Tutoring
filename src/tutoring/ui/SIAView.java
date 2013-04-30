@@ -62,23 +62,34 @@ public final class SIAView extends javax.swing.JFrame
 
     public class MinuteUpdater extends TimerTask {
     //times member represent calling times.
-    private SessionTableModel stm;
-   public MinuteUpdater(SessionTableModel stm)
+    private SessionTableModel current;
+    private SessionTableModel future;
+
+   public MinuteUpdater(SessionTableModel current, SessionTableModel future)
    {
-       this.stm = stm;
+        this.current = current;
+        this.future = future;
    }
+   
     public void run() 
     {
-        stm.fireTableDataChanged();
         //update();
+        updateTables();
+        current.fireTableDataChanged();
+        future.fireTableDataChanged();
     }
  
 }
     
     public void update() 
     {
-        
+            DatabaseHelper.open();
             Data.refreshClient();
+            Data.refreshCourse();
+            Data.refreshLocation();
+            Data.refreshParaprofessional();
+            DatabaseHelper.close();
+            
             uaacClient.noMore();
             uaacClient = null;
             JComboBox[] cboxes = new  JComboBox[4];
@@ -472,7 +483,7 @@ System.out.println("Done list 4");
         tableHelperFuture.autoResizeColWidth();
         //tableHelper.fasterScrolling(20);
             
-    ///SIAScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
+    reportsScrollPane.getVerticalScrollBar().setUnitIncrement(20);
         
         
         
@@ -489,12 +500,12 @@ System.out.println("Done list 4");
         Timer timer = new Timer("Minute Update");
  
         //2- Taking an instance of class contains your repeated method.
-        MinuteUpdater min = new MinuteUpdater((SessionTableModel)sessionsTable.getModel());
+        MinuteUpdater min = new MinuteUpdater((SessionTableModel)sessionsTable.getModel(), (SessionTableModel)appointmentsTable.getModel());
  
-        MinuteUpdater min2 = new MinuteUpdater((SessionTableModel)appointmentsTable.getModel());
+        //MinuteUpdater min2 = new MinuteUpdater((SessionTableModel)appointmentsTable.getModel());
 
-        timer.schedule(min, 0, 60000);
-        timer.schedule(min2, 0, 60000);
+        timer.schedule(min, 60000, 60000);
+        //timer.schedule(min2, 0, 60000);
     }
     
     
@@ -535,7 +546,7 @@ System.out.println("Done list 4");
             appointmentsTable.repaint();
         }
         
-        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= '2012-04-18'";
+        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= CURDATE()";
 
         ArrayList<Agenda> agenda = Agenda.selectAllAgenda(fromCurrentDateWhere, DatabaseHelper.getConnection());
         ((AgendaTableModel) agendaTable.getModel()).deleteAllRows();
@@ -575,7 +586,7 @@ System.out.println("Done list 4");
         
         Timestamp now = new Timestamp((new Date()).getTime());
         
-        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= '2012-04-18'";
+        String fromCurrentDateWhere = " where "+Agenda.AgendaTable.DATE.getWithAlias()+" >= CURDATE()";
 
         ArrayList<Agenda> agenda = Agenda.selectAllAgenda(fromCurrentDateWhere, DatabaseHelper.getConnection());
 
@@ -684,7 +695,7 @@ System.out.println("Done list 4");
             public Component getTableCellEditorComponent(JTable table, Object value,
                         boolean isSelected, int row, int column) 
             {
-                SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+                SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
                 String type = table.getValueAt(row, AgendaTableModel.Columns.TYPE.getColumnIndex()).toString();
                 String date = "";
@@ -1075,6 +1086,7 @@ System.out.println("Done list 4");
         levelCombo = new javax.swing.JComboBox();
         teacherLabel = new javax.swing.JLabel();
         teacherCombo = new javax.swing.JComboBox();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         agendaPanel = new javax.swing.JPanel();
         agendaTableScrollPanel = new javax.swing.JScrollPane();
@@ -1127,7 +1139,6 @@ System.out.println("Done list 4");
         generalChartPanelRight2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1150, 750));
@@ -1469,6 +1480,13 @@ System.out.println("Done list 4");
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
+        jButton1.setText("Refresh Lists");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -1482,7 +1500,9 @@ System.out.println("Done list 4");
                             .add(courseInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jButton1)
+                            .add(jPanel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(123, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -1496,7 +1516,9 @@ System.out.println("Done list 4");
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(paraprofessionalInfoPanel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jPanel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .add(0, 120, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jButton1)
+                .add(0, 91, Short.MAX_VALUE))
         );
 
         tabsPane.addTab("Create", jPanel2);
@@ -1757,6 +1779,8 @@ System.out.println("Done list 4");
         reportsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         reportsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+        reportsTopPane.setLayout(new java.awt.GridBagLayout());
+
         tablePane.setPreferredSize(new java.awt.Dimension(1300, 258));
 
         generalReportTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -1878,7 +1902,7 @@ System.out.println("Done list 4");
                     .add(weekRadio)
                     .add(monthRadio)
                     .add(yearRadio))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 42, Short.MAX_VALUE)
                 .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                         .add(org.jdesktop.layout.GroupLayout.TRAILING, tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -1886,30 +1910,22 @@ System.out.println("Done list 4");
                             .add(jLabel5))
                         .add(org.jdesktop.layout.GroupLayout.TRAILING, generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                     .add(jLabel6)
-                    .add(generalReportLoadButton))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, generalReportLoadButton))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 587, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 587, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(jScrollPane8, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 420, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 420, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(54, 54, 54))
         );
         tablePaneLayout.setVerticalGroup(
             tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(tablePaneLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
-                    .add(tablePaneLayout.createSequentialGroup()
-                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(tablePaneLayout.createSequentialGroup()
                         .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(dayRadio)
@@ -1919,19 +1935,39 @@ System.out.println("Done list 4");
                             .add(weekRadio)
                             .add(generalReportEndField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(monthRadio)
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(monthRadio)
+                            .add(jLabel6))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(yearRadio)
-                            .add(jLabel6))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(alltimeRadio))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .add(generalReportLoadButton)))
-                .addContainerGap(83, Short.MAX_VALUE))
+                            .add(generalReportBeginField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(tablePaneLayout.createSequentialGroup()
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(alltimeRadio))
+                            .add(tablePaneLayout.createSequentialGroup()
+                                .add(14, 14, 14)
+                                .add(generalReportLoadButton))))
+                    .add(tablePaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                        .add(tablePaneLayout.createSequentialGroup()
+                            .add(jScrollPane11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(jScrollPane13, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 46, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(org.jdesktop.layout.GroupLayout.LEADING, tablePaneLayout.createSequentialGroup()
+                            .add(jScrollPane12, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 102, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(48, 48, 48)
+                            .add(jScrollPane8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 47, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 20;
+        gridBagConstraints.ipady = 39;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        reportsTopPane.add(tablePane, gridBagConstraints);
 
         graphPane.setPreferredSize(new java.awt.Dimension(1300, 800));
 
@@ -1989,22 +2025,19 @@ System.out.println("Done list 4");
         graphPaneLayout.setHorizontalGroup(
             graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(graphPaneLayout.createSequentialGroup()
-                .add(16, 16, 16)
+                .add(6, 6, 6)
                 .add(generalChartPanelLeft, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
                 .add(generalChartPanelMid, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
                 .add(generalChartPanelRight, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 430, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
             .add(graphPaneLayout.createSequentialGroup()
-                .add(10, 10, 10)
                 .add(generalChartPanelLeft2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 436, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
                 .add(generalChartPanelMid2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(6, 6, 6)
                 .add(generalChartPanelRight2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 431, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, graphPaneLayout.createSequentialGroup()
-                .addContainerGap()
-                .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 1310, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
         );
         graphPaneLayout.setVerticalGroup(
             graphPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -2023,20 +2056,12 @@ System.out.println("Done list 4");
                 .add(generalChartPanelLong, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 250, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        org.jdesktop.layout.GroupLayout reportsTopPaneLayout = new org.jdesktop.layout.GroupLayout(reportsTopPane);
-        reportsTopPane.setLayout(reportsTopPaneLayout);
-        reportsTopPaneLayout.setHorizontalGroup(
-            reportsTopPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(graphPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-            .add(tablePane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-        );
-        reportsTopPaneLayout.setVerticalGroup(
-            reportsTopPaneLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(reportsTopPaneLayout.createSequentialGroup()
-                .add(graphPane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(0, 0, 0)
-                .add(tablePane, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipady = 28;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        reportsTopPane.add(graphPane, gridBagConstraints);
 
         reportsScrollPane.setViewportView(reportsTopPane);
 
@@ -2065,15 +2090,6 @@ System.out.println("Done list 4");
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tutoring/images/pmsLogoSpecial.png"))); // NOI18N
         jPanel4.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jButton1.setFont(new java.awt.Font("Adobe Arabic", 1, 36)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 0, 0));
-        jButton1.setText("CLICK TO PLAY VIDEO DEMO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -2081,7 +2097,6 @@ System.out.println("Done list 4");
             .add(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButton1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, tabsPane)
                     .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -2093,8 +2108,6 @@ System.out.println("Done list 4");
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 206, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(tabsPane, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButton1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 38, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -2514,7 +2527,7 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
     }//GEN-LAST:event_alltimeRadioActionPerformed
 
     private void weekRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekRadioActionPerformed
-         try
+        try
         {
             Date d = new Date();
             
@@ -2559,27 +2572,19 @@ timeoutTime = System.currentTimeMillis() + (logoutSeconds*1000);
         // TODO add your handling code here:
     }//GEN-LAST:event_locationComboActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
-        try
-        {
-            //start is for windows
-            //open is for mac
-            Process p = Runtime.getRuntime().exec("start play.mp4");
-        } catch (IOException ex)
-        {
-            
-            
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void todaySessionsScrollPaneMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_todaySessionsScrollPaneMouseMoved
         // TODO add your handling code here:
     }//GEN-LAST:event_todaySessionsScrollPaneMouseMoved
 
     private void deleteSessionButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSessionButton2ActionPerformed
-        // TODO add your handling code here:
+        int[] selectedRows = todaysSessionTable.getSelectedRows();
+
+        ((TodaySessionTableModel) todaysSessionTable.getModel()).deleteRows(selectedRows);
     }//GEN-LAST:event_deleteSessionButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        update();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void close()
     {

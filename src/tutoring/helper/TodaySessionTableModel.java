@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
+import tutoring.entity.Agenda;
 import tutoring.entity.Subject;
 import tutoring.entity.Teacher;
 import tutoring.entity.Paraprofessional;
@@ -139,8 +140,16 @@ public class TodaySessionTableModel extends AbstractTableModel {
     
     public void deleteRows(int[] r)
     {
+        DatabaseHelper.open();
         for(int i=0; i<r.length; i++)
-            tutorSessions.remove(r[i]);
+            DatabaseHelper.delete(tutorSessions.get(r[i]).getParaprofessionalSessionID()+"", Agenda.AgendaTable.getTable());
+        DatabaseHelper.close();
+        ArrayList<ParaprofessionalSession> a = new ArrayList<ParaprofessionalSession>();
+        for(int i=0; i< r.length; i++)
+            a.add(tutorSessions.get(r[i]));
+        
+        tutorSessions.removeAll(a);
+        
         fireTableDataChanged();
     }
     

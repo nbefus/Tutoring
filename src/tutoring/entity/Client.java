@@ -155,8 +155,6 @@ public class Client {
         this.phone = phone;
     }
 
-    public Client() {
-    }
     
     public static Object[] getValues(Client c)
     {

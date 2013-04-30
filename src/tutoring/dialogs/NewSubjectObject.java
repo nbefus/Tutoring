@@ -111,16 +111,20 @@ public class NewSubjectObject extends javax.swing.JDialog {
             {
                 
                 Subject s = new Subject(subjectID, subject, cat.get(0));
-                System.out.println(s.toString());
                 DatabaseHelper.open();
+                
+                boolean inserted;
+                
                 if(!update)
-                    DatabaseHelper.insert(Subject.getValues(s), Subject.SubjectTable.getTable());
+                    inserted = DatabaseHelper.insert(Subject.getValues(s), Subject.SubjectTable.getTable());
                 else
-                    DatabaseHelper.update(Subject.getValues(s), Subject.SubjectTable.getTable());
+                    inserted = DatabaseHelper.update(Subject.getValues(s), Subject.SubjectTable.getTable());
                 //Reload data and table
                 
-                JOptionPane.showMessageDialog(null, "The subject was successfully written to the database!");
-                
+                if(inserted)
+                    JOptionPane.showMessageDialog(null, "The subject was successfully written to the database!");
+                else
+                    JOptionPane.showMessageDialog(null, "The subject was NOT created! Please try again!");
                 close();
                 
             }
