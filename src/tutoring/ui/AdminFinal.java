@@ -460,7 +460,7 @@ System.out.println("Done list 4");
         }
         
         
-         String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = CURDATE() and DATE("+sessEndCol+") = CURDATE()";
+        String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = DATE('"+now.toString()+"') and DATE("+sessEndCol+") = DATE('"+now.toString()+"')";
        ArrayList<ParaprofessionalSession> todaySessions = ParaprofessionalSession.selectAllParaprofessionalSession(todaySessionsWhere,DatabaseHelper.getConnection());
         if(todaySessions.size() > 0)
         {
@@ -584,7 +584,8 @@ System.out.println("Done list 4");
         
         }
         
-        String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = CURDATE() and DATE("+sessEndCol+") = CURDATE()";
+        
+        String todaySessionsWhere = " where "+sessStartCol+" IS NOT NULL and "+sessEndCol+" IS NOT NULL and DATE("+sessStartCol +") = DATE('"+now.toString()+"') and DATE("+sessEndCol+") = DATE('"+now.toString()+"')";
        ArrayList<ParaprofessionalSession> todaySessions = ParaprofessionalSession.selectAllParaprofessionalSession(todaySessionsWhere,DatabaseHelper.getConnection());
         ((TodaySessionTableModel) todaysSessionTable.getModel()).deleteAllRows();
        if(todaySessions.size() > 0)
@@ -1747,8 +1748,6 @@ System.out.println("Done list 4");
 
         sessionsTablePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Current Sessions"));
 
-        sessionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        sessionsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         sessionsScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 sessionsScrollPaneMouseMoved(evt);
@@ -1799,8 +1798,6 @@ System.out.println("Done list 4");
 
         futureSessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Future Sessions"));
 
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane1.setPreferredSize(sessionsScrollPane.getMinimumSize());
         jScrollPane1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
@@ -1850,8 +1847,6 @@ System.out.println("Done list 4");
 
         todaySessionsPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Today's Sessions"));
 
-        todaySessionsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        todaySessionsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         todaySessionsScrollPane.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 todaySessionsScrollPaneMouseMoved(evt);
@@ -1918,9 +1913,6 @@ System.out.println("Done list 4");
         );
 
         tabsPane.addTab("Sessions", sessionsAndAgendaPanel);
-
-        reportsScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-        reportsScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         reportsTopPane.setLayout(new java.awt.GridBagLayout());
 
