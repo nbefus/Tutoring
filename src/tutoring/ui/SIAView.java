@@ -897,27 +897,27 @@ System.out.println("Done list 4");
 
         final JFreeChart barChart1 = createChart(barDataset1, "Total Student Sessions by Category", "# of Student Sessions", "Category", false, Color.blue, Color.gray);
         final ChartPanel barChartPanel1 = new ChartPanel(barChart1);
-        barChartPanel1.setPreferredSize(generalChartPanelLeft2.getSize());
+        barChartPanel1.setPreferredSize(generalChartPanelRight2.getSize());
         System.out.println(barChartPanel1.getPreferredSize().height + " " + barChartPanel1.getPreferredSize().width);
-        generalChartPanelLeft2.removeAll();
-        generalChartPanelLeft2.add(barChartPanel1);
-        generalChartPanelLeft2.validate();
+        generalChartPanelRight2.removeAll();
+        generalChartPanelRight2.add(barChartPanel1);
+        generalChartPanelRight2.validate();
 
         final JFreeChart barChart2 = createChart(barDataset2, "Other Information", "Total #", "Statistic", false, Color.red, Color.gray);
         final ChartPanel barChartPanel2 = new ChartPanel(barChart2);
-        barChartPanel2.setPreferredSize(generalChartPanelMid2.getSize());
+        barChartPanel2.setPreferredSize(generalChartPanelLeft2.getSize());
         System.out.println(barChartPanel2.getPreferredSize().height + " " + barChartPanel2.getPreferredSize().width);
-        generalChartPanelMid2.removeAll();
-        generalChartPanelMid2.add(barChartPanel2);
-        generalChartPanelMid2.validate();
+        generalChartPanelLeft2.removeAll();
+        generalChartPanelLeft2.add(barChartPanel2);
+        generalChartPanelLeft2.validate();
 
         final JFreeChart barChart3 = createChart(barDataset3, "Session Length Overview", "# of Sessions of Length", "Length Period", false, Color.gray, Color.white);
         final ChartPanel barChartPanel3 = new ChartPanel(barChart3);
-        barChartPanel3.setPreferredSize(generalChartPanelRight2.getSize());
+        barChartPanel3.setPreferredSize(generalChartPanelMid2.getSize());
         System.out.println(barChartPanel3.getPreferredSize().height + " " + barChartPanel3.getPreferredSize().width);
-        generalChartPanelRight2.removeAll();
-        generalChartPanelRight2.add(barChartPanel3);
-        generalChartPanelRight2.validate();
+        generalChartPanelMid2.removeAll();
+        generalChartPanelMid2.add(barChartPanel3);
+        generalChartPanelMid2.validate();
 
 
         final JFreeChart pieChart = createChart(pieDataset, "Total Student Sessions by Subject");
