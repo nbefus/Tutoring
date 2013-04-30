@@ -83,9 +83,10 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         //categoryCombo.setSelectedIndex(categories.indexOf(category));
         
         uac.setComboValue(role, 0);
-        
-        clockedInCombo.setSelectedIndex(((DefaultComboBoxModel)clockedInCombo.getModel()).getIndexOf(clockedIn));
-        
+        if(clockedIn.equalsIgnoreCase("true"))
+           clockedInCombo.setSelectedIndex(0);
+        else
+            clockedInCombo.setSelectedIndex(1);
         editButton.setVisible(true);
         
         fnameField.setText(fname);
@@ -247,7 +248,6 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         categoryLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         hireField = new javax.swing.JTextField();
-        terminationField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         clockedInCombo = new javax.swing.JComboBox();
         fnameField = new javax.swing.JTextField();
@@ -256,6 +256,7 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         cancelButton = new javax.swing.JButton();
         editButton = new javax.swing.JButton();
         submitbutton = new javax.swing.JButton();
+        terminationField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -271,14 +272,12 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
 
         jLabel1.setText("Role*");
 
-        hireField.setText("dd/mm/yyyy");
+        hireField.setText("mm/dd/yyyy");
         hireField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hireFieldActionPerformed(evt);
             }
         });
-
-        terminationField.setText("dd/mm/yyyy");
 
         jLabel3.setText("Clocked In*");
 
@@ -309,6 +308,8 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
             }
         });
 
+        terminationField.setText("mm/dd/yyyy");
+
         javax.swing.GroupLayout searchparaprofessionalPanelLayout = new javax.swing.GroupLayout(searchparaprofessionalPanel);
         searchparaprofessionalPanel.setLayout(searchparaprofessionalPanelLayout);
         searchparaprofessionalPanelLayout.setHorizontalGroup(
@@ -326,13 +327,15 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
                             .addComponent(courseLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(lnameField)
-                                .addComponent(clockedInCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(fnameField)
-                                .addComponent(hireField, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                                .addComponent(terminationField))
-                            .addComponent(roleCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(roleCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(searchparaprofessionalPanelLayout.createSequentialGroup()
+                                .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lnameField)
+                                    .addComponent(clockedInCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(fnameField)
+                                    .addComponent(hireField, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(terminationField)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchparaprofessionalPanelLayout.createSequentialGroup()
                         .addContainerGap(112, Short.MAX_VALUE)
                         .addComponent(cancelButton)
@@ -368,8 +371,8 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(categoryLabel3)
-                    .addComponent(terminationField, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                    .addComponent(terminationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
                 .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cancelButton)
                     .addGroup(searchparaprofessionalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -391,7 +394,7 @@ public class NewParaprofessionalObject extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 337, Short.MAX_VALUE)
+            .addGap(0, 344, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap()

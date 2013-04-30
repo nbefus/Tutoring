@@ -198,7 +198,7 @@ public class DatabaseHelper
                 {
                     for(int i=0; i<values.length; i++)
                     {
-                        System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                        //System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
                         if(values[i] instanceof Integer)
                         {
                             valuesString+=values[i].toString()+",";
@@ -231,7 +231,7 @@ public class DatabaseHelper
                 {
                     for(int i=1; i<values.length; i++)
                     {
-                        System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                        //System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
                         if(values[i] instanceof Integer)
                         {
                             valuesString+=values[i].toString()+",";
@@ -384,7 +384,7 @@ public class DatabaseHelper
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List l = new ArrayList();
-        
+        boolean inserted = false;
         try {
             // connect way #1
          //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
@@ -444,8 +444,8 @@ public class DatabaseHelper
                String query = "update "+table+" set "+valuesString+" "+whereString;
                System.out.println(query);
                statement.executeUpdate(query);
-                
-                return true;
+                inserted = true;
+                return inserted;
             }
 
         } catch (Exception ex) {
@@ -468,7 +468,7 @@ public class DatabaseHelper
         } catch (Exception e) {
 
         }    
-            return false;
+            return inserted;
         }
     }
     
@@ -479,7 +479,7 @@ public class DatabaseHelper
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List l = new ArrayList();
-        
+        boolean deleted = false;
         try {
             // connect way #1
          //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
@@ -504,8 +504,8 @@ public class DatabaseHelper
                String query = "delete from "+table+" "+whereString;
                System.out.println(query);
                 statement.executeUpdate(query);
-                
-                return true;
+                deleted = true;
+                return deleted;
             }
 
         } catch (SQLException ex) {
@@ -528,7 +528,7 @@ public class DatabaseHelper
         } catch (Exception e) {
 
         }    
-            return false;
+            return deleted;
         }
     }
     
@@ -538,7 +538,7 @@ public class DatabaseHelper
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         List l = new ArrayList();
-        
+        boolean deleted = false;
         try {
             // connect way #1
          //   String url1 = "jdbc:mysql://gator1757.hostgator.com:3306/nbefus_tms";
@@ -563,8 +563,8 @@ public class DatabaseHelper
                String query = "delete from "+table+" "+whereString;
                System.out.println(query);
                 statement.executeUpdate(query);
-                
-                return true;
+                deleted = true;
+                return deleted;
             }
 
         } catch (SQLException ex) {
@@ -587,7 +587,7 @@ public class DatabaseHelper
         } catch (Exception e) {
 
         }    
-            return false;
+            return deleted;
         }
     }
     

@@ -820,9 +820,15 @@ public class UltimateAutoAutoComplete implements KeyListener, ActionListener, Mo
         };
     }
     
-    public void setComboValue(String value, int indexOfBox)
+    public void setComboValue(boolean useSpaceForEmpty, String value, int indexOfBox)
     {
+       // activeBoxIndexes.add(indexOfBox);
+        //activeBoxValues.add(value);
+        if(value.length() == 0 && useSpaceForEmpty)
+            value = " ";
+        
         ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
+        
         updateList(indexOfBox, false);
         ((JTextComponent)boxes[indexOfBox].getEditor().getEditorComponent()).setText(value);
         //KeyEvent ke = new KeyEvent(boxes[indexOfBox].getEditor().getEditorComponent(),0,0,0,KeyEvent.VK_BACK_SPACE);

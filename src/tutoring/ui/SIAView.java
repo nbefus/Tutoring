@@ -639,13 +639,13 @@ System.out.println("Done list 4");
             {
                 sessionID = ((Integer)table.getValueAt(row, SessionTableModel.Columns.ID.getColumnIndex())).intValue();
                 
-                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.TEACHER.getColumnIndex()).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
-                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LEVEL.getColumnIndex()).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
-                uaacCourse.setComboValue(table.getValueAt(row, SessionTableModel.Columns.COURSE.getColumnIndex()).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
-                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTEMAIL.getColumnIndex()).toString(), ComboBoxesIndexes.CEMAIL.getBoxIndex());
-                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTPHONE.getColumnIndex()).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
-                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTLASTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
-                uaacClient.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CLIENTFIRSTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
+                uaacCourse.setComboValue(true, table.getValueAt(row, SessionTableModel.Columns.TEACHER.getColumnIndex()).toString(), ComboBoxesIndexes.TEACHER.getBoxIndex());
+                uaacCourse.setComboValue(true, table.getValueAt(row, SessionTableModel.Columns.LEVEL.getColumnIndex()).toString(), ComboBoxesIndexes.LEVEL.getBoxIndex());
+                uaacCourse.setComboValue(true,table.getValueAt(row, SessionTableModel.Columns.COURSE.getColumnIndex()).toString(), ComboBoxesIndexes.COURSE.getBoxIndex());
+                uaacClient.setComboValue(true,table.getValueAt(row, SessionTableModel.Columns.CLIENTEMAIL.getColumnIndex()).toString(), ComboBoxesIndexes.CEMAIL.getBoxIndex());
+                uaacClient.setComboValue(true,table.getValueAt(row, SessionTableModel.Columns.CLIENTPHONE.getColumnIndex()).toString(), ComboBoxesIndexes.CPHONE.getBoxIndex());
+                uaacClient.setComboValue(true,table.getValueAt(row, SessionTableModel.Columns.CLIENTLASTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CLNAME.getBoxIndex());
+                uaacClient.setComboValue(true,table.getValueAt(row, SessionTableModel.Columns.CLIENTFIRSTNAME.getColumnIndex()).toString(), ComboBoxesIndexes.CFNAME.getBoxIndex());
                 //uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.CATEGORY.getColumnIndex()).toString(), ComboBoxesIndexes.CATEGORY.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.PARAPROFESSIONAL.getColumnIndex()).toString(), ComboBoxesIndexes.PARAPROFESSIONAL.getBoxIndex());
                 uac.setComboValue(table.getValueAt(row, SessionTableModel.Columns.LOCATION.getColumnIndex()).toString(), ComboBoxesIndexes.LOCATION.getBoxIndex());
@@ -727,9 +727,9 @@ System.out.println("Done list 4");
          for(int i=0; i<uac.getBoxesLength(); i++)
             uac.setComboValue("", i);
          for(int i=0; i<uaacClient.getBoxesLength(); i++)
-            uaacClient.setComboValue("", i);
+            uaacClient.setComboValue(false, "", i);
          for(int i=0; i<uaacCourse.getBoxesLength(); i++)
-            uaacCourse.setComboValue("", i);
+            uaacCourse.setComboValue(false, "", i);
     }
     
     public void loadChartsWithoutDate()
