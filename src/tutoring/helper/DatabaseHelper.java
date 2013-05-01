@@ -232,12 +232,15 @@ public class DatabaseHelper
                     for(int i=1; i<values.length; i++)
                     {
                         //System.out.println("VALUE: "+values[i].getClass().toString() + " "+values[i]);
+                        
                         if(values[i] instanceof Integer)
                         {
                             valuesString+=values[i].toString()+",";
                         }
                         else if(values[i] instanceof Timestamp || values[i] instanceof String)
                         {
+                            if(values[i].toString().length() > 0)
+                                values[i]=values[i].toString().replace("'", "''");
                             valuesString+="'"+values[i].toString()+"',";
                         }
                         else if(values[i] instanceof Date)
@@ -405,6 +408,8 @@ public class DatabaseHelper
                 String whereString = "";
                for(int i=0; i<values.length; i++)
                {
+                   if(values[i] != null && values[i].toString().length() > 0)
+                      values[i]=values[i].toString().replace("'", "''");
                    if(i == 0)
                    {
                        

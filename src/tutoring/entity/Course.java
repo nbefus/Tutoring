@@ -297,9 +297,11 @@ public class Course
         this.courseID = courseID;
     }
 
-    public boolean equals(Course c)
+    
+    @Override
+    public boolean equals(Object c)
     {
-        if(this.level == c.getLevel() && this.subjectID.equals(c.getSubjectID()) && this.teacherID.equals(c.getTeacherID()))
+        if(c instanceof Course && this.level == ((Course)c).getLevel() && this.subjectID.equals(((Course)c).getSubjectID()) && this.teacherID.equals(((Course)c).getTeacherID()))
             return true;
         else
             return false;

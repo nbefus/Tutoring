@@ -21,9 +21,9 @@ public class Teacher
     public enum TeacherTable {
 
         TEACHERID("Teacher ID","teacherID", true, getTableAlias()+".teacherID", true),
-        FNAME("First Name","fName", true, getTableAlias()+".fName", false),
-        LNAME("Last Name","lName", true, getTableAlias()+".lName", false);
-        
+        LNAME("Last Name","lName", true, getTableAlias()+".lName", false),
+        FNAME("First Name","fName", true, getTableAlias()+".fName", false);
+                
         private String name;
         private boolean mainTableColumn;
         private String withAlias;
@@ -237,10 +237,14 @@ public class Teacher
         this.fName = fName;
     }
     
-    public boolean equals(Teacher t)
+    @Override
+    public boolean equals(Object o)
     {
-        if(this.fName.equals(t.fName) && this.lName.equals(t.lName))
+        if(o instanceof Teacher && this.fName.equals(((Teacher)o).fName) && this.lName.equals(((Teacher)o).lName))
+        {
+            System.out.println("TEACHER EXISTS FINALLY: "+this.fName+" "+this.lName);
             return true;
+        }
         else
             return false;
     }

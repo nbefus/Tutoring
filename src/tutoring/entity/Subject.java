@@ -24,7 +24,7 @@ public class Subject {
         SUBJECTID("Subject ID","subjectID", true, getTableAlias()+".subjectID", true),
         ABBREVNAME("Subject","abbrevName", true, getTableAlias()+".abbrevName", false),
         CATEGORYID("Category ID","categoryID", true, getTableAlias()+".categoryID", true), 
-        CATEGORYNAME("Category","name", true, getCategoryAlias()+".name", false);
+        CATEGORYNAME("Category","name", false, getCategoryAlias()+".name", false);
         
         private String name;
         private boolean mainTableColumn;
@@ -265,8 +265,9 @@ public class Subject {
         this.categoryID = categoryID;
     }
 
-    public boolean equals(Subject s) {
-        if (this.abbrevName.equals(s.getAbbrevName())) {
+    @Override
+    public boolean equals(Object s) {
+        if (s instanceof Subject && this.abbrevName.equals(((Subject)s).getAbbrevName())) {
             return true;
         }
         return false;
